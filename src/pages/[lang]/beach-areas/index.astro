@@ -3,6 +3,7 @@ import Page from '@/layouts/Page.astro';
 import Hero from '@/components/sections/Hero.astro';
 import Card from '@/components/ui/Card.astro';
 import Badge from '@/components/ui/Badge.astro';
+import BeachMap from '@/components/maps/BeachMap.astro';
 import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
@@ -20,6 +21,27 @@ const hreflangLinks = generateHubHreflangLinks('beach-areas');
 
 const allAreas = await getCollection('beach-areas');
 const areas = allAreas.sort((a, b) => a.data.order - b.data.order);
+
+const allPlaces = await getCollection('places');
+
+const mapMarkers = [
+  ...areas.map((area) => ({
+    lat: area.data.coordinates.lat,
+    lng: area.data.coordinates.lng,
+    title: getLocalized(area.data.title, lang),
+    description: area.data.shortDescription ? getLocalized(area.data.shortDescription, lang) : undefined,
+    category: 'beach-area',
+    href: getLocalizedUrl(lang, 'beach-areas', area.data.slug[lang]),
+  })),
+  ...allPlaces.map((place) => ({
+    lat: place.data.coordinates.lat,
+    lng: place.data.coordinates.lng,
+    title: getLocalized(place.data.title, lang),
+    description: place.data.shortDescription ? getLocalized(place.data.shortDescription, lang) : undefined,
+    category: place.data.category,
+    href: getLocalizedUrl(lang, 'places', place.data.slug[lang]),
+  })),
+];
 
 const facilityLabels: Record<string, Record<Language, string>> = {
   sunbeds: { en: 'Sunbeds', hr: 'Ležaljke', de: 'Liegen', it: 'Lettini' },
@@ -49,6 +71,11 @@ const facilityLabels: Record<string, Record<Language, string>> = {
     title={translations['beachAreas.title']}
     subtitle={translations['beachAreas.subtitle']}
   />
+
+  <!-- Interactive Map -->
+  <section class="container-page pt-12 pb-4">
+    <BeachMap lang={lang} markers={mapMarkers} zoom={15} height="400px" />
+  </section>
 
   <section class="container-page py-16">
     <div class="space-y-8">

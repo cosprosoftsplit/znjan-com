@@ -1,0 +1,60 @@
+---
+import Guide from '@/layouts/Guide.astro';
+import { LANGUAGES, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
+import { getTranslations } from '@/lib/translations';
+import { canonicalUrl } from '@/lib/utils';
+import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/seo';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allGuides = await getCollection('guides');
+  return allGuides.map((guide) => ({
+    params: { lang: guide.data.lang, slug: guide.data.slugs[guide.data.lang] },
+    props: { guide },
+  }));
+}
+
+const { guide } = Astro.props;
+const lang = guide.data.lang as Language;
+const translations = getTranslations(lang);
+
+const title = getLocalized(guide.data.title, lang);
+const description = getLocalized(guide.data.description, lang);
+const hreflangLinks = getHreflangLinks('guides', guide.data.slugs);
+
+const structuredData = [
+  buildArticleSchema({
+    title,
+    description,
+    url: `https://znjan.com/${lang}/guides/${guide.data.slugs[lang]}/`,
+    publishedAt: guide.data.publishedAt.toISOString(),
+    updatedAt: guide.data.updatedAt.toISOString(),
+    author: guide.data.author || 'Znjan.com Team',
+  }),
+  buildBreadcrumbSchema([
+    { name: translations['nav.home'], url: `https://znjan.com/${lang}/` },
+    { name: translations['nav.guides'], url: `https://znjan.com${getLocalizedUrl(lang, 'guides')}` },
+    { name: title, url: `https://znjan.com/${lang}/guides/${guide.data.slugs[lang]}/` },
+  ]),
+];
+
+const { Content } = await guide.render();
+---
+
+<Guide
+  title={title}
+  description={description}
+  lang={lang}
+  translations={translations}
+  canonicalUrl={canonicalUrl(`/${lang}/guides/${guide.data.slugs[lang]}/`)}
+  hreflangLinks={hreflangLinks}
+  structuredData={structuredData}
+  publishedAt={guide.data.publishedAt}
+  updatedAt={guide.data.updatedAt}
+  author={guide.data.author || 'Znjan.com Team'}
+  readingTime={guide.data.readingTime}
+  cluster={guide.data.cluster}
+>
+  <Content />
+</Guide>

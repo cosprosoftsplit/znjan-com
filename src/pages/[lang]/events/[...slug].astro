@@ -1,0 +1,112 @@
+---
+import Guide from '@/layouts/Guide.astro';
+import Badge from '@/components/ui/Badge.astro';
+import { LANGUAGES, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
+import { getTranslations } from '@/lib/translations';
+import { canonicalUrl, formatDate } from '@/lib/utils';
+import { buildEventSchema, buildBreadcrumbSchema } from '@/lib/seo';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allEvents = await getCollection('events');
+  return allEvents.map((event) => ({
+    params: { lang: event.data.lang, slug: event.data.slugs[event.data.lang] },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+const lang = event.data.lang as Language;
+const translations = getTranslations(lang);
+
+const title = getLocalized(event.data.title, lang);
+const description = getLocalized(event.data.description, lang);
+const hreflangLinks = getHreflangLinks('events', event.data.slugs);
+
+const structuredData = [
+  buildEventSchema({
+    name: title,
+    description,
+    url: `https://znjan.com/${lang}/events/${event.data.slugs[lang]}/`,
+    startDate: event.data.startDate.toISOString(),
+    endDate: event.data.endDate?.toISOString(),
+    location: event.data.location,
+    isFree: event.data.isFree,
+  }),
+  buildBreadcrumbSchema([
+    { name: translations['nav.home'], url: `https://znjan.com/${lang}/` },
+    { name: translations['nav.events'], url: `https://znjan.com${getLocalizedUrl(lang, 'events')}` },
+    { name: title, url: `https://znjan.com/${lang}/events/${event.data.slugs[lang]}/` },
+  ]),
+];
+
+const { Content } = await event.render();
+
+const categoryLabels: Record<string, Record<Language, string>> = {
+  concert: { en: 'Concert', hr: 'Koncert', de: 'Konzert', it: 'Concerto' },
+  festival: { en: 'Festival', hr: 'Festival', de: 'Festival', it: 'Festival' },
+  sports: { en: 'Sports', hr: 'Sport', de: 'Sport', it: 'Sport' },
+  market: { en: 'Market', hr: 'Tržnica', de: 'Markt', it: 'Mercato' },
+  community: { en: 'Community', hr: 'Zajednica', de: 'Gemeinschaft', it: 'Comunità' },
+  other: { en: 'Event', hr: 'Događaj', de: 'Veranstaltung', it: 'Evento' },
+};
+---
+
+<Guide
+  title={title}
+  description={description}
+  lang={lang}
+  translations={translations}
+  canonicalUrl={canonicalUrl(`/${lang}/events/${event.data.slugs[lang]}/`)}
+  hreflangLinks={hreflangLinks}
+  structuredData={structuredData}
+>
+  <div class="mb-6 flex flex-wrap items-center gap-3">
+    <Badge variant="ocean">
+      {categoryLabels[event.data.category]?.[lang] || event.data.category}
+    </Badge>
+    {event.data.isFree && (
+      <Badge variant="sand">
+        {lang === 'hr' ? 'Besplatno' : lang === 'de' ? 'Kostenlos' : lang === 'it' ? 'Gratuito' : 'Free'}
+      </Badge>
+    )}
+  </div>
+
+  <div class="mb-8 p-4 bg-ocean-50 rounded-lg space-y-2 text-sm">
+    <p class="flex items-center gap-2 text-ocean-700">
+      <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+      <strong>{translations['events.date']}:</strong>
+      {formatDate(event.data.startDate, lang)}
+      {event.data.endDate && ` — ${formatDate(event.data.endDate, lang)}`}
+    </p>
+    {event.data.location && (
+      <p class="flex items-center gap-2 text-ocean-700">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <strong>{translations['events.location']}:</strong> {event.data.location}
+      </p>
+    )}
+  </div>
+
+  <Content />
+
+  {(event.data.website || event.data.ticketUrl) && (
+    <div class="mt-8 flex flex-wrap gap-3">
+      {event.data.ticketUrl && (
+        <a href={event.data.ticketUrl} target="_blank" rel="noopener" class="inline-flex items-center px-5 py-2.5 rounded-lg bg-ocean-600 text-white font-medium hover:bg-ocean-700 transition-colors">
+          {lang === 'hr' ? 'Kupi ulaznice' : lang === 'de' ? 'Tickets kaufen' : lang === 'it' ? 'Acquista biglietti' : 'Get Tickets'}
+        </a>
+      )}
+      {event.data.website && (
+        <a href={event.data.website} target="_blank" rel="noopener" class="inline-flex items-center px-5 py-2.5 rounded-lg border border-ocean-300 text-ocean-600 font-medium hover:bg-ocean-50 transition-colors">
+          {translations['places.website']}
+        </a>
+      )}
+    </div>
+  )}
+</Guide>

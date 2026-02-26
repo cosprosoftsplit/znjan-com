@@ -1,0 +1,13 @@
+id: water-sports
+question:
+  en: "What water sports are available at Znjan Beach?"
+  hr: "Koji vodeni sportovi su dostupni na plaži Žnjan?"
+  de: "Welche Wassersportarten gibt es am Strand Žnjan?"
+  it: "Quali sport acquatici sono disponibili alla spiaggia di Žnjan?"
+answer:
+  en: "Znjan Beach offers stand-up paddleboarding (SUP, €10-15/hour), kayaking (€12-18/hour), and snorkeling (best at the rocky eastern end). Equipment rental is available from May to October along the beach. Beach volleyball courts are also available in the dedicated sports zone. The calm morning waters are ideal for SUP beginners."
+  hr: "Plaža Žnjan nudi stand-up paddleboarding (SUP, 10-15€/sat), kajaking (12-18€/sat) i ronjenje s maskom (najbolje na kamenitom istočnom dijelu). Najam opreme dostupan je od svibnja do listopada duž plaže. Tereni za odbojku na pijesku dostupni su u sportskoj zoni. Mirno jutarnje more idealno je za SUP početnike."
+  de: "Am Strand Žnjan gibt es Stand-Up-Paddleboarding (SUP, 10-15€/Stunde), Kajakfahren (12-18€/Stunde) und Schnorcheln (am besten am felsigen Ostende). Ausrüstungsverleih ist von Mai bis Oktober am Strand verfügbar. Beachvolleyballplätze stehen in der Sportzone zur Verfügung. Das ruhige Morgenwasser ist ideal für SUP-Anfänger."
+  it: "La spiaggia di Žnjan offre stand-up paddleboarding (SUP, 10-15€/ora), kayak (12-18€/ora) e snorkeling (migliore all'estremità rocciosa orientale). Il noleggio attrezzatura è disponibile da maggio a ottobre lungo la spiaggia. Campi da beach volley sono disponibili nella zona sportiva. Le acque calme del mattino sono ideali per i principianti di SUP."
+category: activities
+order: 12

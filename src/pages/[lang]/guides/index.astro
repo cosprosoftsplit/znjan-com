@@ -39,7 +39,7 @@ const guides = allGuides.sort((a, b) => b.data.publishedAt.getTime() - a.data.pu
     {guides.length > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {guides.map((guide) => (
-          <Card href={getLocalizedUrl(lang, 'guides', guide.data.slug[lang])}>
+          <Card href={getLocalizedUrl(lang, 'guides', guide.data.slugs[lang])}>
             <div class="p-6">
               {guide.data.cluster && (
                 <Badge variant="ocean">{guide.data.cluster}</Badge>

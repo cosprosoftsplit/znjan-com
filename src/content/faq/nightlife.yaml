@@ -1,0 +1,13 @@
+id: nightlife
+question:
+  en: "Is there nightlife at Znjan Beach?"
+  hr: "Ima li noćnog života na plaži Žnjan?"
+  de: "Gibt es Nachtleben am Strand Žnjan?"
+  it: "C'è vita notturna alla spiaggia di Žnjan?"
+answer:
+  en: "Yes! Several beach clubs keep the energy going into the evening. Taboo Beach Club is known for DJ sets and VIP cabana experiences, especially on weekends. Palma Beach Club offers cocktails and lounge music with sunset views. Most venues are busiest from Thursday to Sunday during summer season (June–September). For full nightclub experiences, Split's city centre (Riva area) has additional options."
+  hr: "Da! Nekoliko beach klubova održava atmosferu do kasnih sati. Taboo Beach Club poznat je po DJ setovima i VIP kabana iskustvu, posebno vikendom. Palma Beach Club nudi koktele i lounge glazbu s pogledom na zalazak sunca. Većina lokala je najživlja od četvrtka do nedjelje tijekom ljetne sezone (lipanj–rujan). Za prave noćne klubove, centar Splita (područje Rive) nudi dodatne mogućnosti."
+  de: "Ja! Mehrere Beachclubs sorgen bis in den Abend für Unterhaltung. Der Taboo Beach Club ist bekannt für DJ-Sets und VIP-Cabana-Erlebnisse, besonders am Wochenende. Der Palma Beach Club bietet Cocktails und Lounge-Musik mit Sonnenuntergangsblick. Die meisten Lokale sind von Donnerstag bis Sonntag in der Sommersaison (Juni–September) am belebtesten. Für das volle Nachtclub-Erlebnis bietet das Stadtzentrum Splits (Riva-Gegend) weitere Optionen."
+  it: "Sì! Diversi beach club mantengono l'atmosfera fino a sera. Il Taboo Beach Club è noto per i DJ set e le esperienze VIP in cabana, specialmente nei weekend. Il Palma Beach Club offre cocktail e musica lounge con vista tramonto. I locali sono più frequentati dal giovedì alla domenica durante la stagione estiva (giugno–settembre). Per l'esperienza da nightclub, il centro di Spalato (zona Riva) offre ulteriori opzioni."
+category: nightlife
+order: 13

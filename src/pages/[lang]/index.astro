@@ -4,11 +4,13 @@ import Hero from '@/components/sections/Hero.astro';
 import SectionHeader from '@/components/sections/SectionHeader.astro';
 import Card from '@/components/ui/Card.astro';
 import Button from '@/components/ui/Button.astro';
-import { LANGUAGES, getLocalizedUrl, getHomeUrl } from '@/lib/i18n';
+import BeachMap from '@/components/maps/BeachMap.astro';
+import { LANGUAGES, getLocalizedUrl, getHomeUrl, getLocalized } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
-import { generateHomeHreflangLinks, buildBeachSchema, buildOrganizationSchema } from '@/lib/seo';
+import { generateHomeHreflangLinks, buildBeachSchema, buildOrganizationSchema, buildFAQSchema } from '@/lib/seo';
 import { canonicalUrl } from '@/lib/utils';
+import { getCollection } from 'astro:content';
 
 export function getStaticPaths() {
   return LANGUAGES.map((lang) => ({ params: { lang } }));
@@ -17,6 +19,33 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as Language;
 const translations = getTranslations(lang);
 const hreflangLinks = generateHomeHreflangLinks();
+
+const allPlaces = await getCollection('places');
+const allAreas = await getCollection('beach-areas');
+const allFaqs = await getCollection('faq');
+
+const mapMarkers = [
+  ...allAreas.map((area) => ({
+    lat: area.data.coordinates.lat,
+    lng: area.data.coordinates.lng,
+    title: getLocalized(area.data.title, lang),
+    category: 'beach-area',
+    href: getLocalizedUrl(lang, 'beach-areas', area.data.slug[lang]),
+  })),
+  ...allPlaces.filter((p) => p.data.status !== 'coming-soon').map((place) => ({
+    lat: place.data.coordinates.lat,
+    lng: place.data.coordinates.lng,
+    title: getLocalized(place.data.title, lang),
+    category: place.data.category,
+    href: getLocalizedUrl(lang, 'places', place.data.slug[lang]),
+  })),
+];
+
+const faqs = allFaqs.sort((a, b) => a.data.order - b.data.order);
+const faqSchemaItems = faqs.map((f) => ({
+  question: getLocalized(f.data.question, lang),
+  answer: getLocalized(f.data.answer, lang),
+}));
 
 const quickLinks = [
   {
@@ -59,7 +88,7 @@ const quickLinks = [
   translations={translations}
   canonicalUrl={canonicalUrl(`/${lang}/`)}
   hreflangLinks={hreflangLinks}
-  structuredData={[buildBeachSchema(), buildOrganizationSchema()]}
+  structuredData={[buildBeachSchema(), buildOrganizationSchema(), buildFAQSchema(faqSchemaItems)]}
 >
   <!-- Hero -->
   <Hero
@@ -146,6 +175,40 @@ const quickLinks = [
           {lang === 'hr' ? 'Novih paviljonskih objekata' : lang === 'de' ? 'Neue Pavillon-Gebäude' : lang === 'it' ? 'Nuovi edifici padiglione' : 'New Pavilion Venues'}
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Interactive Beach Map -->
+  <section class="bg-ocean-50 py-16">
+    <div class="container-page">
+      <SectionHeader
+        title={lang === 'hr' ? 'Karta plaže Žnjan' : lang === 'de' ? 'Karte Strand Žnjan' : lang === 'it' ? 'Mappa spiaggia Žnjan' : 'Znjan Beach Map'}
+        subtitle={lang === 'hr' ? 'Istražite plaže, restorane i hotele' : lang === 'de' ? 'Erkunden Sie Strände, Restaurants und Hotels' : lang === 'it' ? 'Esplora spiagge, ristoranti e hotel' : 'Explore beaches, restaurants, and hotels'}
+      />
+      <BeachMap lang={lang} markers={mapMarkers} zoom={15} height="450px" />
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="container-page py-16">
+    <SectionHeader
+      title={translations['home.thingsToKnow']}
+      subtitle={lang === 'hr' ? 'Odgovori na najčešća pitanja o plaži Žnjan' : lang === 'de' ? 'Antworten auf häufige Fragen zum Strand Žnjan' : lang === 'it' ? 'Risposte alle domande più frequenti sulla spiaggia di Žnjan' : 'Answers to common questions about Znjan Beach'}
+    />
+    <div class="max-w-3xl mx-auto space-y-4">
+      {faqs.map((faq) => (
+        <details class="group bg-white rounded-lg border border-warm-200 shadow-sm">
+          <summary class="flex items-center justify-between px-6 py-4 cursor-pointer text-ocean-700 font-medium hover:text-ocean-600 transition-colors">
+            <span>{getLocalized(faq.data.question, lang)}</span>
+            <svg class="w-5 h-5 shrink-0 ml-4 transition-transform group-open:rotate-180 text-warm-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="px-6 pb-4 text-warm-600 text-sm leading-relaxed">
+            {getLocalized(faq.data.answer, lang)}
+          </div>
+        </details>
+      ))}
     </div>
   </section>
 </Page>

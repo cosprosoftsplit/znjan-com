@@ -1,0 +1,13 @@
+id: family-friendly
+question:
+  en: "Is Znjan Beach family-friendly?"
+  hr: "Je li plaža Žnjan pogodna za obitelji?"
+  de: "Ist der Strand Žnjan familienfreundlich?"
+  it: "La spiaggia di Žnjan è adatta alle famiglie?"
+answer:
+  en: "Yes, Znjan Beach is one of Split's most family-friendly beaches. It features dedicated kids' play areas with shallow water entry, lifeguards on duty from June to September, shaded seating areas, playgrounds, accessible pathways for strollers, family-oriented restaurants, and clean modern restroom facilities. The gentle pebble surface makes it safer than rocky beaches."
+  hr: "Da, plaža Žnjan jedna je od najpogodnijih splitskih plaža za obitelji. Ima posebne dječje zone s plitkim ulaskom u more, spasilačku službu od lipnja do rujna, zasjenjene prostore za sjedenje, igrališta, pristupačne staze za kolica, obiteljske restorane i čiste moderne sanitarne čvorove. Nježna šljunčana podloga čini je sigurnijom od kamenih plaža."
+  de: "Ja, der Strand Žnjan ist einer der familienfreundlichsten Strände Splits. Er bietet spezielle Kinderbereiche mit flachem Wassereinstieg, Rettungsschwimmer von Juni bis September, schattige Sitzplätze, Spielplätze, barrierefreie Wege für Kinderwagen, familienfreundliche Restaurants und saubere moderne Sanitäranlagen. Der sanfte Kieselstrand ist sicherer als Felsstrände."
+  it: "Sì, la spiaggia di Žnjan è una delle più adatte alle famiglie di Spalato. Offre aree gioco dedicate con ingresso in acqua bassa, bagnini in servizio da giugno a settembre, zone ombreggiate, parchi giochi, percorsi accessibili per passeggini, ristoranti per famiglie e servizi igienici moderni e puliti. La superficie di ciottoli è più sicura delle spiagge rocciose."
+category: general
+order: 6

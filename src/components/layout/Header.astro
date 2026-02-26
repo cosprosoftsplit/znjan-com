@@ -2,6 +2,7 @@
 import type { Language } from '@/lib/i18n';
 import { ROUTE_SEGMENTS, getHomeUrl, getLocalizedUrl, DEFAULT_LANGUAGE } from '@/lib/i18n';
 import LanguageSwitcher from './LanguageSwitcher.astro';
+import SearchDialog from '@/components/widgets/SearchDialog.astro';
 
 interface Props {
   lang: Language;
@@ -49,6 +50,7 @@ const navItems = [
             {item.label}
           </a>
         ))}
+        <SearchDialog lang={lang} />
         <LanguageSwitcher lang={lang} />
       </div>
 
@@ -78,7 +80,8 @@ const navItems = [
           {item.label}
         </a>
       ))}
-      <div class="pt-3 border-t border-warm-200">
+      <div class="pt-3 border-t border-warm-200 flex items-center gap-4">
+        <SearchDialog lang={lang} />
         <LanguageSwitcher lang={lang} />
       </div>
     </div>

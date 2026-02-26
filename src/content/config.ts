@@ -123,8 +123,8 @@ const places = defineCollection({
 const guides = defineCollection({
   type: 'content',
   schema: z.object({
-    id: z.string(),
-    slug: multilingualSlug,
+    guideId: z.string(),
+    slugs: multilingualSlug,
     title: multilingualString,
     description: multilingualString,
     cluster: z.string(),
@@ -147,8 +147,8 @@ const guides = defineCollection({
 const articles = defineCollection({
   type: 'content',
   schema: z.object({
-    id: z.string(),
-    slug: multilingualSlug,
+    articleId: z.string(),
+    slugs: multilingualSlug,
     title: multilingualString,
     description: multilingualString,
     guide: z.string().optional(),
@@ -172,8 +172,8 @@ const articles = defineCollection({
 const events = defineCollection({
   type: 'content',
   schema: z.object({
-    id: z.string(),
-    slug: multilingualSlug,
+    eventId: z.string(),
+    slugs: multilingualSlug,
     title: multilingualString,
     description: multilingualString,
     startDate: z.coerce.date(),
@@ -195,8 +195,8 @@ const events = defineCollection({
 const news = defineCollection({
   type: 'content',
   schema: z.object({
-    id: z.string(),
-    slug: multilingualSlug,
+    newsId: z.string(),
+    slugs: multilingualSlug,
     title: multilingualString,
     description: multilingualString,
     publishedAt: z.coerce.date(),

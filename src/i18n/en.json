@@ -55,6 +55,10 @@
     "difficulty": "Difficulty",
     "season": "Season"
   },
+  "articles": {
+    "title": "Znjan Beach Articles",
+    "subtitle": "Tips, comparisons, and in-depth articles about Znjan Beach"
+  },
   "guides": {
     "title": "Znjan Beach Guides",
     "subtitle": "Comprehensive guides for visitors and locals",

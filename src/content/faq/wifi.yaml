@@ -1,0 +1,13 @@
+id: wifi
+question:
+  en: "Is there WiFi at Žnjan Beach?"
+  hr: "Ima li WiFi na plaži Žnjan?"
+  de: "Gibt es WLAN am Strand Žnjan?"
+  it: "C'è il WiFi alla spiaggia di Žnjan?"
+answer:
+  en: "There is no free public WiFi on the beach itself. However, most beach clubs and restaurants along the promenade offer free WiFi to their customers. Croatian mobile data works well in the area, and most EU visitors can use their home data plans thanks to EU roaming regulations."
+  hr: "Na samoj plaži nema besplatnog javnog WiFi-ja. Međutim, većina beach klubova i restorana uz šetnicu nudi besplatan WiFi svojim gostima. Hrvatskog mobilnog interneta ima dovoljno u tom području, a većina EU posjetitelja može koristiti svoj kućni podatkovni paket zahvaljujući EU propisima o roamingu."
+  de: "Am Strand selbst gibt es kein kostenloses öffentliches WLAN. Die meisten Strandclubs und Restaurants entlang der Promenade bieten ihren Gästen jedoch kostenloses WLAN an. Kroatische Mobilfunkdaten funktionieren in der Gegend gut, und die meisten EU-Besucher können dank der EU-Roaming-Verordnung ihren heimischen Datentarif nutzen."
+  it: "Non c'è WiFi pubblico gratuito sulla spiaggia stessa. Tuttavia, la maggior parte dei beach club e dei ristoranti lungo il lungomare offre WiFi gratuito ai propri clienti. I dati mobili croati funzionano bene nella zona, e la maggior parte dei visitatori UE può utilizzare il proprio piano dati grazie al roaming UE."
+category: practical
+order: 27

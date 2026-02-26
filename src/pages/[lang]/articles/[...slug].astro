@@ -1,0 +1,60 @@
+---
+import Guide from '@/layouts/Guide.astro';
+import { LANGUAGES, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
+import { getTranslations } from '@/lib/translations';
+import { canonicalUrl } from '@/lib/utils';
+import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/seo';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allArticles = await getCollection('articles');
+  return allArticles.map((article) => ({
+    params: { lang: article.data.lang, slug: article.data.slugs[article.data.lang] },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const lang = article.data.lang as Language;
+const translations = getTranslations(lang);
+
+const title = getLocalized(article.data.title, lang);
+const description = getLocalized(article.data.description, lang);
+const hreflangLinks = getHreflangLinks('articles', article.data.slugs);
+
+const structuredData = [
+  buildArticleSchema({
+    title,
+    description,
+    url: `https://znjan.com/${lang}/articles/${article.data.slugs[lang]}/`,
+    publishedAt: article.data.publishedAt.toISOString(),
+    updatedAt: article.data.updatedAt.toISOString(),
+    author: article.data.author || 'Znjan.com Team',
+  }),
+  buildBreadcrumbSchema([
+    { name: translations['nav.home'], url: `https://znjan.com/${lang}/` },
+    { name: translations['articles.title'] || 'Articles', url: `https://znjan.com${getLocalizedUrl(lang, 'articles')}` },
+    { name: title, url: `https://znjan.com/${lang}/articles/${article.data.slugs[lang]}/` },
+  ]),
+];
+
+const { Content } = await article.render();
+---
+
+<Guide
+  title={title}
+  description={description}
+  lang={lang}
+  translations={translations}
+  canonicalUrl={canonicalUrl(`/${lang}/articles/${article.data.slugs[lang]}/`)}
+  hreflangLinks={hreflangLinks}
+  structuredData={structuredData}
+  publishedAt={article.data.publishedAt}
+  updatedAt={article.data.updatedAt}
+  author={article.data.author || 'Znjan.com Team'}
+  readingTime={article.data.readingTime}
+  cluster={article.data.cluster}
+>
+  <Content />
+</Guide>

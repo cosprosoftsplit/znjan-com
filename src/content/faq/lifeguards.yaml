@@ -1,0 +1,13 @@
+id: lifeguards
+question:
+  en: "Are there lifeguards at Žnjan Beach?"
+  hr: "Ima li spasilaca na plaži Žnjan?"
+  de: "Gibt es Rettungsschwimmer am Strand Žnjan?"
+  it: "Ci sono bagnini alla spiaggia di Žnjan?"
+answer:
+  en: "Yes, lifeguards are on duty during the summer season (typically June to September) at the main beach and kids' zone. Outside of these months, there are no lifeguards. Always supervise children near the water and be aware that some areas get deep quickly."
+  hr: "Da, spasilaci su na dužnosti tijekom ljetne sezone (obično od lipnja do rujna) na glavnoj plaži i u dječjoj zoni. Izvan tih mjeseci nema spasilaca. Uvijek nadgledajte djecu blizu vode i budite svjesni da neka područja brzo postaju duboka."
+  de: "Ja, Rettungsschwimmer sind während der Sommersaison (in der Regel Juni bis September) am Hauptstrand und in der Kinderzone im Einsatz. Außerhalb dieser Monate gibt es keine Rettungsschwimmer. Beaufsichtigen Sie Kinder immer in Wassernähe und beachten Sie, dass einige Bereiche schnell tief werden."
+  it: "Sì, i bagnini sono in servizio durante la stagione estiva (generalmente da giugno a settembre) sulla spiaggia principale e nella zona bambini. Al di fuori di questi mesi non ci sono bagnini. Supervisionate sempre i bambini vicino all'acqua e siate consapevoli che alcune zone diventano profonde rapidamente."
+category: safety
+order: 28

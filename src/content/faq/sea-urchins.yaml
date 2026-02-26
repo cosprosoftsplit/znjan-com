@@ -1,0 +1,13 @@
+id: sea-urchins
+question:
+  en: "Are there sea urchins at Žnjan Beach?"
+  hr: "Ima li morskih ježeva na plaži Žnjan?"
+  de: "Gibt es Seeigel am Strand Žnjan?"
+  it: "Ci sono ricci di mare alla spiaggia di Žnjan?"
+answer:
+  en: "Sea urchins can be found on rocky areas of Žnjan, especially near the eastern end. They are common along the Croatian Adriatic coast. Wearing water shoes is the best prevention — this protects your feet both on the pebble beach and in the water near rocks."
+  hr: "Morski ježevi mogu se naći na stjenovitim dijelovima Žnjana, osobito prema istočnom kraju. Česti su duž hrvatske jadranske obale. Nošenje cipela za vodu je najbolja prevencija — štite vam stopala i na šljunčanoj plaži i u vodi blizu stijena."
+  de: "Seeigel kommen in felsigen Bereichen von Žnjan vor, besonders am östlichen Ende. Sie sind an der kroatischen Adriaküste häufig. Wasserschuhe sind der beste Schutz — sie schützen Ihre Füße sowohl auf dem Kieselstrand als auch im Wasser in Felsnähe."
+  it: "I ricci di mare si trovano nelle zone rocciose di Žnjan, soprattutto verso l'estremità orientale. Sono comuni lungo la costa adriatica croata. Indossare scarpette da scoglio è la migliore prevenzione — proteggono i piedi sia sulla spiaggia di ciottoli che in acqua vicino alle rocce."
+category: safety
+order: 21

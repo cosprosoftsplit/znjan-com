@@ -1,0 +1,13 @@
+id: water-warm
+question:
+  en: "Is the water warm at Žnjan Beach?"
+  hr: "Je li more toplo na plaži Žnjan?"
+  de: "Ist das Wasser am Strand Žnjan warm?"
+  it: "L'acqua è calda alla spiaggia di Žnjan?"
+answer:
+  en: "The Adriatic water temperature at Žnjan ranges from about 18°C in May to 25–27°C in August. June through September is the main swimming season with comfortable temperatures of 21–26°C. September is particularly pleasant — warm sea from the summer heat with fewer crowds than July and August."
+  hr: "Temperatura mora na Žnjanu kreće se od oko 18°C u svibnju do 25–27°C u kolovozu. Od lipnja do rujna je glavna sezona kupanja s ugodnim temperaturama od 21–26°C. Rujan je posebno ugodan — toplo more od ljetnih vrućina s manje gužve nego u srpnju i kolovozu."
+  de: "Die Wassertemperatur der Adria am Žnjan reicht von etwa 18°C im Mai bis 25–27°C im August. Juni bis September ist die Hauptbadesaison mit angenehmen Temperaturen von 21–26°C. Der September ist besonders angenehm — warmes Meer von der Sommerhitze bei weniger Andrang als im Juli und August."
+  it: "La temperatura dell'Adriatico a Žnjan varia da circa 18°C a maggio a 25–27°C ad agosto. Da giugno a settembre è la stagione balneare principale con temperature confortevoli di 21–26°C. Settembre è particolarmente piacevole — mare caldo dall'estate con meno folla rispetto a luglio e agosto."
+category: general
+order: 29

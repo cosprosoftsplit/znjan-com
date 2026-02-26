@@ -1,0 +1,13 @@
+id: water-depth
+question:
+  en: "How deep is the water at Žnjan Beach?"
+  hr: "Koliko je duboko more na plaži Žnjan?"
+  de: "Wie tief ist das Wasser am Strand Žnjan?"
+  it: "Quanto è profonda l'acqua alla spiaggia di Žnjan?"
+answer:
+  en: "The water depth varies by section. The main beach has a gradual entry that gets waist-deep within a few metres. The dedicated kids' zone has very shallow, gentle water. However, in some areas the sea gets deep relatively quickly — non-swimmers should stay close to shore. The eastern rocky section is deeper near the rocks."
+  hr: "Dubina vode varira po dijelovima plaže. Glavna plaža ima postupni ulaz koji doseže dubinu do struka unutar nekoliko metara. Posebna dječja zona ima vrlo plitku i mirnu vodu. Međutim, na nekim dijelovima more brzo postaje duboko — neplivači bi trebali ostati blizu obale. Istočni stjenoviti dio je dublji uz stijene."
+  de: "Die Wassertiefe variiert je nach Abschnitt. Der Hauptstrand hat einen sanften Einstieg, der innerhalb weniger Meter hüfttief wird. Die Kinderzone hat sehr flaches, ruhiges Wasser. In einigen Bereichen wird das Meer jedoch relativ schnell tief — Nichtschwimmer sollten in Ufernähe bleiben. Der felsige östliche Abschnitt ist in Felsnähe tiefer."
+  it: "La profondità dell'acqua varia a seconda della zona. La spiaggia principale ha un ingresso graduale che raggiunge la profondità della vita in pochi metri. La zona dedicata ai bambini ha acqua molto bassa e calma. Tuttavia, in alcune aree il mare diventa profondo abbastanza rapidamente — chi non sa nuotare dovrebbe restare vicino alla riva. La sezione rocciosa orientale è più profonda vicino alle rocce."
+category: safety
+order: 22

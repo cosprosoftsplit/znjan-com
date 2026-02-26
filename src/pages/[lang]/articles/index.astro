@@ -23,23 +23,23 @@ const articles = allArticles.sort((a, b) => b.data.publishedAt.getTime() - a.dat
 ---
 
 <Page
-  title={lang === 'hr' ? 'Članci o plaži Žnjan' : lang === 'de' ? 'Artikel über den Strand Žnjan' : lang === 'it' ? 'Articoli sulla spiaggia di Žnjan' : 'Articles About Znjan Beach'}
-  description={lang === 'hr' ? 'Najnoviji članci, savjeti i informacije o plaži Žnjan u Splitu.' : lang === 'de' ? 'Neueste Artikel, Tipps und Informationen über den Strand Žnjan in Split.' : lang === 'it' ? 'Ultimi articoli, consigli e informazioni sulla spiaggia di Žnjan a Spalato.' : 'Latest articles, tips, and information about Znjan Beach in Split.'}
+  title={translations['articles.title']}
+  description={translations['articles.subtitle']}
   lang={lang}
   translations={translations}
   canonicalUrl={canonicalUrl(getLocalizedUrl(lang, 'articles'))}
   hreflangLinks={hreflangLinks}
 >
   <Hero
-    title={lang === 'hr' ? 'Članci' : lang === 'de' ? 'Artikel' : lang === 'it' ? 'Articoli' : 'Articles'}
-    subtitle={lang === 'hr' ? 'Najnoviji članci i informacije o plaži Žnjan' : lang === 'de' ? 'Neueste Artikel und Informationen über den Strand Žnjan' : lang === 'it' ? 'Ultimi articoli e informazioni sulla spiaggia di Žnjan' : 'Latest articles and information about Znjan Beach'}
+    title={translations['articles.title']}
+    subtitle={translations['articles.subtitle']}
   />
 
   <section class="container-page py-16">
     {articles.length > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {articles.map((article) => (
-          <Card href={getLocalizedUrl(lang, 'articles', article.data.slug[lang])}>
+          <Card href={getLocalizedUrl(lang, 'articles', article.data.slugs[lang])}>
             <div class="p-6">
               {article.data.cluster && (
                 <Badge variant="ocean">{article.data.cluster}</Badge>
@@ -50,8 +50,11 @@ const articles = allArticles.sort((a, b) => b.data.publishedAt.getTime() - a.dat
               <p class="mt-2 text-sm text-warm-500 line-clamp-3">
                 {article.data.description[lang]}
               </p>
-              <div class="mt-4 text-xs text-warm-400">
+              <div class="mt-4 flex items-center gap-3 text-xs text-warm-400">
                 <span>{formatDate(article.data.publishedAt, lang)}</span>
+                {article.data.readingTime && (
+                  <span>{article.data.readingTime} {translations['guides.minuteRead']}</span>
+                )}
               </div>
             </div>
           </Card>

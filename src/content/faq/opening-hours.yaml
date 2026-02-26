@@ -1,0 +1,13 @@
+id: opening-hours
+question:
+  en: "What are the opening hours of Žnjan Beach?"
+  hr: "Koje je radno vrijeme plaže Žnjan?"
+  de: "Was sind die Öffnungszeiten des Strandes Žnjan?"
+  it: "Quali sono gli orari di apertura della spiaggia di Žnjan?"
+answer:
+  en: "Žnjan Beach is a public beach and is open 24 hours a day, year-round. There is no entrance fee. However, beach clubs, restaurants, and lifeguard services operate seasonally — typically from June to September, with some venues opening in May and closing in October. The promenade is accessible at all times."
+  hr: "Plaža Žnjan je javna plaža i otvorena je 24 sata dnevno, cijele godine. Nema ulaznice. Međutim, beach klubovi, restorani i spasilačka služba rade sezonski — obično od lipnja do rujna, a neki lokali otvaraju u svibnju i zatvaraju u listopadu. Šetnica je dostupna u svako doba."
+  de: "Der Strand Žnjan ist ein öffentlicher Strand und rund um die Uhr das ganze Jahr geöffnet. Es gibt keinen Eintrittspreis. Strandclubs, Restaurants und Rettungsschwimmer arbeiten saisonbedingt — in der Regel von Juni bis September, einige Lokale öffnen im Mai und schließen im Oktober. Die Promenade ist jederzeit zugänglich."
+  it: "La spiaggia di Žnjan è una spiaggia pubblica aperta 24 ore su 24, tutto l'anno. Non c'è biglietto d'ingresso. Tuttavia, beach club, ristoranti e servizio bagnini operano stagionalmente — generalmente da giugno a settembre, con alcuni locali che aprono a maggio e chiudono a ottobre. Il lungomare è accessibile in qualsiasi momento."
+category: logistics
+order: 26

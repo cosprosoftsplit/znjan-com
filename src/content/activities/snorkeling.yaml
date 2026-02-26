@@ -1,0 +1,28 @@
+id: snorkeling
+slug:
+  en: snorkeling
+  hr: ronjenje-s-maskom
+  de: schnorcheln
+  it: snorkeling
+title:
+  en: "Snorkeling"
+  hr: "Ronjenje s maskom"
+  de: "Schnorcheln"
+  it: "Snorkeling"
+description:
+  en: "Discover the underwater world along Znjan Beach. The rocky sections near the sports zone and the edges of the beach offer great snorkeling with clear visibility. Spot sea urchins, small fish, and colorful marine life in the shallow Adriatic waters."
+  hr: "Otkrijte podvodni svijet uz plažu Žnjan. Kameniti dijelovi blizu sportske zone i rubovi plaže nude odlično ronjenje s maskom uz dobru vidljivost. Uočite morske ježeve, male ribe i šareni morski život u plitkim vodama Jadrana."
+  de: "Entdecken Sie die Unterwasserwelt entlang des Strandes Žnjan. Die felsigen Abschnitte in der Nähe der Sportzone und die Ränder des Strandes bieten großartiges Schnorcheln mit klarer Sicht. Entdecken Sie Seeigel, kleine Fische und buntes Meeresleben im flachen Adriawasser."
+  it: "Scopri il mondo sottomarino lungo la spiaggia di Žnjan. Le sezioni rocciose vicino alla zona sportiva e i bordi della spiaggia offrono un ottimo snorkeling con buona visibilità. Osserva ricci di mare, pesciolini e la colorata vita marina nelle acque poco profonde dell'Adriatico."
+shortDescription:
+  en: "Explore underwater life along the rocky shores"
+  hr: "Istražite podvodni život uz kamenitu obalu"
+  de: "Unterwasserleben an den felsigen Ufern erkunden"
+  it: "Esplora la vita sottomarina lungo le coste rocciose"
+category: water-sports
+beachAreas:
+  - sports-zone
+difficulty: easy
+season: summer
+featured: false
+order: 5

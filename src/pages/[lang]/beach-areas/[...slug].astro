@@ -1,0 +1,198 @@
+---
+import Page from '@/layouts/Page.astro';
+import Badge from '@/components/ui/Badge.astro';
+import Button from '@/components/ui/Button.astro';
+import { LANGUAGES, getLocalized, getLocalizedUrl, getHreflangLinks } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
+import { getTranslations } from '@/lib/translations';
+import { canonicalUrl } from '@/lib/utils';
+import { buildBreadcrumbSchema } from '@/lib/seo';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allAreas = await getCollection('beach-areas');
+  const paths = [];
+
+  for (const area of allAreas) {
+    for (const lang of LANGUAGES) {
+      paths.push({
+        params: { lang, slug: area.data.slug[lang] },
+        props: { area, lang },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { area, lang } = Astro.props as {
+  area: Awaited<ReturnType<typeof getCollection<'beach-areas'>>>[number];
+  lang: Language;
+};
+
+const translations = getTranslations(lang);
+const title = getLocalized(area.data.title, lang);
+const description = getLocalized(area.data.description, lang);
+
+const hreflangLinks = getHreflangLinks('beach-areas', area.data.slug);
+
+const structuredData = buildBreadcrumbSchema([
+  { name: translations['nav.home'], url: `https://znjan.com/${lang}/` },
+  { name: translations['nav.beachAreas'], url: `https://znjan.com/${lang}/beach-areas/` },
+  { name: title, url: `https://znjan.com/${lang}/beach-areas/${area.data.slug[lang]}/` },
+]);
+
+const facilityLabels: Record<string, Record<Language, string>> = {
+  sunbeds: { en: 'Sunbeds', hr: 'Ležaljke', de: 'Liegen', it: 'Lettini' },
+  showers: { en: 'Showers', hr: 'Tuševi', de: 'Duschen', it: 'Docce' },
+  'changing-rooms': { en: 'Changing Rooms', hr: 'Svlačionice', de: 'Umkleiden', it: 'Spogliatoi' },
+  lifeguard: { en: 'Lifeguard', hr: 'Spasilac', de: 'Rettungsschwimmer', it: 'Bagnino' },
+  parking: { en: 'Parking', hr: 'Parking', de: 'Parkplatz', it: 'Parcheggio' },
+  'wheelchair-access': { en: 'Wheelchair Access', hr: 'Pristup za kolica', de: 'Rollstuhlzugang', it: 'Accesso disabili' },
+  playground: { en: 'Playground', hr: 'Igralište', de: 'Spielplatz', it: 'Parco giochi' },
+  'water-slide': { en: 'Water Slide', hr: 'Tobogan', de: 'Wasserrutsche', it: 'Scivolo d\'acqua' },
+  'baby-pool': { en: 'Baby Pool', hr: 'Dječji bazen', de: 'Babybecken', it: 'Piscina per bambini' },
+  restaurants: { en: 'Restaurants', hr: 'Restorani', de: 'Restaurants', it: 'Ristoranti' },
+  cafes: { en: 'Cafés', hr: 'Kafići', de: 'Cafés', it: 'Caffè' },
+  'public-restrooms': { en: 'Restrooms', hr: 'Javni WC', de: 'Toiletten', it: 'Bagni pubblici' },
+  'volleyball-courts': { en: 'Volleyball Courts', hr: 'Tereni za odbojku', de: 'Volleyballplätze', it: 'Campi da pallavolo' },
+  'basketball-courts': { en: 'Basketball Courts', hr: 'Košarkaški tereni', de: 'Basketballplätze', it: 'Campi da basket' },
+  'cage-football': { en: 'Cage Football', hr: 'Kavez za nogomet', de: 'Käfig-Fußball', it: 'Calcetto in gabbia' },
+  'skate-park': { en: 'Skate Park', hr: 'Skate Park', de: 'Skatepark', it: 'Skate Park' },
+  'water-sports-rental': { en: 'Water Sports Rental', hr: 'Iznajmljivanje vodenih sportova', de: 'Wassersportverleih', it: 'Noleggio sport acquatici' },
+  'fitness-equipment': { en: 'Fitness Equipment', hr: 'Fitness oprema', de: 'Fitnessgeräte', it: 'Attrezzi fitness' },
+  'cycling-path': { en: 'Cycling Path', hr: 'Biciklistička staza', de: 'Radweg', it: 'Pista ciclabile' },
+  'beach-bars': { en: 'Beach Bars', hr: 'Beach barovi', de: 'Strandbars', it: 'Bar sulla spiaggia' },
+  shops: { en: 'Shops', hr: 'Trgovine', de: 'Geschäfte', it: 'Negozi' },
+  amphitheater: { en: 'Amphitheater', hr: 'Amfiteatar', de: 'Amphitheater', it: 'Anfiteatro' },
+  'event-space': { en: 'Event Space', hr: 'Prostor za events', de: 'Veranstaltungsort', it: 'Spazio eventi' },
+};
+
+const activityLabels: Record<string, Record<Language, string>> = {
+  swimming: { en: 'Swimming', hr: 'Plivanje', de: 'Schwimmen', it: 'Nuoto' },
+  paddleboarding: { en: 'Paddleboarding', hr: 'SUP', de: 'Paddleboarding', it: 'Paddleboarding' },
+  kayaking: { en: 'Kayaking', hr: 'Kajakaštvo', de: 'Kajakfahren', it: 'Kayak' },
+  snorkeling: { en: 'Snorkeling', hr: 'Ronjenje s maskom', de: 'Schnorcheln', it: 'Snorkeling' },
+  'beach-volleyball': { en: 'Beach Volleyball', hr: 'Odbojka na pijesku', de: 'Beachvolleyball', it: 'Beach Volley' },
+  basketball: { en: 'Basketball', hr: 'Košarka', de: 'Basketball', it: 'Basket' },
+  skateboarding: { en: 'Skateboarding', hr: 'Skateboarding', de: 'Skateboarding', it: 'Skateboard' },
+  cycling: { en: 'Cycling', hr: 'Bicikliranje', de: 'Radfahren', it: 'Ciclismo' },
+  concerts: { en: 'Concerts', hr: 'Koncerti', de: 'Konzerte', it: 'Concerti' },
+  festivals: { en: 'Festivals', hr: 'Festivali', de: 'Festivals', it: 'Festival' },
+  dining: { en: 'Dining', hr: 'Gastronomija', de: 'Gastronomie', it: 'Gastronomia' },
+  shopping: { en: 'Shopping', hr: 'Kupovina', de: 'Einkaufen', it: 'Shopping' },
+};
+---
+
+<Page
+  title={title}
+  description={description}
+  lang={lang}
+  translations={translations}
+  canonicalUrl={canonicalUrl(`/${lang}/beach-areas/${area.data.slug[lang]}/`)}
+  hreflangLinks={hreflangLinks}
+  structuredData={[structuredData]}
+>
+  <!-- Breadcrumb -->
+  <nav class="container-page pt-6" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2 text-sm text-warm-500">
+      <li>
+        <a href={`/${lang}/`} class="hover:text-ocean-600 transition-colors">
+          {translations['nav.home']}
+        </a>
+      </li>
+      <li class="flex items-center gap-2">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <a href={getLocalizedUrl(lang, 'beach-areas')} class="hover:text-ocean-600 transition-colors">
+          {translations['nav.beachAreas']}
+        </a>
+      </li>
+      <li class="flex items-center gap-2">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-warm-700 font-medium">{title}</span>
+      </li>
+    </ol>
+  </nav>
+
+  <!-- Area Header -->
+  <header class="container-page pt-8 pb-6">
+    <div class="max-w-4xl">
+      {area.data.featured && (
+        <Badge variant="coral" class="mb-4">{translations['places.featured']}</Badge>
+      )}
+      <h1 class="text-3xl md:text-4xl font-extrabold text-ocean-800 tracking-tight">
+        {title}
+      </h1>
+    </div>
+  </header>
+
+  <!-- Area Content -->
+  <div class="container-page pb-16">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-5xl">
+      <!-- Main Content -->
+      <div class="lg:col-span-2">
+        <div class="prose-beach">
+          <p class="text-warm-600 leading-relaxed text-lg">{description}</p>
+        </div>
+
+        {area.data.activities.length > 0 && (
+          <div class="mt-8">
+            <h2 class="text-lg font-semibold text-ocean-700 mb-3">
+              {translations['nav.activities']}
+            </h2>
+            <div class="flex flex-wrap gap-2">
+              {area.data.activities.map((activity: string) => (
+                <Badge variant="ocean">
+                  {activityLabels[activity]?.[lang] || activity.replace(/-/g, ' ')}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="space-y-6">
+        {area.data.facilities.length > 0 && (
+          <div class="bg-white rounded-xl shadow-sm border border-warm-200 p-6">
+            <h2 class="font-semibold text-ocean-700 mb-4">
+              {translations['beachAreas.facilities']}
+            </h2>
+            <ul class="space-y-2">
+              {area.data.facilities.map((facility: string) => (
+                <li class="flex items-center gap-2 text-sm text-warm-600">
+                  <svg class="w-4 h-4 text-ocean-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  {facilityLabels[facility]?.[lang] || facility.replace(/-/g, ' ')}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div class="bg-white rounded-xl shadow-sm border border-warm-200 p-6">
+          <h2 class="font-semibold text-ocean-700 mb-4">
+            {lang === 'hr' ? 'Lokacija' : lang === 'de' ? 'Standort' : lang === 'it' ? 'Posizione' : 'Location'}
+          </h2>
+          <dl class="space-y-2 text-sm">
+            <div>
+              <dt class="text-warm-400 font-medium">
+                {lang === 'hr' ? 'Koordinate' : lang === 'de' ? 'Koordinaten' : lang === 'it' ? 'Coordinate' : 'Coordinates'}
+              </dt>
+              <dd class="mt-0.5 text-warm-700">{area.data.coordinates.lat}°N, {area.data.coordinates.lng}°E</dd>
+            </div>
+          </dl>
+        </div>
+
+        <Button href={getLocalizedUrl(lang, 'beach-areas')} variant="outline" class="w-full">
+          {lang === 'hr' ? 'Svi dijelovi plaže' : lang === 'de' ? 'Alle Strandbereiche' : lang === 'it' ? 'Tutte le zone' : 'All Beach Areas'}
+        </Button>
+      </aside>
+    </div>
+  </div>
+</Page>

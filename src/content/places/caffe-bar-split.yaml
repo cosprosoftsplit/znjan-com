@@ -1,0 +1,42 @@
+id: casa-sol
+slug:
+  en: casa-sol
+  hr: casa-sol
+  de: casa-sol
+  it: casa-sol
+title:
+  en: "Casa Sol"
+  hr: "Casa Sol"
+  de: "Casa Sol"
+  it: "Casa Sol"
+description:
+  en: "Casa Sol is a Mediterranean restaurant and lounge at the new Znjan Beach complex, offering refined seaside dining along the promenade. With a focus on Mediterranean cuisine and a relaxed lounge atmosphere, it's an ideal spot for a leisurely lunch or sunset dinner with Adriatic views. One of the 11 new pavilion venues that opened as part of Znjan's €45M transformation."
+  hr: "Casa Sol je mediteranski restoran i lounge u novom kompleksu plaže Žnjan, koji nudi rafinirano objedovanje uz more na šetnici. S fokusom na mediteransku kuhinju i opuštenu lounge atmosferu, idealno je mjesto za opušten ručak ili večeru uz zalazak sunca s pogledom na Jadran. Jedan od 11 novih paviljonskih objekata otvorenih u sklopu transformacije Žnjana od 45 milijuna eura."
+  de: "Casa Sol ist ein mediterranes Restaurant und Lounge im neuen Strandkomplex Žnjan, das gehobenes Essen am Meer entlang der Promenade bietet. Mit Fokus auf mediterrane Küche und entspannte Lounge-Atmosphäre ist es der ideale Ort für ein gemütliches Mittagessen oder Abendessen bei Sonnenuntergang mit Adriablick. Einer der 11 neuen Pavillonobjekte im Rahmen der 45-Millionen-Euro-Transformation."
+  it: "Casa Sol è un ristorante mediterraneo e lounge nel nuovo complesso balneare di Žnjan, che offre una raffinata esperienza gastronomica in riva al mare lungo il lungomare. Con focus sulla cucina mediterranea e un'atmosfera lounge rilassata, è il luogo ideale per un pranzo tranquillo o una cena al tramonto con vista sull'Adriatico. Uno degli 11 nuovi padiglioni aperti nell'ambito della trasformazione da 45 milioni di euro."
+shortDescription:
+  en: "Mediterranean restaurant and lounge on the promenade"
+  hr: "Mediteranski restoran i lounge na šetnici"
+  de: "Mediterranes Restaurant und Lounge an der Promenade"
+  it: "Ristorante mediterraneo e lounge sul lungomare"
+category: restaurant
+beachArea: promenade
+coordinates:
+  lat: 43.5026
+  lng: 16.4874
+address: "Šetalište Pape Ivana Pavla II 6A, 21000 Split"
+phone: "+385 91 311 0000"
+email: "info@casasol.hr"
+website: "https://www.casasol.hr/"
+cuisine:
+  - mediterranean
+priceRange: "$$$"
+listingTier: free
+featured: true
+tags:
+  - restaurant
+  - mediterranean
+  - lounge
+  - seaside-dining
+  - sunset
+order: 4

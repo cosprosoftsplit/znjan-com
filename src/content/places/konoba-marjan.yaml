@@ -1,0 +1,43 @@
+id: taboo-beach-club
+slug:
+  en: taboo-beach-club
+  hr: taboo-beach-club
+  de: taboo-beach-club
+  it: taboo-beach-club
+title:
+  en: "Taboo Beach Club"
+  hr: "Taboo Beach Club"
+  de: "Taboo Beach Club"
+  it: "Taboo Beach Club"
+description:
+  en: "Taboo Beach Club is a luxury beach destination at Znjan, offering an elevated seaside experience with premium daybeds, cabanas, and VIP lounges. Known for its signature Utopia party featuring aerialists, live DJs, and saxophonists. The Mediterranean and Asian fusion menu is served in an open-air setting with panoramic Adriatic views. One of the flagship venues of the new Znjan complex."
+  hr: "Taboo Beach Club luksuzna je plažna destinacija na Žnjanu koja nudi uzvišeno iskustvo uz more s premium ležaljkama, kabanama i VIP lounge zonama. Poznat po svojoj prepoznatljivoj zabavi Utopia s akrobatima u zraku, DJ-evima uživo i saksofonistima. Mediteranski i azijski fusion jelovnik poslužuje se na otvorenom s panoramskim pogledom na Jadran. Jedan od vodećih objekata novog žnjanskog kompleksa."
+  de: "Der Taboo Beach Club ist ein luxuriöses Strandziel am Žnjan, das ein gehobenes Erlebnis am Meer mit Premium-Tagesbetten, Cabanas und VIP-Lounges bietet. Bekannt für seine Signature-Party Utopia mit Akrobaten, Live-DJs und Saxophonisten. Das mediterran-asiatische Fusionsmenü wird im Freien mit Panoramablick auf die Adria serviert. Einer der Flaggschiff-Orte des neuen Žnjan-Komplexes."
+  it: "Taboo Beach Club è una destinazione balneare di lusso a Žnjan, che offre un'esperienza elevata in riva al mare con lettini premium, cabane e lounge VIP. Conosciuto per la sua festa Utopia con acrobati aerei, DJ dal vivo e sassofonisti. Il menu fusion mediterraneo e asiatico è servito all'aperto con vista panoramica sull'Adriatico. Uno dei locali di punta del nuovo complesso di Žnjan."
+shortDescription:
+  en: "Luxury beach club with daybeds, DJs, and fusion dining"
+  hr: "Luksuzni beach club s ležaljkama, DJ-evima i fusion kuhinjom"
+  de: "Luxuriöser Beach Club mit Tagesbetten, DJs und Fusionsküche"
+  it: "Beach club di lusso con lettini, DJ e cucina fusion"
+category: beach-club
+beachArea: promenade
+coordinates:
+  lat: 43.5028
+  lng: 16.4870
+address: "Šetalište Pape Ivana Pavla II 4a, 21000 Split"
+phone: "+385 99 272 2111"
+email: "reservations@taboo-beach.com"
+website: "https://www.taboo-beach.com/"
+priceRange: "$$$$"
+listingTier: free
+featured: true
+tags:
+  - beach-club
+  - luxury
+  - cocktails
+  - dj
+  - lounge
+  - vip
+  - fusion-cuisine
+  - cabanas
+order: 2

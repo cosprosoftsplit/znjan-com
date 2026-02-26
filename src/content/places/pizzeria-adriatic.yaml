@@ -1,0 +1,47 @@
+id: mistral-beach-club
+slug:
+  en: mistral-beach-club
+  hr: mistral-beach-club
+  de: mistral-beach-club
+  it: mistral-beach-club
+title:
+  en: "Mistral Beach Club"
+  hr: "Mistral Beach Club"
+  de: "Mistral Beach Club"
+  it: "Mistral Beach Club"
+description:
+  en: "Mistral Beach Club combines modern beach lifestyle with authentic Dalmatian soul. Part of the Radisson Blu Resort & Spa complex on the Znjan coast, it features a full-service restaurant with Mediterranean and international cuisine, sushi specialties, and a cocktail bar. Relax on sun loungers and daybeds on the pebble beach or wooden deck, book a private cabana, or enjoy live DJ performances. Food service extends directly to your lounger or cabana."
+  hr: "Mistral Beach Club spaja moderan životni stil na plaži s autentičnom dalmatinskom dušom. Dio kompleksa Radisson Blu Resort & Spa na žnjanskoj obali, nudi restoran pune usluge s mediteranskom i internacionalnom kuhinjom, sushi specijalitetima i koktel barom. Opustite se na ležaljkama na šljunčanoj plaži ili drvenoj palubi, rezervirajte privatnu kabanu ili uživajte u nastupima DJ-eva uživo. Usluga hrane proteže se direktno do vaše ležaljke ili kabane."
+  de: "Der Mistral Beach Club verbindet modernen Strand-Lifestyle mit authentischer dalmatinischer Seele. Als Teil des Radisson Blu Resort & Spa Komplexes an der Žnjan-Küste bietet er ein Vollservice-Restaurant mit mediterraner und internationaler Küche, Sushi-Spezialitäten und eine Cocktailbar. Entspannen Sie auf Sonnenliegen und Tagesbetten am Kieselstrand oder der Holzterrasse, buchen Sie eine private Cabana oder genießen Sie Live-DJ-Auftritte."
+  it: "Mistral Beach Club unisce lo stile di vita moderno in spiaggia con l'autentica anima dalmata. Parte del complesso Radisson Blu Resort & Spa sulla costa di Žnjan, offre un ristorante con servizio completo con cucina mediterranea e internazionale, specialità sushi e cocktail bar. Rilassatevi sui lettini e daybed sulla spiaggia di ciottoli o sulla terrazza in legno, prenotate una cabana privata o godetevi le performance di DJ dal vivo."
+shortDescription:
+  en: "Upscale beach club with dining, sushi, and cabanas"
+  hr: "Ekskluzivni beach club s restoranom, sushijem i kabanama"
+  de: "Gehobener Beach Club mit Restaurant, Sushi und Cabanas"
+  it: "Beach club esclusivo con ristorante, sushi e cabane"
+category: beach-club
+beachArea: promenade
+coordinates:
+  lat: 43.5032
+  lng: 16.4865
+address: "Šetalište Pape Ivana Pavla II, 21000 Split"
+phone: "+385 99 168 1454"
+email: "events.mistral@radissonblu.com"
+website: "https://mistralbeachclub.com/"
+cuisine:
+  - mediterranean
+  - international
+  - sushi
+priceRange: "$$$$"
+listingTier: free
+featured: true
+tags:
+  - beach-club
+  - restaurant
+  - sushi
+  - cocktails
+  - dj
+  - cabanas
+  - radisson-blu
+  - fine-dining
+order: 3

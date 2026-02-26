@@ -1,0 +1,154 @@
+---
+import Place from '@/layouts/Place.astro';
+import Badge from '@/components/ui/Badge.astro';
+import Button from '@/components/ui/Button.astro';
+import { LANGUAGES, getLocalized, getHreflangLinks } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
+import { getTranslations } from '@/lib/translations';
+import { canonicalUrl } from '@/lib/utils';
+import { buildPlaceSchema, buildBreadcrumbSchema } from '@/lib/seo';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPlaces = await getCollection('places');
+  const paths = [];
+
+  for (const place of allPlaces) {
+    for (const lang of LANGUAGES) {
+      paths.push({
+        params: { lang, slug: place.data.slug[lang] },
+        props: { place, lang },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { place, lang } = Astro.props as {
+  place: Awaited<ReturnType<typeof getCollection<'places'>>>[number];
+  lang: Language;
+};
+
+const translations = getTranslations(lang);
+const title = getLocalized(place.data.title, lang);
+const description = getLocalized(place.data.description, lang);
+const shortDescription = place.data.shortDescription
+  ? getLocalized(place.data.shortDescription, lang)
+  : undefined;
+
+const hreflangLinks = getHreflangLinks('places', place.data.slug);
+
+const categoryToSchemaType: Record<string, 'Restaurant' | 'BarOrPub' | 'CafeOrCoffeeShop' | 'Store' | 'TouristAttraction'> = {
+  restaurant: 'Restaurant',
+  bar: 'BarOrPub',
+  'beach-club': 'TouristAttraction',
+  cafe: 'CafeOrCoffeeShop',
+  shop: 'Store',
+  hotel: 'TouristAttraction',
+  other: 'TouristAttraction',
+};
+
+const structuredData = [
+  buildPlaceSchema({
+    type: categoryToSchemaType[place.data.category] || 'TouristAttraction',
+    name: title,
+    description,
+    url: `https://znjan.com/${lang}/places/${place.data.slug[lang]}/`,
+    slug: place.data.slug.en,
+    coordinates: place.data.coordinates,
+    address: place.data.address,
+    phone: place.data.phone,
+    priceRange: place.data.priceRange,
+  }),
+  buildBreadcrumbSchema([
+    { name: translations['nav.home'], url: `https://znjan.com/${lang}/` },
+    { name: translations['nav.places'], url: `https://znjan.com/${lang}/places/` },
+    { name: title, url: `https://znjan.com/${lang}/places/${place.data.slug[lang]}/` },
+  ]),
+];
+
+const tagLabels: Record<string, Record<Language, string>> = {
+  'beach-club': { en: 'Beach Club', hr: 'Beach Club', de: 'Beach Club', it: 'Beach Club' },
+  'beach-bar': { en: 'Beach Bar', hr: 'Beach Bar', de: 'Strandbar', it: 'Bar sulla spiaggia' },
+  cocktails: { en: 'Cocktails', hr: 'Kokteli', de: 'Cocktails', it: 'Cocktail' },
+  'sea-view': { en: 'Sea View', hr: 'Pogled na more', de: 'Meerblick', it: 'Vista mare' },
+  lounge: { en: 'Lounge', hr: 'Lounge', de: 'Lounge', it: 'Lounge' },
+  sunset: { en: 'Sunset', hr: 'Zalazak sunca', de: 'Sonnenuntergang', it: 'Tramonto' },
+  luxury: { en: 'Luxury', hr: 'Luksuz', de: 'Luxus', it: 'Lusso' },
+  dj: { en: 'DJ', hr: 'DJ', de: 'DJ', it: 'DJ' },
+  vip: { en: 'VIP', hr: 'VIP', de: 'VIP', it: 'VIP' },
+  restaurant: { en: 'Restaurant', hr: 'Restoran', de: 'Restaurant', it: 'Ristorante' },
+  italian: { en: 'Italian', hr: 'Talijanski', de: 'Italienisch', it: 'Italiano' },
+  pizza: { en: 'Pizza', hr: 'Pizza', de: 'Pizza', it: 'Pizza' },
+  wine: { en: 'Wine', hr: 'Vino', de: 'Wein', it: 'Vino' },
+  mediterranean: { en: 'Mediterranean', hr: 'Mediteranski', de: 'Mediterran', it: 'Mediterraneo' },
+  sushi: { en: 'Sushi', hr: 'Sushi', de: 'Sushi', it: 'Sushi' },
+  'fine-dining': { en: 'Fine Dining', hr: 'Fine Dining', de: 'Gehobene Küche', it: 'Alta cucina' },
+  breakfast: { en: 'Breakfast', hr: 'Doručak', de: 'Frühstück', it: 'Colazione' },
+  'all-day-dining': { en: 'All-Day Dining', hr: 'Cijeli dan', de: 'Ganztägig', it: 'Tutto il giorno' },
+  cafe: { en: 'Café', hr: 'Kafić', de: 'Café', it: 'Caffè' },
+  music: { en: 'Music', hr: 'Glazba', de: 'Musik', it: 'Musica' },
+  promenade: { en: 'Promenade', hr: 'Šetnica', de: 'Promenade', it: 'Lungomare' },
+  waterfront: { en: 'Waterfront', hr: 'Na obali', de: 'Am Wasser', it: 'Lungomare' },
+  reservations: { en: 'Reservations', hr: 'Rezervacije', de: 'Reservierungen', it: 'Prenotazioni' },
+  cabanas: { en: 'Cabanas', hr: 'Kabane', de: 'Cabanas', it: 'Cabane' },
+};
+---
+
+<Place
+  title={title}
+  description={shortDescription || description}
+  lang={lang}
+  translations={translations}
+  canonicalUrl={canonicalUrl(`/${lang}/places/${place.data.slug[lang]}/`)}
+  hreflangLinks={hreflangLinks}
+  structuredData={structuredData}
+  category={place.data.category}
+  address={place.data.address}
+  phone={place.data.phone}
+  website={place.data.website}
+  priceRange={place.data.priceRange}
+  hours={place.data.hours}
+>
+  <div class="prose-beach">
+    <p class="text-warm-600 leading-relaxed">{description}</p>
+
+    {place.data.tags.length > 0 && (
+      <div class="mt-6">
+        <h2 class="text-lg font-semibold text-ocean-700 mb-3">
+          {lang === 'hr' ? 'Oznake' : lang === 'de' ? 'Tags' : lang === 'it' ? 'Tag' : 'Tags'}
+        </h2>
+        <div class="flex flex-wrap gap-2">
+          {place.data.tags.map((tag: string) => (
+            <Badge variant="ocean">
+              {tagLabels[tag]?.[lang] || tag.replace(/-/g, ' ')}
+            </Badge>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {place.data.cuisine && place.data.cuisine.length > 0 && (
+      <div class="mt-6">
+        <h2 class="text-lg font-semibold text-ocean-700 mb-3">
+          {lang === 'hr' ? 'Kuhinja' : lang === 'de' ? 'Küche' : lang === 'it' ? 'Cucina' : 'Cuisine'}
+        </h2>
+        <div class="flex flex-wrap gap-2">
+          {place.data.cuisine.map((c: string) => (
+            <Badge variant="sand">{c.charAt(0).toUpperCase() + c.slice(1)}</Badge>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {place.data.email && (
+      <div class="mt-6 p-4 bg-ocean-50 rounded-lg">
+        <p class="text-sm text-ocean-700">
+          <strong>{lang === 'hr' ? 'E-pošta' : lang === 'de' ? 'E-Mail' : lang === 'it' ? 'E-mail' : 'Email'}:</strong>{' '}
+          <a href={`mailto:${place.data.email}`} class="text-ocean-600 hover:underline">{place.data.email}</a>
+        </p>
+      </div>
+    )}
+  </div>
+</Place>

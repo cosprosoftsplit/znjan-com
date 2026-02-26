@@ -1,0 +1,23 @@
+id: privacy
+slug:
+  en: privacy
+  hr: privatnost
+  de: datenschutz
+  it: privacy
+title:
+  en: "Privacy Policy"
+  hr: "Politika privatnosti"
+  de: "Datenschutzrichtlinie"
+  it: "Informativa sulla privacy"
+description:
+  en: "Znjan.com privacy policy — how we handle your data."
+  hr: "Politika privatnosti Znjan.com — kako postupamo s vašim podacima."
+  de: "Datenschutzrichtlinie von Znjan.com — wie wir mit Ihren Daten umgehen."
+  it: "Informativa sulla privacy di Znjan.com — come gestiamo i tuoi dati."
+content:
+  en: "Znjan.com respects your privacy. This policy explains how we handle information when you visit our website.\n\n**Analytics:** We use Cloudflare Web Analytics, which does not use cookies and does not collect personally identifiable information. We only track aggregate page views and performance metrics.\n\n**No Cookies:** We do not use cookies for tracking. Our website works without any cookie consent banners.\n\n**Contact Forms:** If you use our contact form, we process your name, email, and message solely to respond to your inquiry. This data is processed by Cloudflare Workers and is not shared with third parties.\n\n**Affiliate Links:** Some links on our site are affiliate links (marked with rel='sponsored'). When you click these links, the affiliate partner may track your visit using their own cookies. We do not receive any personal data from these partners.\n\n**Third-Party Services:** Our maps use OpenStreetMap tiles, which may log your IP address per their privacy policy. We do not use Google Maps, Facebook tracking, or any other major tracking services.\n\n**Your Rights:** Under GDPR, you have the right to access, correct, or delete any personal data we hold. Contact us at privacy@znjan.com.\n\n**Contact:** For privacy-related inquiries, email privacy@znjan.com."
+  hr: "Znjan.com poštuje vašu privatnost. Ova politika objašnjava kako postupamo s informacijama kada posjećujete našu web stranicu.\n\n**Analitika:** Koristimo Cloudflare Web Analytics, koji ne koristi kolačiće i ne prikuplja osobne podatke. Pratimo samo agregirane preglede stranica i metrike performansi.\n\n**Bez kolačića:** Ne koristimo kolačiće za praćenje. Naša web stranica radi bez ikakvih bannera za pristanak na kolačiće.\n\n**Kontakt obrasci:** Ako koristite naš kontakt obrazac, obrađujemo vaše ime, email i poruku isključivo radi odgovora na vaš upit. Ovi podaci se obrađuju putem Cloudflare Workers i ne dijele se s trećim stranama.\n\n**Affiliate linkovi:** Neki linkovi na našoj stranici su affiliate linkovi (označeni s rel='sponsored'). Kada kliknete na ove linkove, affiliate partner može pratiti vaš posjet koristeći vlastite kolačiće.\n\n**Vaša prava:** Prema GDPR-u, imate pravo na pristup, ispravak ili brisanje osobnih podataka. Kontaktirajte nas na privacy@znjan.com."
+  de: "Znjan.com respektiert Ihre Privatsphäre. Diese Richtlinie erklärt, wie wir mit Informationen umgehen, wenn Sie unsere Website besuchen.\n\n**Analytik:** Wir verwenden Cloudflare Web Analytics, das keine Cookies verwendet und keine personenbezogenen Daten erfasst.\n\n**Keine Cookies:** Wir verwenden keine Cookies zur Verfolgung. Unsere Website funktioniert ohne Cookie-Einwilligungsbanner.\n\n**Kontaktformulare:** Wenn Sie unser Kontaktformular verwenden, verarbeiten wir Ihren Namen, Ihre E-Mail-Adresse und Ihre Nachricht ausschließlich zur Beantwortung Ihrer Anfrage.\n\n**Ihre Rechte:** Gemäß DSGVO haben Sie das Recht auf Zugang, Berichtigung oder Löschung Ihrer personenbezogenen Daten. Kontaktieren Sie uns unter privacy@znjan.com."
+  it: "Znjan.com rispetta la tua privacy. Questa policy spiega come gestiamo le informazioni quando visiti il nostro sito web.\n\n**Analytics:** Utilizziamo Cloudflare Web Analytics, che non utilizza cookie e non raccoglie informazioni personali identificabili.\n\n**Nessun Cookie:** Non utilizziamo cookie per il tracciamento. Il nostro sito web funziona senza banner di consenso ai cookie.\n\n**Moduli di Contatto:** Se utilizzi il nostro modulo di contatto, elaboriamo il tuo nome, email e messaggio esclusivamente per rispondere alla tua richiesta.\n\n**I Tuoi Diritti:** Ai sensi del GDPR, hai il diritto di accedere, correggere o cancellare i dati personali in nostro possesso. Contattaci a privacy@znjan.com."
+template: default
+order: 3

@@ -1,0 +1,35 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const { href, variant = 'primary', size = 'md', class: className } = Astro.props;
+const Tag = href ? 'a' : 'button';
+
+const variants = {
+  primary: 'bg-ocean-500 text-white hover:bg-ocean-600 shadow-sm',
+  secondary: 'bg-sand-200 text-ocean-800 hover:bg-sand-300',
+  outline: 'border-2 border-ocean-500 text-ocean-600 hover:bg-ocean-50',
+};
+
+const sizes = {
+  sm: 'px-3 py-1.5 text-sm',
+  md: 'px-5 py-2.5 text-sm',
+  lg: 'px-6 py-3 text-base',
+};
+---
+
+<Tag
+  href={href}
+  class:list={[
+    'inline-flex items-center justify-center rounded-lg font-semibold transition-colors',
+    variants[variant],
+    sizes[size],
+    className,
+  ]}
+>
+  <slot />
+</Tag>

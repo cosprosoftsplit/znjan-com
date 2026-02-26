@@ -1,0 +1,34 @@
+id: beach-volleyball
+slug:
+  en: beach-volleyball
+  hr: odbojka-na-pijesku
+  de: beachvolleyball
+  it: beach-volley
+title:
+  en: "Beach Volleyball"
+  hr: "Odbojka na pijesku"
+  de: "Beachvolleyball"
+  it: "Beach volley"
+description:
+  en: "Play beach volleyball on the dedicated courts in Znjan's sports zone. Join pickup games or rent a court for your group — a classic beach activity with a beautiful Adriatic backdrop."
+  hr: "Igrajte odbojku na pijesku na terenima u sportskoj zoni Žnjana. Pridružite se igrama ili iznajmite teren za svoju grupu — klasična aktivnost na plaži s prekrasnom jadranskom pozadinom."
+  de: "Spielen Sie Beachvolleyball auf den Plätzen in der Sportzone von Žnjan. Nehmen Sie an Spielen teil oder mieten Sie einen Platz für Ihre Gruppe — eine klassische Strandaktivität vor der schönen Adriakulisse."
+  it: "Gioca a beach volley sui campi dedicati nella zona sportiva di Žnjan. Unisciti alle partite o affitta un campo per il tuo gruppo — un'attività classica in spiaggia con un bellissimo sfondo adriatico."
+shortDescription:
+  en: "Courts available in the sports zone"
+  hr: "Tereni dostupni u sportskoj zoni"
+  de: "Plätze in der Sportzone verfügbar"
+  it: "Campi disponibili nella zona sportiva"
+category: beach-sports
+beachAreas:
+  - sports-zone
+difficulty: moderate
+duration:
+  en: "1-2 hours"
+  hr: "1-2 sata"
+  de: "1-2 Stunden"
+  it: "1-2 ore"
+priceRange: "Free / €10 court rental"
+season: summer
+featured: true
+order: 2

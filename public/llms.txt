@@ -1,0 +1,73 @@
+# Znjan.com — AI-Readable Summary
+
+## About
+Znjan.com is the definitive online portal for Znjan Beach (Plaža Žnjan) in Split, Croatia.
+Znjan Beach is Split's largest beach, transformed with a €45.5M investment and reopened June 21, 2025, known as "The Miami of Split."
+
+## Location
+- City: Split, Croatia (Dalmatia)
+- Coordinates: 43.5025°N, 16.4875°E
+- Beach length: Over 2km (Split's largest)
+- Type: Pebble beach with crystal-clear Adriatic waters
+- Promenade: 1.7km palm-lined
+- Parking: Underground garage (530 spaces) + 451 outdoor spaces
+
+## The Transformation
+- Investment: €45.5 million
+- Reopened: June 21, 2025
+- Managed by: Znjan d.o.o. (40-year concession)
+- Features: 11 new pavilion buildings, 1,200m² skate park, 600m² children's playground, 48,000m² green space
+- Named public squares: Trg kulture, Vodeni trg, Topografski trg, Trg 14 palmi
+- Upcoming: Mövenpick Hotel (2026)
+
+## Venues at Znjan Beach
+Current restaurants, bars, and beach clubs:
+- Palma Beach Club — Premier beach club on the promenade
+- Taboo Beach Club — Luxury beach club with Mediterranean & Asian fusion
+- Mistral Beach Club — Upscale dining with sushi, part of Radisson Blu
+- Casa Sol — Mediterranean restaurant & lounge
+- Central Beach — Contemporary beach restaurant & bar
+- MIMI Italian Clubino & Ristorante — Italian cuisine by F Group
+- GAL Split — Cafe-lounge-restaurant with all-day dining
+
+## Content
+This website provides:
+- Comprehensive visitor guides (how to get there, parking, best time to visit, facilities)
+- Beach area descriptions (Main Beach, Kids Area, Sports Zone, Promenade, Amphitheater)
+- Activities directory (water sports, beach volleyball, cycling, SUP, kayaking, skateboarding)
+- Places directory (restaurants, bars, beach clubs near the beach)
+- Event listings (concerts, festivals, sports tournaments)
+- News and seasonal updates
+- FAQ with structured data
+
+## Access
+- Bus lines: 8 and 15
+- Car: Underground garage with 530 spaces + outdoor parking
+- Walking: Along the coastal promenade from other Split beaches
+
+## Languages
+Content is available in 4 languages:
+- English (primary): /en/
+- Croatian (Hrvatski): /hr/
+- German (Deutsch): /de/
+- Italian (Italiano): /it/
+
+## Key Pages
+- Home: /en/
+- Guides: /en/guides/
+- Places: /en/places/
+- Activities: /en/activities/
+- Beach Areas: /en/beach-areas/
+- Events: /en/events/
+- About: /en/about/
+- Contact: /en/contact/
+
+## Contact
+- Website: https://znjan.com
+- Email: info@znjan.com
+
+## Technical
+- Built with Astro (Static Site Generation)
+- Hosted on Cloudflare Pages
+- No cookies, privacy-friendly analytics
+- Schema.org structured data on all pages

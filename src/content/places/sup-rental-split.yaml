@@ -1,0 +1,40 @@
+id: central-beach
+slug:
+  en: central-beach
+  hr: central-beach
+  de: central-beach
+  it: central-beach
+title:
+  en: "Central Beach"
+  hr: "Central Beach"
+  de: "Central Beach"
+  it: "Central Beach"
+description:
+  en: "Central Beach is a contemporary beach restaurant and bar at Znjan, offering dining and drinks right on the waterfront. With table reservations available and a full menu of Mediterranean dishes, it's a versatile venue for anything from a casual morning coffee to a seafood dinner. One of the 11 new pavilion venues in the transformed Znjan complex."
+  hr: "Central Beach suvremeni je plažni restoran i bar na Žnjanu koji nudi objedovanje i piće direktno na obali. S mogućnošću rezervacije stolova i punim jelovnikom mediteranskih jela, to je svestrano mjesto za sve, od jutarnje kave do večere s plodovima mora. Jedan od 11 novih paviljonskih objekata u transformiranom žnjanskom kompleksu."
+  de: "Central Beach ist ein zeitgenössisches Strandrestaurant und Bar am Žnjan, das Essen und Getränke direkt am Wasser bietet. Mit Tischreservierungen und einem vollständigen Menü mediterraner Gerichte ist es ein vielseitiger Ort — vom morgendlichen Kaffee bis zum Meeresfrüchte-Dinner. Einer der 11 neuen Pavillonobjekte im transformierten Žnjan-Komplex."
+  it: "Central Beach è un ristorante e bar sulla spiaggia contemporaneo a Žnjan, che offre cena e drink direttamente sul lungomare. Con prenotazioni disponibili e un menu completo di piatti mediterranei, è un locale versatile per qualsiasi cosa, dal caffè mattutino alla cena di pesce. Uno degli 11 nuovi padiglioni nel complesso trasformato di Žnjan."
+shortDescription:
+  en: "Contemporary beach restaurant and bar on the waterfront"
+  hr: "Suvremeni plažni restoran i bar na obali"
+  de: "Zeitgenössisches Strandrestaurant und Bar am Wasser"
+  it: "Ristorante e bar sulla spiaggia contemporaneo"
+category: restaurant
+beachArea: main-beach
+coordinates:
+  lat: 43.5025
+  lng: 16.4878
+phone: "+385 99 166 1526"
+website: "https://centralbeachsplit.com/"
+cuisine:
+  - mediterranean
+priceRange: "$$$"
+listingTier: free
+featured: false
+tags:
+  - restaurant
+  - bar
+  - waterfront
+  - reservations
+  - mediterranean
+order: 5

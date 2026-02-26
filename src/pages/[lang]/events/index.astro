@@ -1,0 +1,109 @@
+---
+import Page from '@/layouts/Page.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Card from '@/components/ui/Card.astro';
+import Badge from '@/components/ui/Badge.astro';
+import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
+import { getTranslations } from '@/lib/translations';
+import { generateHubHreflangLinks } from '@/lib/seo';
+import { canonicalUrl, formatDate } from '@/lib/utils';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return LANGUAGES.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Language;
+const translations = getTranslations(lang);
+const hreflangLinks = generateHubHreflangLinks('events');
+
+const allEvents = await getCollection('events', ({ data }) => data.lang === lang);
+const now = new Date();
+const upcoming = allEvents
+  .filter((e) => e.data.startDate >= now)
+  .sort((a, b) => a.data.startDate.getTime() - b.data.startDate.getTime());
+const past = allEvents
+  .filter((e) => e.data.startDate < now)
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+---
+
+<Page
+  title={translations['events.title']}
+  description={translations['events.subtitle']}
+  lang={lang}
+  translations={translations}
+  canonicalUrl={canonicalUrl(getLocalizedUrl(lang, 'events'))}
+  hreflangLinks={hreflangLinks}
+>
+  <Hero
+    title={translations['events.title']}
+    subtitle={translations['events.subtitle']}
+  />
+
+  <section class="container-page py-16">
+    {(upcoming.length > 0 || past.length > 0) ? (
+      <div class="space-y-12">
+        {upcoming.length > 0 && (
+          <div>
+            <h2 class="text-2xl font-bold text-ocean-800 mb-6">{translations['events.upcoming']}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {upcoming.map((event) => (
+                <Card href={getLocalizedUrl(lang, 'events', event.data.slug[lang])}>
+                  <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                      <Badge variant="ocean">{event.data.category}</Badge>
+                      {event.data.isFree && <Badge variant="default">Free</Badge>}
+                    </div>
+                    <h3 class="text-lg font-semibold text-ocean-700">
+                      {getLocalized(event.data.title, lang)}
+                    </h3>
+                    <p class="mt-2 text-sm text-warm-500 line-clamp-2">
+                      {getLocalized(event.data.description, lang)}
+                    </p>
+                    <div class="mt-4 text-xs text-warm-400">
+                      <span>{formatDate(event.data.startDate, lang)}</span>
+                      {event.data.location && <span> • {event.data.location}</span>}
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {past.length > 0 && (
+          <div>
+            <h2 class="text-2xl font-bold text-warm-500 mb-6">{translations['events.past']}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 opacity-75">
+              {past.map((event) => (
+                <Card href={getLocalizedUrl(lang, 'events', event.data.slug[lang])}>
+                  <div class="p-6">
+                    <h3 class="text-lg font-semibold text-warm-600">
+                      {getLocalized(event.data.title, lang)}
+                    </h3>
+                    <p class="mt-2 text-sm text-warm-400 line-clamp-2">
+                      {getLocalized(event.data.description, lang)}
+                    </p>
+                    <div class="mt-4 text-xs text-warm-400">
+                      <span>{formatDate(event.data.startDate, lang)}</span>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    ) : (
+      <div class="text-center py-16">
+        <p class="text-lg text-warm-500">
+          {lang === 'hr' ? 'Događanja dolaze uskoro! Vraćajte se po najnovije informacije.' :
+           lang === 'de' ? 'Veranstaltungen kommen bald! Schauen Sie wieder vorbei.' :
+           lang === 'it' ? 'Gli eventi arriveranno presto! Torna per le ultime informazioni.' :
+           'Events coming soon! Check back for the latest updates.'}
+        </p>
+      </div>
+    )}
+  </section>
+</Page>

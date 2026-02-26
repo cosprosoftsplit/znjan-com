@@ -1,0 +1,35 @@
+id: kids-area
+slug:
+  en: kids-area
+  hr: djecja-zona
+  de: kinderbereich
+  it: area-bambini
+title:
+  en: "Kids Area"
+  hr: "Dječja zona"
+  de: "Kinderbereich"
+  it: "Area bambini"
+description:
+  en: "A family-friendly zone with shallow waters, playground equipment, and a gentle entry perfect for young children and families."
+  hr: "Zona prilagođena obiteljima s plitkim morem, dječjim igralištem i blagim ulazom u more savršenim za malu djecu i obitelji."
+  de: "Ein familienfreundlicher Bereich mit flachem Wasser, Spielplatzgeräten und einem sanften Einstieg, perfekt für kleine Kinder und Familien."
+  it: "Una zona adatta alle famiglie con acque poco profonde, attrezzature da gioco e un ingresso dolce perfetto per bambini piccoli e famiglie."
+shortDescription:
+  en: "Shallow waters and playground for families"
+  hr: "Plitko more i igralište za obitelji"
+  de: "Flaches Wasser und Spielplatz für Familien"
+  it: "Acque poco profonde e parco giochi per famiglie"
+coordinates:
+  lat: 43.5030
+  lng: 16.4860
+facilities:
+  - playground
+  - shallow-water
+  - showers
+  - changing-rooms
+  - lifeguard
+activities:
+  - swimming
+  - playground
+order: 2
+featured: false

@@ -1,0 +1,151 @@
+---
+import Page from '@/layouts/Page.astro';
+import Hero from '@/components/sections/Hero.astro';
+import SectionHeader from '@/components/sections/SectionHeader.astro';
+import Card from '@/components/ui/Card.astro';
+import Button from '@/components/ui/Button.astro';
+import { LANGUAGES, getLocalizedUrl, getHomeUrl } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
+import { getTranslations } from '@/lib/translations';
+import { generateHomeHreflangLinks, buildBeachSchema, buildOrganizationSchema } from '@/lib/seo';
+import { canonicalUrl } from '@/lib/utils';
+
+export function getStaticPaths() {
+  return LANGUAGES.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Language;
+const translations = getTranslations(lang);
+const hreflangLinks = generateHomeHreflangLinks();
+
+const quickLinks = [
+  {
+    title: translations['nav.guides'],
+    description: translations['home.readGuides'],
+    href: getLocalizedUrl(lang, 'guides'),
+    icon: '📖',
+  },
+  {
+    title: translations['nav.places'],
+    description: translations['home.explorePlaces'],
+    href: getLocalizedUrl(lang, 'places'),
+    icon: '🍽️',
+  },
+  {
+    title: translations['nav.activities'],
+    description: translations['home.discoverActivities'],
+    href: getLocalizedUrl(lang, 'activities'),
+    icon: '🏄',
+  },
+  {
+    title: translations['nav.beachAreas'],
+    description: translations['home.beachAreasSubtitle'],
+    href: getLocalizedUrl(lang, 'beach-areas'),
+    icon: '🏖️',
+  },
+  {
+    title: translations['nav.events'],
+    description: translations['events.subtitle'],
+    href: getLocalizedUrl(lang, 'events'),
+    icon: '🎉',
+  },
+];
+---
+
+<Page
+  title={translations['seo.homeTitle']}
+  description={translations['seo.homeDescription']}
+  lang={lang}
+  translations={translations}
+  canonicalUrl={canonicalUrl(`/${lang}/`)}
+  hreflangLinks={hreflangLinks}
+  structuredData={[buildBeachSchema(), buildOrganizationSchema()]}
+>
+  <!-- Hero -->
+  <Hero
+    title={translations['home.heroTitle']}
+    subtitle={translations['home.heroSubtitle']}
+    ctaText={translations['home.readGuides']}
+    ctaHref={getLocalizedUrl(lang, 'guides')}
+    secondaryCtaText={translations['home.explorePlaces']}
+    secondaryCtaHref={getLocalizedUrl(lang, 'places')}
+  />
+
+  <!-- Quick Links Grid -->
+  <section class="container-page py-16">
+    <SectionHeader
+      title={translations['home.beachAreasTitle']}
+      subtitle={translations['home.beachAreasSubtitle']}
+    />
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {quickLinks.map((link) => (
+        <Card href={link.href}>
+          <div class="p-6">
+            <div class="text-3xl mb-3">{link.icon}</div>
+            <h3 class="text-lg font-semibold text-ocean-700">{link.title}</h3>
+            <p class="mt-2 text-sm text-warm-500">{link.description}</p>
+          </div>
+        </Card>
+      ))}
+    </div>
+  </section>
+
+  <!-- About Znjan section -->
+  <section class="bg-ocean-50 py-16">
+    <div class="container-page">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-ocean-800 tracking-tight">
+          {lang === 'hr' ? 'Plaža Žnjan — Miami Splita' :
+           lang === 'de' ? 'Strand Žnjan — Das Miami von Split' :
+           lang === 'it' ? 'Spiaggia di Žnjan — La Miami di Spalato' :
+           'Znjan Beach — The Miami of Split'}
+        </h2>
+        <p class="mt-6 text-lg text-warm-600 leading-relaxed">
+          {lang === 'hr'
+            ? 'Plaža Žnjan je najveća plaža u Splitu, nedavno obnovljena investicijom od 45 milijuna eura. S novom šetnicom, sportskim zonama, restoranima i amfiteatrom, Žnjan je postao jedan od najatraktivnijih jadranskih destinacija.'
+            : lang === 'de'
+              ? 'Der Strand Žnjan ist der größte Strand von Split und wurde kürzlich mit einer Investition von 45 Millionen Euro umgestaltet. Mit einer neuen Promenade, Sportzonen, Restaurants und einem Amphitheater ist Žnjan zu einem der attraktivsten adriatischen Reiseziele geworden.'
+              : lang === 'it'
+                ? 'La spiaggia di Žnjan è la più grande di Spalato, recentemente rinnovata con un investimento di 45 milioni di euro. Con una nuova passeggiata, zone sportive, ristoranti e un anfiteatro, Žnjan è diventata una delle destinazioni adriatiche più attraenti.'
+                : "Znjan Beach is Split's largest beach, recently transformed with a €45M investment. With a new promenade, sports zones, restaurants, and an amphitheater, Znjan has become one of the most attractive Adriatic destinations."}
+        </p>
+        <div class="mt-8">
+          <Button href={getLocalizedUrl(lang, 'guides')} variant="primary" size="lg">
+            {translations['home.readGuides']}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="container-page py-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <div class="text-3xl md:text-4xl font-bold text-ocean-600">€45M</div>
+        <div class="mt-1 text-sm text-warm-500">
+          {lang === 'hr' ? 'Investicija' : lang === 'de' ? 'Investition' : lang === 'it' ? 'Investimento' : 'Investment'}
+        </div>
+      </div>
+      <div>
+        <div class="text-3xl md:text-4xl font-bold text-ocean-600">2km+</div>
+        <div class="mt-1 text-sm text-warm-500">
+          {lang === 'hr' ? 'Dužina plaže' : lang === 'de' ? 'Strandlänge' : lang === 'it' ? 'Lunghezza spiaggia' : 'Beach Length'}
+        </div>
+      </div>
+      <div>
+        <div class="text-3xl md:text-4xl font-bold text-ocean-600">5</div>
+        <div class="mt-1 text-sm text-warm-500">
+          {lang === 'hr' ? 'Zona plaže' : lang === 'de' ? 'Strandzonen' : lang === 'it' ? 'Zone spiaggia' : 'Beach Zones'}
+        </div>
+      </div>
+      <div>
+        <div class="text-3xl md:text-4xl font-bold text-ocean-600">11</div>
+        <div class="mt-1 text-sm text-warm-500">
+          {lang === 'hr' ? 'Novih paviljonskih objekata' : lang === 'de' ? 'Neue Pavillon-Gebäude' : lang === 'it' ? 'Nuovi edifici padiglione' : 'New Pavilion Venues'}
+        </div>
+      </div>
+    </div>
+  </section>
+</Page>

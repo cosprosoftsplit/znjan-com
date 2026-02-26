@@ -1,0 +1,116 @@
+{
+  "site": {
+    "name": "Znjan.com",
+    "tagline": "Your Complete Guide to Znjan Beach, Split",
+    "description": "The definitive portal for Znjan Beach in Split, Croatia — guides, activities, restaurants, events, and everything you need for the Miami of Split."
+  },
+  "nav": {
+    "home": "Home",
+    "guides": "Guides",
+    "articles": "Articles",
+    "places": "Places",
+    "activities": "Activities",
+    "events": "Events",
+    "beachAreas": "Beach Areas",
+    "about": "About",
+    "contact": "Contact",
+    "search": "Search",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "home": {
+    "heroTitle": "Welcome to Znjan Beach",
+    "heroSubtitle": "Split's largest beach, reimagined — your complete guide to the Miami of Split",
+    "explorePlaces": "Explore Places",
+    "discoverActivities": "Discover Activities",
+    "readGuides": "Read Guides",
+    "featuredGuides": "Featured Guides",
+    "popularPlaces": "Popular Places",
+    "thingsToKnow": "Things to Know",
+    "beachAreasTitle": "Explore Beach Areas",
+    "beachAreasSubtitle": "Discover the different zones of Znjan Beach"
+  },
+  "places": {
+    "title": "Places Near Znjan Beach",
+    "subtitle": "Restaurants, bars, cafes, and shops near Znjan Beach",
+    "allPlaces": "All Places",
+    "restaurants": "Restaurants",
+    "bars": "Bars",
+    "cafes": "Cafes",
+    "shops": "Shops",
+    "featured": "Featured",
+    "viewDetails": "View Details",
+    "website": "Website",
+    "phone": "Phone",
+    "hours": "Opening Hours",
+    "directions": "Get Directions"
+  },
+  "activities": {
+    "title": "Things to Do at Znjan Beach",
+    "subtitle": "Water sports, beach activities, and adventures at Znjan",
+    "allActivities": "All Activities",
+    "viewDetails": "View Details",
+    "duration": "Duration",
+    "price": "Price",
+    "difficulty": "Difficulty",
+    "season": "Season"
+  },
+  "guides": {
+    "title": "Znjan Beach Guides",
+    "subtitle": "Comprehensive guides for visitors and locals",
+    "readMore": "Read More",
+    "tableOfContents": "Table of Contents",
+    "relatedGuides": "Related Guides",
+    "lastUpdated": "Last updated",
+    "minuteRead": "min read"
+  },
+  "beachAreas": {
+    "title": "Znjan Beach Areas",
+    "subtitle": "Discover the different zones and facilities of Znjan Beach",
+    "facilities": "Facilities",
+    "nearbyPlaces": "Nearby Places",
+    "activities": "Activities"
+  },
+  "events": {
+    "title": "Events at Znjan Beach",
+    "subtitle": "Concerts, tournaments, festivals, and more",
+    "upcoming": "Upcoming Events",
+    "past": "Past Events",
+    "date": "Date",
+    "location": "Location",
+    "viewDetails": "View Details"
+  },
+  "common": {
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "backTo": "Back to",
+    "share": "Share",
+    "loading": "Loading...",
+    "noResults": "No results found",
+    "language": "Language",
+    "copyright": "All rights reserved",
+    "privacyPolicy": "Privacy Policy",
+    "contactUs": "Contact Us"
+  },
+  "footer": {
+    "description": "The definitive guide to Znjan Beach in Split, Croatia. Discover restaurants, activities, events, and everything you need for the perfect beach day.",
+    "quickLinks": "Quick Links",
+    "explore": "Explore",
+    "legal": "Legal",
+    "followUs": "Follow Us"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have a question or suggestion? Get in touch!",
+    "name": "Your Name",
+    "email": "Email Address",
+    "message": "Message",
+    "send": "Send Message",
+    "success": "Message sent successfully!",
+    "error": "Something went wrong. Please try again."
+  },
+  "seo": {
+    "homeTitle": "Znjan Beach Split — Complete Guide, Activities & Places",
+    "homeDescription": "Your complete guide to Znjan Beach in Split, Croatia. Discover restaurants, bars, water sports, events, and everything about the €45M Miami of Split transformation."
+  }
+}

@@ -1,0 +1,71 @@
+---
+import Page from '@/layouts/Page.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Card from '@/components/ui/Card.astro';
+import Badge from '@/components/ui/Badge.astro';
+import { LANGUAGES, getLocalizedUrl } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
+import { getTranslations } from '@/lib/translations';
+import { generateHubHreflangLinks } from '@/lib/seo';
+import { canonicalUrl, formatDate } from '@/lib/utils';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return LANGUAGES.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Language;
+const translations = getTranslations(lang);
+const hreflangLinks = generateHubHreflangLinks('articles');
+
+const allArticles = await getCollection('articles', ({ data }) => data.lang === lang);
+const articles = allArticles.sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+---
+
+<Page
+  title={lang === 'hr' ? 'Članci o plaži Žnjan' : lang === 'de' ? 'Artikel über den Strand Žnjan' : lang === 'it' ? 'Articoli sulla spiaggia di Žnjan' : 'Articles About Znjan Beach'}
+  description={lang === 'hr' ? 'Najnoviji članci, savjeti i informacije o plaži Žnjan u Splitu.' : lang === 'de' ? 'Neueste Artikel, Tipps und Informationen über den Strand Žnjan in Split.' : lang === 'it' ? 'Ultimi articoli, consigli e informazioni sulla spiaggia di Žnjan a Spalato.' : 'Latest articles, tips, and information about Znjan Beach in Split.'}
+  lang={lang}
+  translations={translations}
+  canonicalUrl={canonicalUrl(getLocalizedUrl(lang, 'articles'))}
+  hreflangLinks={hreflangLinks}
+>
+  <Hero
+    title={lang === 'hr' ? 'Članci' : lang === 'de' ? 'Artikel' : lang === 'it' ? 'Articoli' : 'Articles'}
+    subtitle={lang === 'hr' ? 'Najnoviji članci i informacije o plaži Žnjan' : lang === 'de' ? 'Neueste Artikel und Informationen über den Strand Žnjan' : lang === 'it' ? 'Ultimi articoli e informazioni sulla spiaggia di Žnjan' : 'Latest articles and information about Znjan Beach'}
+  />
+
+  <section class="container-page py-16">
+    {articles.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {articles.map((article) => (
+          <Card href={getLocalizedUrl(lang, 'articles', article.data.slug[lang])}>
+            <div class="p-6">
+              {article.data.cluster && (
+                <Badge variant="ocean">{article.data.cluster}</Badge>
+              )}
+              <h2 class="mt-3 text-lg font-semibold text-ocean-700 line-clamp-2">
+                {article.data.title[lang]}
+              </h2>
+              <p class="mt-2 text-sm text-warm-500 line-clamp-3">
+                {article.data.description[lang]}
+              </p>
+              <div class="mt-4 text-xs text-warm-400">
+                <span>{formatDate(article.data.publishedAt, lang)}</span>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-16">
+        <p class="text-lg text-warm-500">
+          {lang === 'hr' ? 'Članci dolaze uskoro!' :
+           lang === 'de' ? 'Artikel kommen bald!' :
+           lang === 'it' ? 'Gli articoli arriveranno presto!' :
+           'Articles coming soon!'}
+        </p>
+      </div>
+    )}
+  </section>
+</Page>

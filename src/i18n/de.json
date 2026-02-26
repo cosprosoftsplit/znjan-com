@@ -1,0 +1,116 @@
+{
+  "site": {
+    "name": "Znjan.com",
+    "tagline": "Ihr kompletter Reiseführer für den Strand Žnjan, Split",
+    "description": "Das ultimative Portal für den Strand Žnjan in Split, Kroatien — Reiseführer, Aktivitäten, Restaurants, Veranstaltungen und alles über das Miami von Split."
+  },
+  "nav": {
+    "home": "Startseite",
+    "guides": "Reiseführer",
+    "articles": "Artikel",
+    "places": "Orte",
+    "activities": "Aktivitäten",
+    "events": "Veranstaltungen",
+    "beachAreas": "Strandbereiche",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "search": "Suchen",
+    "menu": "Menü",
+    "close": "Schließen"
+  },
+  "home": {
+    "heroTitle": "Willkommen am Strand Žnjan",
+    "heroSubtitle": "Splits größter Strand, neu gestaltet — Ihr kompletter Reiseführer für das Miami von Split",
+    "explorePlaces": "Orte entdecken",
+    "discoverActivities": "Aktivitäten entdecken",
+    "readGuides": "Reiseführer lesen",
+    "featuredGuides": "Empfohlene Reiseführer",
+    "popularPlaces": "Beliebte Orte",
+    "thingsToKnow": "Wissenswertes",
+    "beachAreasTitle": "Strandbereiche erkunden",
+    "beachAreasSubtitle": "Entdecken Sie die verschiedenen Zonen des Strandes Žnjan"
+  },
+  "places": {
+    "title": "Orte in der Nähe des Strandes Žnjan",
+    "subtitle": "Restaurants, Bars, Cafés und Geschäfte in der Nähe des Strandes Žnjan",
+    "allPlaces": "Alle Orte",
+    "restaurants": "Restaurants",
+    "bars": "Bars",
+    "cafes": "Cafés",
+    "shops": "Geschäfte",
+    "featured": "Empfohlen",
+    "viewDetails": "Details ansehen",
+    "website": "Webseite",
+    "phone": "Telefon",
+    "hours": "Öffnungszeiten",
+    "directions": "Wegbeschreibung"
+  },
+  "activities": {
+    "title": "Aktivitäten am Strand Žnjan",
+    "subtitle": "Wassersport, Strandaktivitäten und Abenteuer am Žnjan",
+    "allActivities": "Alle Aktivitäten",
+    "viewDetails": "Details ansehen",
+    "duration": "Dauer",
+    "price": "Preis",
+    "difficulty": "Schwierigkeit",
+    "season": "Saison"
+  },
+  "guides": {
+    "title": "Reiseführer für den Strand Žnjan",
+    "subtitle": "Umfassende Reiseführer für Besucher und Einheimische",
+    "readMore": "Weiterlesen",
+    "tableOfContents": "Inhaltsverzeichnis",
+    "relatedGuides": "Verwandte Reiseführer",
+    "lastUpdated": "Zuletzt aktualisiert",
+    "minuteRead": "Min. Lesezeit"
+  },
+  "beachAreas": {
+    "title": "Strandbereiche Žnjan",
+    "subtitle": "Entdecken Sie die verschiedenen Zonen und Einrichtungen des Strandes Žnjan",
+    "facilities": "Einrichtungen",
+    "nearbyPlaces": "Orte in der Nähe",
+    "activities": "Aktivitäten"
+  },
+  "events": {
+    "title": "Veranstaltungen am Strand Žnjan",
+    "subtitle": "Konzerte, Turniere, Festivals und mehr",
+    "upcoming": "Kommende Veranstaltungen",
+    "past": "Vergangene Veranstaltungen",
+    "date": "Datum",
+    "location": "Ort",
+    "viewDetails": "Details ansehen"
+  },
+  "common": {
+    "readMore": "Weiterlesen",
+    "viewAll": "Alle ansehen",
+    "backTo": "Zurück zu",
+    "share": "Teilen",
+    "loading": "Laden...",
+    "noResults": "Keine Ergebnisse gefunden",
+    "language": "Sprache",
+    "copyright": "Alle Rechte vorbehalten",
+    "privacyPolicy": "Datenschutzrichtlinie",
+    "contactUs": "Kontaktieren Sie uns"
+  },
+  "footer": {
+    "description": "Der ultimative Reiseführer für den Strand Žnjan in Split, Kroatien. Entdecken Sie Restaurants, Aktivitäten, Veranstaltungen und alles für den perfekten Strandtag.",
+    "quickLinks": "Schnelllinks",
+    "explore": "Erkunden",
+    "legal": "Rechtliches",
+    "followUs": "Folgen Sie uns"
+  },
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "subtitle": "Haben Sie eine Frage oder einen Vorschlag? Schreiben Sie uns!",
+    "name": "Ihr Name",
+    "email": "E-Mail-Adresse",
+    "message": "Nachricht",
+    "send": "Nachricht senden",
+    "success": "Nachricht erfolgreich gesendet!",
+    "error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+  },
+  "seo": {
+    "homeTitle": "Strand Žnjan Split — Kompletter Reiseführer, Aktivitäten & Orte",
+    "homeDescription": "Ihr kompletter Reiseführer für den Strand Žnjan in Split, Kroatien. Entdecken Sie Restaurants, Bars, Wassersport, Veranstaltungen und alles über die 45-Millionen-Euro-Transformation des Miami von Split."
+  }
+}

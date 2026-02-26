@@ -1,0 +1,35 @@
+id: amphitheater
+slug:
+  en: amphitheater-area
+  hr: amfiteatar
+  de: amphitheater-bereich
+  it: zona-anfiteatro
+title:
+  en: "Amphitheater Area"
+  hr: "Područje amfiteatra"
+  de: "Amphitheater-Bereich"
+  it: "Zona anfiteatro"
+description:
+  en: "The open-air amphitheater area at Znjan Beach — a venue for concerts, cultural events, and community gatherings with stunning sea views."
+  hr: "Područje amfiteatra na otvorenom na plaži Žnjan — prostor za koncerte, kulturna događanja i društvena okupljanja s prekrasnim pogledom na more."
+  de: "Der Freiluft-Amphitheater-Bereich am Strand Žnjan — ein Veranstaltungsort für Konzerte, kulturelle Events und Gemeindetreffen mit atemberaubendem Meerblick."
+  it: "L'area dell'anfiteatro all'aperto sulla spiaggia di Žnjan — un luogo per concerti, eventi culturali e incontri comunitari con una splendida vista sul mare."
+shortDescription:
+  en: "Open-air venue for concerts and events"
+  hr: "Prostor na otvorenom za koncerte i događanja"
+  de: "Freiluftveranstaltungsort für Konzerte und Events"
+  it: "Spazio all'aperto per concerti ed eventi"
+coordinates:
+  lat: 43.5018
+  lng: 16.4900
+facilities:
+  - amphitheater
+  - seating
+  - stage
+  - lighting
+activities:
+  - concerts
+  - events
+  - cultural-programs
+order: 5
+featured: false

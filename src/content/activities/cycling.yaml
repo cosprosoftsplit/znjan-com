@@ -1,0 +1,28 @@
+id: cycling
+slug:
+  en: cycling-running
+  hr: biciklizam-trcanje
+  de: radfahren-laufen
+  it: ciclismo-corsa
+title:
+  en: "Cycling & Running"
+  hr: "Biciklizam i trčanje"
+  de: "Radfahren & Laufen"
+  it: "Ciclismo e corsa"
+description:
+  en: "The Znjan promenade offers a dedicated cycling and running path stretching along the entire beach. Enjoy scenic coastal views while staying active — bike rentals available nearby."
+  hr: "Šetnica Žnjan nudi namjensku stazu za biciklizam i trčanje koja se proteže duž cijele plaže. Uživajte u slikovitim obalnim pogledima dok ostajete aktivni — najam bicikala dostupan u blizini."
+  de: "Die Žnjan-Promenade bietet einen Rad- und Laufweg, der sich entlang des gesamten Strandes erstreckt. Genießen Sie malerische Küstenblicke und bleiben Sie aktiv — Fahrradverleih in der Nähe verfügbar."
+  it: "Il lungomare di Žnjan offre un percorso dedicato per ciclismo e corsa che si estende lungo tutta la spiaggia. Goditi le viste panoramiche costiere rimanendo attivo — noleggio biciclette disponibile nelle vicinanze."
+shortDescription:
+  en: "Scenic promenade path for cycling and running"
+  hr: "Slikovita staza na šetnici za biciklizam i trčanje"
+  de: "Malerischer Promenadenweg zum Radfahren und Laufen"
+  it: "Sentiero panoramico per ciclismo e corsa"
+category: fitness
+beachAreas:
+  - promenade
+difficulty: easy
+season: year-round
+featured: false
+order: 3

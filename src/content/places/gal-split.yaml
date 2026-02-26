@@ -1,0 +1,50 @@
+id: gal-split
+slug:
+  en: gal-split
+  hr: gal-split
+  de: gal-split
+  it: gal-split
+title:
+  en: "GAL Split"
+  hr: "GAL Split"
+  de: "GAL Split"
+  it: "GAL Split"
+description:
+  en: "GAL Split is a modern cafe-lounge-restaurant on the Znjan promenade, blending design, sea breeze, and vibrant energy into a Mediterranean lifestyle experience. The menu spans breakfast (shakshuka, French toast), artisan pizzas, cold starters, and full lunch and dinner options. The Costa Coffee partnership and craft cocktails make it equally suited for a morning espresso or an evening out. Features natural stone interiors, warm wood, and a sculptural entrance leading to an outdoor terrace with Adriatic views."
+  hr: "GAL Split moderan je kafić-lounge-restoran na žnjanskoj šetnici, koji spaja dizajn, morski povjetarac i živahnu energiju u mediteransko iskustvo. Jelovnik obuhvaća doručak (shakshuka, francuski tost), artizanske pizze, hladna predjela i pune opcije za ručak i večeru. Partnerstvo s Costa Coffee i craft kokteli čine ga jednako prikladnim za jutarnji espresso ili večernji izlazak. Sadrži interijere od prirodnog kamena, toplog drveta i skulpturalnim ulazom koji vodi na vanjsku terasu s pogledom na Jadran."
+  de: "GAL Split ist ein modernes Café-Lounge-Restaurant an der Žnjan-Promenade, das Design, Meeresbrise und lebhafte Energie zu einem mediterranen Lifestyle-Erlebnis verbindet. Die Speisekarte umfasst Frühstück (Shakshuka, French Toast), handwerkliche Pizzen, kalte Vorspeisen und vollständige Mittag- und Abendoptionen. Die Costa Coffee-Partnerschaft und Craft-Cocktails machen es sowohl für den Morgenespresso als auch für den Abend geeignet. Naturstein-Interieur, warmes Holz und ein skulpturaler Eingang führen zur Außenterrasse mit Adriablick."
+  it: "GAL Split è un moderno caffè-lounge-ristorante sul lungomare di Žnjan, che fonde design, brezza marina ed energia vibrante in un'esperienza di stile di vita mediterraneo. Il menu spazia dalla colazione (shakshuka, french toast), pizze artigianali, antipasti freddi e opzioni complete per pranzo e cena. La partnership con Costa Coffee e i cocktail artigianali lo rendono adatto sia per un espresso mattutino che per una serata fuori. Interni in pietra naturale, legno caldo e un ingresso scultoreo conducono alla terrazza esterna con vista sull'Adriatico."
+shortDescription:
+  en: "Modern cafe-lounge-restaurant with all-day dining"
+  hr: "Moderan kafić-lounge-restoran za cijeli dan"
+  de: "Modernes Café-Lounge-Restaurant mit ganztägiger Küche"
+  it: "Moderno caffè-lounge-ristorante con cucina tutto il giorno"
+category: restaurant
+beachArea: promenade
+coordinates:
+  lat: 43.5020
+  lng: 16.4890
+address: "Šetalište Pape Ivana Pavla II, 21000 Split"
+phone: "+385 99 168 8793"
+email: "contact.galsplit@gmail.com"
+website: "https://gal-split.com/"
+hours:
+  bar: "Mon-Thu 8:00-23:00, Fri-Sun 8:00-24:00"
+  kitchen: "Breakfast 8:00-12:30, Lunch/Dinner 13:00-22:00"
+cuisine:
+  - mediterranean
+  - pizza
+  - breakfast
+priceRange: "$$"
+listingTier: free
+featured: false
+tags:
+  - restaurant
+  - cafe
+  - lounge
+  - breakfast
+  - pizza
+  - cocktails
+  - costa-coffee
+  - all-day-dining
+order: 7

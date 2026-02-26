@@ -1,0 +1,37 @@
+id: promenade
+slug:
+  en: promenade
+  hr: setnica
+  de: promenade
+  it: lungomare
+title:
+  en: "Promenade"
+  hr: "Šetnica"
+  de: "Promenade"
+  it: "Lungomare"
+description:
+  en: "The newly built Znjan promenade stretching along the entire beach — perfect for walking, jogging, cycling, and enjoying sunset views with restaurants and cafes along the way."
+  hr: "Novoizgrađena žnjanska šetnica koja se proteže duž cijele plaže — savršena za šetnju, trčanje, vožnju biciklom i uživanje u pogledu na zalazak sunca s restoranima i kafićima uz put."
+  de: "Die neu erbaute Žnjan-Promenade, die sich entlang des gesamten Strandes erstreckt — perfekt zum Spazierengehen, Joggen, Radfahren und Genießen von Sonnenuntergangsblicken mit Restaurants und Cafés auf dem Weg."
+  it: "Il lungomare di Žnjan di nuova costruzione che si estende lungo tutta la spiaggia — perfetto per passeggiare, fare jogging, andare in bicicletta e godersi i tramonti con ristoranti e caffè lungo il percorso."
+shortDescription:
+  en: "Scenic walkway with restaurants and sunset views"
+  hr: "Slikovita šetnica s restoranima i pogledom na zalazak sunca"
+  de: "Malerischer Gehweg mit Restaurants und Sonnenuntergangsblick"
+  it: "Passeggiata panoramica con ristoranti e tramonti"
+coordinates:
+  lat: 43.5022
+  lng: 16.4880
+facilities:
+  - restaurants
+  - cafes
+  - cycling-path
+  - benches
+  - lighting
+activities:
+  - walking
+  - jogging
+  - cycling
+  - dining
+order: 4
+featured: true

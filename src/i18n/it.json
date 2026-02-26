@@ -1,0 +1,116 @@
+{
+  "site": {
+    "name": "Znjan.com",
+    "tagline": "La tua guida completa alla spiaggia di Žnjan, Spalato",
+    "description": "Il portale definitivo per la spiaggia di Žnjan a Spalato, Croazia — guide, attività, ristoranti, eventi e tutto ciò che serve per la Miami di Spalato."
+  },
+  "nav": {
+    "home": "Home",
+    "guides": "Guide",
+    "articles": "Articoli",
+    "places": "Luoghi",
+    "activities": "Attività",
+    "events": "Eventi",
+    "beachAreas": "Zone spiaggia",
+    "about": "Chi siamo",
+    "contact": "Contatti",
+    "search": "Cerca",
+    "menu": "Menu",
+    "close": "Chiudi"
+  },
+  "home": {
+    "heroTitle": "Benvenuti alla spiaggia di Žnjan",
+    "heroSubtitle": "La spiaggia più grande di Spalato, reinventata — la tua guida completa alla Miami di Spalato",
+    "explorePlaces": "Esplora i luoghi",
+    "discoverActivities": "Scopri le attività",
+    "readGuides": "Leggi le guide",
+    "featuredGuides": "Guide in evidenza",
+    "popularPlaces": "Luoghi popolari",
+    "thingsToKnow": "Cose da sapere",
+    "beachAreasTitle": "Esplora le zone della spiaggia",
+    "beachAreasSubtitle": "Scopri le diverse zone della spiaggia di Žnjan"
+  },
+  "places": {
+    "title": "Luoghi vicino alla spiaggia di Žnjan",
+    "subtitle": "Ristoranti, bar, caffè e negozi vicino alla spiaggia di Žnjan",
+    "allPlaces": "Tutti i luoghi",
+    "restaurants": "Ristoranti",
+    "bars": "Bar",
+    "cafes": "Caffè",
+    "shops": "Negozi",
+    "featured": "In evidenza",
+    "viewDetails": "Vedi dettagli",
+    "website": "Sito web",
+    "phone": "Telefono",
+    "hours": "Orari di apertura",
+    "directions": "Indicazioni stradali"
+  },
+  "activities": {
+    "title": "Cosa fare alla spiaggia di Žnjan",
+    "subtitle": "Sport acquatici, attività in spiaggia e avventure a Žnjan",
+    "allActivities": "Tutte le attività",
+    "viewDetails": "Vedi dettagli",
+    "duration": "Durata",
+    "price": "Prezzo",
+    "difficulty": "Difficoltà",
+    "season": "Stagione"
+  },
+  "guides": {
+    "title": "Guide per la spiaggia di Žnjan",
+    "subtitle": "Guide complete per visitatori e residenti",
+    "readMore": "Leggi di più",
+    "tableOfContents": "Indice",
+    "relatedGuides": "Guide correlate",
+    "lastUpdated": "Ultimo aggiornamento",
+    "minuteRead": "min di lettura"
+  },
+  "beachAreas": {
+    "title": "Zone della spiaggia di Žnjan",
+    "subtitle": "Scopri le diverse zone e le strutture della spiaggia di Žnjan",
+    "facilities": "Strutture",
+    "nearbyPlaces": "Luoghi nelle vicinanze",
+    "activities": "Attività"
+  },
+  "events": {
+    "title": "Eventi alla spiaggia di Žnjan",
+    "subtitle": "Concerti, tornei, festival e altro",
+    "upcoming": "Prossimi eventi",
+    "past": "Eventi passati",
+    "date": "Data",
+    "location": "Luogo",
+    "viewDetails": "Vedi dettagli"
+  },
+  "common": {
+    "readMore": "Leggi di più",
+    "viewAll": "Vedi tutto",
+    "backTo": "Torna a",
+    "share": "Condividi",
+    "loading": "Caricamento...",
+    "noResults": "Nessun risultato trovato",
+    "language": "Lingua",
+    "copyright": "Tutti i diritti riservati",
+    "privacyPolicy": "Informativa sulla privacy",
+    "contactUs": "Contattaci"
+  },
+  "footer": {
+    "description": "La guida definitiva alla spiaggia di Žnjan a Spalato, Croazia. Scopri ristoranti, attività, eventi e tutto il necessario per la giornata perfetta in spiaggia.",
+    "quickLinks": "Link rapidi",
+    "explore": "Esplora",
+    "legal": "Note legali",
+    "followUs": "Seguici"
+  },
+  "contact": {
+    "title": "Contattaci",
+    "subtitle": "Hai una domanda o un suggerimento? Scrivici!",
+    "name": "Il tuo nome",
+    "email": "Indirizzo email",
+    "message": "Messaggio",
+    "send": "Invia messaggio",
+    "success": "Messaggio inviato con successo!",
+    "error": "Qualcosa è andato storto. Riprova."
+  },
+  "seo": {
+    "homeTitle": "Spiaggia di Žnjan Spalato — Guida completa, attività e luoghi",
+    "homeDescription": "La tua guida completa alla spiaggia di Žnjan a Spalato, Croazia. Scopri ristoranti, bar, sport acquatici, eventi e tutto sulla trasformazione da 45 milioni di euro della Miami di Spalato."
+  }
+}

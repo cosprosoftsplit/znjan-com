@@ -1,0 +1,29 @@
+id: swimming
+slug:
+  en: swimming
+  hr: plivanje
+  de: schwimmen
+  it: nuoto
+title:
+  en: "Swimming"
+  hr: "Plivanje"
+  de: "Schwimmen"
+  it: "Nuoto"
+description:
+  en: "Enjoy swimming in the crystal-clear Adriatic waters at Znjan Beach. The beach offers both shallow areas perfect for families and deeper sections for experienced swimmers. Lifeguards are on duty during summer months. Water temperature ranges from 20°C in June to 26°C in August."
+  hr: "Uživajte u plivanju u kristalno čistim vodama Jadrana na plaži Žnjan. Plaža nudi i plitka područja savršena za obitelji i dublje dijelove za iskusne plivače. Spasioci su na dužnosti tijekom ljetnih mjeseci. Temperatura mora kreće se od 20°C u lipnju do 26°C u kolovozu."
+  de: "Genießen Sie das Schwimmen im kristallklaren Adriawasser am Strand Žnjan. Der Strand bietet sowohl flache Bereiche für Familien als auch tiefere Abschnitte für erfahrene Schwimmer. Rettungsschwimmer sind in den Sommermonaten im Dienst. Die Wassertemperatur reicht von 20°C im Juni bis 26°C im August."
+  it: "Goditi il nuoto nelle acque cristalline dell'Adriatico alla spiaggia di Žnjan. La spiaggia offre sia aree poco profonde perfette per le famiglie che sezioni più profonde per nuotatori esperti. I bagnini sono in servizio durante i mesi estivi. La temperatura dell'acqua varia da 20°C a giugno a 26°C ad agosto."
+shortDescription:
+  en: "Crystal-clear Adriatic waters with lifeguard service"
+  hr: "Kristalno čiste vode Jadrana sa spasilačkom službom"
+  de: "Kristallklares Adriawasser mit Rettungsschwimmern"
+  it: "Acque cristalline dell'Adriatico con servizio bagnino"
+category: water-sports
+beachAreas:
+  - main-beach
+  - kids-area
+difficulty: easy
+season: summer
+featured: true
+order: 0

@@ -1,0 +1,51 @@
+---
+import Base from './Base.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import type { Language } from '@/lib/i18n';
+import type { HreflangLink } from '@/lib/seo';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Language;
+  translations: Record<string, string>;
+  canonicalUrl?: string;
+  ogImage?: string;
+  ogType?: string;
+  hreflangLinks?: HreflangLink[];
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+  noIndex?: boolean;
+}
+
+const {
+  title,
+  description,
+  lang,
+  translations,
+  canonicalUrl,
+  ogImage,
+  ogType,
+  hreflangLinks,
+  structuredData,
+  noIndex,
+} = Astro.props;
+---
+
+<Base
+  title={title}
+  description={description}
+  lang={lang}
+  canonicalUrl={canonicalUrl}
+  ogImage={ogImage}
+  ogType={ogType}
+  hreflangLinks={hreflangLinks}
+  structuredData={structuredData}
+  noIndex={noIndex}
+>
+  <Header lang={lang} translations={translations} />
+  <main>
+    <slot />
+  </main>
+  <Footer lang={lang} translations={translations} />
+</Base>

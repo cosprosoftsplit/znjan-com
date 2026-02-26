@@ -1,0 +1,110 @@
+---
+import Page from '@/layouts/Page.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Card from '@/components/ui/Card.astro';
+import Badge from '@/components/ui/Badge.astro';
+import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
+import { getTranslations } from '@/lib/translations';
+import { generateHubHreflangLinks } from '@/lib/seo';
+import { canonicalUrl } from '@/lib/utils';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return LANGUAGES.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Language;
+const translations = getTranslations(lang);
+const hreflangLinks = generateHubHreflangLinks('activities');
+
+const allActivities = await getCollection('activities');
+const activities = allActivities.sort((a, b) => {
+  if (a.data.featured && !b.data.featured) return -1;
+  if (!a.data.featured && b.data.featured) return 1;
+  return a.data.order - b.data.order;
+});
+
+const categoryIcons: Record<string, string> = {
+  'water-sports': '🏄',
+  'beach-sports': '🏐',
+  fitness: '🏃',
+  relaxation: '🧘',
+  tours: '🚢',
+  other: '🎯',
+};
+
+const categoryLabels: Record<string, Record<Language, string>> = {
+  'water-sports': { en: 'Water Sports', hr: 'Vodeni sportovi', de: 'Wassersport', it: 'Sport acquatici' },
+  'beach-sports': { en: 'Beach Sports', hr: 'Sportovi na plaži', de: 'Strandsport', it: 'Sport da spiaggia' },
+  fitness: { en: 'Fitness', hr: 'Fitness', de: 'Fitness', it: 'Fitness' },
+  relaxation: { en: 'Relaxation', hr: 'Opuštanje', de: 'Entspannung', it: 'Relax' },
+  tours: { en: 'Tours', hr: 'Ture', de: 'Touren', it: 'Tour' },
+  other: { en: 'Other', hr: 'Ostalo', de: 'Sonstiges', it: 'Altro' },
+};
+
+const difficultyLabels: Record<string, Record<Language, string>> = {
+  easy: { en: 'Easy', hr: 'Lako', de: 'Leicht', it: 'Facile' },
+  moderate: { en: 'Moderate', hr: 'Umjereno', de: 'Mittel', it: 'Moderato' },
+  hard: { en: 'Hard', hr: 'Teško', de: 'Schwer', it: 'Difficile' },
+};
+---
+
+<Page
+  title={translations['activities.title']}
+  description={translations['activities.subtitle']}
+  lang={lang}
+  translations={translations}
+  canonicalUrl={canonicalUrl(getLocalizedUrl(lang, 'activities'))}
+  hreflangLinks={hreflangLinks}
+>
+  <Hero
+    title={translations['activities.title']}
+    subtitle={translations['activities.subtitle']}
+  />
+
+  <section class="container-page py-16">
+    {activities.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {activities.map((activity) => (
+          <Card href={getLocalizedUrl(lang, 'activities', activity.data.slug[lang])}>
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-xl">{categoryIcons[activity.data.category] || '🎯'}</span>
+                <Badge variant="ocean">{categoryLabels[activity.data.category]?.[lang] || activity.data.category}</Badge>
+                {activity.data.difficulty && (
+                  <Badge variant="sand">{difficultyLabels[activity.data.difficulty]?.[lang]}</Badge>
+                )}
+              </div>
+              <h2 class="text-lg font-semibold text-ocean-700">
+                {getLocalized(activity.data.title, lang)}
+              </h2>
+              <p class="mt-2 text-sm text-warm-500 line-clamp-3">
+                {activity.data.shortDescription
+                  ? getLocalized(activity.data.shortDescription, lang)
+                  : getLocalized(activity.data.description, lang)}
+              </p>
+              <div class="mt-4 flex items-center gap-3 text-xs text-warm-400">
+                {activity.data.duration && (
+                  <span>{translations['activities.duration']}: {getLocalized(activity.data.duration, lang)}</span>
+                )}
+                {activity.data.priceRange && (
+                  <span>{activity.data.priceRange}</span>
+                )}
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-16">
+        <p class="text-lg text-warm-500">
+          {lang === 'hr' ? 'Aktivnosti dolaze uskoro!' :
+           lang === 'de' ? 'Aktivitäten kommen bald!' :
+           lang === 'it' ? 'Le attività arriveranno presto!' :
+           'Activities coming soon!'}
+        </p>
+      </div>
+    )}
+  </section>
+</Page>

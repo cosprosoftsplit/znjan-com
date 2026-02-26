@@ -1,0 +1,42 @@
+id: sports-zone
+slug:
+  en: sports-zone
+  hr: sportska-zona
+  de: sportzone
+  it: zona-sportiva
+title:
+  en: "Sports Zone"
+  hr: "Sportska zona"
+  de: "Sportzone"
+  it: "Zona sportiva"
+description:
+  en: "The active heart of the new Znjan Beach complex, built as part of the €45M transformation. Features beach volleyball courts, basketball courts, cage football pitches, a brand-new 1,200m² skate park, and water sports equipment rentals. The sports zone connects to the 1.7km cycling and running path along the promenade."
+  hr: "Aktivno srce novog kompleksa plaže Žnjan, izgrađeno u sklopu transformacije od 45 milijuna eura. Sadrži terene za odbojku na pijesku, košarkaške terene, kavez za nogomet, potpuno novi skate park od 1.200 m² i iznajmljivanje opreme za vodene sportove. Sportska zona povezuje se sa stazom za biciklizam i trčanje od 1,7 km uz šetnicu."
+  de: "Das aktive Herz des neuen Žnjan-Strandkomplexes, erbaut im Rahmen der 45-Millionen-Euro-Transformation. Bietet Beachvolleyballplätze, Basketballplätze, Käfig-Fußball, einen brandneuen 1.200 m² großen Skatepark und Wassersportausrüstungsverleih. Die Sportzone ist mit dem 1,7 km langen Rad- und Laufweg entlang der Promenade verbunden."
+  it: "Il cuore attivo del nuovo complesso balneare di Žnjan, costruito nell'ambito della trasformazione da 45 milioni di euro. Comprende campi da beach volley, campi da basket, gabbie per il calcetto, un nuovissimo skate park di 1.200 m² e noleggio attrezzature per sport acquatici. La zona sportiva è collegata al percorso ciclabile e di corsa di 1,7 km lungo il lungomare."
+shortDescription:
+  en: "Beach volleyball, skate park, courts, and water sports"
+  hr: "Odbojka na pijesku, skate park, tereni i vodeni sportovi"
+  de: "Beachvolleyball, Skatepark, Sportplätze und Wassersport"
+  it: "Beach volley, skate park, campi sportivi e sport acquatici"
+coordinates:
+  lat: 43.5020
+  lng: 16.4890
+facilities:
+  - volleyball-courts
+  - basketball-courts
+  - cage-football
+  - skate-park
+  - water-sports-rental
+  - fitness-equipment
+  - showers
+  - cycling-path
+activities:
+  - beach-volleyball
+  - basketball
+  - skateboarding
+  - paddleboarding
+  - kayaking
+  - cycling
+order: 3
+featured: true

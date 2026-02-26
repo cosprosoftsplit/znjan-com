@@ -1,0 +1,116 @@
+{
+  "site": {
+    "name": "Znjan.com",
+    "tagline": "Vaš kompletan vodič za plažu Žnjan, Split",
+    "description": "Definitivni portal za plažu Žnjan u Splitu, Hrvatska — vodiči, aktivnosti, restorani, događanja i sve što trebate za Miami Splita."
+  },
+  "nav": {
+    "home": "Početna",
+    "guides": "Vodiči",
+    "articles": "Članci",
+    "places": "Mjesta",
+    "activities": "Aktivnosti",
+    "events": "Događanja",
+    "beachAreas": "Dijelovi plaže",
+    "about": "O nama",
+    "contact": "Kontakt",
+    "search": "Pretraži",
+    "menu": "Izbornik",
+    "close": "Zatvori"
+  },
+  "home": {
+    "heroTitle": "Dobrodošli na plažu Žnjan",
+    "heroSubtitle": "Najveća splitska plaža, obnovljena — vaš kompletan vodič za Miami Splita",
+    "explorePlaces": "Istraži mjesta",
+    "discoverActivities": "Otkrij aktivnosti",
+    "readGuides": "Čitaj vodiče",
+    "featuredGuides": "Istaknuti vodiči",
+    "popularPlaces": "Popularna mjesta",
+    "thingsToKnow": "Što trebate znati",
+    "beachAreasTitle": "Istražite dijelove plaže",
+    "beachAreasSubtitle": "Otkrijte različite zone plaže Žnjan"
+  },
+  "places": {
+    "title": "Mjesta u blizini plaže Žnjan",
+    "subtitle": "Restorani, barovi, kafići i trgovine u blizini plaže Žnjan",
+    "allPlaces": "Sva mjesta",
+    "restaurants": "Restorani",
+    "bars": "Barovi",
+    "cafes": "Kafići",
+    "shops": "Trgovine",
+    "featured": "Istaknuto",
+    "viewDetails": "Pogledaj detalje",
+    "website": "Web stranica",
+    "phone": "Telefon",
+    "hours": "Radno vrijeme",
+    "directions": "Upute za dolazak"
+  },
+  "activities": {
+    "title": "Što raditi na plaži Žnjan",
+    "subtitle": "Vodeni sportovi, aktivnosti na plaži i avanture na Žnjanu",
+    "allActivities": "Sve aktivnosti",
+    "viewDetails": "Pogledaj detalje",
+    "duration": "Trajanje",
+    "price": "Cijena",
+    "difficulty": "Težina",
+    "season": "Sezona"
+  },
+  "guides": {
+    "title": "Vodiči za plažu Žnjan",
+    "subtitle": "Sveobuhvatni vodiči za posjetitelje i lokalno stanovništvo",
+    "readMore": "Čitaj više",
+    "tableOfContents": "Sadržaj",
+    "relatedGuides": "Povezani vodiči",
+    "lastUpdated": "Zadnje ažurirano",
+    "minuteRead": "min čitanja"
+  },
+  "beachAreas": {
+    "title": "Dijelovi plaže Žnjan",
+    "subtitle": "Otkrijte različite zone i sadržaje plaže Žnjan",
+    "facilities": "Sadržaji",
+    "nearbyPlaces": "Obližnja mjesta",
+    "activities": "Aktivnosti"
+  },
+  "events": {
+    "title": "Događanja na plaži Žnjan",
+    "subtitle": "Koncerti, turniri, festivali i više",
+    "upcoming": "Nadolazeća događanja",
+    "past": "Prošla događanja",
+    "date": "Datum",
+    "location": "Lokacija",
+    "viewDetails": "Pogledaj detalje"
+  },
+  "common": {
+    "readMore": "Čitaj više",
+    "viewAll": "Pogledaj sve",
+    "backTo": "Natrag na",
+    "share": "Podijeli",
+    "loading": "Učitavanje...",
+    "noResults": "Nema rezultata",
+    "language": "Jezik",
+    "copyright": "Sva prava pridržana",
+    "privacyPolicy": "Politika privatnosti",
+    "contactUs": "Kontaktirajte nas"
+  },
+  "footer": {
+    "description": "Definitivni vodič za plažu Žnjan u Splitu, Hrvatska. Otkrijte restorane, aktivnosti, događanja i sve što trebate za savršen dan na plaži.",
+    "quickLinks": "Brze poveznice",
+    "explore": "Istražite",
+    "legal": "Pravne informacije",
+    "followUs": "Pratite nas"
+  },
+  "contact": {
+    "title": "Kontaktirajte nas",
+    "subtitle": "Imate pitanje ili prijedlog? Javite nam se!",
+    "name": "Vaše ime",
+    "email": "Email adresa",
+    "message": "Poruka",
+    "send": "Pošalji poruku",
+    "success": "Poruka uspješno poslana!",
+    "error": "Nešto je pošlo po krivu. Pokušajte ponovo."
+  },
+  "seo": {
+    "homeTitle": "Plaža Žnjan Split — Kompletan vodič, aktivnosti i mjesta",
+    "homeDescription": "Vaš kompletan vodič za plažu Žnjan u Splitu, Hrvatska. Otkrijte restorane, barove, vodene sportove, događanja i sve o transformaciji Miami Splita od 45 milijuna eura."
+  }
+}

@@ -1,0 +1,95 @@
+---
+import Page from '@/layouts/Page.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Card from '@/components/ui/Card.astro';
+import Badge from '@/components/ui/Badge.astro';
+import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
+import { getTranslations } from '@/lib/translations';
+import { generateHubHreflangLinks } from '@/lib/seo';
+import { canonicalUrl } from '@/lib/utils';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return LANGUAGES.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Language;
+const translations = getTranslations(lang);
+const hreflangLinks = generateHubHreflangLinks('beach-areas');
+
+const allAreas = await getCollection('beach-areas');
+const areas = allAreas.sort((a, b) => a.data.order - b.data.order);
+
+const facilityLabels: Record<string, Record<Language, string>> = {
+  sunbeds: { en: 'Sunbeds', hr: 'Ležaljke', de: 'Liegen', it: 'Lettini' },
+  showers: { en: 'Showers', hr: 'Tuševi', de: 'Duschen', it: 'Docce' },
+  'changing-rooms': { en: 'Changing Rooms', hr: 'Svlačionice', de: 'Umkleiden', it: 'Spogliatoi' },
+  lifeguard: { en: 'Lifeguard', hr: 'Spasilac', de: 'Rettungsschwimmer', it: 'Bagnino' },
+  parking: { en: 'Parking', hr: 'Parking', de: 'Parkplatz', it: 'Parcheggio' },
+  'wheelchair-access': { en: 'Wheelchair Access', hr: 'Pristup za kolica', de: 'Rollstuhlzugang', it: 'Accesso disabili' },
+  playground: { en: 'Playground', hr: 'Igralište', de: 'Spielplatz', it: 'Parco giochi' },
+  restaurants: { en: 'Restaurants', hr: 'Restorani', de: 'Restaurants', it: 'Ristoranti' },
+  cafes: { en: 'Cafés', hr: 'Kafići', de: 'Cafés', it: 'Caffè' },
+  'volleyball-courts': { en: 'Volleyball', hr: 'Odbojka', de: 'Volleyball', it: 'Pallavolo' },
+  'water-sports-rental': { en: 'Water Sports', hr: 'Vodeni sportovi', de: 'Wassersport', it: 'Sport acquatici' },
+  amphitheater: { en: 'Amphitheater', hr: 'Amfiteatar', de: 'Amphitheater', it: 'Anfiteatro' },
+};
+---
+
+<Page
+  title={translations['beachAreas.title']}
+  description={translations['beachAreas.subtitle']}
+  lang={lang}
+  translations={translations}
+  canonicalUrl={canonicalUrl(getLocalizedUrl(lang, 'beach-areas'))}
+  hreflangLinks={hreflangLinks}
+>
+  <Hero
+    title={translations['beachAreas.title']}
+    subtitle={translations['beachAreas.subtitle']}
+  />
+
+  <section class="container-page py-16">
+    <div class="space-y-8">
+      {areas.map((area) => (
+        <Card href={getLocalizedUrl(lang, 'beach-areas', area.data.slug[lang])}>
+          <div class="p-6 md:p-8">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <h2 class="text-xl md:text-2xl font-bold text-ocean-700">
+                  {getLocalized(area.data.title, lang)}
+                </h2>
+                <p class="mt-3 text-warm-500 leading-relaxed">
+                  {area.data.shortDescription
+                    ? getLocalized(area.data.shortDescription, lang)
+                    : getLocalized(area.data.description, lang)}
+                </p>
+
+                {area.data.facilities.length > 0 && (
+                  <div class="mt-4">
+                    <h3 class="text-sm font-medium text-warm-400 mb-2">
+                      {translations['beachAreas.facilities']}
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                      {area.data.facilities.map((facility: string) => (
+                        <Badge variant="default">
+                          {facilityLabels[facility]?.[lang] || facility}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              {area.data.featured && (
+                <Badge variant="coral">
+                  {translations['places.featured']}
+                </Badge>
+              )}
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  </section>
+</Page>

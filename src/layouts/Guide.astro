@@ -1,0 +1,133 @@
+---
+import Base from './Base.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import type { Language } from '@/lib/i18n';
+import type { HreflangLink } from '@/lib/seo';
+import { getLocalizedUrl } from '@/lib/i18n';
+import { formatDate } from '@/lib/utils';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Language;
+  translations: Record<string, string>;
+  canonicalUrl?: string;
+  ogImage?: string;
+  hreflangLinks?: HreflangLink[];
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+  publishedAt?: Date;
+  updatedAt?: Date;
+  author?: string;
+  readingTime?: number;
+  cluster?: string;
+}
+
+const {
+  title,
+  description,
+  lang,
+  translations,
+  canonicalUrl,
+  ogImage,
+  hreflangLinks,
+  structuredData,
+  publishedAt,
+  updatedAt,
+  author = 'Znjan.com Team',
+  readingTime,
+  cluster,
+} = Astro.props;
+---
+
+<Base
+  title={title}
+  description={description}
+  lang={lang}
+  canonicalUrl={canonicalUrl}
+  ogImage={ogImage}
+  ogType="article"
+  hreflangLinks={hreflangLinks}
+  structuredData={structuredData}
+>
+  <Header lang={lang} translations={translations} />
+
+  <main>
+    <!-- Breadcrumb -->
+    <nav class="container-page pt-6" aria-label="Breadcrumb">
+      <ol class="flex items-center gap-2 text-sm text-warm-500">
+        <li>
+          <a href={`/${lang}/`} class="hover:text-ocean-600 transition-colors">
+            {translations['nav.home']}
+          </a>
+        </li>
+        <li class="flex items-center gap-2">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+          <a href={getLocalizedUrl(lang, 'guides')} class="hover:text-ocean-600 transition-colors">
+            {translations['nav.guides']}
+          </a>
+        </li>
+        <li class="flex items-center gap-2">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+          <span class="text-warm-700 font-medium">{title}</span>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Article Header -->
+    <header class="container-page pt-8 pb-6">
+      <div class="max-w-3xl">
+        {cluster && (
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-ocean-100 text-ocean-700 mb-4">
+            {cluster}
+          </span>
+        )}
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-ocean-800 tracking-tight leading-tight">
+          {title}
+        </h1>
+        <p class="mt-4 text-lg text-warm-500 leading-relaxed">
+          {description}
+        </p>
+        <div class="mt-6 flex items-center gap-4 text-sm text-warm-400">
+          {author && (
+            <span class="flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              {author}
+            </span>
+          )}
+          {updatedAt && (
+            <span class="flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {translations['guides.lastUpdated']} {formatDate(updatedAt, lang)}
+            </span>
+          )}
+          {readingTime && (
+            <span class="flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {readingTime} {translations['guides.minuteRead']}
+            </span>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <!-- Article Content -->
+    <article class="container-page pb-16">
+      <div class="max-w-3xl prose-beach">
+        <slot />
+      </div>
+    </article>
+  </main>
+
+  <Footer lang={lang} translations={translations} />
+</Base>

@@ -1,0 +1,13 @@
+id: parking-faq
+question:
+  en: "Is there parking at Znjan Beach?"
+  hr: "Ima li parking na plaži Žnjan?"
+  de: "Gibt es Parkplätze am Strand Žnjan?"
+  it: "C'è parcheggio alla spiaggia di Žnjan?"
+answer:
+  en: "Yes! The €45M transformation of Znjan included a brand-new underground garage with 530 parking spaces, plus 451 outdoor parking spaces — nearly 1,000 total. The entire beach complex is now a pedestrian-only zone, so you park and walk in. During peak summer months, arrive early as spaces fill quickly. Bus lines 8 and 15 are a convenient alternative from the city center."
+  hr: "Da! Transformacija Žnjana od 45 milijuna eura uključila je potpuno novu podzemnu garažu s 530 parkirnih mjesta, plus 451 vanjsko parkirno mjesto — ukupno gotovo 1.000 mjesta. Cijeli plažni kompleks sada je pješačka zona, pa parkirate i šećete unutra. Tijekom ljetnih mjeseci dolazite rano jer se mjesta brzo popune. Autobusne linije 8 i 15 su praktična alternativa iz centra grada."
+  de: "Ja! Die 45-Millionen-Euro-Transformation von Žnjan umfasst eine brandneue Tiefgarage mit 530 Parkplätzen, plus 451 Außenparkplätze — insgesamt fast 1.000 Plätze. Der gesamte Strandkomplex ist jetzt eine Fußgängerzone, Sie parken und gehen zu Fuß hinein. In den Sommermonaten kommen Sie früh, da die Plätze schnell belegt sind. Die Buslinien 8 und 15 sind eine bequeme Alternative aus der Innenstadt."
+  it: "Sì! La trasformazione da 45 milioni di euro di Žnjan include un nuovissimo garage sotterraneo con 530 posti auto, più 451 posti auto all'aperto — quasi 1.000 in totale. L'intero complesso balneare è ora una zona pedonale, quindi si parcheggia e si cammina. Durante i mesi estivi di punta, arriva presto perché i posti si riempiono velocemente. Le linee di autobus 8 e 15 sono un'alternativa comoda dal centro città."
+category: transport
+order: 2

@@ -1,0 +1,41 @@
+id: hotel-more
+slug:
+  en: hotel-more
+  hr: hotel-more
+  de: hotel-more
+  it: hotel-more
+title:
+  en: "Hotel More"
+  hr: "Hotel More"
+  de: "Hotel More"
+  it: "Hotel More"
+description:
+  en: "Hotel More is a charming family-run 3-star hotel directly on the Znjan promenade, just a minute's walk from the beach. With 11 air-conditioned rooms featuring sea views, flat-screen TVs, and minibars, it offers an affordable and personal beachside stay. Amenities include free WiFi, complimentary breakfast, a bar, and laundry services. Popular with surfers and beach enthusiasts."
+  hr: "Hotel More šarmantan je obiteljski hotel s 3 zvjezdice smješten direktno na žnjanskoj šetnici, samo minutu hoda od plaže. S 11 klimatiziranih soba s pogledom na more, televizorima s ravnim ekranom i minibarovima, nudi pristupačan i osoban boravak uz more. Sadržaji uključuju besplatni WiFi, besplatan doručak, bar i usluge pranja rublja. Popularan među surferima i ljubiteljima plaže."
+  de: "Das Hotel More ist ein charmantes, familiengeführtes 3-Sterne-Hotel direkt an der Žnjan-Promenade, nur eine Gehminute vom Strand entfernt. Mit 11 klimatisierten Zimmern mit Meerblick, Flachbild-TVs und Minibars bietet es einen erschwinglichen und persönlichen Aufenthalt am Strand. Annehmlichkeiten: kostenloses WLAN, Frühstück, Bar und Wäscheservice. Beliebt bei Surfern und Strandliebhabern."
+  it: "L'Hotel More è un affascinante hotel familiare a 3 stelle direttamente sul lungomare di Žnjan, a solo un minuto a piedi dalla spiaggia. Con 11 camere climatizzate con vista mare, TV a schermo piatto e minibar, offre un soggiorno accessibile e personale in riva al mare. Servizi: WiFi gratuito, colazione inclusa, bar e lavanderia. Popolare tra surfisti e amanti della spiaggia."
+shortDescription:
+  en: "Family-run 3-star hotel right on the Znjan promenade"
+  hr: "Obiteljski hotel s 3 zvjezdice na žnjanskoj šetnici"
+  de: "Familiengeführtes 3-Sterne-Hotel an der Žnjan-Promenade"
+  it: "Hotel familiare 3 stelle sul lungomare di Žnjan"
+category: hotel
+beachArea: promenade
+coordinates:
+  lat: 43.5022
+  lng: 16.4888
+address: "Šetalište Pape Ivana Pavla II 27, 21000 Split"
+website: "https://more.hotelsplit.net/en/"
+priceRange: "$$"
+starRating: 3
+roomCount: 11
+listingTier: free
+featured: false
+tags:
+  - hotel
+  - family-run
+  - beachfront
+  - sea-view
+  - breakfast
+  - affordable
+order: 12

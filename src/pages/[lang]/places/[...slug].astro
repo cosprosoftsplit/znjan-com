@@ -112,7 +112,32 @@ const tagLabels: Record<string, Record<Language, string>> = {
   hours={place.data.hours}
 >
   <div class="prose-beach">
+    {place.data.status === 'coming-soon' && (
+      <div class="mb-6 p-4 bg-coral-50 border border-coral-200 rounded-lg">
+        <p class="text-sm font-medium text-coral-600">
+          {lang === 'hr' ? `Otvaranje: ${place.data.openingDate || 'uskoro'}` :
+           lang === 'de' ? `Eröffnung: ${place.data.openingDate || 'demnächst'}` :
+           lang === 'it' ? `Apertura: ${place.data.openingDate || 'prossimamente'}` :
+           `Opening: ${place.data.openingDate || 'coming soon'}`}
+        </p>
+      </div>
+    )}
+
     <p class="text-warm-600 leading-relaxed">{description}</p>
+
+    {place.data.starRating && (
+      <div class="mt-6 flex items-center gap-3">
+        <span class="text-xl text-sand-500">{'★'.repeat(place.data.starRating)}{'☆'.repeat(5 - place.data.starRating)}</span>
+        <span class="text-sm text-warm-500">
+          {place.data.starRating}-{lang === 'hr' ? 'zvjezdica' : lang === 'de' ? 'Sterne' : lang === 'it' ? 'stelle' : 'star'} {place.data.category === 'hotel' ? (lang === 'hr' ? 'hotel' : lang === 'de' ? 'Hotel' : lang === 'it' ? 'hotel' : 'hotel') : ''}
+        </span>
+        {place.data.roomCount && (
+          <span class="text-sm text-warm-400">
+            · {place.data.roomCount} {lang === 'hr' ? 'soba' : lang === 'de' ? 'Zimmer' : lang === 'it' ? 'camere' : 'rooms'}
+          </span>
+        )}
+      </div>
+    )}
 
     {place.data.tags.length > 0 && (
       <div class="mt-6">

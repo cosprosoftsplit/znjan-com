@@ -1,0 +1,41 @@
+id: hotel-amphora
+slug:
+  en: hotel-amphora
+  hr: hotel-amphora
+  de: hotel-amphora
+  it: hotel-amphora
+title:
+  en: "Hotel Amphora"
+  hr: "Hotel Amphora"
+  de: "Hotel Amphora"
+  it: "Hotel Amphora"
+description:
+  en: "Hotel Amphora is a 4-star beachfront hotel just 300 metres from Znjan Beach, offering 206 modernly decorated rooms and suites with panoramic Adriatic and island views. Amenities include the OLEUM spa with thalassotherapy and Ayurvedic treatments, indoor and outdoor pools, two on-site restaurants, and a beach bar. Part of the Safir Hotels group, it's the largest hotel in the Znjan area."
+  hr: "Hotel Amphora je hotel s 4 zvjezdice smješten samo 300 metara od plaže Žnjan, koji nudi 206 moderno uređenih soba i apartmana s panoramskim pogledom na Jadran i otoke. Sadržaji uključuju OLEUM spa s talasoterapijom i ajurvedskim tretmanima, unutarnji i vanjski bazen, dva restorana i beach bar. Dio je Safir Hotels grupe i najveći je hotel u žnjanskom području."
+  de: "Das Hotel Amphora ist ein 4-Sterne-Strandhotel nur 300 Meter vom Strand Žnjan entfernt und bietet 206 modern eingerichtete Zimmer und Suiten mit Panoramablick auf die Adria und die Inseln. Zu den Annehmlichkeiten gehören das OLEUM Spa mit Thalassotherapie und ayurvedischen Behandlungen, Innen- und Außenpool, zwei hauseigene Restaurants und eine Strandbar."
+  it: "L'Hotel Amphora è un hotel a 4 stelle fronte mare a soli 300 metri dalla spiaggia di Žnjan, con 206 camere e suite arredate in stile moderno con vista panoramica sull'Adriatico e le isole. I servizi includono la spa OLEUM con talassoterapia e trattamenti ayurvedici, piscine interna ed esterna, due ristoranti e un beach bar."
+shortDescription:
+  en: "4-star beachfront hotel with spa, pools, and Adriatic views"
+  hr: "Hotel s 4 zvjezdice na plaži sa spa, bazenima i pogledom na Jadran"
+  de: "4-Sterne-Strandhotel mit Spa, Pools und Adriablick"
+  it: "Hotel 4 stelle fronte mare con spa, piscine e vista Adriatico"
+category: hotel
+beachArea: main-beach
+coordinates:
+  lat: 43.5030
+  lng: 16.4870
+website: "https://amphora.safirhoteli.hr/"
+priceRange: "$$$"
+starRating: 4
+roomCount: 206
+listingTier: free
+featured: true
+tags:
+  - hotel
+  - spa
+  - pool
+  - beachfront
+  - sea-view
+  - restaurant
+  - wellness
+order: 10

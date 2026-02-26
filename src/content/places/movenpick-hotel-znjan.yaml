@@ -1,0 +1,44 @@
+id: movenpick-hotel-znjan
+slug:
+  en: movenpick-hotel-znjan
+  hr: movenpick-hotel-znjan
+  de: movenpick-hotel-znjan
+  it: movenpick-hotel-znjan
+title:
+  en: "Mövenpick Hotel Žnjan"
+  hr: "Mövenpick Hotel Žnjan"
+  de: "Mövenpick Hotel Žnjan"
+  it: "Mövenpick Hotel Žnjan"
+description:
+  en: "Mövenpick Hotel Žnjan will be the first Mövenpick hotel in Croatia — a 4-star urban beachfront resort opening for the 2026 season. Featuring 156 sea-view rooms across six above-ground floors, the €25M property includes a rooftop infinity pool with lounge and gourmet restaurant, full-service spa and wellness centre, gym, and conference facilities. With 110 parking spaces including EV charging stations, it represents the next chapter of the Znjan transformation. Managed by Accor SA."
+  hr: "Mövenpick Hotel Žnjan bit će prvi Mövenpick hotel u Hrvatskoj — urbani resort s 4 zvjezdice na plaži koji se otvara za sezonu 2026. S 156 soba s pogledom na more na šest nadzemnih etaža, objekt vrijedan 25 milijuna eura uključuje krovni infinity bazen s lounge barom i gurmanskim restoranom, spa i wellness centar, teretanu i konferencijske dvorane. Sa 110 parkirnih mjesta uključujući punionice za električna vozila, predstavlja sljedeće poglavlje transformacije Žnjana. Upravljanje: Accor SA."
+  de: "Das Mövenpick Hotel Žnjan wird das erste Mövenpick-Hotel in Kroatien sein — ein urbanes 4-Sterne-Strandresort, das zur Saison 2026 eröffnet wird. Mit 156 Zimmern mit Meerblick auf sechs oberirdischen Etagen umfasst das 25-Millionen-Euro-Objekt einen Rooftop-Infinity-Pool mit Lounge und Gourmet-Restaurant, Vollservice-Spa und Wellnesscenter, Fitnessstudio und Konferenzeinrichtungen. Mit 110 Parkplätzen inklusive E-Ladestationen. Betrieben von Accor SA."
+  it: "Il Mövenpick Hotel Žnjan sarà il primo hotel Mövenpick in Croazia — un resort urbano a 4 stelle fronte mare che aprirà per la stagione 2026. Con 156 camere con vista mare su sei piani fuori terra, la proprietà da 25 milioni di euro include una piscina infinity sul tetto con lounge e ristorante gourmet, spa e centro benessere, palestra e strutture per conferenze. Con 110 parcheggi incluse stazioni di ricarica EV. Gestito da Accor SA."
+shortDescription:
+  en: "Croatia's first Mövenpick — opening 2026 with rooftop pool"
+  hr: "Prvi Mövenpick u Hrvatskoj — otvaranje 2026. s krovnim bazenom"
+  de: "Kroatiens erstes Mövenpick — Eröffnung 2026 mit Rooftop-Pool"
+  it: "Il primo Mövenpick della Croazia — apertura 2026 con piscina sul tetto"
+category: hotel
+beachArea: main-beach
+coordinates:
+  lat: 43.5028
+  lng: 16.4895
+priceRange: "$$$$"
+starRating: 4
+roomCount: 156
+status: coming-soon
+openingDate: "2026"
+listingTier: free
+featured: true
+tags:
+  - hotel
+  - coming-soon
+  - rooftop-pool
+  - spa
+  - wellness
+  - conference
+  - ev-charging
+  - accor
+  - gourmet
+order: 14

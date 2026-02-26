@@ -65,10 +65,12 @@ const categoryLabels: Record<string, Record<Language, string>> = {
         {places.map((place) => (
           <Card href={getLocalizedUrl(lang, 'places', place.data.slug[lang])}>
             <div class="p-6">
-              <div class="flex items-center gap-2 mb-3">
+              <div class="flex items-center gap-2 mb-3 flex-wrap">
                 <span class="text-xl">{categoryIcons[place.data.category] || '📍'}</span>
                 <Badge variant="sand">{categoryLabels[place.data.category]?.[lang] || place.data.category}</Badge>
-                {place.data.featured && <Badge variant="ocean">{translations['places.featured']}</Badge>}
+                {place.data.starRating && <Badge variant="default">{'★'.repeat(place.data.starRating)}</Badge>}
+                {place.data.status === 'coming-soon' && <Badge variant="coral">{lang === 'hr' ? 'Uskoro' : lang === 'de' ? 'Demnächst' : lang === 'it' ? 'Prossimamente' : 'Coming Soon'}</Badge>}
+                {place.data.featured && place.data.status !== 'coming-soon' && <Badge variant="ocean">{translations['places.featured']}</Badge>}
                 {place.data.priceRange && <span class="text-sm text-warm-400 ml-auto">{place.data.priceRange}</span>}
               </div>
               <h2 class="text-lg font-semibold text-ocean-700">

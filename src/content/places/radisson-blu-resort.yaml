@@ -1,0 +1,43 @@
+id: radisson-blu-resort
+slug:
+  en: radisson-blu-resort-spa
+  hr: radisson-blu-resort-spa
+  de: radisson-blu-resort-spa
+  it: radisson-blu-resort-spa
+title:
+  en: "Radisson Blu Resort & Spa, Split"
+  hr: "Radisson Blu Resort & Spa, Split"
+  de: "Radisson Blu Resort & Spa, Split"
+  it: "Radisson Blu Resort & Spa, Split"
+description:
+  en: "Radisson Blu Resort & Spa is the premier 4-star resort in the Znjan area, featuring 252 rooms with balconies overlooking the islands of Brač and Šolta. The resort boasts a 2,600 m² wellness centre with Finnish sauna, steam room, warm and cold pools, whirlpools, and treatment rooms. Guests enjoy indoor and outdoor pools, two restaurants serving Mediterranean cuisine, and direct access to the beach. Home to the Mistral Beach Club, one of Znjan's top seaside venues."
+  hr: "Radisson Blu Resort & Spa vodeći je resort s 4 zvjezdice u žnjanskom području, s 252 sobe s balkonima s pogledom na otoke Brač i Šoltu. Resort se može pohvaliti wellness centrom od 2.600 m² s finskom saunom, parnom kupelji, toplim i hladnim bazenima, whirlpoolima i prostorijama za tretmane. Gosti uživaju u unutarnjem i vanjskom bazenu, dva restorana s mediteranskom kuhinjom i direktnom pristupu plaži. Ovdje se nalazi Mistral Beach Club, jedno od vodećih mjesta na žnjanskoj obali."
+  de: "Das Radisson Blu Resort & Spa ist das führende 4-Sterne-Resort im Žnjan-Gebiet mit 252 Zimmern und Balkonen mit Blick auf die Inseln Brač und Šolta. Das Resort verfügt über ein 2.600 m² großes Wellnesscenter mit finnischer Sauna, Dampfbad, Warm- und Kaltwasserpools, Whirlpools und Behandlungsräumen. Gäste genießen Innen- und Außenpool, zwei Restaurants mit mediterraner Küche und direkten Strandzugang. Hier befindet sich der Mistral Beach Club."
+  it: "Il Radisson Blu Resort & Spa è il principale resort a 4 stelle nella zona di Žnjan, con 252 camere con balconi con vista sulle isole di Brač e Šolta. Il resort vanta un centro wellness di 2.600 m² con sauna finlandese, bagno turco, piscine calde e fredde, idromassaggi e sale trattamenti. Gli ospiti godono di piscina interna ed esterna, due ristoranti con cucina mediterranea e accesso diretto alla spiaggia. Sede del Mistral Beach Club."
+shortDescription:
+  en: "Premier 4-star resort with 2,600 m² spa and beach access"
+  hr: "Vodeći resort s 4 zvjezdice s 2.600 m² spa i pristupom plaži"
+  de: "Führendes 4-Sterne-Resort mit 2.600 m² Spa und Strandzugang"
+  it: "Resort 4 stelle di primo livello con spa di 2.600 m²"
+category: hotel
+beachArea: promenade
+coordinates:
+  lat: 43.5034
+  lng: 16.4862
+website: "https://www.radissonhotels.com/en-us/hotels/radisson-blu-resort-split"
+priceRange: "$$$$"
+starRating: 4
+roomCount: 252
+listingTier: free
+featured: true
+tags:
+  - hotel
+  - resort
+  - spa
+  - wellness
+  - pool
+  - beachfront
+  - sea-view
+  - restaurant
+  - mistral-beach-club
+order: 13

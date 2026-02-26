@@ -111,6 +111,10 @@ const places = defineCollection({
     images: z.array(imageRef).default([]),
     heroImage: imageRef.optional(),
     tags: z.array(z.string()).default([]),
+    starRating: z.number().min(1).max(5).optional(),
+    roomCount: z.number().optional(),
+    status: z.enum(['active', 'coming-soon', 'seasonal']).default('active'),
+    openingDate: z.string().optional(),
     order: z.number().default(0),
   }),
 });

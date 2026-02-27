@@ -104,6 +104,7 @@ const places = defineCollection({
     phone: z.string().optional(),
     website: z.string().url().optional(),
     email: z.string().email().optional(),
+    instagram: z.string().optional(),
     hours: z.record(z.string()).optional(),
     priceRange: z.enum(['$', '$$', '$$$', '$$$$']).optional(),
     listingTier: z.enum(['free', 'featured', 'premium']).default('free'),

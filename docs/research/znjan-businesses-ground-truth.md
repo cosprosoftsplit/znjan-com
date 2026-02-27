@@ -113,23 +113,70 @@ These businesses were demolished or closed during the 2024-2025 renovation:
 
 ## Key Facts About the Znjan Complex
 
-- **Grand opening:** June 21, 2025 ("Ča ćeš mi Copacabana")
-- **Investment:** €45.5 million
-- **Managing entity:** Znjan d.o.o. (40-year concession)
+### Core Numbers
+- **Grand opening:** Saturday, June 21, 2025 (first day of summer)
+- **Opening slogan:** "Pored našeg Žnjana, ča će nam Copacabana"
+- **Total project value:** €45.77 million (construction: €45.5M + supervision: €183,980)
+- **EU co-funding:** €13.94 million (78.49% of eligible costs of €17.76M) — European Regional Development Fund, ITU Programme 2021-2027
+- **Managing entity:** Žnjan d.o.o. (40-year concession, signed November 2022)
+- **Director:** Marijan Ciprijan
+- **Project Lead:** Zoran Jakelić
+- **Total concession area:** 218,322 m² (sea: 95,176 m² + land: 123,146 m²)
+- **Project origins:** 1998
+
+### Pavilions & Leases
 - **11 new pavilion buildings** leased via anonymous FINA Licitator auction (Dec 2024)
+- **Lease agreements signed:** January 30, 2025
 - **Annual lease revenue:** €2.8 million total
 - **Lease terms:** 10-year contracts
+- **Categories:** 3 restaurants + 6 bistro/café bars + 1 mini market + 1 kiosk
+
+### Beach & Facilities
 - **Beach length:** 2+ km (Split's largest beach)
 - **Promenade:** 1.7 km palm-lined
-- **Parking:** Underground garage (530 spaces) + 451 outdoor = ~1,000 total
-- **Skate park:** 1,200 m²
-- **Children's playground:** 600 m²
-- **Green space:** 48,000 m²
+- **Green space:** ~48,000 m² (Split's 2nd largest park)
+- **Vegetation:** ~730 new trees/palms + 12,815 native shrubs/perennials
+- **Skate park:** ~1,200 m²
+- **Children's playground:** ~600 m²
 - **Named squares:** Trg kulture, Vodeni trg, Topografski trg, Trg 14 palmi
+- **Amphitheatre:** Steel dome (completed early 2025)
+- **Accessible beach:** Opened summer 2024 (hydraulic elevator, adapted WC, lifeguards)
+
+### Parking
+- **Underground garage:** 530 spaces (2 levels)
+- **Outdoor parking:** 451 spaces
+- **Total:** ~981 spaces
+- **Charges began:** July 16, 2025
+
+### Transport
 - **Bus access:** Lines 8 and 15
-- **Upcoming:** Mövenpick Hotel (opening 2026)
+
+### Upcoming/Planned
+- Mövenpick Hotel (opening 2026)
+- Aquapark (public tender issued for operator)
+- Diving club (public tender issued)
+- Windsurfing club (public tender issued)
+- Tourist ambulance (tender issued)
+
+### Opening Ceremony
+- **Mayor:** Tomislav Šuta
+- **Government representative:** Minister Tonči Glavina
+- **Entertainment:** TBF, Ante Gelo with orchestra, Zorica Kondža, Alen Nižetić, Albina, Đorđe Peruzović, Goran Karan, Tajči
+- **Features:** Contemporary dance, ballet, acrobatics, drone displays, fireworks
 
 ---
 
-*Last updated: February 2026*
-*Verified by: Project owner (Ivan) + web research*
+## Also Managed by Žnjan d.o.o.
+
+Since Jan 1, 2025 merger with Splitska obala d.o.o.:
+- **All Split city beaches:** Trstenik, Pošk, Firule, Ovčice, Bačvice, Ježinac, Zvončac, Kaštelet, Duilovo, Kašjuni
+- **Zapadna obala (Western Waterfront):** 11,700 m², swimming pool with 2 fountains, bicycle lane, 3 hospitality venues
+- **Stobreč beaches:** Kavala, Below the Church, Ivankova Street
+- **Slatina beaches (Čiovo):** Liveli, Veliki porat, Mali porat, etc.
+- **City events:** Sudamja, Advent u Splitu, NYE, Krnjeval, Praznik cvijeća, etc.
+
+---
+
+*Last updated: February 27, 2026*
+*Verified by: Project owner (Ivan) + web research + znjan.hr official data*
+*See also: docs/research/znjan-hr-official-data.md for full extraction*

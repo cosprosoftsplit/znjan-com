@@ -5,6 +5,7 @@ import SectionHeader from '@/components/sections/SectionHeader.astro';
 import Card from '@/components/ui/Card.astro';
 import Button from '@/components/ui/Button.astro';
 import BeachMap from '@/components/maps/BeachMap.astro';
+import InstagramGrid from '@/components/widgets/InstagramGrid.astro';
 import { LANGUAGES, getLocalizedUrl, getHomeUrl, getLocalized } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
@@ -187,6 +188,21 @@ const quickLinks = [
       />
       <BeachMap lang={lang} markers={mapMarkers} zoom={15} height="450px" />
     </div>
+  </section>
+
+  <!-- Instagram Section -->
+  <section class="container-page">
+    <InstagramGrid
+      title={lang === 'hr' ? 'Žnjan na Instagramu' : lang === 'de' ? 'Žnjan auf Instagram' : lang === 'it' ? 'Žnjan su Instagram' : 'Žnjan on Instagram'}
+      subtitle={lang === 'hr' ? 'Pogledajte što vas čeka na plaži' : lang === 'de' ? 'Sehen Sie, was Sie am Strand erwartet' : lang === 'it' ? 'Scoprite cosa vi aspetta in spiaggia' : 'See what awaits you at the beach'}
+      posts={[
+        { url: 'https://www.instagram.com/p/DTfQp62jfeZ/', caption: 'Taboo Beach Club' },
+        { url: 'https://www.instagram.com/p/DOPWLF-DM1e/', caption: 'Mistral Beach Club' },
+        { url: 'https://www.instagram.com/p/DMyFWihzOYX/', caption: 'Mistral Beach Club' },
+        { url: 'https://www.instagram.com/p/DMPgA2NMzJR/', caption: 'Mistral Beach Club' },
+      ]}
+      columns={2}
+    />
   </section>
 
   <!-- FAQ Section -->

@@ -1,0 +1,61 @@
+---
+import Page from '@/layouts/Page.astro';
+import { LANGUAGES, getLocalized } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
+import { getTranslations } from '@/lib/translations';
+import { canonicalUrl } from '@/lib/utils';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPages = await getCollection('pages');
+  const paths = [];
+
+  for (const page of allPages) {
+    for (const lang of LANGUAGES) {
+      const slug = page.data.slug[lang];
+      paths.push({
+        params: { lang, page: slug },
+        props: { page, lang },
+      });
+    }
+  }
+
+  return paths;
+}
+
+interface Props {
+  page: any;
+  lang: Language;
+}
+
+const { page, lang } = Astro.props;
+const translations = getTranslations(lang);
+const title = getLocalized(page.data.title, lang);
+const description = getLocalized(page.data.description, lang);
+const content = getLocalized(page.data.content, lang);
+
+const hreflangLinks = LANGUAGES.map((l) => ({
+  lang: l as Language | 'x-default',
+  href: `https://znjan.com/${l}/${page.data.slug[l]}/`,
+}));
+hreflangLinks.push({
+  lang: 'x-default' as const,
+  href: `https://znjan.com/en/${page.data.slug.en}/`,
+});
+---
+
+<Page
+  title={`${title} — Znjan.com`}
+  description={description}
+  lang={lang}
+  translations={translations}
+  canonicalUrl={canonicalUrl(`/${lang}/${page.data.slug[lang]}/`)}
+  hreflangLinks={hreflangLinks}
+>
+  <article class="container-page py-12">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-3xl md:text-4xl font-bold text-warm-900 mb-8">{title}</h1>
+      <div class="prose-beach" set:html={content.replace(/\n\n/g, '</p><p>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/^/, '<p>').replace(/$/, '</p>')} />
+    </div>
+  </article>
+</Page>

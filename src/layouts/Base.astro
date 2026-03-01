@@ -90,7 +90,7 @@ const ogLocale = ogLocaleMap[lang] || 'en_GB';
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -100,7 +100,24 @@ const ogLocale = ogLocaleMap[lang] || 'en_GB';
     ))}
   </head>
 
-  <body class="min-h-screen bg-warm-50 text-warm-800 font-sans">
+  <body class="min-h-screen bg-cream text-stone font-sans">
     <slot />
+    <script>
+      // Global Intersection Observer for scroll-reveal animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('sr-visible');
+              if (entry.target.getAttribute('data-sr-once') !== 'false') {
+                observer.unobserve(entry.target);
+              }
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+      );
+      document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+    </script>
   </body>
 </html>

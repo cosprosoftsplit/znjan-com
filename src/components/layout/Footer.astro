@@ -11,15 +11,15 @@ const { lang, translations } = Astro.props;
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="bg-ocean-800 text-white mt-16">
+<footer class="bg-ocean-800 text-cream mt-16">
   <div class="container-page py-12">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
       <!-- About -->
       <div class="md:col-span-2">
-        <a href={getHomeUrl(lang)} class="text-2xl font-bold text-white hover:text-aqua-200 transition-colors">
-          Znjan.com
+        <a href={getHomeUrl(lang)} class="text-2xl font-display text-white hover:text-cream transition-colors duration-200">
+          Žnjan
         </a>
-        <p class="mt-3 text-ocean-200 text-sm leading-relaxed max-w-md">
+        <p class="mt-3 text-cream/70 text-sm leading-relaxed max-w-md">
           {translations['footer.description'] || 'The definitive guide to Znjan Beach in Split, Croatia.'}
         </p>
       </div>
@@ -29,27 +29,27 @@ const currentYear = new Date().getFullYear();
         <h3 class="font-semibold text-white mb-4">{translations['footer.explore'] || 'Explore'}</h3>
         <ul class="space-y-2">
           <li>
-            <a href={getLocalizedUrl(lang, 'guides')} class="text-ocean-200 hover:text-white text-sm transition-colors">
+            <a href={getLocalizedUrl(lang, 'guides')} class="text-cream/70 hover:text-white text-sm transition-colors duration-200">
               {translations['nav.guides'] || 'Guides'}
             </a>
           </li>
           <li>
-            <a href={getLocalizedUrl(lang, 'places')} class="text-ocean-200 hover:text-white text-sm transition-colors">
+            <a href={getLocalizedUrl(lang, 'places')} class="text-cream/70 hover:text-white text-sm transition-colors duration-200">
               {translations['nav.places'] || 'Places'}
             </a>
           </li>
           <li>
-            <a href={getLocalizedUrl(lang, 'activities')} class="text-ocean-200 hover:text-white text-sm transition-colors">
+            <a href={getLocalizedUrl(lang, 'activities')} class="text-cream/70 hover:text-white text-sm transition-colors duration-200">
               {translations['nav.activities'] || 'Activities'}
             </a>
           </li>
           <li>
-            <a href={getLocalizedUrl(lang, 'beach-areas')} class="text-ocean-200 hover:text-white text-sm transition-colors">
+            <a href={getLocalizedUrl(lang, 'beach-areas')} class="text-cream/70 hover:text-white text-sm transition-colors duration-200">
               {translations['nav.beachAreas'] || 'Beach Areas'}
             </a>
           </li>
           <li>
-            <a href={getLocalizedUrl(lang, 'events')} class="text-ocean-200 hover:text-white text-sm transition-colors">
+            <a href={getLocalizedUrl(lang, 'events')} class="text-cream/70 hover:text-white text-sm transition-colors duration-200">
               {translations['nav.events'] || 'Events'}
             </a>
           </li>
@@ -61,17 +61,17 @@ const currentYear = new Date().getFullYear();
         <h3 class="font-semibold text-white mb-4">{translations['footer.legal'] || 'Legal'}</h3>
         <ul class="space-y-2">
           <li>
-            <a href={getLocalizedUrl(lang, 'about')} class="text-ocean-200 hover:text-white text-sm transition-colors">
+            <a href={getLocalizedUrl(lang, 'about')} class="text-cream/70 hover:text-white text-sm transition-colors duration-200">
               {translations['nav.about'] || 'About'}
             </a>
           </li>
           <li>
-            <a href={getLocalizedUrl(lang, 'contact')} class="text-ocean-200 hover:text-white text-sm transition-colors">
+            <a href={getLocalizedUrl(lang, 'contact')} class="text-cream/70 hover:text-white text-sm transition-colors duration-200">
               {translations['nav.contact'] || 'Contact'}
             </a>
           </li>
           <li>
-            <a href={getLocalizedUrl(lang, 'privacy')} class="text-ocean-200 hover:text-white text-sm transition-colors">
+            <a href={getLocalizedUrl(lang, 'privacy')} class="text-cream/70 hover:text-white text-sm transition-colors duration-200">
               {translations['common.privacyPolicy'] || 'Privacy Policy'}
             </a>
           </li>
@@ -80,11 +80,11 @@ const currentYear = new Date().getFullYear();
     </div>
 
     <!-- Bottom -->
-    <div class="mt-12 pt-8 border-t border-ocean-700 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <p class="text-ocean-300 text-sm">
+    <div class="mt-12 pt-8 border-t border-ocean-700/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <p class="text-cream/60 text-sm">
         &copy; {currentYear} Znjan.com. {translations['common.copyright'] || 'All rights reserved.'}
       </p>
-      <p class="text-ocean-400 text-xs">
+      <p class="text-cream/40 text-xs">
         Split, Croatia
       </p>
     </div>

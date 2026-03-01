@@ -1,0 +1,31 @@
+---
+/**
+ * ScrollReveal — Wrapper component for scroll-triggered animations.
+ * Observer logic lives in Base.astro (global script).
+ */
+interface Props {
+  animation?: 'fade-up' | 'fade-in' | 'slide-left' | 'slide-right' | 'scale';
+  delay?: number;
+  once?: boolean;
+  class?: string;
+}
+
+const {
+  animation = 'fade-up',
+  delay = 0,
+  once = true,
+  class: className = '',
+} = Astro.props;
+---
+
+<div
+  class:list={[
+    'scroll-reveal',
+    `sr-${animation}`,
+    className,
+  ]}
+  style={delay ? `--sr-delay: ${delay}ms` : undefined}
+  data-sr-once={once ? 'true' : 'false'}
+>
+  <slot />
+</div>

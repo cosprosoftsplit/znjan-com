@@ -20,11 +20,11 @@ const navItems = [
 ];
 ---
 
-<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-warm-200 shadow-sm">
+<header class="sticky top-0 z-50 bg-ocean-800/95 backdrop-blur-sm border-b border-ocean-900/20">
   <div class="container-page">
     <nav class="flex items-center justify-between h-16">
       <!-- Logo -->
-      <a href={getHomeUrl(lang)} class="flex items-center gap-2 text-ocean-600 font-bold text-xl hover:text-ocean-700 transition-colors">
+      <a href={getHomeUrl(lang)} class="flex items-center gap-2 text-white font-display text-xl hover:text-cream transition-colors duration-200">
         <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="16" cy="16" r="15" fill="url(#ocean-gradient)" />
           <path d="M8 18c2-3 4-3 6 0s4 3 6 0 4-3 6 0" stroke="white" stroke-width="2" stroke-linecap="round" />
@@ -33,11 +33,11 @@ const navItems = [
           <defs>
             <linearGradient id="ocean-gradient" x1="0" y1="0" x2="32" y2="32">
               <stop stop-color="#0077B6" />
-              <stop offset="1" stop-color="#00B4D8" />
+              <stop offset="1" stop-color="#2d8a9b" />
             </linearGradient>
           </defs>
         </svg>
-        <span>Znjan</span>
+        <span>Žnjan</span>
       </a>
 
       <!-- Desktop Nav -->
@@ -45,7 +45,7 @@ const navItems = [
         {navItems.map((item) => (
           <a
             href={getLocalizedUrl(lang, item.key)}
-            class="text-sm font-medium text-warm-600 hover:text-ocean-600 transition-colors"
+            class="text-sm font-medium text-cream/80 hover:text-white transition-colors duration-200"
           >
             {item.label}
           </a>
@@ -57,7 +57,7 @@ const navItems = [
       <!-- Mobile Menu Button -->
       <button
         id="mobile-menu-btn"
-        class="md:hidden p-2 text-warm-600 hover:text-ocean-600 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:ring-offset-2 transition-colors"
+        class="md:hidden p-2 text-cream/80 hover:text-white focus:outline-none focus:ring-2 focus:ring-cream/30 focus:ring-offset-2 focus:ring-offset-ocean-800 transition-colors duration-200"
         aria-label={translations['nav.menu'] || 'Menu'}
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -70,17 +70,17 @@ const navItems = [
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-warm-200">
+  <div id="mobile-menu" class="hidden md:hidden bg-ocean-800 border-t border-ocean-700/50">
     <div class="container-page py-4 space-y-3">
       {navItems.map((item) => (
         <a
           href={getLocalizedUrl(lang, item.key)}
-          class="block py-2 text-warm-600 hover:text-ocean-600 font-medium transition-colors"
+          class="block py-2 text-cream/80 hover:text-white font-medium transition-colors duration-200"
         >
           {item.label}
         </a>
       ))}
-      <div class="pt-3 border-t border-warm-200 flex items-center gap-4">
+      <div class="pt-3 border-t border-ocean-700/50 flex items-center gap-4">
         <SearchDialog lang={lang} />
         <LanguageSwitcher lang={lang} />
       </div>

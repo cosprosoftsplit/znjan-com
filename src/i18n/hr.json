@@ -1,8 +1,8 @@
 {
   "site": {
     "name": "Znjan.com",
-    "tagline": "Vaš kompletan vodič za plažu Žnjan, Split",
-    "description": "Definitivni portal za plažu Žnjan u Splitu, Hrvatska — vodiči, aktivnosti, restorani, događanja i sve što trebate za Miami Splita."
+    "tagline": "Vaš potpuni vodič za plažu Žnjan, Split",
+    "description": "Sve o plaži Žnjan u Splitu — vodiči, aktivnosti, restorani, događanja i sve što vam treba za savršen dan na Miamiju Splita."
   },
   "nav": {
     "home": "Početna",
@@ -20,26 +20,48 @@
   },
   "home": {
     "heroTitle": "Dobrodošli na plažu Žnjan",
-    "heroSubtitle": "Najveća splitska plaža, obnovljena — vaš kompletan vodič za Miami Splita",
+    "heroSubtitle": "Najveća splitska plaža, potpuno preobražena — vaš potpuni vodič za Miami Splita",
     "explorePlaces": "Istraži mjesta",
     "discoverActivities": "Otkrij aktivnosti",
-    "readGuides": "Čitaj vodiče",
+    "readGuides": "Pročitajte vodiče",
     "featuredGuides": "Istaknuti vodiči",
     "popularPlaces": "Popularna mjesta",
     "thingsToKnow": "Što trebate znati",
-    "beachAreasTitle": "Istražite dijelove plaže",
-    "beachAreasSubtitle": "Otkrijte različite zone plaže Žnjan"
+    "beachAreasTitle": "Otkrijte dijelove plaže",
+    "beachAreasSubtitle": "Upoznajte različite zone plaže Žnjan",
+    "scrollDown": "Otkrijte više",
+    "areasEyebrow": "Zone plaže",
+    "storyEyebrow1": "Transformacija",
+    "storyTitle1": "Vizija od 45 milijuna eura",
+    "storyText1": "Nekad zanemarena obala danas je splitski dragulj. Transformacija vrijedna 45,77 milijuna eura donijela je infrastrukturu svjetske klase, šetnicu s palmama i 11 potpuno novih paviljona.",
+    "storyEyebrow2": "Jedi i pij",
+    "storyTitle2": "Beach clubovi i mediteranska kuhinja",
+    "storyText2": "Od jutarnje kave u Central Beachu do koktela uz zalazak sunca u Taboo beach clubu — novi paviljonski restorani na Žnjanu nude svježu dalmatinsku kuhinju s pogledom na Jadran. Sedam lokala, svaki s vlastitim karakterom.",
+    "storyEyebrow3": "Igraj i istraži",
+    "storyTitle3": "Aktivnosti za svakoga",
+    "storyText3": "SUP u zoru, odbojka u podne i živa glazba u sumrak. Sa skate parkom od 1.200 m², dječjim igralištem i amfiteatrom sa čeličnom kupolom, uvijek se nešto događa.",
+    "placesEyebrow": "Gdje ići",
+    "statsInvestment": "Investicija",
+    "statsBeachLength": "Dužina plaže",
+    "statsBeachZones": "Zone plaže",
+    "statsVenues": "Novih objekata",
+    "activitiesEyebrow": "Što raditi",
+    "mapEyebrow": "Pronađite put",
+    "mapTitle": "Interaktivna karta plaže",
+    "instagramEyebrow": "Pratite nas",
+    "seeAllFaqs": "Pogledajte sva pitanja",
+    "facilitiesCount": "sadržaja"
   },
   "places": {
     "title": "Mjesta u blizini plaže Žnjan",
-    "subtitle": "Restorani, barovi, kafići i trgovine u blizini plaže Žnjan",
+    "subtitle": "Restorani, beach clubovi, barovi i kafići na plaži Žnjan",
     "allPlaces": "Sva mjesta",
     "restaurants": "Restorani",
     "bars": "Barovi",
     "cafes": "Kafići",
     "shops": "Trgovine",
     "featured": "Istaknuto",
-    "viewDetails": "Pogledaj detalje",
+    "viewDetails": "Pogledajte detalje",
     "website": "Web stranica",
     "phone": "Telefon",
     "hours": "Radno vrijeme",
@@ -49,7 +71,7 @@
     "title": "Što raditi na plaži Žnjan",
     "subtitle": "Vodeni sportovi, aktivnosti na plaži i avanture na Žnjanu",
     "allActivities": "Sve aktivnosti",
-    "viewDetails": "Pogledaj detalje",
+    "viewDetails": "Pogledajte detalje",
     "duration": "Trajanje",
     "price": "Cijena",
     "difficulty": "Težina",
@@ -62,7 +84,7 @@
   "guides": {
     "title": "Vodiči za plažu Žnjan",
     "subtitle": "Sveobuhvatni vodiči za posjetitelje i lokalno stanovništvo",
-    "readMore": "Čitaj više",
+    "readMore": "Saznajte više",
     "tableOfContents": "Sadržaj",
     "relatedGuides": "Povezani vodiči",
     "lastUpdated": "Zadnje ažurirano",
@@ -70,7 +92,7 @@
   },
   "beachAreas": {
     "title": "Dijelovi plaže Žnjan",
-    "subtitle": "Otkrijte različite zone i sadržaje plaže Žnjan",
+    "subtitle": "Upoznajte različite zone i sadržaje plaže Žnjan",
     "facilities": "Sadržaji",
     "nearbyPlaces": "Obližnja mjesta",
     "activities": "Aktivnosti"
@@ -82,22 +104,22 @@
     "past": "Prošla događanja",
     "date": "Datum",
     "location": "Lokacija",
-    "viewDetails": "Pogledaj detalje"
+    "viewDetails": "Pogledajte detalje"
   },
   "common": {
-    "readMore": "Čitaj više",
-    "viewAll": "Pogledaj sve",
+    "readMore": "Saznajte više",
+    "viewAll": "Pogledajte sve",
     "backTo": "Natrag na",
     "share": "Podijeli",
     "loading": "Učitavanje...",
     "noResults": "Nema rezultata",
     "language": "Jezik",
     "copyright": "Sva prava pridržana",
-    "privacyPolicy": "Politika privatnosti",
+    "privacyPolicy": "Pravila privatnosti",
     "contactUs": "Kontaktirajte nas"
   },
   "footer": {
-    "description": "Definitivni vodič za plažu Žnjan u Splitu, Hrvatska. Otkrijte restorane, aktivnosti, događanja i sve što trebate za savršen dan na plaži.",
+    "description": "Sve o plaži Žnjan u Splitu — restorani, aktivnosti, događanja i sve što vam treba za savršen dan na plaži.",
     "quickLinks": "Brze poveznice",
     "explore": "Istražite",
     "legal": "Pravne informacije",
@@ -105,16 +127,16 @@
   },
   "contact": {
     "title": "Kontaktirajte nas",
-    "subtitle": "Imate pitanje ili prijedlog? Javite nam se!",
+    "subtitle": "Imate pitanje ili prijedlog? Pišite nam!",
     "name": "Vaše ime",
     "email": "Email adresa",
     "message": "Poruka",
-    "send": "Pošalji poruku",
-    "success": "Poruka uspješno poslana!",
+    "send": "Pošaljite poruku",
+    "success": "Poruka je uspješno poslana!",
     "error": "Nešto je pošlo po krivu. Pokušajte ponovo."
   },
   "seo": {
-    "homeTitle": "Plaža Žnjan Split — Kompletan vodič, aktivnosti i mjesta",
-    "homeDescription": "Vaš kompletan vodič za plažu Žnjan u Splitu, Hrvatska. Otkrijte restorane, barove, vodene sportove, događanja i sve o transformaciji Miami Splita od 45 milijuna eura."
+    "homeTitle": "Plaža Žnjan Split — Potpuni vodič, aktivnosti i mjesta",
+    "homeDescription": "Potpuni vodič za plažu Žnjan u Splitu, Hrvatska. Restorani, barovi, vodeni sportovi, događanja i sve o preobrazbi Miamija Splita vrijednoj 45,77 milijuna eura."
   }
 }

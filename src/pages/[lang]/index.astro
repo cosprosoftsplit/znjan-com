@@ -1,12 +1,15 @@
 ---
 import Page from '@/layouts/Page.astro';
-import Hero from '@/components/sections/Hero.astro';
-import SectionHeader from '@/components/sections/SectionHeader.astro';
-import Card from '@/components/ui/Card.astro';
-import Button from '@/components/ui/Button.astro';
+import HeroFull from '@/components/sections/HeroFull.astro';
+import BeachAreasGrid from '@/components/sections/BeachAreasGrid.astro';
+import StorySection from '@/components/sections/StorySection.astro';
+import PlacesShowcase from '@/components/sections/PlacesShowcase.astro';
+import StatsAnimated from '@/components/sections/StatsAnimated.astro';
+import ActivitiesStrip from '@/components/sections/ActivitiesStrip.astro';
 import BeachMap from '@/components/maps/BeachMap.astro';
 import InstagramGrid from '@/components/widgets/InstagramGrid.astro';
-import { LANGUAGES, getLocalizedUrl, getHomeUrl, getLocalized } from '@/lib/i18n';
+import ScrollReveal from '@/components/ui/ScrollReveal.astro';
+import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { generateHomeHreflangLinks, buildBeachSchema, buildOrganizationSchema, buildFAQSchema } from '@/lib/seo';
@@ -23,8 +26,10 @@ const hreflangLinks = generateHomeHreflangLinks();
 
 const allPlaces = await getCollection('places');
 const allAreas = await getCollection('beach-areas');
+const allActivities = await getCollection('activities');
 const allFaqs = await getCollection('faq');
 
+// Map markers
 const mapMarkers = [
   ...allAreas.map((area) => ({
     lat: area.data.coordinates.lat,
@@ -42,42 +47,114 @@ const mapMarkers = [
   })),
 ];
 
-const faqs = allFaqs.sort((a, b) => a.data.order - b.data.order);
+// FAQs — max 6 on homepage
+const faqs = allFaqs.sort((a, b) => a.data.order - b.data.order).slice(0, 6);
 const faqSchemaItems = faqs.map((f) => ({
   question: getLocalized(f.data.question, lang),
   answer: getLocalized(f.data.answer, lang),
 }));
 
-const quickLinks = [
+// Beach areas data for grid
+const sortedAreas = allAreas.sort((a, b) => a.data.order - b.data.order);
+const areaVariants: ('ocean' | 'adriatic' | 'sunset' | 'coral' | 'sand')[] = ['ocean', 'adriatic', 'sunset', 'coral', 'sand'];
+// Beach area images (from znjan.hr)
+const areaImages: Record<string, string> = {
+  'main-beach': '/images/hero/znjan-aerial-1.jpg',
+  'sports-zone': '/images/hero/znjan-aerial-2.jpg',
+  'kids-area': '/images/hero/znjan-aerial-3.jpg',
+  'amphitheater': '/images/hero/znjan-aerial-4.jpg',
+  'promenade': '/images/hero/znjan-still-2.jpg',
+};
+const areasData = sortedAreas.map((area, i) => ({
+  title: getLocalized(area.data.title, lang),
+  href: getLocalizedUrl(lang, 'beach-areas', area.data.slug[lang]),
+  facilitiesCount: area.data.facilities.length,
+  variant: areaVariants[i % areaVariants.length] as 'ocean' | 'sunset' | 'sand' | 'coral' | 'adriatic',
+  image: areaImages[area.data.id],
+}));
+
+// Places for showcase
+const categoryLabels: Record<string, Record<Language, string>> = {
+  restaurant: { en: 'Restaurant', hr: 'Restoran', de: 'Restaurant', it: 'Ristorante' },
+  bar: { en: 'Bar', hr: 'Bar', de: 'Bar', it: 'Bar' },
+  'beach-club': { en: 'Beach Club', hr: 'Beach Club', de: 'Beach Club', it: 'Beach Club' },
+  cafe: { en: 'Café', hr: 'Kafić', de: 'Café', it: 'Caffè' },
+  hotel: { en: 'Hotel', hr: 'Hotel', de: 'Hotel', it: 'Hotel' },
+  other: { en: 'Other', hr: 'Ostalo', de: 'Sonstiges', it: 'Altro' },
+};
+const placeVariants: ('ocean' | 'adriatic' | 'sunset' | 'coral' | 'sand')[] = ['adriatic', 'sunset', 'coral', 'ocean', 'sand', 'adriatic', 'coral'];
+const sortedPlaces = allPlaces
+  .filter((p) => p.data.status !== 'coming-soon')
+  .sort((a, b) => {
+    if (a.data.featured && !b.data.featured) return -1;
+    if (!a.data.featured && b.data.featured) return 1;
+    return a.data.order - b.data.order;
+  });
+// Place images + credits (from business websites)
+const placeImages: Record<string, { src: string; credit: string }> = {
+  'taboo-beach-club': { src: '/images/places/taboo-daybeds.jpg', credit: 'Photo: Taboo Beach Club' },
+  'mistral-beach-club': { src: '/images/places/mistral-lounge.jpg', credit: 'Photo: Mistral Beach Club' },
+  'central-beach': { src: '/images/places/central-beach-indoor.webp', credit: 'Photo: Central Beach Split' },
+  'mimi-italian-clubino': { src: '/images/places/mimi-main.webp', credit: 'Photo: MIMI / F Group' },
+  'gal-split': { src: '/images/places/gal-terrace.jpg', credit: 'Photo: GAL Split' },
+};
+const placesData = sortedPlaces.map((place, i) => ({
+  title: getLocalized(place.data.title, lang),
+  description: place.data.shortDescription
+    ? getLocalized(place.data.shortDescription, lang)
+    : getLocalized(place.data.description, lang),
+  category: place.data.category,
+  categoryLabel: categoryLabels[place.data.category]?.[lang] || place.data.category,
+  href: getLocalizedUrl(lang, 'places', place.data.slug[lang]),
+  variant: placeVariants[i % placeVariants.length] as 'ocean' | 'sunset' | 'sand' | 'coral' | 'adriatic',
+  image: placeImages[place.data.id]?.src,
+  credit: placeImages[place.data.id]?.credit,
+}));
+
+// Activities for strip
+const activityIcons: Record<string, string> = {
+  swimming: '🏊',
+  paddleboarding: '🏄',
+  'beach-volleyball': '🏐',
+  cycling: '🚴',
+  kayaking: '🛶',
+  snorkeling: '🤿',
+};
+const sortedActivities = allActivities.sort((a, b) => a.data.order - b.data.order);
+const activitiesData = sortedActivities.map((activity) => ({
+  title: getLocalized(activity.data.title, lang),
+  description: activity.data.shortDescription
+    ? getLocalized(activity.data.shortDescription, lang)
+    : getLocalized(activity.data.description, lang),
+  icon: activityIcons[activity.data.id] || '🏖️',
+  href: getLocalizedUrl(lang, 'activities', activity.data.slug[lang]),
+}));
+
+// Story blocks — with images from znjan.hr and business sites
+const storyBlocks = [
   {
-    title: translations['nav.guides'],
-    description: translations['home.readGuides'],
-    href: getLocalizedUrl(lang, 'guides'),
-    icon: '📖',
+    eyebrow: translations['home.storyEyebrow1'],
+    title: translations['home.storyTitle1'],
+    text: translations['home.storyText1'],
+    variant: 'ocean' as const,
+    image: '/images/story/znjan-hero-render-1.png',
+    credit: 'Photo: znjan.hr',
   },
   {
-    title: translations['nav.places'],
-    description: translations['home.explorePlaces'],
-    href: getLocalizedUrl(lang, 'places'),
-    icon: '🍽️',
+    eyebrow: translations['home.storyEyebrow2'],
+    title: translations['home.storyTitle2'],
+    text: translations['home.storyText2'],
+    variant: 'sunset' as const,
+    image: '/images/places/gal-cocktails.jpg',
+    credit: 'Photo: GAL Split',
   },
   {
-    title: translations['nav.activities'],
-    description: translations['home.discoverActivities'],
-    href: getLocalizedUrl(lang, 'activities'),
-    icon: '🏄',
-  },
-  {
-    title: translations['nav.beachAreas'],
-    description: translations['home.beachAreasSubtitle'],
-    href: getLocalizedUrl(lang, 'beach-areas'),
-    icon: '🏖️',
-  },
-  {
-    title: translations['nav.events'],
-    description: translations['events.subtitle'],
-    href: getLocalizedUrl(lang, 'events'),
-    icon: '🎉',
+    eyebrow: translations['home.storyEyebrow3'],
+    title: translations['home.storyTitle3'],
+    text: translations['home.storyText3'],
+    variant: 'adriatic' as const,
+    image: '/images/beach-areas/znjan-diving-platform.jpg',
+    credit: 'Photo: znjan.hr',
   },
 ];
 ---
@@ -91,140 +168,124 @@ const quickLinks = [
   hreflangLinks={hreflangLinks}
   structuredData={[buildBeachSchema(), buildOrganizationSchema(), buildFAQSchema(faqSchemaItems)]}
 >
-  <!-- Hero -->
-  <Hero
+  <!-- 1. Cinematic Hero -->
+  <HeroFull
     title={translations['home.heroTitle']}
     subtitle={translations['home.heroSubtitle']}
     ctaText={translations['home.readGuides']}
     ctaHref={getLocalizedUrl(lang, 'guides')}
-    secondaryCtaText={translations['home.explorePlaces']}
-    secondaryCtaHref={getLocalizedUrl(lang, 'places')}
+    scrollText={translations['home.scrollDown']}
+    heroImage="/images/hero/znjan-aerial-2.jpg"
   />
 
-  <!-- Quick Links Grid -->
-  <section class="container-page py-16">
-    <SectionHeader
-      title={translations['home.beachAreasTitle']}
-      subtitle={translations['home.beachAreasSubtitle']}
-    />
+  <!-- Anchor for scroll indicator -->
+  <div id="content"></div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {quickLinks.map((link) => (
-        <Card href={link.href}>
-          <div class="p-6">
-            <div class="text-3xl mb-3">{link.icon}</div>
-            <h3 class="text-lg font-semibold text-ocean-700">{link.title}</h3>
-            <p class="mt-2 text-sm text-warm-500">{link.description}</p>
-          </div>
-        </Card>
-      ))}
-    </div>
-  </section>
+  <!-- 2. Beach Areas — Asymmetric Grid -->
+  <BeachAreasGrid
+    eyebrow={translations['home.areasEyebrow']}
+    title={translations['home.beachAreasTitle']}
+    areas={areasData}
+    facilitiesLabel={translations['home.facilitiesCount']}
+  />
 
-  <!-- About Znjan section -->
-  <section class="bg-ocean-50 py-16">
-    <div class="container-page">
-      <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-ocean-800 tracking-tight">
-          {lang === 'hr' ? 'Plaža Žnjan — Miami Splita' :
-           lang === 'de' ? 'Strand Žnjan — Das Miami von Split' :
-           lang === 'it' ? 'Spiaggia di Žnjan — La Miami di Spalato' :
-           'Znjan Beach — The Miami of Split'}
+  <!-- 3. Story — Zig-zag Split-screen -->
+  <StorySection blocks={storyBlocks} />
+
+  <!-- 4. Places — Horizontal Scroll Showcase -->
+  <PlacesShowcase
+    eyebrow={translations['home.placesEyebrow']}
+    title={translations['home.popularPlaces']}
+    viewAllText={translations['common.viewAll']}
+    viewAllHref={getLocalizedUrl(lang, 'places')}
+    places={placesData}
+  />
+
+  <!-- 5. Stats — Animated Counters -->
+  <StatsAnimated
+    stats={[
+      { value: '€45', suffix: 'M', label: translations['home.statsInvestment'] },
+      { value: '2', suffix: 'km+', label: translations['home.statsBeachLength'] },
+      { value: '5', label: translations['home.statsBeachZones'] },
+      { value: '11', label: translations['home.statsVenues'] },
+    ]}
+  />
+
+  <!-- 6. Activities — Icon Strip -->
+  <ActivitiesStrip
+    eyebrow={translations['home.activitiesEyebrow']}
+    title={translations['activities.title']}
+    activities={activitiesData}
+  />
+
+  <!-- 7. Map — Full Width -->
+  <section class="section-breathe">
+    <div class="container-page mb-6">
+      <ScrollReveal>
+        <span class="eyebrow">{translations['home.mapEyebrow']}</span>
+        <h2 class="mt-3 text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-ocean-800 tracking-tight">
+          {translations['home.mapTitle']}
         </h2>
-        <p class="mt-6 text-lg text-warm-600 leading-relaxed">
-          {lang === 'hr'
-            ? 'Plaža Žnjan je najveća plaža u Splitu, nedavno obnovljena investicijom od 45 milijuna eura. S novom šetnicom, sportskim zonama, restoranima i amfiteatrom, Žnjan je postao jedan od najatraktivnijih jadranskih destinacija.'
-            : lang === 'de'
-              ? 'Der Strand Žnjan ist der größte Strand von Split und wurde kürzlich mit einer Investition von 45 Millionen Euro umgestaltet. Mit einer neuen Promenade, Sportzonen, Restaurants und einem Amphitheater ist Žnjan zu einem der attraktivsten adriatischen Reiseziele geworden.'
-              : lang === 'it'
-                ? 'La spiaggia di Žnjan è la più grande di Spalato, recentemente rinnovata con un investimento di 45 milioni di euro. Con una nuova passeggiata, zone sportive, ristoranti e un anfiteatro, Žnjan è diventata una delle destinazioni adriatiche più attraenti.'
-                : "Znjan Beach is Split's largest beach, recently transformed with a €45M investment. With a new promenade, sports zones, restaurants, and an amphitheater, Znjan has become one of the most attractive Adriatic destinations."}
-        </p>
-        <div class="mt-8">
-          <Button href={getLocalizedUrl(lang, 'guides')} variant="primary" size="lg">
-            {translations['home.readGuides']}
-          </Button>
-        </div>
-      </div>
+      </ScrollReveal>
     </div>
+    <ScrollReveal animation="fade-in">
+      <BeachMap lang={lang} markers={[]} zoom={15} fullWidth={true} />
+    </ScrollReveal>
   </section>
 
-  <!-- Stats -->
-  <section class="container-page py-16">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-      <div>
-        <div class="text-3xl md:text-4xl font-bold text-ocean-600">€45M</div>
-        <div class="mt-1 text-sm text-warm-500">
-          {lang === 'hr' ? 'Investicija' : lang === 'de' ? 'Investition' : lang === 'it' ? 'Investimento' : 'Investment'}
-        </div>
-      </div>
-      <div>
-        <div class="text-3xl md:text-4xl font-bold text-ocean-600">2km+</div>
-        <div class="mt-1 text-sm text-warm-500">
-          {lang === 'hr' ? 'Dužina plaže' : lang === 'de' ? 'Strandlänge' : lang === 'it' ? 'Lunghezza spiaggia' : 'Beach Length'}
-        </div>
-      </div>
-      <div>
-        <div class="text-3xl md:text-4xl font-bold text-ocean-600">5</div>
-        <div class="mt-1 text-sm text-warm-500">
-          {lang === 'hr' ? 'Zona plaže' : lang === 'de' ? 'Strandzonen' : lang === 'it' ? 'Zone spiaggia' : 'Beach Zones'}
-        </div>
-      </div>
-      <div>
-        <div class="text-3xl md:text-4xl font-bold text-ocean-600">11</div>
-        <div class="mt-1 text-sm text-warm-500">
-          {lang === 'hr' ? 'Novih paviljonskih objekata' : lang === 'de' ? 'Neue Pavillon-Gebäude' : lang === 'it' ? 'Nuovi edifici padiglione' : 'New Pavilion Venues'}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Interactive Beach Map -->
-  <section class="bg-ocean-50 py-16">
-    <div class="container-page">
-      <SectionHeader
-        title={lang === 'hr' ? 'Karta plaže Žnjan' : lang === 'de' ? 'Karte Strand Žnjan' : lang === 'it' ? 'Mappa spiaggia Žnjan' : 'Znjan Beach Map'}
-        subtitle={lang === 'hr' ? 'Istražite plaže, restorane i hotele' : lang === 'de' ? 'Erkunden Sie Strände, Restaurants und Hotels' : lang === 'it' ? 'Esplora spiagge, ristoranti e hotel' : 'Explore beaches, restaurants, and hotels'}
-      />
-      <BeachMap lang={lang} markers={mapMarkers} zoom={15} height="450px" />
-    </div>
-  </section>
-
-  <!-- Instagram Section -->
-  <section class="container-page">
+  <!-- 8. Instagram — Staggered -->
+  <section class="container-page section-breathe">
+    <ScrollReveal>
+      <span class="eyebrow">{translations['home.instagramEyebrow']}</span>
+    </ScrollReveal>
     <InstagramGrid
       title={lang === 'hr' ? 'Žnjan na Instagramu' : lang === 'de' ? 'Žnjan auf Instagram' : lang === 'it' ? 'Žnjan su Instagram' : 'Žnjan on Instagram'}
       subtitle={lang === 'hr' ? 'Pogledajte što vas čeka na plaži' : lang === 'de' ? 'Sehen Sie, was Sie am Strand erwartet' : lang === 'it' ? 'Scoprite cosa vi aspetta in spiaggia' : 'See what awaits you at the beach'}
       posts={[
         { url: 'https://www.instagram.com/p/DTfQp62jfeZ/', caption: 'Taboo Beach Club' },
-        { url: 'https://www.instagram.com/p/DOPWLF-DM1e/', caption: 'Mistral Beach Club' },
+        { url: 'https://www.instagram.com/p/DUqlKjEEtEF/', caption: 'Mistral Beach Club' },
         { url: 'https://www.instagram.com/p/DMyFWihzOYX/', caption: 'Mistral Beach Club' },
-        { url: 'https://www.instagram.com/p/DMPgA2NMzJR/', caption: 'Mistral Beach Club' },
+        { url: 'https://www.instagram.com/reel/DJQzkSZhcK7/', caption: 'Mistral Beach Club' },
       ]}
       columns={2}
+      staggered={true}
     />
   </section>
 
-  <!-- FAQ Section -->
-  <section class="container-page py-16">
-    <SectionHeader
-      title={translations['home.thingsToKnow']}
-      subtitle={lang === 'hr' ? 'Odgovori na najčešća pitanja o plaži Žnjan' : lang === 'de' ? 'Antworten auf häufige Fragen zum Strand Žnjan' : lang === 'it' ? 'Risposte alle domande più frequenti sulla spiaggia di Žnjan' : 'Answers to common questions about Znjan Beach'}
-    />
-    <div class="max-w-3xl mx-auto space-y-4">
-      {faqs.map((faq) => (
-        <details class="group bg-white rounded-lg border border-warm-200 shadow-sm">
-          <summary class="flex items-center justify-between px-6 py-4 cursor-pointer text-ocean-700 font-medium hover:text-ocean-600 transition-colors">
-            <span>{getLocalized(faq.data.question, lang)}</span>
-            <svg class="w-5 h-5 shrink-0 ml-4 transition-transform group-open:rotate-180 text-warm-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </summary>
-          <div class="px-6 pb-4 text-warm-600 text-sm leading-relaxed">
-            {getLocalized(faq.data.answer, lang)}
-          </div>
-        </details>
+  <!-- 9. FAQ — Max 6 items -->
+  <section class="container-page section-breathe-lg">
+    <ScrollReveal>
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-ocean-800 tracking-tight">
+        {translations['home.thingsToKnow']}
+      </h2>
+    </ScrollReveal>
+    <div class="mt-10 max-w-3xl space-y-4">
+      {faqs.map((faq, i) => (
+        <ScrollReveal animation="fade-up" delay={i * 60}>
+          <details class="group bg-white rounded-xl border border-sand-200">
+            <summary class="flex items-center justify-between px-6 py-5 cursor-pointer text-ocean-700 font-medium hover:bg-sand-50 transition-colors duration-200">
+              <span class="text-base">{getLocalized(faq.data.question, lang)}</span>
+              <svg class="w-5 h-5 shrink-0 ml-4 transition-transform duration-200 group-open:rotate-180 text-ocean-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <div class="px-6 pb-5 text-stone leading-relaxed border-t border-sand-200 pt-4">
+              {getLocalized(faq.data.answer, lang)}
+            </div>
+          </details>
+        </ScrollReveal>
       ))}
+    </div>
+    <div class="mt-8">
+      <a
+        href={getLocalizedUrl(lang, 'guides')}
+        class="inline-flex items-center gap-1 text-sm font-medium text-adriatic-400 hover:text-adriatic-500 transition-colors"
+      >
+        {translations['home.seeAllFaqs']}
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
     </div>
   </section>
 </Page>

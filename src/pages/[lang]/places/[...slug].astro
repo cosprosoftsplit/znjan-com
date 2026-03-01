@@ -124,12 +124,12 @@ const tagLabels: Record<string, Record<Language, string>> = {
       </div>
     )}
 
-    <p class="text-warm-600 leading-relaxed">{description}</p>
+    <p class="text-stone leading-relaxed">{description}</p>
 
     {place.data.starRating && (
       <div class="mt-6 flex items-center gap-3">
         <span class="text-xl text-sand-500">{'★'.repeat(place.data.starRating)}{'☆'.repeat(5 - place.data.starRating)}</span>
-        <span class="text-sm text-warm-500">
+        <span class="text-sm text-stone">
           {place.data.starRating}-{lang === 'hr' ? 'zvjezdica' : lang === 'de' ? 'Sterne' : lang === 'it' ? 'stelle' : 'star'} {place.data.category === 'hotel' ? (lang === 'hr' ? 'hotel' : lang === 'de' ? 'Hotel' : lang === 'it' ? 'hotel' : 'hotel') : ''}
         </span>
         {place.data.roomCount && (
@@ -169,10 +169,10 @@ const tagLabels: Record<string, Record<Language, string>> = {
     )}
 
     {place.data.email && (
-      <div class="mt-6 p-4 bg-ocean-50 rounded-lg">
+      <div class="mt-6 p-4 bg-sand-50 border border-sand-200 rounded-xl">
         <p class="text-sm text-ocean-700">
           <strong>{lang === 'hr' ? 'E-pošta' : lang === 'de' ? 'E-Mail' : lang === 'it' ? 'E-mail' : 'Email'}:</strong>{' '}
-          <a href={`mailto:${place.data.email}`} class="text-ocean-600 hover:underline">{place.data.email}</a>
+          <a href={`mailto:${place.data.email}`} class="text-adriatic-400 hover:text-adriatic-500 hover:underline">{place.data.email}</a>
         </p>
       </div>
     )}

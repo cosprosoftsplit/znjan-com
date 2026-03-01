@@ -21,14 +21,14 @@ const l = labels[lang];
 <button
   id="search-trigger"
   type="button"
-  class="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-warm-500 bg-warm-100 rounded-lg hover:bg-warm-200 transition-colors"
+  class="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-cream/70 hover:text-white rounded-lg transition-colors duration-200"
   aria-label={l.search}
 >
   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
   </svg>
   <span class="hidden sm:inline">{l.search}</span>
-  <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 text-xs text-warm-400 bg-white rounded border border-warm-200">/</kbd>
+  <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 text-xs text-cream/50 bg-ocean-700/50 rounded border border-ocean-700">/</kbd>
 </button>
 
 <!-- Search dialog -->
@@ -37,23 +37,23 @@ const l = labels[lang];
   class="fixed inset-0 z-50 m-0 p-0 w-full h-full max-w-full max-h-full bg-transparent backdrop:bg-black/40"
 >
   <div class="flex items-start justify-center pt-[10vh] px-4 min-h-full">
-    <div class="w-full max-w-xl bg-white rounded-xl shadow-2xl border border-warm-200 overflow-hidden">
+    <div class="w-full max-w-xl bg-white rounded-xl shadow-2xl border border-sand-200 overflow-hidden">
       <!-- Search header -->
-      <div class="flex items-center gap-3 px-4 border-b border-warm-100">
-        <svg class="w-5 h-5 text-warm-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <div class="flex items-center gap-3 px-4 border-b border-sand-200">
+        <svg class="w-5 h-5 text-stone shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
         <input
           id="search-input"
           type="search"
           placeholder={l.placeholder}
-          class="flex-1 py-3 text-base text-warm-800 bg-transparent border-0 outline-none placeholder:text-warm-400"
+          class="flex-1 py-3 text-base text-warm-700 bg-transparent border-0 outline-none placeholder:text-stone/50"
           autocomplete="off"
         />
         <button
           id="search-close"
           type="button"
-          class="text-xs text-warm-400 bg-warm-100 rounded px-2 py-1 hover:bg-warm-200 transition-colors"
+          class="text-xs text-stone bg-sand-100 rounded px-2 py-1 hover:bg-sand-200 transition-colors duration-200"
         >
           Esc
         </button>
@@ -61,7 +61,7 @@ const l = labels[lang];
 
       <!-- Search results -->
       <div id="search-results" class="max-h-[50vh] overflow-y-auto p-2">
-        <div id="search-empty" class="hidden p-8 text-center text-warm-400 text-sm">
+        <div id="search-empty" class="hidden p-8 text-center text-stone text-sm">
           {l.noResults}
         </div>
       </div>
@@ -161,10 +161,10 @@ const l = labels[lang];
 
         const a = document.createElement('a');
         a.href = data.url;
-        a.className = 'block px-4 py-3 rounded-lg hover:bg-ocean-50 transition-colors';
+        a.className = 'block px-4 py-3 rounded-lg hover:bg-sand-50 transition-colors duration-200';
         a.innerHTML = `
           <div class="text-sm font-medium text-ocean-700">${data.meta?.title || data.url}</div>
-          ${data.excerpt ? `<div class="mt-1 text-xs text-warm-500 line-clamp-2">${data.excerpt}</div>` : ''}
+          ${data.excerpt ? `<div class="mt-1 text-xs text-stone line-clamp-2">${data.excerpt}</div>` : ''}
         `;
         a.addEventListener('click', () => closeSearch());
         results.appendChild(a);

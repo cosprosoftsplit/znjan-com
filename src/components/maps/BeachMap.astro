@@ -15,6 +15,7 @@ interface Props {
   markers?: MapMarker[];
   zoom?: number;
   height?: string;
+  fullWidth?: boolean;
 }
 
 const {
@@ -22,7 +23,10 @@ const {
   markers = [],
   zoom = 15,
   height = '450px',
+  fullWidth = false,
 } = Astro.props;
+
+const mapHeight = fullWidth ? '550px' : height;
 
 const mapLabels: Record<Language, Record<string, string>> = {
   en: { viewDetails: 'View details', zoomIn: 'Zoom in', zoomOut: 'Zoom out' },
@@ -48,12 +52,15 @@ const labels = mapLabels[lang];
 
 <div
   id="beach-map"
-  class="rounded-xl overflow-hidden border border-warm-200 shadow-sm"
-  style={`height: ${height}`}
+  class:list={[
+    'overflow-hidden',
+    fullWidth ? '' : 'rounded-xl border border-sand-200',
+  ]}
+  style={`height: ${mapHeight}`}
   role="application"
   aria-label={lang === 'hr' ? 'Interaktivna karta plaže Žnjan' : lang === 'de' ? 'Interaktive Karte Strand Žnjan' : lang === 'it' ? 'Mappa interattiva spiaggia Žnjan' : 'Interactive Znjan Beach Map'}
 >
-  <div class="flex items-center justify-center h-full bg-ocean-50 text-warm-500 text-sm">
+  <div class="flex items-center justify-center h-full bg-sand-50 text-stone text-sm">
     <svg class="w-5 h-5 animate-spin mr-2" fill="none" viewBox="0 0 24 24">
       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
       <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>

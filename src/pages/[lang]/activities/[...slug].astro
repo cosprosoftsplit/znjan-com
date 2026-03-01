@@ -78,9 +78,9 @@ const seasonLabels: Record<string, Record<Language, string>> = {
 >
   <!-- Breadcrumb -->
   <nav class="container-page pt-6" aria-label="Breadcrumb">
-    <ol class="flex items-center gap-2 text-sm text-warm-500">
+    <ol class="flex items-center gap-2 text-sm text-stone">
       <li>
-        <a href={`/${lang}/`} class="hover:text-ocean-600 transition-colors">
+        <a href={`/${lang}/`} class="hover:text-adriatic-400 transition-colors">
           {translations['nav.home']}
         </a>
       </li>
@@ -88,7 +88,7 @@ const seasonLabels: Record<string, Record<Language, string>> = {
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
-        <a href={getLocalizedUrl(lang, 'activities')} class="hover:text-ocean-600 transition-colors">
+        <a href={getLocalizedUrl(lang, 'activities')} class="hover:text-adriatic-400 transition-colors">
           {translations['nav.activities']}
         </a>
       </li>
@@ -111,7 +111,7 @@ const seasonLabels: Record<string, Record<Language, string>> = {
         )}
         <Badge variant="default">{seasonLabels[activity.data.season]?.[lang]}</Badge>
       </div>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-ocean-800 tracking-tight">
+      <h1 class="text-3xl md:text-4xl font-display font-semibold text-ocean-800 tracking-tight">
         {title}
       </h1>
     </div>
@@ -123,7 +123,7 @@ const seasonLabels: Record<string, Record<Language, string>> = {
       <!-- Main Content -->
       <div class="lg:col-span-2">
         <div class="prose-beach">
-          <p class="text-warm-600 leading-relaxed text-lg">{description}</p>
+          <p class="text-stone leading-relaxed text-lg">{description}</p>
         </div>
 
         {activity.data.beachAreas.length > 0 && (
@@ -142,20 +142,20 @@ const seasonLabels: Record<string, Record<Language, string>> = {
 
       <!-- Sidebar -->
       <aside class="space-y-6">
-        <div class="bg-white rounded-xl shadow-sm border border-warm-200 p-6">
+        <div class="bg-white rounded-xl border border-sand-200 p-6">
           <h2 class="font-semibold text-ocean-700 mb-4">
             {lang === 'hr' ? 'Detalji' : lang === 'de' ? 'Details' : lang === 'it' ? 'Dettagli' : 'Details'}
           </h2>
           <dl class="space-y-3 text-sm">
             <div>
-              <dt class="text-warm-400 font-medium">
+              <dt class="text-stone/70 font-medium">
                 {lang === 'hr' ? 'Kategorija' : lang === 'de' ? 'Kategorie' : lang === 'it' ? 'Categoria' : 'Category'}
               </dt>
               <dd class="mt-0.5 text-warm-700">{categoryLabels[activity.data.category]?.[lang]}</dd>
             </div>
             {activity.data.difficulty && (
               <div>
-                <dt class="text-warm-400 font-medium">
+                <dt class="text-stone/70 font-medium">
                   {lang === 'hr' ? 'Težina' : lang === 'de' ? 'Schwierigkeit' : lang === 'it' ? 'Difficoltà' : 'Difficulty'}
                 </dt>
                 <dd class="mt-0.5 text-warm-700">{difficultyLabels[activity.data.difficulty]?.[lang]}</dd>
@@ -163,20 +163,20 @@ const seasonLabels: Record<string, Record<Language, string>> = {
             )}
             {activity.data.duration && (
               <div>
-                <dt class="text-warm-400 font-medium">{translations['activities.duration']}</dt>
+                <dt class="text-stone/70 font-medium">{translations['activities.duration']}</dt>
                 <dd class="mt-0.5 text-warm-700">{getLocalized(activity.data.duration, lang)}</dd>
               </div>
             )}
             {activity.data.priceRange && (
               <div>
-                <dt class="text-warm-400 font-medium">
+                <dt class="text-stone/70 font-medium">
                   {lang === 'hr' ? 'Cijena' : lang === 'de' ? 'Preis' : lang === 'it' ? 'Prezzo' : 'Price'}
                 </dt>
                 <dd class="mt-0.5 text-warm-700">{activity.data.priceRange}</dd>
               </div>
             )}
             <div>
-              <dt class="text-warm-400 font-medium">
+              <dt class="text-stone/70 font-medium">
                 {lang === 'hr' ? 'Sezona' : lang === 'de' ? 'Saison' : lang === 'it' ? 'Stagione' : 'Season'}
               </dt>
               <dd class="mt-0.5 text-warm-700">{seasonLabels[activity.data.season]?.[lang]}</dd>

@@ -46,7 +46,7 @@ const past = allEvents
       <div class="space-y-12">
         {upcoming.length > 0 && (
           <div>
-            <h2 class="text-2xl font-bold text-ocean-800 mb-6">{translations['events.upcoming']}</h2>
+            <h2 class="text-2xl font-display font-semibold text-ocean-800 mb-6">{translations['events.upcoming']}</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               {upcoming.map((event) => (
                 <Card href={getLocalizedUrl(lang, 'events', event.data.slugs[lang])}>
@@ -58,10 +58,10 @@ const past = allEvents
                     <h3 class="text-lg font-semibold text-ocean-700">
                       {getLocalized(event.data.title, lang)}
                     </h3>
-                    <p class="mt-2 text-sm text-warm-500 line-clamp-2">
+                    <p class="mt-2 text-sm text-stone line-clamp-2">
                       {getLocalized(event.data.description, lang)}
                     </p>
-                    <div class="mt-4 text-xs text-warm-400">
+                    <div class="mt-4 text-xs text-stone/70">
                       <span>{formatDate(event.data.startDate, lang)}</span>
                       {event.data.location && <span> • {event.data.location}</span>}
                     </div>
@@ -74,18 +74,18 @@ const past = allEvents
 
         {past.length > 0 && (
           <div>
-            <h2 class="text-2xl font-bold text-warm-500 mb-6">{translations['events.past']}</h2>
+            <h2 class="text-2xl font-bold text-stone mb-6">{translations['events.past']}</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 opacity-75">
               {past.map((event) => (
                 <Card href={getLocalizedUrl(lang, 'events', event.data.slugs[lang])}>
                   <div class="p-6">
-                    <h3 class="text-lg font-semibold text-warm-600">
+                    <h3 class="text-lg font-semibold text-stone">
                       {getLocalized(event.data.title, lang)}
                     </h3>
-                    <p class="mt-2 text-sm text-warm-400 line-clamp-2">
+                    <p class="mt-2 text-sm text-stone/70 line-clamp-2">
                       {getLocalized(event.data.description, lang)}
                     </p>
-                    <div class="mt-4 text-xs text-warm-400">
+                    <div class="mt-4 text-xs text-stone/70">
                       <span>{formatDate(event.data.startDate, lang)}</span>
                     </div>
                   </div>
@@ -97,7 +97,7 @@ const past = allEvents
       </div>
     ) : (
       <div class="text-center py-16">
-        <p class="text-lg text-warm-500">
+        <p class="text-lg text-stone">
           {lang === 'hr' ? 'Događanja dolaze uskoro! Vraćajte se po najnovije informacije.' :
            lang === 'de' ? 'Veranstaltungen kommen bald! Schauen Sie wieder vorbei.' :
            lang === 'it' ? 'Gli eventi arriveranno presto! Torna per le ultime informazioni.' :

@@ -1,7 +1,7 @@
 ---
 import Page from '@/layouts/Page.astro';
 import Hero from '@/components/sections/Hero.astro';
-import Card from '@/components/ui/Card.astro';
+import ScrollReveal from '@/components/ui/ScrollReveal.astro';
 import Badge from '@/components/ui/Badge.astro';
 import BeachMap from '@/components/maps/BeachMap.astro';
 import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
@@ -56,6 +56,35 @@ const facilityLabels: Record<string, Record<Language, string>> = {
   'volleyball-courts': { en: 'Volleyball', hr: 'Odbojka', de: 'Volleyball', it: 'Pallavolo' },
   'water-sports-rental': { en: 'Water Sports', hr: 'Vodeni sportovi', de: 'Wassersport', it: 'Sport acquatici' },
   amphitheater: { en: 'Amphitheater', hr: 'Amfiteatar', de: 'Amphitheater', it: 'Anfiteatro' },
+  'shallow-water': { en: 'Shallow Water', hr: 'Plitka voda', de: 'Flaches Wasser', it: 'Acqua bassa' },
+  'basketball-courts': { en: 'Basketball', hr: 'Košarka', de: 'Basketball', it: 'Pallacanestro' },
+  'cage-football': { en: 'Cage Football', hr: 'Kavez nogomet', de: 'Käfig-Fußball', it: 'Calcetto' },
+  'skate-park': { en: 'Skate Park', hr: 'Skate park', de: 'Skatepark', it: 'Skate park' },
+  'fitness-equipment': { en: 'Fitness', hr: 'Fitness', de: 'Fitness', it: 'Fitness' },
+  'cycling-path': { en: 'Cycling Path', hr: 'Biciklistička staza', de: 'Radweg', it: 'Pista ciclabile' },
+  benches: { en: 'Benches', hr: 'Klupe', de: 'Bänke', it: 'Panchine' },
+  lighting: { en: 'Lighting', hr: 'Rasvjeta', de: 'Beleuchtung', it: 'Illuminazione' },
+  seating: { en: 'Seating', hr: 'Sjedenje', de: 'Sitzplätze', it: 'Posti a sedere' },
+  stage: { en: 'Stage', hr: 'Pozornica', de: 'Bühne', it: 'Palcoscenico' },
+  'public-restrooms': { en: 'Restrooms', hr: 'Javni WC', de: 'Toiletten', it: 'Servizi igienici' },
+};
+
+const areaVariants: string[] = ['ocean', 'adriatic', 'sunset', 'coral', 'sand'];
+const gradientMap: Record<string, string> = {
+  ocean: 'linear-gradient(135deg, #0077B6 0%, #023e8a 40%, #0096c7 100%)',
+  adriatic: 'linear-gradient(135deg, #2d8a9b 0%, #0077B6 50%, #48cae4 100%)',
+  sunset: 'linear-gradient(135deg, #e07d6a 0%, #f4a261 100%)',
+  coral: 'linear-gradient(135deg, #e07d6a 0%, #c1574a 50%, #e9967a 100%)',
+  sand: 'linear-gradient(135deg, #d4c4a8 0%, #b8a88a 100%)',
+};
+
+// Beach area images (from znjan.hr)
+const areaImages: Record<string, { src: string; credit: string }> = {
+  'main-beach': { src: '/images/hero/znjan-aerial-1.jpg', credit: 'Photo: znjan.hr' },
+  'sports-zone': { src: '/images/hero/znjan-aerial-2.jpg', credit: 'Photo: znjan.hr' },
+  'kids-area': { src: '/images/hero/znjan-aerial-3.jpg', credit: 'Photo: znjan.hr' },
+  'amphitheater': { src: '/images/hero/znjan-aerial-4.jpg', credit: 'Photo: znjan.hr' },
+  'promenade': { src: '/images/hero/znjan-still-2.jpg', credit: 'Photo: znjan.hr' },
 };
 ---
 
@@ -77,46 +106,88 @@ const facilityLabels: Record<string, Record<Language, string>> = {
     <BeachMap lang={lang} markers={mapMarkers} zoom={15} height="400px" />
   </section>
 
+  <!-- Asymmetric Grid (same pattern as homepage) -->
   <section class="container-page py-16">
-    <div class="space-y-8">
-      {areas.map((area) => (
-        <Card href={getLocalizedUrl(lang, 'beach-areas', area.data.slug[lang])}>
-          <div class="p-6 md:p-8">
-            <div class="flex items-start justify-between gap-4">
-              <div class="flex-1">
-                <h2 class="text-xl md:text-2xl font-bold text-ocean-700">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[220px] md:auto-rows-[260px]">
+      {areas.map((area, i) => {
+        const isFeatured = i === 0;
+        const variant = areaVariants[i % areaVariants.length];
+        const gradient = gradientMap[variant];
+
+        return (
+          <ScrollReveal
+            animation="fade-up"
+            delay={i * 80}
+            class:list={[
+              isFeatured ? 'md:col-span-2 md:row-span-2' : '',
+            ]}
+          >
+            <a
+              href={getLocalizedUrl(lang, 'beach-areas', area.data.slug[lang])}
+              class="group relative block w-full h-full rounded-2xl overflow-hidden"
+            >
+              {/* Background */}
+              {areaImages[area.data.id] ? (
+                <>
+                  <img src={areaImages[area.data.id].src} alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                  <span class="absolute top-2 right-2 px-1.5 py-0.5 text-[9px] text-white/60 bg-black/30 backdrop-blur-sm rounded z-10">
+                    {areaImages[area.data.id].credit}
+                  </span>
+                </>
+              ) : (
+                <div class="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={`background: ${gradient}`}>
+                  <svg class="absolute inset-0 w-full h-full opacity-10" preserveAspectRatio="none" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 100 Q50 60 100 100 T200 100 T300 100 T400 100" fill="none" stroke="white" stroke-width="2" />
+                    <path d="M0 140 Q50 100 100 140 T200 140 T300 140 T400 140" fill="none" stroke="white" stroke-width="1.5" />
+                  </svg>
+                </div>
+              )}
+
+              {/* Overlay */}
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-colors duration-300"></div>
+
+              {/* Content */}
+              <div class="absolute inset-0 flex flex-col justify-end p-5 md:p-6">
+                {area.data.featured && (
+                  <div class="mb-2">
+                    <Badge variant="coral">{translations['places.featured']}</Badge>
+                  </div>
+                )}
+                <h2 class:list={[
+                  'font-display font-semibold text-white',
+                  isFeatured ? 'text-2xl md:text-3xl' : 'text-lg md:text-xl',
+                ]}>
                   {getLocalized(area.data.title, lang)}
                 </h2>
-                <p class="mt-3 text-warm-500 leading-relaxed">
+                <p class:list={[
+                  'mt-1 text-white/80',
+                  isFeatured ? 'text-sm md:text-base line-clamp-2' : 'text-sm line-clamp-1',
+                ]}>
                   {area.data.shortDescription
                     ? getLocalized(area.data.shortDescription, lang)
                     : getLocalized(area.data.description, lang)}
                 </p>
-
                 {area.data.facilities.length > 0 && (
-                  <div class="mt-4">
-                    <h3 class="text-sm font-medium text-warm-400 mb-2">
-                      {translations['beachAreas.facilities']}
-                    </h3>
-                    <div class="flex flex-wrap gap-2">
-                      {area.data.facilities.map((facility: string) => (
-                        <Badge variant="default">
-                          {facilityLabels[facility]?.[lang] || facility}
-                        </Badge>
-                      ))}
-                    </div>
+                  <div class="mt-2 flex flex-wrap gap-1">
+                    {area.data.facilities.slice(0, isFeatured ? 6 : 3).map((facility: string) => (
+                      <span class="inline-block px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider bg-white/20 text-white rounded-full">
+                        {facilityLabels[facility]?.[lang] || facility}
+                      </span>
+                    ))}
+                    {area.data.facilities.length > (isFeatured ? 6 : 3) && (
+                      <span class="inline-block px-2 py-0.5 text-[10px] font-medium text-white/60">
+                        +{area.data.facilities.length - (isFeatured ? 6 : 3)}
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
-              {area.data.featured && (
-                <Badge variant="coral">
-                  {translations['places.featured']}
-                </Badge>
-              )}
-            </div>
-          </div>
-        </Card>
-      ))}
+
+              <div class="absolute inset-0 rounded-2xl ring-1 ring-white/10 group-hover:ring-white/20 transition-all duration-300"></div>
+            </a>
+          </ScrollReveal>
+        );
+      })}
     </div>
   </section>
 </Page>

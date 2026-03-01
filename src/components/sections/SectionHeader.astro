@@ -2,18 +2,26 @@
 interface Props {
   title: string;
   subtitle?: string;
+  eyebrow?: string;
+  accent?: boolean;
   class?: string;
 }
 
-const { title, subtitle, class: className } = Astro.props;
+const { title, subtitle, eyebrow, accent = false, class: className } = Astro.props;
 ---
 
 <div class:list={['text-center mb-10', className]}>
-  <h2 class="text-3xl md:text-4xl font-bold text-ocean-800 tracking-tight">
+  {eyebrow && (
+    <p class="eyebrow mb-3">{eyebrow}</p>
+  )}
+  <h2 class="text-3xl md:text-4xl font-display font-semibold text-ocean-800 tracking-tight">
     {title}
   </h2>
+  {accent && (
+    <div class="mt-4 mx-auto w-12 h-0.5 bg-coral-400"></div>
+  )}
   {subtitle && (
-    <p class="mt-3 text-lg text-warm-500 max-w-2xl mx-auto">
+    <p class="mt-4 text-lg text-stone max-w-2xl mx-auto">
       {subtitle}
     </p>
   )}

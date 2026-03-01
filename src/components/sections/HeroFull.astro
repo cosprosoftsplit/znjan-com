@@ -1,0 +1,122 @@
+---
+/**
+ * HeroFull — Full-viewport cinematic hero for the homepage.
+ * 100vh with bottom-aligned content, wave SVG transition, parallax background.
+ */
+import ScrollIndicator from '@/components/ui/ScrollIndicator.astro';
+
+interface Props {
+  title: string;
+  subtitle: string;
+  ctaText: string;
+  ctaHref: string;
+  scrollText?: string;
+  heroImage?: string;
+}
+
+const {
+  title,
+  subtitle,
+  ctaText,
+  ctaHref,
+  scrollText = 'Scroll',
+  heroImage,
+} = Astro.props;
+---
+
+<section class="relative min-h-screen flex items-end overflow-hidden">
+  <!-- Background (parallax) -->
+  <div class="absolute inset-0 hero-parallax">
+    {heroImage ? (
+      <img
+        src={heroImage}
+        alt=""
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
+      />
+    ) : (
+      <div
+        class="absolute inset-0"
+        style="background: linear-gradient(135deg, #023e8a 0%, #0077B6 30%, #0096c7 60%, #2d8a9b 100%)"
+      >
+        <!-- Wave pattern overlay -->
+        <svg class="absolute inset-0 w-full h-full opacity-[0.07]" preserveAspectRatio="none" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 300 Q150 200 300 300 T600 300 T900 300 T1200 300" fill="none" stroke="white" stroke-width="3" />
+          <path d="M0 350 Q150 250 300 350 T600 350 T900 350 T1200 350" fill="none" stroke="white" stroke-width="2" />
+          <path d="M0 400 Q150 300 300 400 T600 400 T900 400 T1200 400" fill="none" stroke="white" stroke-width="1.5" />
+          <path d="M0 450 Q150 350 300 450 T600 450 T900 450 T1200 450" fill="none" stroke="white" stroke-width="1" />
+        </svg>
+      </div>
+    )}
+  </div>
+
+  <!-- Gradient overlay -->
+  <div class="absolute inset-0 bg-gradient-to-t from-ocean-900/80 via-ocean-800/40 to-transparent"></div>
+
+  <!-- Content — bottom aligned -->
+  <div class="container-page relative z-10 pb-28 pt-48 md:pb-32 md:pt-56">
+    <div class="max-w-4xl">
+      <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-semibold text-white tracking-tight leading-[1.1]">
+        {title}
+      </h1>
+      <p class="mt-6 text-lg md:text-xl lg:text-2xl text-cream/80 max-w-2xl leading-relaxed">
+        {subtitle}
+      </p>
+      <div class="mt-10">
+        <a
+          href={ctaHref}
+          class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-coral-400 text-white font-semibold text-lg hover:bg-coral-500 transition-all duration-300 hover:shadow-lg hover:shadow-coral-400/25"
+        >
+          {ctaText}
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <ScrollIndicator scrollText={scrollText} />
+
+  <!-- Wave transition to cream -->
+  <div class="absolute bottom-0 left-0 right-0 z-10">
+    <svg
+      class="w-full h-16 md:h-24"
+      viewBox="0 0 1440 96"
+      preserveAspectRatio="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0 32C240 64 480 80 720 72C960 64 1200 32 1440 48V96H0Z"
+        fill="#faf7f2"
+      />
+    </svg>
+  </div>
+</section>
+
+<style>
+  .hero-parallax {
+    will-change: transform;
+  }
+</style>
+
+<script>
+  // Simple parallax — background moves at 0.3x scroll rate
+  const heroParallax = document.querySelector('.hero-parallax');
+  if (heroParallax && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          if (scrollY < window.innerHeight) {
+            (heroParallax as HTMLElement).style.transform = `translateY(${scrollY * 0.3}px)`;
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+</script>

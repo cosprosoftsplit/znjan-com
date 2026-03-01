@@ -1,0 +1,27 @@
+---
+/**
+ * ScrollIndicator — Animated bouncing chevron at hero bottom.
+ */
+interface Props {
+  scrollText?: string;
+}
+
+const { scrollText = 'Scroll' } = Astro.props;
+---
+
+<a
+  href="#content"
+  class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/70 hover:text-white transition-colors duration-300 z-20"
+  aria-label={scrollText}
+>
+  <span class="text-xs uppercase tracking-widest font-medium">{scrollText}</span>
+  <svg
+    class="w-6 h-6 animate-bounce"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+  </svg>
+</a>

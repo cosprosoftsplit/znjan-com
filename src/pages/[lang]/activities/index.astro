@@ -1,6 +1,7 @@
 ---
 import Page from '@/layouts/Page.astro';
 import Hero from '@/components/sections/Hero.astro';
+import ScrollReveal from '@/components/ui/ScrollReveal.astro';
 import Card from '@/components/ui/Card.astro';
 import Badge from '@/components/ui/Badge.astro';
 import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
@@ -25,15 +26,6 @@ const activities = allActivities.sort((a, b) => {
   return a.data.order - b.data.order;
 });
 
-const categoryIcons: Record<string, string> = {
-  'water-sports': '🏄',
-  'beach-sports': '🏐',
-  fitness: '🏃',
-  relaxation: '🧘',
-  tours: '🚢',
-  other: '🎯',
-};
-
 const categoryLabels: Record<string, Record<Language, string>> = {
   'water-sports': { en: 'Water Sports', hr: 'Vodeni sportovi', de: 'Wassersport', it: 'Sport acquatici' },
   'beach-sports': { en: 'Beach Sports', hr: 'Sportovi na plaži', de: 'Strandsport', it: 'Sport da spiaggia' },
@@ -47,6 +39,23 @@ const difficultyLabels: Record<string, Record<Language, string>> = {
   easy: { en: 'Easy', hr: 'Lako', de: 'Leicht', it: 'Facile' },
   moderate: { en: 'Moderate', hr: 'Umjereno', de: 'Mittel', it: 'Moderato' },
   hard: { en: 'Hard', hr: 'Teško', de: 'Schwer', it: 'Difficile' },
+};
+
+// Group activities by category
+const categories = [...new Set(activities.map((a) => a.data.category))];
+const grouped = categories.map((cat) => ({
+  category: cat,
+  label: categoryLabels[cat]?.[lang] || cat,
+  items: activities.filter((a) => a.data.category === cat),
+}));
+
+const activityIcons: Record<string, string> = {
+  swimming: '🏊',
+  paddleboarding: '🏄',
+  'beach-volleyball': '🏐',
+  cycling: '🚴',
+  kayaking: '🛶',
+  snorkeling: '🤿',
 };
 ---
 
@@ -63,42 +72,59 @@ const difficultyLabels: Record<string, Record<Language, string>> = {
     subtitle={translations['activities.subtitle']}
   />
 
-  <section class="container-page py-16">
+  <section class="container-page section-breathe-lg">
     {activities.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {activities.map((activity) => (
-          <Card href={getLocalizedUrl(lang, 'activities', activity.data.slug[lang])}>
-            <div class="p-6">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="text-xl">{categoryIcons[activity.data.category] || '🎯'}</span>
-                <Badge variant="ocean">{categoryLabels[activity.data.category]?.[lang] || activity.data.category}</Badge>
-                {activity.data.difficulty && (
-                  <Badge variant="sand">{difficultyLabels[activity.data.difficulty]?.[lang]}</Badge>
-                )}
-              </div>
-              <h2 class="text-lg font-semibold text-ocean-700">
-                {getLocalized(activity.data.title, lang)}
+      <div class="space-y-16">
+        {grouped.map((group, gi) => (
+          <div>
+            <ScrollReveal animation="fade-up" delay={gi * 80}>
+              <h2 class="text-2xl md:text-3xl font-display font-semibold text-ocean-800 tracking-tight flex items-center gap-3">
+                {group.label}
+                <span class="text-sm font-sans font-normal text-stone/50">({group.items.length})</span>
               </h2>
-              <p class="mt-2 text-sm text-warm-500 line-clamp-3">
-                {activity.data.shortDescription
-                  ? getLocalized(activity.data.shortDescription, lang)
-                  : getLocalized(activity.data.description, lang)}
-              </p>
-              <div class="mt-4 flex items-center gap-3 text-xs text-warm-400">
-                {activity.data.duration && (
-                  <span>{translations['activities.duration']}: {getLocalized(activity.data.duration, lang)}</span>
-                )}
-                {activity.data.priceRange && (
-                  <span>{activity.data.priceRange}</span>
-                )}
-              </div>
+              <div class="mt-1 h-0.5 w-16 bg-coral-400 rounded-full"></div>
+            </ScrollReveal>
+
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {group.items.map((activity, i) => (
+                <ScrollReveal animation="fade-up" delay={i * 60}>
+                  <Card href={getLocalizedUrl(lang, 'activities', activity.data.slug[lang])}>
+                    <div class="p-6">
+                      <div class="flex items-center gap-3 mb-3">
+                        <span class="text-2xl">{activityIcons[activity.data.id] || '🏖️'}</span>
+                        <div class="flex items-center gap-2">
+                          {activity.data.difficulty && (
+                            <Badge variant="sand">{difficultyLabels[activity.data.difficulty]?.[lang]}</Badge>
+                          )}
+                        </div>
+                      </div>
+                      <h3 class="text-lg font-semibold text-ocean-700">
+                        {getLocalized(activity.data.title, lang)}
+                      </h3>
+                      <p class="mt-2 text-sm text-stone line-clamp-3">
+                        {activity.data.shortDescription
+                          ? getLocalized(activity.data.shortDescription, lang)
+                          : getLocalized(activity.data.description, lang)}
+                      </p>
+                      <div class="mt-4 flex items-center gap-3 text-xs text-stone/70">
+                        {activity.data.duration && (
+                          <span>{translations['activities.duration']}: {getLocalized(activity.data.duration, lang)}</span>
+                        )}
+                        {activity.data.priceRange && (
+                          <span>{activity.data.priceRange}</span>
+                        )}
+                      </div>
+                    </div>
+                  </Card>
+                </ScrollReveal>
+              ))}
             </div>
-          </Card>
+          </div>
         ))}
       </div>
     ) : (
       <div class="text-center py-16">
-        <p class="text-lg text-warm-500">
+        <p class="text-lg text-stone">
           {lang === 'hr' ? 'Aktivnosti dolaze uskoro!' :
            lang === 'de' ? 'Aktivitäten kommen bald!' :
            lang === 'it' ? 'Le attività arriveranno presto!' :

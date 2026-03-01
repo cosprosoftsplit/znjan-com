@@ -1,0 +1,99 @@
+---
+/**
+ * BeachAreasGrid — Asymmetric feature grid for beach areas.
+ * First area spans 2 cols + 2 rows, rest fill naturally.
+ */
+import ScrollReveal from '@/components/ui/ScrollReveal.astro';
+
+interface Area {
+  title: string;
+  href: string;
+  facilitiesCount: number;
+  variant: 'ocean' | 'sunset' | 'sand' | 'coral' | 'adriatic';
+  image?: string;
+}
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  areas: Area[];
+  facilitiesLabel: string;
+}
+
+const { eyebrow, title, areas, facilitiesLabel } = Astro.props;
+
+const gradientMap: Record<string, string> = {
+  ocean: 'linear-gradient(135deg, #0077B6 0%, #023e8a 40%, #0096c7 100%)',
+  sunset: 'linear-gradient(135deg, #e07d6a 0%, #f4a261 50%, #e76f51 100%)',
+  sand: 'linear-gradient(135deg, #d4c4a8 0%, #b8a88a 50%, #c9b896 100%)',
+  coral: 'linear-gradient(135deg, #e07d6a 0%, #c1574a 50%, #e9967a 100%)',
+  adriatic: 'linear-gradient(135deg, #2d8a9b 0%, #0077B6 50%, #48cae4 100%)',
+};
+
+const variants: ('ocean' | 'sunset' | 'sand' | 'coral' | 'adriatic')[] = ['ocean', 'adriatic', 'sunset', 'coral', 'sand'];
+---
+
+<section class="container-page section-breathe-lg">
+  <ScrollReveal>
+    <span class="eyebrow">{eyebrow}</span>
+    <h2 class="mt-3 text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-ocean-800 tracking-tight">
+      {title}
+    </h2>
+  </ScrollReveal>
+
+  <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[220px] md:auto-rows-[240px]">
+    {areas.map((area, i) => {
+      const variant = area.variant || variants[i % variants.length];
+      const gradient = gradientMap[variant];
+      const isFeatured = i === 0;
+
+      return (
+        <ScrollReveal
+          animation="fade-up"
+          delay={i * 80}
+          class:list={[
+            isFeatured ? 'md:col-span-2 md:row-span-2' : '',
+          ]}
+        >
+          <a
+            href={area.href}
+            class="group relative block w-full h-full rounded-2xl overflow-hidden"
+          >
+            {/* Background */}
+            {area.image ? (
+              <img src={area.image} alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            ) : (
+              <div class="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={`background: ${gradient}`}>
+                <svg class="absolute inset-0 w-full h-full opacity-10" preserveAspectRatio="none" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0 100 Q50 60 100 100 T200 100 T300 100 T400 100" fill="none" stroke="white" stroke-width="2" />
+                  <path d="M0 140 Q50 100 100 140 T200 140 T300 140 T400 140" fill="none" stroke="white" stroke-width="1.5" />
+                </svg>
+              </div>
+            )}
+
+            {/* Overlay */}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-colors duration-300"></div>
+
+            {/* Content */}
+            <div class="absolute inset-0 flex flex-col justify-end p-5 md:p-6">
+              <h3 class:list={[
+                'font-display font-semibold text-white',
+                isFeatured ? 'text-2xl md:text-3xl' : 'text-lg md:text-xl',
+              ]}>
+                {area.title}
+              </h3>
+              {area.facilitiesCount > 0 && (
+                <p class="mt-1 text-sm text-white/70">
+                  {area.facilitiesCount} {facilitiesLabel}
+                </p>
+              )}
+            </div>
+
+            {/* Hover lift */}
+            <div class="absolute inset-0 rounded-2xl ring-1 ring-white/10 group-hover:ring-white/20 transition-all duration-300"></div>
+          </a>
+        </ScrollReveal>
+      );
+    })}
+  </div>
+</section>

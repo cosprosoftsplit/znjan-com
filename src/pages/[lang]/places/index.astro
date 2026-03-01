@@ -1,6 +1,7 @@
 ---
 import Page from '@/layouts/Page.astro';
 import Hero from '@/components/sections/Hero.astro';
+import ScrollReveal from '@/components/ui/ScrollReveal.astro';
 import Card from '@/components/ui/Card.astro';
 import Badge from '@/components/ui/Badge.astro';
 import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
@@ -25,15 +26,8 @@ const places = allPlaces.sort((a, b) => {
   return a.data.order - b.data.order;
 });
 
-const categoryIcons: Record<string, string> = {
-  restaurant: '🍽️',
-  bar: '🍹',
-  'beach-club': '🏖️',
-  cafe: '☕',
-  shop: '🛍️',
-  hotel: '🏨',
-  other: '📍',
-};
+const featured = places.filter((p) => p.data.featured);
+const remaining = places.filter((p) => !p.data.featured);
 
 const categoryLabels: Record<string, Record<Language, string>> = {
   restaurant: { en: 'Restaurant', hr: 'Restoran', de: 'Restaurant', it: 'Ristorante' },
@@ -43,6 +37,24 @@ const categoryLabels: Record<string, Record<Language, string>> = {
   shop: { en: 'Shop', hr: 'Trgovina', de: 'Geschäft', it: 'Negozio' },
   hotel: { en: 'Hotel', hr: 'Hotel', de: 'Hotel', it: 'Hotel' },
   other: { en: 'Other', hr: 'Ostalo', de: 'Sonstiges', it: 'Altro' },
+};
+
+const gradientMap: Record<string, string> = {
+  restaurant: 'linear-gradient(135deg, #e07d6a 0%, #f4a261 100%)',
+  bar: 'linear-gradient(135deg, #2d8a9b 0%, #0077B6 100%)',
+  'beach-club': 'linear-gradient(135deg, #0077B6 0%, #023e8a 40%, #0096c7 100%)',
+  cafe: 'linear-gradient(135deg, #d4c4a8 0%, #b8a88a 100%)',
+  hotel: 'linear-gradient(135deg, #023e8a 0%, #0077B6 100%)',
+  other: 'linear-gradient(135deg, #5a6a6e 0%, #748c94 100%)',
+};
+
+// Place images + credits
+const placeImages: Record<string, { src: string; credit: string }> = {
+  'taboo-beach-club': { src: '/images/places/taboo-daybeds.jpg', credit: 'Photo: Taboo Beach Club' },
+  'mistral-beach-club': { src: '/images/places/mistral-lounge.jpg', credit: 'Photo: Mistral Beach Club' },
+  'central-beach': { src: '/images/places/central-beach-indoor.webp', credit: 'Photo: Central Beach Split' },
+  'mimi-italian-clubino': { src: '/images/places/mimi-main.webp', credit: 'Photo: MIMI / F Group' },
+  'gal-split': { src: '/images/places/gal-terrace.jpg', credit: 'Photo: GAL Split' },
 };
 ---
 
@@ -59,33 +71,88 @@ const categoryLabels: Record<string, Record<Language, string>> = {
     subtitle={translations['places.subtitle']}
   />
 
-  <section class="container-page py-16">
+  <section class="container-page section-breathe-lg">
     {places.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {places.map((place) => (
-          <Card href={getLocalizedUrl(lang, 'places', place.data.slug[lang])}>
-            <div class="p-6">
-              <div class="flex items-center gap-2 mb-3 flex-wrap">
-                <span class="text-xl">{categoryIcons[place.data.category] || '📍'}</span>
-                <Badge variant="sand">{categoryLabels[place.data.category]?.[lang] || place.data.category}</Badge>
-                {place.data.starRating && <Badge variant="default">{'★'.repeat(place.data.starRating)}</Badge>}
-                {place.data.status === 'coming-soon' && <Badge variant="coral">{lang === 'hr' ? 'Uskoro' : lang === 'de' ? 'Demnächst' : lang === 'it' ? 'Prossimamente' : 'Coming Soon'}</Badge>}
-                {place.data.featured && place.data.status !== 'coming-soon' && <Badge variant="ocean">{translations['places.featured']}</Badge>}
-                {place.data.priceRange && <span class="text-sm text-warm-400 ml-auto">{place.data.priceRange}</span>}
-              </div>
-              <h2 class="text-lg font-semibold text-ocean-700">
-                {getLocalized(place.data.title, lang)}
-              </h2>
-              <p class="mt-2 text-sm text-warm-500 line-clamp-3">
-                {getLocalized(place.data.description, lang)}
-              </p>
-            </div>
-          </Card>
-        ))}
-      </div>
+      <>
+        {/* Featured places — large 2-col image cards */}
+        {featured.length > 0 && (
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            {featured.map((place, i) => {
+              const gradient = gradientMap[place.data.category] || gradientMap['other'];
+              const img = placeImages[place.data.id];
+              return (
+                <ScrollReveal animation="fade-up" delay={i * 100}>
+                  <a
+                    href={getLocalizedUrl(lang, 'places', place.data.slug[lang])}
+                    class="group relative block rounded-2xl overflow-hidden aspect-[16/9]"
+                  >
+                    {img ? (
+                      <>
+                        <img src={img.src} alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                        <span class="absolute bottom-1 right-1 px-1.5 py-0.5 text-[9px] text-white/60 bg-black/30 backdrop-blur-sm rounded z-10">
+                          {img.credit}
+                        </span>
+                      </>
+                    ) : (
+                      <div
+                        class="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
+                        style={`background: ${gradient}`}
+                      >
+                        <svg class="absolute inset-0 w-full h-full opacity-10" preserveAspectRatio="none" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0 100 Q50 60 100 100 T200 100 T300 100 T400 100" fill="none" stroke="white" stroke-width="2" />
+                        </svg>
+                      </div>
+                    )}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+                    <div class="absolute top-4 left-4">
+                      <span class="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider bg-white/90 text-ocean-700 rounded-full">
+                        {categoryLabels[place.data.category]?.[lang] || place.data.category}
+                      </span>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                      <h2 class="text-xl md:text-2xl font-display font-semibold text-white">
+                        {getLocalized(place.data.title, lang)}
+                      </h2>
+                      <p class="mt-2 text-sm text-white/80 line-clamp-2">
+                        {getLocalized(place.data.description, lang)}
+                      </p>
+                    </div>
+                  </a>
+                </ScrollReveal>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Remaining places — standard grid */}
+        {remaining.length > 0 && (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {remaining.map((place, i) => (
+              <ScrollReveal animation="fade-up" delay={i * 60}>
+                <Card href={getLocalizedUrl(lang, 'places', place.data.slug[lang])}>
+                  <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3 flex-wrap">
+                      <Badge variant="sand">{categoryLabels[place.data.category]?.[lang] || place.data.category}</Badge>
+                      {place.data.starRating && <Badge variant="default">{'★'.repeat(place.data.starRating)}</Badge>}
+                      {place.data.status === 'coming-soon' && <Badge variant="coral">{lang === 'hr' ? 'Uskoro' : lang === 'de' ? 'Demnächst' : lang === 'it' ? 'Prossimamente' : 'Coming Soon'}</Badge>}
+                      {place.data.priceRange && <span class="text-sm text-stone/70 ml-auto">{place.data.priceRange}</span>}
+                    </div>
+                    <h2 class="text-lg font-semibold text-ocean-700">
+                      {getLocalized(place.data.title, lang)}
+                    </h2>
+                    <p class="mt-2 text-sm text-stone line-clamp-3">
+                      {getLocalized(place.data.description, lang)}
+                    </p>
+                  </div>
+                </Card>
+              </ScrollReveal>
+            ))}
+          </div>
+        )}
+      </>
     ) : (
       <div class="text-center py-16">
-        <p class="text-lg text-warm-500">
+        <p class="text-lg text-stone">
           {lang === 'hr' ? 'Mjesta dolaze uskoro!' :
            lang === 'de' ? 'Orte kommen bald!' :
            lang === 'it' ? 'I luoghi arriveranno presto!' :

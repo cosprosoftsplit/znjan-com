@@ -1,0 +1,101 @@
+---
+/**
+ * StatsAnimated — Scroll-triggered animated counters on dark background.
+ */
+import ScrollReveal from '@/components/ui/ScrollReveal.astro';
+
+interface Stat {
+  value: string;
+  suffix?: string;
+  label: string;
+}
+
+interface Props {
+  stats: Stat[];
+}
+
+const { stats } = Astro.props;
+---
+
+<section class="relative bg-ocean-800 text-cream section-breathe-lg wave-pattern overflow-hidden">
+  <div class="container-page relative z-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+      {stats.map((stat, i) => (
+        <ScrollReveal animation="fade-up" delay={i * 100}>
+          <div class="text-center">
+            <div
+              class="stat-counter text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-semibold text-white"
+              data-target={stat.value}
+              data-suffix={stat.suffix || ''}
+              data-delay={i * 100}
+            >
+              {stat.value}{stat.suffix || ''}
+            </div>
+            <div class="mt-2 text-sm md:text-base text-cream/60 tracking-wide">
+              {stat.label}
+            </div>
+          </div>
+        </ScrollReveal>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function animateCounters() {
+    const counters = document.querySelectorAll('.stat-counter');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          if (el.dataset.animated === 'true') return;
+          el.dataset.animated = 'true';
+
+          const target = el.dataset.target || '0';
+          const suffix = el.dataset.suffix || '';
+          const delay = parseInt(el.dataset.delay || '0', 10);
+
+          // Parse numeric portion
+          const numericMatch = target.match(/^([^\d]*)(\d+)(.*)/);
+          if (!numericMatch) return;
+
+          const prefix = numericMatch[1];
+          const numTarget = parseInt(numericMatch[2], 10);
+          const rest = numericMatch[3];
+
+          setTimeout(() => {
+            const duration = 1200;
+            const start = performance.now();
+
+            function update(now: number) {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              // Ease-out cubic
+              const eased = 1 - Math.pow(1 - progress, 3);
+              const current = Math.round(numTarget * eased);
+
+              el.textContent = `${prefix}${current}${rest}${suffix}`;
+
+              if (progress < 1) {
+                requestAnimationFrame(update);
+              } else {
+                el.classList.add('counter-animated');
+              }
+            }
+
+            requestAnimationFrame(update);
+          }, delay);
+
+          observer.unobserve(el);
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    counters.forEach((c) => observer.observe(c));
+  }
+
+  animateCounters();
+</script>

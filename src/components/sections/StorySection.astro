@@ -1,0 +1,109 @@
+---
+/**
+ * StorySection — Split-screen zig-zag narrative.
+ * 3 blocks alternating image-left/text-right, then image-right/text-left.
+ * 58%/42% width split for asymmetry.
+ */
+import ScrollReveal from '@/components/ui/ScrollReveal.astro';
+
+interface StoryBlock {
+  eyebrow: string;
+  title: string;
+  text: string;
+  variant: 'ocean' | 'sunset' | 'sand' | 'coral' | 'adriatic';
+  image?: string;
+  credit?: string;
+}
+
+interface Props {
+  blocks: StoryBlock[];
+}
+
+const { blocks } = Astro.props;
+
+const gradientMap: Record<string, string> = {
+  ocean: 'linear-gradient(135deg, #0077B6 0%, #023e8a 40%, #0096c7 100%)',
+  sunset: 'linear-gradient(135deg, #e07d6a 0%, #f4a261 50%, #e76f51 100%)',
+  sand: 'linear-gradient(135deg, #d4c4a8 0%, #b8a88a 50%, #c9b896 100%)',
+  coral: 'linear-gradient(135deg, #e07d6a 0%, #c1574a 50%, #e9967a 100%)',
+  adriatic: 'linear-gradient(135deg, #2d8a9b 0%, #0077B6 50%, #48cae4 100%)',
+};
+---
+
+<section class="bg-sand-50 section-breathe-lg overflow-hidden">
+  <div class="container-page space-y-20 md:space-y-28">
+    {blocks.map((block, i) => {
+      const isReversed = i % 2 === 1;
+      const gradient = gradientMap[block.variant] || gradientMap['ocean'];
+
+      return (
+        <div class:list={[
+          'flex flex-col gap-8 items-center',
+          isReversed ? 'md:flex-row-reverse' : 'md:flex-row',
+        ]}>
+          {/* Image side — 58% */}
+          <ScrollReveal
+            animation={isReversed ? 'slide-right' : 'slide-left'}
+            delay={i * 100}
+            class="w-full md:w-[58%] relative"
+          >
+            <div class="relative">
+              {/* Decorative corner accent */}
+              <div class:list={[
+                'absolute -z-10 w-24 h-24 rounded-2xl bg-coral-400/20',
+                isReversed ? '-left-3 -top-3' : '-right-3 -top-3',
+              ]}></div>
+
+              {/* Image */}
+              <div class:list={[
+                'rounded-2xl overflow-hidden',
+                isReversed ? 'md:-ml-8' : 'md:-mr-8',
+              ]}>
+                {block.image ? (
+                  <figure class="relative">
+                    <img
+                      src={block.image}
+                      alt=""
+                      class="w-full aspect-[4/3] object-cover"
+                      loading="lazy"
+                    />
+                    {block.credit && (
+                      <figcaption class="absolute bottom-0 right-0 px-2 py-1 text-[10px] text-white/70 bg-black/30 backdrop-blur-sm rounded-tl">
+                        {block.credit}
+                      </figcaption>
+                    )}
+                  </figure>
+                ) : (
+                  <div
+                    class="w-full aspect-[4/3] relative"
+                    style={`background: ${gradient}`}
+                  >
+                    <svg class="absolute inset-0 w-full h-full opacity-10" preserveAspectRatio="none" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0 150 Q50 100 100 150 T200 150 T300 150 T400 150" fill="none" stroke="white" stroke-width="2" />
+                      <path d="M0 200 Q50 150 100 200 T200 200 T300 200 T400 200" fill="none" stroke="white" stroke-width="1.5" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* Text side — 42% */}
+          <ScrollReveal
+            animation="fade-up"
+            delay={i * 100 + 150}
+            class="w-full md:w-[42%]"
+          >
+            <span class="eyebrow">{block.eyebrow}</span>
+            <h3 class="mt-3 text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-ocean-800 tracking-tight leading-tight">
+              {block.title}
+            </h3>
+            <p class="mt-4 text-stone leading-relaxed">
+              {block.text}
+            </p>
+          </ScrollReveal>
+        </div>
+      );
+    })}
+  </div>
+</section>

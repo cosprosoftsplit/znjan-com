@@ -23,23 +23,27 @@ interface Props {
   subtitle?: string;
   /** Number of columns on desktop (default: 2) */
   columns?: 2 | 3;
+  /** Staggered masonry-like offset on even items */
+  staggered?: boolean;
 }
 
-const { posts, title, subtitle, columns = 2 } = Astro.props;
+const { posts, title, subtitle, columns = 2, staggered = false } = Astro.props;
 
 const gridCols = columns === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2';
 ---
 
 <section class="py-12">
   {title && (
-    <div class="text-center mb-8">
-      <h2 class="text-2xl md:text-3xl font-bold text-warm-900">{title}</h2>
-      {subtitle && <p class="text-warm-600 mt-2">{subtitle}</p>}
+    <div class:list={[staggered ? 'mb-8' : 'text-center mb-8']}>
+      <h2 class="text-2xl md:text-3xl font-display font-semibold text-ocean-800">{title}</h2>
+      {subtitle && <p class="text-stone mt-2">{subtitle}</p>}
     </div>
   )}
   <div class={`grid grid-cols-1 ${gridCols} gap-6 max-w-5xl mx-auto`}>
-    {posts.map((post) => (
-      <InstagramEmbed url={post.url} caption={post.caption} />
+    {posts.map((post, i) => (
+      <div class:list={[staggered && i % 2 === 1 ? 'lg:mt-12' : '']}>
+        <InstagramEmbed url={post.url} caption={post.caption} />
+      </div>
     ))}
   </div>
 </section>

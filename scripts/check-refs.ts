@@ -41,7 +41,7 @@ function loadYamlIds(collection: string): Set<string> {
   return ids;
 }
 
-function loadMdxIds(collection: string): Set<string> {
+function loadMdxIds(collection: string, idField: string = 'id'): Set<string> {
   const dir = join(CONTENT_DIR, collection);
   const ids = new Set<string>();
 
@@ -50,7 +50,7 @@ function loadMdxIds(collection: string): Set<string> {
   const files = readdirSync(dir).filter((f) => f.endsWith('.mdx') || f.endsWith('.md'));
   for (const file of files) {
     const content = readFileSync(join(dir, file), 'utf-8');
-    const idMatch = content.match(/^id:\s*(.+)$/m);
+    const idMatch = content.match(new RegExp(`^${idField}:\\s*(.+)$`, 'm'));
     if (idMatch) {
       ids.add(idMatch[1].trim());
     }
@@ -97,8 +97,8 @@ console.log('=== Entity Reference Check ===');
 const beachAreaIds = loadYamlIds('beach-areas');
 const activityIds = loadYamlIds('activities');
 const placeIds = loadYamlIds('places');
-const guideIds = loadMdxIds('guides');
-const articleIds = loadMdxIds('articles');
+const guideIds = loadMdxIds('guides', 'guideId');
+const articleIds = loadMdxIds('articles', 'articleId');
 
 console.log(`  beach-areas: ${beachAreaIds.size} entities`);
 console.log(`  activities: ${activityIds.size} entities`);
@@ -161,6 +161,22 @@ function checkCollectionRefs(collection: string, isYaml: boolean) {
     for (const ref of relatedBeachAreas) {
       if (!beachAreaIds.has(ref)) {
         warnings.push(`${collection}/${file}: Related beach area "${ref}" not found`);
+      }
+    }
+
+    // Check relatedGuides
+    const relatedGuides = extractYamlArrayField(content, 'relatedGuides');
+    for (const ref of relatedGuides) {
+      if (!guideIds.has(ref)) {
+        warnings.push(`${collection}/${file}: Related guide "${ref}" not found`);
+      }
+    }
+
+    // Check relatedArticles
+    const relatedArticles = extractYamlArrayField(content, 'relatedArticles');
+    for (const ref of relatedArticles) {
+      if (!articleIds.has(ref)) {
+        warnings.push(`${collection}/${file}: Related article "${ref}" not found`);
       }
     }
   }

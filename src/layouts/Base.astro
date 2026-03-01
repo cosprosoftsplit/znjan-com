@@ -28,7 +28,7 @@ const {
   noIndex = false,
 } = Astro.props;
 
-const fullTitle = title.includes('Znjan') ? title : `${title} | Znjan.com`;
+const fullTitle = title.includes('Žnjan') ? title : `${title} | Znjan.com`;
 const structuredDataArray = Array.isArray(structuredData)
   ? structuredData
   : structuredData
@@ -90,7 +90,7 @@ const ogLocale = ogLocaleMap[lang] || 'en_GB';
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap"
       rel="stylesheet"
     />
 

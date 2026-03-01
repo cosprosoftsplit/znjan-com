@@ -81,7 +81,7 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['Playfair Display', 'Georgia', 'serif'],
+        display: ['DM Serif Display', 'Georgia', 'serif'],
       },
       backgroundImage: {
         'gradient-ocean': 'linear-gradient(135deg, #1a4a5e 0%, #0077b6 50%, #2d8a9b 100%)',

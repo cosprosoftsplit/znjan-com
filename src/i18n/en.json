@@ -1,8 +1,8 @@
 {
   "site": {
     "name": "Znjan.com",
-    "tagline": "Your Complete Guide to Znjan Beach, Split",
-    "description": "The definitive portal for Znjan Beach in Split, Croatia — guides, activities, restaurants, events, and everything you need for the Miami of Split."
+    "tagline": "Your Complete Guide to Žnjan Beach, Split",
+    "description": "The definitive portal for Žnjan Beach in Split, Croatia — guides, activities, restaurants, events, and everything you need for the Miami of Split."
   },
   "nav": {
     "home": "Home",
@@ -19,7 +19,7 @@
     "close": "Close"
   },
   "home": {
-    "heroTitle": "Welcome to Znjan Beach",
+    "heroTitle": "Welcome to Žnjan Beach",
     "heroSubtitle": "Split's largest beach, reimagined — your complete guide to the Miami of Split",
     "explorePlaces": "Explore Places",
     "discoverActivities": "Discover Activities",
@@ -28,7 +28,7 @@
     "popularPlaces": "Popular Places",
     "thingsToKnow": "Things to Know",
     "beachAreasTitle": "Explore Beach Areas",
-    "beachAreasSubtitle": "Discover the different zones of Znjan Beach",
+    "beachAreasSubtitle": "Discover the different zones of Žnjan Beach",
     "scrollDown": "Scroll",
     "areasEyebrow": "Beach Zones",
     "storyEyebrow1": "The Transformation",
@@ -36,7 +36,7 @@
     "storyText1": "What was once a neglected stretch of coastline is now Split's crown jewel. The €45.77M transformation brought world-class infrastructure, a palm-lined promenade, and 11 brand-new pavilion venues to life.",
     "storyEyebrow2": "Eat & Drink",
     "storyTitle2": "Beach Clubs & Mediterranean Dining",
-    "storyText2": "From sunrise coffee at Central Beach to sunset cocktails at Taboo — Znjan's new pavilion restaurants serve fresh Dalmatian cuisine with Adriatic views. Seven venues, each with its own character.",
+    "storyText2": "From sunrise coffee at Central Beach to sunset cocktails at Taboo — Žnjan's new pavilion restaurants serve fresh Dalmatian cuisine with Adriatic views. Seven venues, each with its own character.",
     "storyEyebrow3": "Play & Explore",
     "storyTitle3": "Activities for Everyone",
     "storyText3": "Paddleboard at dawn, volleyball at noon, and live music at dusk. With a 1,200m² skate park, children's playground, and amphitheater with a steel dome, there's always something happening.",
@@ -53,8 +53,8 @@
     "facilitiesCount": "facilities"
   },
   "places": {
-    "title": "Places Near Znjan Beach",
-    "subtitle": "Restaurants, bars, cafes, and shops near Znjan Beach",
+    "title": "Places Near Žnjan Beach",
+    "subtitle": "Restaurants, bars, cafes, and shops near Žnjan Beach",
     "allPlaces": "All Places",
     "restaurants": "Restaurants",
     "bars": "Bars",
@@ -68,8 +68,8 @@
     "directions": "Get Directions"
   },
   "activities": {
-    "title": "Things to Do at Znjan Beach",
-    "subtitle": "Water sports, beach activities, and adventures at Znjan",
+    "title": "Things to Do at Žnjan Beach",
+    "subtitle": "Water sports, beach activities, and adventures at Žnjan",
     "allActivities": "All Activities",
     "viewDetails": "View Details",
     "duration": "Duration",
@@ -78,11 +78,11 @@
     "season": "Season"
   },
   "articles": {
-    "title": "Znjan Beach Articles",
-    "subtitle": "Tips, comparisons, and in-depth articles about Znjan Beach"
+    "title": "Žnjan Beach Articles",
+    "subtitle": "Tips, comparisons, and in-depth articles about Žnjan Beach"
   },
   "guides": {
-    "title": "Znjan Beach Guides",
+    "title": "Žnjan Beach Guides",
     "subtitle": "Comprehensive guides for visitors and locals",
     "readMore": "Read More",
     "tableOfContents": "Table of Contents",
@@ -91,14 +91,14 @@
     "minuteRead": "min read"
   },
   "beachAreas": {
-    "title": "Znjan Beach Areas",
-    "subtitle": "Discover the different zones and facilities of Znjan Beach",
+    "title": "Žnjan Beach Areas",
+    "subtitle": "Discover the different zones and facilities of Žnjan Beach",
     "facilities": "Facilities",
     "nearbyPlaces": "Nearby Places",
     "activities": "Activities"
   },
   "events": {
-    "title": "Events at Znjan Beach",
+    "title": "Events at Žnjan Beach",
     "subtitle": "Concerts, tournaments, festivals, and more",
     "upcoming": "Upcoming Events",
     "past": "Past Events",
@@ -119,7 +119,7 @@
     "contactUs": "Contact Us"
   },
   "footer": {
-    "description": "The definitive guide to Znjan Beach in Split, Croatia. Discover restaurants, activities, events, and everything you need for the perfect beach day.",
+    "description": "The definitive guide to Žnjan Beach in Split, Croatia. Discover restaurants, activities, events, and everything you need for the perfect beach day.",
     "quickLinks": "Quick Links",
     "explore": "Explore",
     "legal": "Legal",
@@ -136,7 +136,7 @@
     "error": "Something went wrong. Please try again."
   },
   "seo": {
-    "homeTitle": "Znjan Beach Split — Complete Guide, Activities & Places",
-    "homeDescription": "Your complete guide to Znjan Beach in Split, Croatia. Discover restaurants, bars, water sports, events, and everything about the €45M Miami of Split transformation."
+    "homeTitle": "Žnjan Beach Split — Complete Guide, Activities & Places",
+    "homeDescription": "Your complete guide to Žnjan Beach in Split, Croatia. Discover restaurants, bars, water sports, events, and everything about the €45M Miami of Split transformation."
   }
 }

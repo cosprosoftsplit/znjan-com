@@ -87,7 +87,7 @@ export function buildBeachSchema() {
     '@context': 'https://schema.org',
     '@type': 'Beach',
     '@id': 'https://znjan.com/#beach',
-    name: 'Znjan Beach',
+    name: 'Žnjan Beach',
     alternateName: 'Plaža Žnjan',
     description: 'The largest beach in Split, Croatia, recently transformed with a €45M investment. Known as the Miami of Split.',
     url: 'https://znjan.com',
@@ -114,7 +114,7 @@ export function buildOrganizationSchema() {
     '@id': 'https://znjan.com/#organization',
     name: 'Znjan.com',
     url: 'https://znjan.com',
-    description: 'The definitive online portal for Znjan Beach in Split, Croatia.',
+    description: 'The definitive online portal for Žnjan Beach in Split, Croatia.',
   };
 }
 
@@ -240,7 +240,7 @@ export function buildEventSchema(options: {
     ...(options.endDate && { endDate: options.endDate }),
     location: {
       '@type': 'Place',
-      name: options.location ?? 'Znjan Beach',
+      name: options.location ?? 'Žnjan Beach',
       address: {
         '@type': 'PostalAddress',
         addressLocality: 'Split',

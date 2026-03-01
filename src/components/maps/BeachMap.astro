@@ -58,7 +58,7 @@ const labels = mapLabels[lang];
   ]}
   style={`height: ${mapHeight}`}
   role="application"
-  aria-label={lang === 'hr' ? 'Interaktivna karta plaže Žnjan' : lang === 'de' ? 'Interaktive Karte Strand Žnjan' : lang === 'it' ? 'Mappa interattiva spiaggia Žnjan' : 'Interactive Znjan Beach Map'}
+  aria-label={lang === 'hr' ? 'Interaktivna karta plaže Žnjan' : lang === 'de' ? 'Interaktive Karte Strand Žnjan' : lang === 'it' ? 'Mappa interattiva spiaggia Žnjan' : 'Interactive Žnjan Beach Map'}
 >
   <div class="flex items-center justify-center h-full bg-sand-50 text-stone text-sm">
     <svg class="w-5 h-5 animate-spin mr-2" fill="none" viewBox="0 0 24 24">
@@ -93,7 +93,7 @@ const labels = mapLabels[lang];
     // Clear loading state
     mapEl.innerHTML = '';
 
-    // Center on Znjan Beach
+    // Center on Žnjan Beach
     const center = [43.5025, 16.4875];
     const map = window.L.map('beach-map', {
       center: center,

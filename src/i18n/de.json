@@ -49,6 +49,8 @@
     "mapEyebrow": "Orientierung",
     "mapTitle": "Interaktive Strandkarte",
     "instagramEyebrow": "Folgen Sie uns",
+    "instagramTitle": "Žnjan auf Instagram",
+    "instagramSubtitle": "Sehen Sie, was Sie am Strand erwartet",
     "seeAllFaqs": "Alle FAQs ansehen",
     "facilitiesCount": "Einrichtungen"
   },
@@ -65,7 +67,8 @@
     "website": "Webseite",
     "phone": "Telefon",
     "hours": "Öffnungszeiten",
-    "directions": "Wegbeschreibung"
+    "directions": "Wegbeschreibung",
+    "comingSoon": "Demnächst"
   },
   "activities": {
     "title": "Aktivitäten am Strand Žnjan",
@@ -75,11 +78,13 @@
     "duration": "Dauer",
     "price": "Preis",
     "difficulty": "Schwierigkeit",
-    "season": "Saison"
+    "season": "Saison",
+    "comingSoon": "Aktivitäten kommen bald!"
   },
   "articles": {
     "title": "Artikel über den Strand Žnjan",
-    "subtitle": "Tipps, Vergleiche und ausführliche Artikel über den Strand Žnjan"
+    "subtitle": "Tipps, Vergleiche und ausführliche Artikel über den Strand Žnjan",
+    "comingSoon": "Artikel kommen bald!"
   },
   "guides": {
     "title": "Reiseführer für den Strand Žnjan",
@@ -88,7 +93,8 @@
     "tableOfContents": "Inhaltsverzeichnis",
     "relatedGuides": "Verwandte Reiseführer",
     "lastUpdated": "Zuletzt aktualisiert",
-    "minuteRead": "Min. Lesezeit"
+    "minuteRead": "Min. Lesezeit",
+    "comingSoon": "Reiseführer kommen bald!"
   },
   "beachAreas": {
     "title": "Strandbereiche Žnjan",
@@ -104,7 +110,9 @@
     "past": "Vergangene Veranstaltungen",
     "date": "Datum",
     "location": "Ort",
-    "viewDetails": "Details ansehen"
+    "viewDetails": "Details ansehen",
+    "free": "Kostenlos",
+    "comingSoon": "Veranstaltungen kommen bald!"
   },
   "common": {
     "readMore": "Weiterlesen",
@@ -134,6 +142,12 @@
     "send": "Nachricht senden",
     "success": "Nachricht erfolgreich gesendet!",
     "error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+  },
+  "error": {
+    "pageNotFound": "Seite nicht gefunden",
+    "pageNotFoundDescription": "Diese Seite ist aufs Meer hinausgetrieben. Der gesuchte Inhalt wurde möglicherweise verschoben oder existiert nicht.",
+    "goHome": "Zur Startseite",
+    "browseGuides": "Reiseführer durchsuchen"
   },
   "seo": {
     "homeTitle": "Strand Žnjan Split — Kompletter Reiseführer, Aktivitäten & Orte",

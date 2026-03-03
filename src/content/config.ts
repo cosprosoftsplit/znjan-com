@@ -253,6 +253,10 @@ const global = defineCollection({
     }).optional(),
     contactEmail: z.string().email().optional(),
     analyticsId: z.string().optional(),
+    instagramPosts: z.array(z.object({
+      url: z.string().url(),
+      caption: z.string(),
+    })).default([]),
   }),
 });
 

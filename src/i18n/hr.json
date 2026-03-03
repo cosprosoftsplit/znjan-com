@@ -49,6 +49,8 @@
     "mapEyebrow": "Pronađite put",
     "mapTitle": "Interaktivna karta plaže",
     "instagramEyebrow": "Pratite nas",
+    "instagramTitle": "Žnjan na Instagramu",
+    "instagramSubtitle": "Pogledajte što vas čeka na plaži",
     "seeAllFaqs": "Pogledajte sva pitanja",
     "facilitiesCount": "sadržaja"
   },
@@ -65,7 +67,8 @@
     "website": "Web stranica",
     "phone": "Telefon",
     "hours": "Radno vrijeme",
-    "directions": "Upute za dolazak"
+    "directions": "Upute za dolazak",
+    "comingSoon": "Uskoro"
   },
   "activities": {
     "title": "Što raditi na plaži Žnjan",
@@ -75,11 +78,13 @@
     "duration": "Trajanje",
     "price": "Cijena",
     "difficulty": "Težina",
-    "season": "Sezona"
+    "season": "Sezona",
+    "comingSoon": "Aktivnosti dolaze uskoro!"
   },
   "articles": {
     "title": "Članci o plaži Žnjan",
-    "subtitle": "Savjeti, usporedbe i detaljni članci o plaži Žnjan"
+    "subtitle": "Savjeti, usporedbe i detaljni članci o plaži Žnjan",
+    "comingSoon": "Članci dolaze uskoro!"
   },
   "guides": {
     "title": "Vodiči za plažu Žnjan",
@@ -88,7 +93,8 @@
     "tableOfContents": "Sadržaj",
     "relatedGuides": "Povezani vodiči",
     "lastUpdated": "Zadnje ažurirano",
-    "minuteRead": "min čitanja"
+    "minuteRead": "min čitanja",
+    "comingSoon": "Vodiči dolaze uskoro!"
   },
   "beachAreas": {
     "title": "Dijelovi plaže Žnjan",
@@ -104,7 +110,15 @@
     "past": "Prošla događanja",
     "date": "Datum",
     "location": "Lokacija",
-    "viewDetails": "Pogledajte detalje"
+    "viewDetails": "Pogledajte detalje",
+    "free": "Besplatno",
+    "comingSoon": "Događanja dolaze uskoro!"
+  },
+  "error": {
+    "pageNotFound": "Stranica nije pronađena",
+    "pageNotFoundDescription": "Ova stranica je otplovila u more. Sadržaj koji tražite je možda premješten ili ne postoji.",
+    "goHome": "Idi na početnu",
+    "browseGuides": "Pregledaj vodiče"
   },
   "common": {
     "readMore": "Saznajte više",

@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer.astro';
 import type { Language } from '@/lib/i18n';
 import type { HreflangLink } from '@/lib/seo';
 import { getLocalizedUrl } from '@/lib/i18n';
+import { placeCategoryLabels } from '@/lib/labels';
 
 interface Props {
   title: string;
@@ -40,15 +41,6 @@ const {
   hours,
 } = Astro.props;
 
-const categoryLabels: Record<string, Record<Language, string>> = {
-  restaurant: { en: 'Restaurant', hr: 'Restoran', de: 'Restaurant', it: 'Ristorante' },
-  bar: { en: 'Bar', hr: 'Bar', de: 'Bar', it: 'Bar' },
-  'beach-club': { en: 'Beach Club', hr: 'Beach Club', de: 'Beach Club', it: 'Beach Club' },
-  cafe: { en: 'Café', hr: 'Kafić', de: 'Café', it: 'Caffè' },
-  shop: { en: 'Shop', hr: 'Trgovina', de: 'Geschäft', it: 'Negozio' },
-  hotel: { en: 'Hotel', hr: 'Hotel', de: 'Hotel', it: 'Hotel' },
-  other: { en: 'Other', hr: 'Ostalo', de: 'Sonstiges', it: 'Altro' },
-};
 ---
 
 <Base
@@ -91,9 +83,9 @@ const categoryLabels: Record<string, Record<Language, string>> = {
     <!-- Place Header -->
     <header class="container-page pt-8 pb-6">
       <div class="max-w-4xl">
-        {category && categoryLabels[category] && (
+        {category && placeCategoryLabels[category] && (
           <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-sand-100 text-sand-800 mb-4">
-            {categoryLabels[category][lang]}
+            {placeCategoryLabels[category][lang]}
           </span>
         )}
         <h1 class="text-3xl md:text-4xl font-display font-semibold text-ocean-800 tracking-tight">

@@ -49,6 +49,8 @@
     "mapEyebrow": "Orientamento",
     "mapTitle": "Mappa interattiva",
     "instagramEyebrow": "Seguici",
+    "instagramTitle": "Žnjan su Instagram",
+    "instagramSubtitle": "Scoprite cosa vi aspetta in spiaggia",
     "seeAllFaqs": "Vedi tutte le FAQ",
     "facilitiesCount": "strutture"
   },
@@ -65,7 +67,8 @@
     "website": "Sito web",
     "phone": "Telefono",
     "hours": "Orari di apertura",
-    "directions": "Indicazioni stradali"
+    "directions": "Indicazioni stradali",
+    "comingSoon": "Prossimamente"
   },
   "activities": {
     "title": "Cosa fare alla spiaggia di Žnjan",
@@ -75,11 +78,13 @@
     "duration": "Durata",
     "price": "Prezzo",
     "difficulty": "Difficoltà",
-    "season": "Stagione"
+    "season": "Stagione",
+    "comingSoon": "Attività in arrivo!"
   },
   "articles": {
     "title": "Articoli sulla spiaggia di Žnjan",
-    "subtitle": "Consigli, confronti e articoli approfonditi sulla spiaggia di Žnjan"
+    "subtitle": "Consigli, confronti e articoli approfonditi sulla spiaggia di Žnjan",
+    "comingSoon": "Articoli in arrivo!"
   },
   "guides": {
     "title": "Guide per la spiaggia di Žnjan",
@@ -88,7 +93,8 @@
     "tableOfContents": "Indice",
     "relatedGuides": "Guide correlate",
     "lastUpdated": "Ultimo aggiornamento",
-    "minuteRead": "min di lettura"
+    "minuteRead": "min di lettura",
+    "comingSoon": "Guide in arrivo!"
   },
   "beachAreas": {
     "title": "Zone della spiaggia di Žnjan",
@@ -104,7 +110,9 @@
     "past": "Eventi passati",
     "date": "Data",
     "location": "Luogo",
-    "viewDetails": "Vedi dettagli"
+    "viewDetails": "Vedi dettagli",
+    "free": "Gratuito",
+    "comingSoon": "Eventi in arrivo!"
   },
   "common": {
     "readMore": "Leggi di più",
@@ -134,6 +142,12 @@
     "send": "Invia messaggio",
     "success": "Messaggio inviato con successo!",
     "error": "Qualcosa è andato storto. Riprova."
+  },
+  "error": {
+    "pageNotFound": "Pagina non trovata",
+    "pageNotFoundDescription": "Questa pagina è andata alla deriva in mare. Il contenuto che cercate potrebbe essere stato spostato o non esiste.",
+    "goHome": "Vai alla home",
+    "browseGuides": "Sfoglia le guide"
   },
   "seo": {
     "homeTitle": "Spiaggia di Žnjan Spalato — Guida completa, attività e luoghi",

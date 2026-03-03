@@ -9,6 +9,7 @@ import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { generateHubHreflangLinks } from '@/lib/seo';
 import { canonicalUrl } from '@/lib/utils';
+import { facilityLabels } from '@/lib/labels';
 import { getCollection } from 'astro:content';
 
 export function getStaticPaths() {
@@ -43,31 +44,6 @@ const mapMarkers = [
   })),
 ];
 
-const facilityLabels: Record<string, Record<Language, string>> = {
-  sunbeds: { en: 'Sunbeds', hr: 'Ležaljke', de: 'Liegen', it: 'Lettini' },
-  showers: { en: 'Showers', hr: 'Tuševi', de: 'Duschen', it: 'Docce' },
-  'changing-rooms': { en: 'Changing Rooms', hr: 'Svlačionice', de: 'Umkleiden', it: 'Spogliatoi' },
-  lifeguard: { en: 'Lifeguard', hr: 'Spasilac', de: 'Rettungsschwimmer', it: 'Bagnino' },
-  parking: { en: 'Parking', hr: 'Parking', de: 'Parkplatz', it: 'Parcheggio' },
-  'wheelchair-access': { en: 'Wheelchair Access', hr: 'Pristup za kolica', de: 'Rollstuhlzugang', it: 'Accesso disabili' },
-  playground: { en: 'Playground', hr: 'Igralište', de: 'Spielplatz', it: 'Parco giochi' },
-  restaurants: { en: 'Restaurants', hr: 'Restorani', de: 'Restaurants', it: 'Ristoranti' },
-  cafes: { en: 'Cafés', hr: 'Kafići', de: 'Cafés', it: 'Caffè' },
-  'volleyball-courts': { en: 'Volleyball', hr: 'Odbojka', de: 'Volleyball', it: 'Pallavolo' },
-  'water-sports-rental': { en: 'Water Sports', hr: 'Vodeni sportovi', de: 'Wassersport', it: 'Sport acquatici' },
-  amphitheater: { en: 'Amphitheater', hr: 'Amfiteatar', de: 'Amphitheater', it: 'Anfiteatro' },
-  'shallow-water': { en: 'Shallow Water', hr: 'Plitka voda', de: 'Flaches Wasser', it: 'Acqua bassa' },
-  'basketball-courts': { en: 'Basketball', hr: 'Košarka', de: 'Basketball', it: 'Pallacanestro' },
-  'cage-football': { en: 'Cage Football', hr: 'Kavez nogomet', de: 'Käfig-Fußball', it: 'Calcetto' },
-  'skate-park': { en: 'Skate Park', hr: 'Skate park', de: 'Skatepark', it: 'Skate park' },
-  'fitness-equipment': { en: 'Fitness', hr: 'Fitness', de: 'Fitness', it: 'Fitness' },
-  'cycling-path': { en: 'Cycling Path', hr: 'Biciklistička staza', de: 'Radweg', it: 'Pista ciclabile' },
-  benches: { en: 'Benches', hr: 'Klupe', de: 'Bänke', it: 'Panchine' },
-  lighting: { en: 'Lighting', hr: 'Rasvjeta', de: 'Beleuchtung', it: 'Illuminazione' },
-  seating: { en: 'Seating', hr: 'Sjedenje', de: 'Sitzplätze', it: 'Posti a sedere' },
-  stage: { en: 'Stage', hr: 'Pozornica', de: 'Bühne', it: 'Palcoscenico' },
-  'public-restrooms': { en: 'Restrooms', hr: 'Javni WC', de: 'Toiletten', it: 'Servizi igienici' },
-};
 
 const areaVariants: string[] = ['ocean', 'adriatic', 'sunset', 'coral', 'sand'];
 const gradientMap: Record<string, string> = {

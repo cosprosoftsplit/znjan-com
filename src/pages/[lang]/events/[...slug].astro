@@ -6,6 +6,7 @@ import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { canonicalUrl, formatDate } from '@/lib/utils';
 import { buildEventSchema, buildBreadcrumbSchema } from '@/lib/seo';
+import { eventCategoryLabels } from '@/lib/labels';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -43,14 +44,6 @@ const structuredData = [
 
 const { Content } = await event.render();
 
-const categoryLabels: Record<string, Record<Language, string>> = {
-  concert: { en: 'Concert', hr: 'Koncert', de: 'Konzert', it: 'Concerto' },
-  festival: { en: 'Festival', hr: 'Festival', de: 'Festival', it: 'Festival' },
-  sports: { en: 'Sports', hr: 'Sport', de: 'Sport', it: 'Sport' },
-  market: { en: 'Market', hr: 'Tržnica', de: 'Markt', it: 'Mercato' },
-  community: { en: 'Community', hr: 'Zajednica', de: 'Gemeinschaft', it: 'Comunità' },
-  other: { en: 'Event', hr: 'Događaj', de: 'Veranstaltung', it: 'Evento' },
-};
 ---
 
 <Guide
@@ -64,7 +57,7 @@ const categoryLabels: Record<string, Record<Language, string>> = {
 >
   <div class="mb-6 flex flex-wrap items-center gap-3">
     <Badge variant="ocean">
-      {categoryLabels[event.data.category]?.[lang] || event.data.category}
+      {eventCategoryLabels[event.data.category]?.[lang] || event.data.category}
     </Badge>
     {event.data.isFree && (
       <Badge variant="sand">

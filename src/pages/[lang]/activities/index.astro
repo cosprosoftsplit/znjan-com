@@ -9,6 +9,7 @@ import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { generateHubHreflangLinks } from '@/lib/seo';
 import { canonicalUrl } from '@/lib/utils';
+import { activityCategoryLabels, difficultyLabels } from '@/lib/labels';
 import { getCollection } from 'astro:content';
 
 export function getStaticPaths() {
@@ -26,26 +27,12 @@ const activities = allActivities.sort((a, b) => {
   return a.data.order - b.data.order;
 });
 
-const categoryLabels: Record<string, Record<Language, string>> = {
-  'water-sports': { en: 'Water Sports', hr: 'Vodeni sportovi', de: 'Wassersport', it: 'Sport acquatici' },
-  'beach-sports': { en: 'Beach Sports', hr: 'Sportovi na plaži', de: 'Strandsport', it: 'Sport da spiaggia' },
-  fitness: { en: 'Fitness', hr: 'Fitness', de: 'Fitness', it: 'Fitness' },
-  relaxation: { en: 'Relaxation', hr: 'Opuštanje', de: 'Entspannung', it: 'Relax' },
-  tours: { en: 'Tours', hr: 'Ture', de: 'Touren', it: 'Tour' },
-  other: { en: 'Other', hr: 'Ostalo', de: 'Sonstiges', it: 'Altro' },
-};
-
-const difficultyLabels: Record<string, Record<Language, string>> = {
-  easy: { en: 'Easy', hr: 'Lako', de: 'Leicht', it: 'Facile' },
-  moderate: { en: 'Moderate', hr: 'Umjereno', de: 'Mittel', it: 'Moderato' },
-  hard: { en: 'Hard', hr: 'Teško', de: 'Schwer', it: 'Difficile' },
-};
 
 // Group activities by category
 const categories = [...new Set(activities.map((a) => a.data.category))];
 const grouped = categories.map((cat) => ({
   category: cat,
-  label: categoryLabels[cat]?.[lang] || cat,
+  label: activityCategoryLabels[cat]?.[lang] || cat,
   items: activities.filter((a) => a.data.category === cat),
 }));
 
@@ -125,10 +112,7 @@ const activityIcons: Record<string, string> = {
     ) : (
       <div class="text-center py-16">
         <p class="text-lg text-stone">
-          {lang === 'hr' ? 'Aktivnosti dolaze uskoro!' :
-           lang === 'de' ? 'Aktivitäten kommen bald!' :
-           lang === 'it' ? 'Le attività arriveranno presto!' :
-           'Activities coming soon!'}
+          {translations['activities.comingSoon']}
         </p>
       </div>
     )}

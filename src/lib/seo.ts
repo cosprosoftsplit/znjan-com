@@ -195,6 +195,7 @@ export function buildPlaceSchema(options: {
   address?: string;
   phone?: string;
   priceRange?: string;
+  starRating?: number;
 }) {
   return {
     '@context': 'https://schema.org',
@@ -218,6 +219,14 @@ export function buildPlaceSchema(options: {
     }),
     ...(options.phone && { telephone: options.phone }),
     ...(options.priceRange && { priceRange: options.priceRange }),
+    ...(options.starRating && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: options.starRating,
+        bestRating: 5,
+        worstRating: 1,
+      },
+    }),
   };
 }
 

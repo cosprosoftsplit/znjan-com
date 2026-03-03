@@ -7,6 +7,7 @@ import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { canonicalUrl } from '@/lib/utils';
 import { buildBreadcrumbSchema } from '@/lib/seo';
+import { activityCategoryLabels, difficultyLabels, seasonLabels } from '@/lib/labels';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -45,26 +46,6 @@ const structuredData = buildBreadcrumbSchema([
   { name: title, url: `https://znjan.com/${lang}/activities/${activity.data.slug[lang]}/` },
 ]);
 
-const categoryLabels: Record<string, Record<Language, string>> = {
-  'water-sports': { en: 'Water Sports', hr: 'Vodeni sportovi', de: 'Wassersport', it: 'Sport acquatici' },
-  'beach-sports': { en: 'Beach Sports', hr: 'Sportovi na plaži', de: 'Strandsport', it: 'Sport da spiaggia' },
-  fitness: { en: 'Fitness', hr: 'Fitness', de: 'Fitness', it: 'Fitness' },
-  relaxation: { en: 'Relaxation', hr: 'Opuštanje', de: 'Entspannung', it: 'Relax' },
-  tours: { en: 'Tours', hr: 'Ture', de: 'Touren', it: 'Tour' },
-  other: { en: 'Other', hr: 'Ostalo', de: 'Sonstiges', it: 'Altro' },
-};
-
-const difficultyLabels: Record<string, Record<Language, string>> = {
-  easy: { en: 'Easy', hr: 'Lako', de: 'Leicht', it: 'Facile' },
-  moderate: { en: 'Moderate', hr: 'Umjereno', de: 'Mittel', it: 'Moderato' },
-  hard: { en: 'Hard', hr: 'Teško', de: 'Schwer', it: 'Difficile' },
-};
-
-const seasonLabels: Record<string, Record<Language, string>> = {
-  summer: { en: 'Summer only', hr: 'Samo ljeti', de: 'Nur im Sommer', it: 'Solo estate' },
-  'year-round': { en: 'Year-round', hr: 'Cijele godine', de: 'Ganzjährig', it: 'Tutto l\'anno' },
-  'spring-autumn': { en: 'Spring to Autumn', hr: 'Proljeće do jesen', de: 'Frühling bis Herbst', it: 'Primavera-Autunno' },
-};
 ---
 
 <Page
@@ -105,7 +86,7 @@ const seasonLabels: Record<string, Record<Language, string>> = {
   <header class="container-page pt-8 pb-6">
     <div class="max-w-4xl">
       <div class="flex flex-wrap items-center gap-2 mb-4">
-        <Badge variant="ocean">{categoryLabels[activity.data.category]?.[lang] || activity.data.category}</Badge>
+        <Badge variant="ocean">{activityCategoryLabels[activity.data.category]?.[lang] || activity.data.category}</Badge>
         {activity.data.difficulty && (
           <Badge variant="sand">{difficultyLabels[activity.data.difficulty]?.[lang]}</Badge>
         )}
@@ -151,7 +132,7 @@ const seasonLabels: Record<string, Record<Language, string>> = {
               <dt class="text-stone/70 font-medium">
                 {lang === 'hr' ? 'Kategorija' : lang === 'de' ? 'Kategorie' : lang === 'it' ? 'Categoria' : 'Category'}
               </dt>
-              <dd class="mt-0.5 text-warm-700">{categoryLabels[activity.data.category]?.[lang]}</dd>
+              <dd class="mt-0.5 text-warm-700">{activityCategoryLabels[activity.data.category]?.[lang]}</dd>
             </div>
             {activity.data.difficulty && (
               <div>

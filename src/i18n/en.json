@@ -49,6 +49,8 @@
     "mapEyebrow": "Find Your Way",
     "mapTitle": "Interactive Beach Map",
     "instagramEyebrow": "Follow Along",
+    "instagramTitle": "Žnjan on Instagram",
+    "instagramSubtitle": "See what awaits you at the beach",
     "seeAllFaqs": "See all FAQs",
     "facilitiesCount": "facilities"
   },
@@ -65,7 +67,8 @@
     "website": "Website",
     "phone": "Phone",
     "hours": "Opening Hours",
-    "directions": "Get Directions"
+    "directions": "Get Directions",
+    "comingSoon": "Coming Soon"
   },
   "activities": {
     "title": "Things to Do at Žnjan Beach",
@@ -75,11 +78,13 @@
     "duration": "Duration",
     "price": "Price",
     "difficulty": "Difficulty",
-    "season": "Season"
+    "season": "Season",
+    "comingSoon": "Activities coming soon!"
   },
   "articles": {
     "title": "Žnjan Beach Articles",
-    "subtitle": "Tips, comparisons, and in-depth articles about Žnjan Beach"
+    "subtitle": "Tips, comparisons, and in-depth articles about Žnjan Beach",
+    "comingSoon": "Articles coming soon!"
   },
   "guides": {
     "title": "Žnjan Beach Guides",
@@ -88,7 +93,8 @@
     "tableOfContents": "Table of Contents",
     "relatedGuides": "Related Guides",
     "lastUpdated": "Last updated",
-    "minuteRead": "min read"
+    "minuteRead": "min read",
+    "comingSoon": "Guides coming soon!"
   },
   "beachAreas": {
     "title": "Žnjan Beach Areas",
@@ -104,7 +110,9 @@
     "past": "Past Events",
     "date": "Date",
     "location": "Location",
-    "viewDetails": "View Details"
+    "viewDetails": "View Details",
+    "free": "Free",
+    "comingSoon": "Events coming soon!"
   },
   "common": {
     "readMore": "Read More",
@@ -134,6 +142,12 @@
     "send": "Send Message",
     "success": "Message sent successfully!",
     "error": "Something went wrong. Please try again."
+  },
+  "error": {
+    "pageNotFound": "Page Not Found",
+    "pageNotFoundDescription": "This page has drifted out to sea. The content you're looking for may have moved or doesn't exist.",
+    "goHome": "Go to Homepage",
+    "browseGuides": "Browse Guides"
   },
   "seo": {
     "homeTitle": "Žnjan Beach Split — Complete Guide, Activities & Places",

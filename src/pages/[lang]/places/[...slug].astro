@@ -8,6 +8,7 @@ import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { canonicalUrl } from '@/lib/utils';
 import { buildPlaceSchema, buildBreadcrumbSchema } from '@/lib/seo';
+import { tagLabels } from '@/lib/labels';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -61,6 +62,7 @@ const structuredData = [
     address: place.data.address,
     phone: place.data.phone,
     priceRange: place.data.priceRange,
+    starRating: place.data.starRating,
   }),
   buildBreadcrumbSchema([
     { name: translations['nav.home'], url: `https://znjan.com/${lang}/` },
@@ -69,32 +71,6 @@ const structuredData = [
   ]),
 ];
 
-const tagLabels: Record<string, Record<Language, string>> = {
-  'beach-club': { en: 'Beach Club', hr: 'Beach Club', de: 'Beach Club', it: 'Beach Club' },
-  'beach-bar': { en: 'Beach Bar', hr: 'Beach Bar', de: 'Strandbar', it: 'Bar sulla spiaggia' },
-  cocktails: { en: 'Cocktails', hr: 'Kokteli', de: 'Cocktails', it: 'Cocktail' },
-  'sea-view': { en: 'Sea View', hr: 'Pogled na more', de: 'Meerblick', it: 'Vista mare' },
-  lounge: { en: 'Lounge', hr: 'Lounge', de: 'Lounge', it: 'Lounge' },
-  sunset: { en: 'Sunset', hr: 'Zalazak sunca', de: 'Sonnenuntergang', it: 'Tramonto' },
-  luxury: { en: 'Luxury', hr: 'Luksuz', de: 'Luxus', it: 'Lusso' },
-  dj: { en: 'DJ', hr: 'DJ', de: 'DJ', it: 'DJ' },
-  vip: { en: 'VIP', hr: 'VIP', de: 'VIP', it: 'VIP' },
-  restaurant: { en: 'Restaurant', hr: 'Restoran', de: 'Restaurant', it: 'Ristorante' },
-  italian: { en: 'Italian', hr: 'Talijanski', de: 'Italienisch', it: 'Italiano' },
-  pizza: { en: 'Pizza', hr: 'Pizza', de: 'Pizza', it: 'Pizza' },
-  wine: { en: 'Wine', hr: 'Vino', de: 'Wein', it: 'Vino' },
-  mediterranean: { en: 'Mediterranean', hr: 'Mediteranski', de: 'Mediterran', it: 'Mediterraneo' },
-  sushi: { en: 'Sushi', hr: 'Sushi', de: 'Sushi', it: 'Sushi' },
-  'fine-dining': { en: 'Fine Dining', hr: 'Fine Dining', de: 'Gehobene Küche', it: 'Alta cucina' },
-  breakfast: { en: 'Breakfast', hr: 'Doručak', de: 'Frühstück', it: 'Colazione' },
-  'all-day-dining': { en: 'All-Day Dining', hr: 'Cijeli dan', de: 'Ganztägig', it: 'Tutto il giorno' },
-  cafe: { en: 'Café', hr: 'Kafić', de: 'Café', it: 'Caffè' },
-  music: { en: 'Music', hr: 'Glazba', de: 'Musik', it: 'Musica' },
-  promenade: { en: 'Promenade', hr: 'Šetnica', de: 'Promenade', it: 'Lungomare' },
-  waterfront: { en: 'Waterfront', hr: 'Na obali', de: 'Am Wasser', it: 'Lungomare' },
-  reservations: { en: 'Reservations', hr: 'Rezervacije', de: 'Reservierungen', it: 'Prenotazioni' },
-  cabanas: { en: 'Cabanas', hr: 'Kabane', de: 'Cabanas', it: 'Cabane' },
-};
 ---
 
 <Place

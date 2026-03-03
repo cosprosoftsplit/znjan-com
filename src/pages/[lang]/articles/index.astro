@@ -63,10 +63,7 @@ const articles = allArticles.sort((a, b) => b.data.publishedAt.getTime() - a.dat
     ) : (
       <div class="text-center py-16">
         <p class="text-lg text-stone">
-          {lang === 'hr' ? 'Članci dolaze uskoro!' :
-           lang === 'de' ? 'Artikel kommen bald!' :
-           lang === 'it' ? 'Gli articoli arriveranno presto!' :
-           'Articles coming soon!'}
+          {translations['articles.comingSoon']}
         </p>
       </div>
     )}

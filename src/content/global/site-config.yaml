@@ -3,3 +3,13 @@ siteName: Znjan.com
 siteUrl: https://znjan.com
 defaultLanguage: en
 contactEmail: info@znjan.com
+
+instagramPosts:
+  - url: "https://www.instagram.com/p/DTfQp62jfeZ/"
+    caption: "Taboo Beach Club"
+  - url: "https://www.instagram.com/p/DUqlKjEEtEF/"
+    caption: "Mistral Beach Club"
+  - url: "https://www.instagram.com/p/DMyFWihzOYX/"
+    caption: "Mistral Beach Club"
+  - url: "https://www.instagram.com/reel/DJQzkSZhcK7/"
+    caption: "Mistral Beach Club"

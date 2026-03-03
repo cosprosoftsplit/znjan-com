@@ -22,3 +22,15 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# claude code / MCP tooling
+.claude/
+.playwright-mcp/
+
+# review screenshots & temp images (not site content)
+review-*.png
+redesign-*.png
+*-full.jpeg
+
+# windows artifacts
+nul

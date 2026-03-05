@@ -230,6 +230,18 @@ Every work item must pass ALL of:
 - **Phase 3 verified complete**: BeachMap.astro already existed with Leaflet + markers on beach-areas listing and homepage
 - Build: 261 pages, 142 i18n keys x 4 langs, all checks pass (build, check-i18n, check-refs)
 
+### 2026-03-05 — Gap-Closing Content: 5 New Articles (20 MDX files)
+- Comprehensive keyword research + content gap analysis (60+ web searches, 18 gaps identified)
+- **5 new articles created**, each in all 4 languages (EN, HR, DE, IT):
+  1. **Beach Club Comparison** (G2): All 7 venues compared — prices, vibes, cuisine, decision guide
+  2. **Airport Transfer Guide** (G1): Split Airport (SPU) to Žnjan — bus, shuttle, Uber, Bolt, taxi, rental car
+  3. **Cruise Ship Visitor Guide** (G3): Half-day itinerary from Split port, transport, timing, tips
+  4. **Sunset & Evening Guide** (G6): Best sunset spots, golden hour timing, evening activities, dining
+  5. **Best Accommodation** (G5): Hotels (Radisson Blu, Amphora, Fanat, More, Mövenpick) + Airbnb tips
+- Fixed guide references (where-to-eat-drink, where-to-stay-near-znjan)
+- Build: 281 pages (up from 261), 142 i18n keys x 4 langs, all checks pass
+- Pagefind: 19,646 indexed words across 4 languages
+
 ### 2026-03-03 — Phase 1 Complete: Site is LIVE
 - Created `WORKBOARD.md` as self-maintaining project board
 - Committed and pushed P3 content + A++ upgrade (40 files) + workboard (2 files)

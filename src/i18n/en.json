@@ -149,6 +149,10 @@
     "goHome": "Go to Homepage",
     "browseGuides": "Browse Guides"
   },
+  "search": {
+    "placeholder": "Search Žnjan Beach...",
+    "hint": "to search"
+  },
   "seo": {
     "homeTitle": "Žnjan Beach Split — Complete Guide, Activities & Places",
     "homeDescription": "Your complete guide to Žnjan Beach in Split, Croatia. Discover restaurants, bars, water sports, events, and everything about the €45M Miami of Split transformation."

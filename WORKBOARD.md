@@ -33,30 +33,27 @@ Every work item must pass ALL of:
 **Goal:** Get the site live on Cloudflare Pages
 **Priority:** HIGHEST — everything else is invisible until deployed
 
-- [ ] **1.1 Push to GitHub**
+- [x] **1.1 Push to GitHub** (2026-03-03)
   - Scope: Stage all tracked changes, commit, push to `main`
   - Verify: `git log --oneline -1` shows commit on `main`; GitHub repo reflects changes
-  - Depends on: User approval
-  - Notes: Large staged diff (P3 content + A++ upgrade). May need to split commits.
+  - Done: 2 commits pushed — `0d68d74` (P3 content + A++ upgrade, 40 files) + `b87202e` (workboard + .gitignore)
 
-- [ ] **1.2 Cloudflare Pages Setup**
-  - Scope: Connect GitHub repo → CF Pages, configure build settings
-  - Build command: `npm run build`
-  - Output dir: `dist`
-  - Node version: Check `.node-version` file
-  - Verify: Site loads at configured domain; all 4 languages render; nav works
-  - Depends on: 1.1 + user's CF account access
+- [x] **1.2 Cloudflare Pages Setup** (2026-03-03)
+  - Done: User connected GitHub repo → CF Pages. Auto-deploy on push to main.
 
-- [ ] **1.3 Custom Domain**
-  - Scope: Point `znjan.com` DNS to CF Pages
-  - Verify: `curl -I https://znjan.com` returns 200; HTTPS works
-  - Depends on: 1.2 + user's DNS access
+- [x] **1.3 Custom Domain** (2026-03-03)
+  - Done: znjan.com pointed to CF Pages. HTTPS active. Served from ZAG (Zagreb) edge.
 
-- [ ] **1.4 Post-Deploy Smoke Test**
-  - Scope: Verify all critical pages load in production
-  - Check: Homepage (4 langs), places listing, article pages, 404 page, hreflang tags, OG meta, structured data
-  - Verify: No broken links, no missing assets, no console errors
-  - Depends on: 1.3
+- [x] **1.4 Post-Deploy Smoke Test** (2026-03-03)
+  - 16/16 checks pass:
+  - Homepages (EN/HR/DE/IT): all 200
+  - Content pages (places, guides, articles, beach-areas, activities): all 200
+  - 404 page: custom page with language switcher
+  - Root `/`: meta-refresh redirect to `/en/`
+  - OG tags: title, description, image all present
+  - hreflang: en, hr, de, it, x-default
+  - Structured data: 3 JSON-LD blocks (Beach, Organization, FAQPage)
+  - HTTPS: Cloudflare TLS active
 
 ---
 
@@ -64,19 +61,21 @@ Every work item must pass ALL of:
 **Goal:** Users can search the site
 **Priority:** HIGH — content exists but isn't discoverable
 
-- [ ] **2.1 Pagefind Search Component**
-  - Scope: Create `src/components/Search.astro` with Pagefind UI
-  - Requirements: Multilingual (search in current language), keyboard accessible, responsive
-  - Verify: Build succeeds; search input appears; typing returns results from indexed content
-  - Reference: Pagefind docs for Astro integration
+- [x] **2.1 Pagefind Search Component** (2026-03-03)
+  - Already existed as `src/components/widgets/SearchDialog.astro`
+  - Fixed: language filtering bug (was slicing before filtering — could show 0 results)
+  - Fixed: now uses i18n translation keys instead of hardcoded label records
+  - Fixed: removed unused `pagefind-ui.css` import
+  - Added: initial hint state ("/ to search"), proper DOM cleanup between searches
 
-- [ ] **2.2 Search in Navigation**
-  - Scope: Add search icon/button to Header that opens search overlay or navigates to search page
-  - Verify: Search accessible from every page; works on mobile
+- [x] **2.2 Search in Navigation** (2026-03-03)
+  - Already integrated in Header.astro (desktop + mobile)
+  - No changes needed
 
-- [ ] **2.3 Search i18n**
-  - Scope: Add translation keys for search placeholder, no-results message, etc.
-  - Verify: `npm run check-i18n` passes; search UI shows correct language strings
+- [x] **2.3 Search i18n** (2026-03-03)
+  - Added `search.placeholder` and `search.hint` keys to all 4 language files
+  - Component now uses `t(lang, key)` for all labels (nav.search, common.noResults, etc.)
+  - 128 keys per language (up from 126), check-i18n passes
 
 ---
 
@@ -194,9 +193,18 @@ Every work item must pass ALL of:
 > Append a new entry after each work session. Format:
 > `### YYYY-MM-DD — Summary (items completed)`
 
-### 2026-03-03 — Workboard Created
+### 2026-03-03 — Phase 2 Complete: Search Fixed & Polished
+- SearchDialog already existed but had critical language filtering bug
+- Fixed: filter by language BEFORE taking top 8 results
+- Migrated hardcoded labels to i18n system (128 keys per language)
+- Removed unused pagefind-ui.css import
+- Added initial hint state with "/" keyboard shortcut indicator
+- Build: 261 pages, check-i18n OK (128 keys x 4), check-refs OK
+
+### 2026-03-03 — Phase 1 Complete: Site is LIVE
 - Created `WORKBOARD.md` as self-maintaining project board
-- Audited all remaining work across 7 phases
-- Established session protocol and verification standards
-- Items completed: 0 (setup session)
+- Committed and pushed P3 content + A++ upgrade (40 files) + workboard (2 files)
+- User connected CF Pages + custom domain
+- Smoke test: 16/16 checks pass — znjan.com is live with HTTPS, 4 languages, structured data
+- **Phase 1 complete** (items 1.1–1.4 all done)
 - Build status: PASS (261 pages, check-i18n OK, check-refs OK)

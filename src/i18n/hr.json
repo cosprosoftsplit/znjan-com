@@ -149,6 +149,10 @@
     "success": "Poruka je uspješno poslana!",
     "error": "Nešto je pošlo po krivu. Pokušajte ponovo."
   },
+  "search": {
+    "placeholder": "Pretraži plažu Žnjan...",
+    "hint": "za pretragu"
+  },
   "seo": {
     "homeTitle": "Plaža Žnjan Split — Potpuni vodič, aktivnosti i mjesta",
     "homeDescription": "Potpuni vodič za plažu Žnjan u Splitu, Hrvatska. Restorani, barovi, vodeni sportovi, događanja i sve o preobrazbi Miamija Splita vrijednoj 45,77 milijuna eura."

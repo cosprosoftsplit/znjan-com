@@ -149,6 +149,10 @@
     "goHome": "Zur Startseite",
     "browseGuides": "Reiseführer durchsuchen"
   },
+  "search": {
+    "placeholder": "Strand Žnjan durchsuchen...",
+    "hint": "zum Suchen"
+  },
   "seo": {
     "homeTitle": "Strand Žnjan Split — Kompletter Reiseführer, Aktivitäten & Orte",
     "homeDescription": "Ihr kompletter Reiseführer für den Strand Žnjan in Split, Kroatien. Entdecken Sie Restaurants, Bars, Wassersport, Veranstaltungen und alles über die 45-Millionen-Euro-Transformation des Miami von Split."

@@ -1,5 +1,6 @@
 ---
 import type { Language } from '@/lib/i18n';
+import { t } from '@/lib/translations';
 
 interface Props {
   lang: Language;
@@ -7,14 +8,10 @@ interface Props {
 
 const { lang } = Astro.props;
 
-const labels: Record<Language, { search: string; placeholder: string; noResults: string; close: string }> = {
-  en: { search: 'Search', placeholder: 'Search Žnjan Beach...', noResults: 'No results found', close: 'Close' },
-  hr: { search: 'Pretraži', placeholder: 'Pretraži plažu Žnjan...', noResults: 'Nema rezultata', close: 'Zatvori' },
-  de: { search: 'Suchen', placeholder: 'Strand Žnjan durchsuchen...', noResults: 'Keine Ergebnisse', close: 'Schließen' },
-  it: { search: 'Cerca', placeholder: 'Cerca spiaggia Žnjan...', noResults: 'Nessun risultato', close: 'Chiudi' },
-};
-
-const l = labels[lang];
+const placeholder = t(lang, 'search.placeholder');
+const searchLabel = t(lang, 'nav.search');
+const noResultsText = t(lang, 'common.noResults');
+const hintText = t(lang, 'search.hint');
 ---
 
 <!-- Search trigger button -->
@@ -22,12 +19,12 @@ const l = labels[lang];
   id="search-trigger"
   type="button"
   class="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-cream/70 hover:text-white rounded-lg transition-colors duration-200"
-  aria-label={l.search}
+  aria-label={searchLabel}
 >
   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
   </svg>
-  <span class="hidden sm:inline">{l.search}</span>
+  <span class="hidden sm:inline">{searchLabel}</span>
   <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 text-xs text-cream/50 bg-ocean-700/50 rounded border border-ocean-700">/</kbd>
 </button>
 
@@ -46,7 +43,7 @@ const l = labels[lang];
         <input
           id="search-input"
           type="search"
-          placeholder={l.placeholder}
+          placeholder={placeholder}
           class="flex-1 py-3 text-base text-warm-700 bg-transparent border-0 outline-none placeholder:text-stone/50"
           autocomplete="off"
         />
@@ -61,15 +58,18 @@ const l = labels[lang];
 
       <!-- Search results -->
       <div id="search-results" class="max-h-[50vh] overflow-y-auto p-2">
+        <!-- Initial hint -->
+        <div id="search-hint" class="p-8 text-center text-stone/60 text-sm">
+          <kbd class="px-1.5 py-0.5 text-xs bg-sand-100 rounded border border-sand-200">/</kbd>
+          <span class="ml-1">{hintText}</span>
+        </div>
         <div id="search-empty" class="hidden p-8 text-center text-stone text-sm">
-          {l.noResults}
+          {noResultsText}
         </div>
       </div>
     </div>
   </div>
 </dialog>
-
-<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
 
 <script define:vars={{ lang }}>
   let pagefind = null;
@@ -89,22 +89,30 @@ const l = labels[lang];
   const trigger = document.getElementById('search-trigger');
   const dialog = document.getElementById('search-dialog');
   const input = document.getElementById('search-input');
-  const results = document.getElementById('search-results');
+  const resultsContainer = document.getElementById('search-results');
   const empty = document.getElementById('search-empty');
+  const hint = document.getElementById('search-hint');
   const closeBtn = document.getElementById('search-close');
 
   function openSearch() {
     dialog.showModal();
     input.value = '';
-    results.innerHTML = '';
-    empty.classList.add('hidden');
-    results.appendChild(empty);
+    clearResults();
+    hint.classList.remove('hidden');
     setTimeout(() => input.focus(), 50);
     loadPagefind();
   }
 
   function closeSearch() {
     dialog.close();
+  }
+
+  function clearResults() {
+    // Remove result links but keep hint and empty elements
+    const links = resultsContainer.querySelectorAll('a');
+    links.forEach(link => link.remove());
+    empty.classList.add('hidden');
+    hint.classList.add('hidden');
   }
 
   trigger.addEventListener('click', openSearch);
@@ -131,33 +139,27 @@ const l = labels[lang];
     debounceTimer = setTimeout(async () => {
       const query = input.value.trim();
       if (!query) {
-        results.innerHTML = '';
-        empty.classList.add('hidden');
-        results.appendChild(empty);
+        clearResults();
+        hint.classList.remove('hidden');
         return;
       }
+
+      hint.classList.add('hidden');
 
       const pf = await loadPagefind();
       if (!pf) return;
 
-      const search = await pf.search(query, {
-        filters: {},
-      });
+      const search = await pf.search(query);
 
-      results.innerHTML = '';
-      results.appendChild(empty);
+      clearResults();
 
-      if (search.results.length === 0) {
-        empty.classList.remove('hidden');
-        return;
-      }
-
-      empty.classList.add('hidden');
-      const shown = search.results.slice(0, 8);
-      for (const result of shown) {
+      // Load all result data, filter by language, then take top 8
+      const langPrefix = '/' + lang + '/';
+      let shown = 0;
+      for (const result of search.results) {
+        if (shown >= 8) break;
         const data = await result.data();
-        // Filter to current language pages
-        if (!data.url.startsWith('/' + lang + '/')) continue;
+        if (!data.url.startsWith(langPrefix)) continue;
 
         const a = document.createElement('a');
         a.href = data.url;
@@ -167,10 +169,11 @@ const l = labels[lang];
           ${data.excerpt ? `<div class="mt-1 text-xs text-stone line-clamp-2">${data.excerpt}</div>` : ''}
         `;
         a.addEventListener('click', () => closeSearch());
-        results.appendChild(a);
+        resultsContainer.appendChild(a);
+        shown++;
       }
 
-      if (results.children.length <= 1) {
+      if (shown === 0) {
         empty.classList.remove('hidden');
       }
     }, 200);

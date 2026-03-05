@@ -149,6 +149,10 @@
     "goHome": "Vai alla home",
     "browseGuides": "Sfoglia le guide"
   },
+  "search": {
+    "placeholder": "Cerca spiaggia Žnjan...",
+    "hint": "per cercare"
+  },
   "seo": {
     "homeTitle": "Spiaggia di Žnjan Spalato — Guida completa, attività e luoghi",
     "homeDescription": "La tua guida completa alla spiaggia di Žnjan a Spalato, Croazia. Scopri ristoranti, bar, sport acquatici, eventi e tutto sulla trasformazione da 45 milioni di euro della Miami di Spalato."

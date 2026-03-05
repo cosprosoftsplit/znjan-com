@@ -4,7 +4,7 @@
  */
 
 import type { Language } from './i18n';
-import { ROUTE_SEGMENTS, getLocalized } from './i18n';
+import { getLocalized } from './i18n';
 
 export interface SeoMeta {
   title: string;
@@ -24,7 +24,8 @@ export interface HreflangLink {
   href: string;
 }
 
-/** Generate hreflang links for a page */
+/** Generate hreflang links for a page.
+ *  Route segments always use English (Astro generates pages at English paths). */
 export function generateHreflangLinks(
   segment: string,
   slugs: Record<Language, string>,
@@ -33,37 +34,36 @@ export function generateHreflangLinks(
   const links: HreflangLink[] = [];
 
   for (const lang of languages) {
-    const localizedSegment = ROUTE_SEGMENTS[segment]?.[lang] ?? segment;
     links.push({
       lang,
-      href: `https://znjan.com/${lang}/${localizedSegment}/${slugs[lang]}/`,
+      href: `https://znjan.com/${lang}/${segment}/${slugs[lang]}/`,
     });
   }
 
   links.push({
     lang: 'x-default',
-    href: `https://znjan.com/en/${ROUTE_SEGMENTS[segment]?.en ?? segment}/${slugs.en}/`,
+    href: `https://znjan.com/en/${segment}/${slugs.en}/`,
   });
 
   return links;
 }
 
-/** Generate hreflang links for hub pages (no slug) */
+/** Generate hreflang links for hub pages (no slug).
+ *  Route segments always use English (Astro generates pages at English paths). */
 export function generateHubHreflangLinks(segment: string): HreflangLink[] {
   const languages: Language[] = ['en', 'hr', 'de', 'it'];
   const links: HreflangLink[] = [];
 
   for (const lang of languages) {
-    const localizedSegment = ROUTE_SEGMENTS[segment]?.[lang] ?? segment;
     links.push({
       lang,
-      href: `https://znjan.com/${lang}/${localizedSegment}/`,
+      href: `https://znjan.com/${lang}/${segment}/`,
     });
   }
 
   links.push({
     lang: 'x-default',
-    href: `https://znjan.com/en/${ROUTE_SEGMENTS[segment]?.en ?? segment}/`,
+    href: `https://znjan.com/en/${segment}/`,
   });
 
   return links;

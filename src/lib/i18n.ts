@@ -32,14 +32,14 @@ export function getCanonicalSegment(localizedSegment: string): string | undefine
   return reverseSegments.get(localizedSegment)?.canonical;
 }
 
-/** Get localized URL for a given path and language */
+/** Get localized URL for a given path and language.
+ *  Route segments always use English (Astro generates pages at English paths). */
 export function getLocalizedUrl(
   lang: Language,
   segment: string,
   slug?: string,
 ): string {
-  const localizedSegment = ROUTE_SEGMENTS[segment]?.[lang] ?? segment;
-  const base = `/${lang}/${localizedSegment}/`;
+  const base = `/${lang}/${segment}/`;
   if (slug) {
     return `${base}${slug}/`;
   }
@@ -51,7 +51,8 @@ export function getHomeUrl(lang: Language): string {
   return `/${lang}/`;
 }
 
-/** Generate hreflang links for a page */
+/** Generate hreflang links for a page.
+ *  Route segments always use English (Astro generates pages at English paths). */
 export function getHreflangLinks(
   segment: string,
   slugs: Record<Language, string>,
@@ -59,19 +60,16 @@ export function getHreflangLinks(
   const links: Array<{ lang: Language | 'x-default'; href: string }> = [];
 
   for (const lang of LANGUAGES) {
-    const localizedSegment = ROUTE_SEGMENTS[segment]?.[lang] ?? segment;
-    const slug = slugs[lang];
     links.push({
       lang,
-      href: `https://znjan.com/${lang}/${localizedSegment}/${slug}/`,
+      href: `https://znjan.com/${lang}/${segment}/${slugs[lang]}/`,
     });
   }
 
   // x-default points to English
-  const enSegment = ROUTE_SEGMENTS[segment]?.en ?? segment;
   links.push({
     lang: 'x-default',
-    href: `https://znjan.com/en/${enSegment}/${slugs.en}/`,
+    href: `https://znjan.com/en/${segment}/${slugs.en}/`,
   });
 
   return links;

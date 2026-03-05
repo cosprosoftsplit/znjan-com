@@ -68,7 +68,9 @@
     "phone": "Phone",
     "hours": "Opening Hours",
     "directions": "Get Directions",
-    "comingSoon": "Coming Soon"
+    "comingSoon": "Coming Soon",
+    "information": "Information",
+    "priceRange": "Price Range"
   },
   "activities": {
     "title": "Things to Do at Žnjan Beach",

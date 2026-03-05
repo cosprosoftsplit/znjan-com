@@ -68,7 +68,9 @@
     "phone": "Telefon",
     "hours": "Öffnungszeiten",
     "directions": "Wegbeschreibung",
-    "comingSoon": "Demnächst"
+    "comingSoon": "Demnächst",
+    "information": "Informationen",
+    "priceRange": "Preisspanne"
   },
   "activities": {
     "title": "Aktivitäten am Strand Žnjan",

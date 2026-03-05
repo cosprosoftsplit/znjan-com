@@ -68,7 +68,9 @@
     "phone": "Telefon",
     "hours": "Radno vrijeme",
     "directions": "Upute za dolazak",
-    "comingSoon": "Uskoro"
+    "comingSoon": "Uskoro",
+    "information": "Informacije",
+    "priceRange": "Raspon cijena"
   },
   "activities": {
     "title": "Što raditi na plaži Žnjan",

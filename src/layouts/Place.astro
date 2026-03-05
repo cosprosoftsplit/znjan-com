@@ -54,7 +54,7 @@ const {
 >
   <Header lang={lang} translations={translations} />
 
-  <main>
+  <main id="main-content">
     <!-- Breadcrumb -->
     <nav class="container-page pt-6" aria-label="Breadcrumb">
       <ol class="flex items-center gap-2 text-sm text-stone">
@@ -110,7 +110,7 @@ const {
           <!-- Info Card -->
           <div class="bg-sand-50 rounded-xl border border-sand-200 p-6">
             <h2 class="font-semibold text-ocean-700 mb-4">
-              {lang === 'hr' ? 'Informacije' : lang === 'de' ? 'Informationen' : lang === 'it' ? 'Informazioni' : 'Information'}
+              {translations['places.information'] || 'Information'}
             </h2>
 
             <dl class="space-y-3 text-sm">
@@ -132,7 +132,7 @@ const {
                 <div>
                   <dt class="text-stone/70 font-medium">{translations['places.website'] || 'Website'}</dt>
                   <dd class="mt-0.5">
-                    <a href={website} target="_blank" rel="noopener" class="text-adriatic-400 hover:text-adriatic-500 hover:underline">
+                    <a href={website} target="_blank" rel="noopener noreferrer" class="text-adriatic-400 hover:text-adriatic-500 hover:underline">
                       {new URL(website).hostname}
                     </a>
                   </dd>
@@ -141,7 +141,7 @@ const {
               {priceRange && (
                 <div>
                   <dt class="text-stone/70 font-medium">
-                    {lang === 'hr' ? 'Raspon cijena' : lang === 'de' ? 'Preisspanne' : lang === 'it' ? 'Fascia di prezzo' : 'Price Range'}
+                    {translations['places.priceRange'] || 'Price Range'}
                   </dt>
                   <dd class="mt-0.5 text-warm-700 font-medium">{priceRange}</dd>
                 </div>

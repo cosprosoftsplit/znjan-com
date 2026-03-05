@@ -52,7 +52,7 @@ const {
 >
   <Header lang={lang} translations={translations} />
 
-  <main>
+  <main id="main-content">
     <!-- Breadcrumb -->
     <nav class="container-page pt-6" aria-label="Breadcrumb">
       <ol class="flex items-center gap-2 text-sm text-stone">
@@ -62,7 +62,7 @@ const {
           </a>
         </li>
         <li class="flex items-center gap-2">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
           <a href={getLocalizedUrl(lang, 'guides')} class="hover:text-adriatic-400 transition-colors duration-200">
@@ -70,7 +70,7 @@ const {
           </a>
         </li>
         <li class="flex items-center gap-2">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
           <span class="text-warm-700 font-medium">{title}</span>

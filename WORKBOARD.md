@@ -132,13 +132,16 @@ Every work item must pass ALL of:
 **Goal:** Track visitors, understand usage
 **Priority:** LOW — nice to have post-launch
 
-- [ ] **5.1 Cloudflare Web Analytics**
-  - Scope: Add CF Analytics beacon to `Base.astro`; configure in `site-config.yaml`
-  - Verify: Analytics appear in CF dashboard after deploy
+- [x] **5.1 Cloudflare Web Analytics** (2026-03-05)
+  - Done: User enabled CF Web Analytics in dashboard (auto-injected beacon)
+  - Verify: Analytics data appearing in CF dashboard
 
-- [ ] **5.2 robots.txt & Sitemap Verification**
-  - Scope: Confirm robots.txt allows crawling; sitemap.xml lists all 261 pages; submit to Google Search Console
-  - Verify: GSC shows sitemap accepted; pages indexing
+- [x] **5.2 robots.txt & Sitemap Verification** (2026-03-05)
+  - Done: User set up Google Search Console, verified domain, submitted sitemap
+  - robots.txt → 200, points to /sitemap-index.xml
+  - /sitemap.xml → 308 redirect to /sitemap-index.xml (working)
+  - /sitemap-index.xml → 200 (281 pages listed)
+  - Verify: Monitor GSC for indexing progress over next 2-4 weeks
 
 ---
 

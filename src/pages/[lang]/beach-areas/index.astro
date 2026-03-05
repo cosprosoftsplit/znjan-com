@@ -7,7 +7,7 @@ import BeachMap from '@/components/maps/BeachMap.astro';
 import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
-import { generateHubHreflangLinks } from '@/lib/seo';
+import { generateHubHreflangLinks, buildCollectionPageSchema } from '@/lib/seo';
 import { canonicalUrl } from '@/lib/utils';
 import { facilityLabels } from '@/lib/labels';
 import { getCollection } from 'astro:content';
@@ -45,6 +45,17 @@ const mapMarkers = [
 ];
 
 
+const pageUrl = canonicalUrl(getLocalizedUrl(lang, 'beach-areas'));
+const structuredData = buildCollectionPageSchema({
+  name: translations['seo.beachAreasTitle'],
+  description: translations['seo.beachAreasDescription'],
+  url: pageUrl,
+  items: areas.map((a) => ({
+    name: getLocalized(a.data.title, lang),
+    url: canonicalUrl(getLocalizedUrl(lang, 'beach-areas', a.data.slug[lang])),
+  })),
+});
+
 const areaVariants: string[] = ['ocean', 'adriatic', 'sunset', 'coral', 'sand'];
 const gradientMap: Record<string, string> = {
   ocean: 'linear-gradient(135deg, #0077B6 0%, #023e8a 40%, #0096c7 100%)',
@@ -65,12 +76,13 @@ const areaImages: Record<string, { src: string; credit: string }> = {
 ---
 
 <Page
-  title={translations['beachAreas.title']}
-  description={translations['beachAreas.subtitle']}
+  title={translations['seo.beachAreasTitle']}
+  description={translations['seo.beachAreasDescription']}
   lang={lang}
   translations={translations}
-  canonicalUrl={canonicalUrl(getLocalizedUrl(lang, 'beach-areas'))}
+  canonicalUrl={pageUrl}
   hreflangLinks={hreflangLinks}
+  structuredData={structuredData}
 >
   <Hero
     title={translations['beachAreas.title']}

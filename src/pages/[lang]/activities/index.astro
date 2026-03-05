@@ -7,7 +7,7 @@ import Badge from '@/components/ui/Badge.astro';
 import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
-import { generateHubHreflangLinks } from '@/lib/seo';
+import { generateHubHreflangLinks, buildCollectionPageSchema } from '@/lib/seo';
 import { canonicalUrl } from '@/lib/utils';
 import { activityCategoryLabels, difficultyLabels } from '@/lib/labels';
 import { getCollection } from 'astro:content';
@@ -28,6 +28,17 @@ const activities = allActivities.sort((a, b) => {
 });
 
 
+const pageUrl = canonicalUrl(getLocalizedUrl(lang, 'activities'));
+const structuredData = buildCollectionPageSchema({
+  name: translations['seo.activitiesTitle'],
+  description: translations['seo.activitiesDescription'],
+  url: pageUrl,
+  items: activities.map((a) => ({
+    name: getLocalized(a.data.title, lang),
+    url: canonicalUrl(getLocalizedUrl(lang, 'activities', a.data.slug[lang])),
+  })),
+});
+
 // Group activities by category
 const categories = [...new Set(activities.map((a) => a.data.category))];
 const grouped = categories.map((cat) => ({
@@ -47,12 +58,13 @@ const activityIcons: Record<string, string> = {
 ---
 
 <Page
-  title={translations['activities.title']}
-  description={translations['activities.subtitle']}
+  title={translations['seo.activitiesTitle']}
+  description={translations['seo.activitiesDescription']}
   lang={lang}
   translations={translations}
-  canonicalUrl={canonicalUrl(getLocalizedUrl(lang, 'activities'))}
+  canonicalUrl={pageUrl}
   hreflangLinks={hreflangLinks}
+  structuredData={structuredData}
 >
   <Hero
     title={translations['activities.title']}

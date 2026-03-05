@@ -7,7 +7,7 @@ import Badge from '@/components/ui/Badge.astro';
 import { LANGUAGES, getLocalizedUrl } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
-import { generateHubHreflangLinks } from '@/lib/seo';
+import { generateHubHreflangLinks, buildCollectionPageSchema } from '@/lib/seo';
 import { canonicalUrl, formatDate } from '@/lib/utils';
 import { getCollection } from 'astro:content';
 
@@ -24,6 +24,17 @@ const guides = allGuides.sort((a, b) => b.data.publishedAt.getTime() - a.data.pu
 const firstGuide = guides[0];
 const remainingGuides = guides.slice(1);
 
+const pageUrl = canonicalUrl(getLocalizedUrl(lang, 'guides'));
+const structuredData = buildCollectionPageSchema({
+  name: translations['seo.guidesTitle'],
+  description: translations['seo.guidesDescription'],
+  url: pageUrl,
+  items: guides.map((g) => ({
+    name: g.data.title[lang],
+    url: canonicalUrl(getLocalizedUrl(lang, 'guides', g.data.slugs[lang])),
+  })),
+});
+
 const clusterGradients: Record<string, string> = {
   'getting-started': 'linear-gradient(135deg, #0077B6 0%, #023e8a 40%, #0096c7 100%)',
   'food-drink': 'linear-gradient(135deg, #e07d6a 0%, #f4a261 100%)',
@@ -33,12 +44,13 @@ const clusterGradients: Record<string, string> = {
 ---
 
 <Page
-  title={translations['guides.title']}
-  description={translations['guides.subtitle']}
+  title={translations['seo.guidesTitle']}
+  description={translations['seo.guidesDescription']}
   lang={lang}
   translations={translations}
-  canonicalUrl={canonicalUrl(getLocalizedUrl(lang, 'guides'))}
+  canonicalUrl={pageUrl}
   hreflangLinks={hreflangLinks}
+  structuredData={structuredData}
 >
   <Hero
     title={translations['guides.title']}

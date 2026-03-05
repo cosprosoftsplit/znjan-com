@@ -7,7 +7,7 @@ import Badge from '@/components/ui/Badge.astro';
 import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
-import { generateHubHreflangLinks } from '@/lib/seo';
+import { generateHubHreflangLinks, buildCollectionPageSchema } from '@/lib/seo';
 import { canonicalUrl } from '@/lib/utils';
 import { placeCategoryLabels } from '@/lib/labels';
 import { getCollection } from 'astro:content';
@@ -40,6 +40,17 @@ const gradientMap: Record<string, string> = {
   other: 'linear-gradient(135deg, #5a6a6e 0%, #748c94 100%)',
 };
 
+const pageUrl = canonicalUrl(getLocalizedUrl(lang, 'places'));
+const structuredData = buildCollectionPageSchema({
+  name: translations['seo.placesTitle'],
+  description: translations['seo.placesDescription'],
+  url: pageUrl,
+  items: places.map((p) => ({
+    name: getLocalized(p.data.title, lang),
+    url: canonicalUrl(getLocalizedUrl(lang, 'places', p.data.slug[lang])),
+  })),
+});
+
 // Place images + credits
 const placeImages: Record<string, { src: string; credit: string }> = {
   'taboo-beach-club': { src: '/images/places/taboo-daybeds.jpg', credit: 'Photo: Taboo Beach Club' },
@@ -51,12 +62,13 @@ const placeImages: Record<string, { src: string; credit: string }> = {
 ---
 
 <Page
-  title={translations['places.title']}
-  description={translations['places.subtitle']}
+  title={translations['seo.placesTitle']}
+  description={translations['seo.placesDescription']}
   lang={lang}
   translations={translations}
-  canonicalUrl={canonicalUrl(getLocalizedUrl(lang, 'places'))}
+  canonicalUrl={pageUrl}
   hreflangLinks={hreflangLinks}
+  structuredData={structuredData}
 >
   <Hero
     title={translations['places.title']}

@@ -230,6 +230,31 @@ export function buildPlaceSchema(options: {
   };
 }
 
+export function buildCollectionPageSchema(options: {
+  name: string;
+  description: string;
+  url: string;
+  items: Array<{ name: string; url: string }>;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: options.name,
+    description: options.description,
+    url: options.url,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: options.items.length,
+      itemListElement: options.items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+        url: item.url,
+      })),
+    },
+  };
+}
+
 export function buildEventSchema(options: {
   name: string;
   description: string;

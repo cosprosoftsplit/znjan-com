@@ -6,7 +6,7 @@ import Badge from '@/components/ui/Badge.astro';
 import { LANGUAGES, getLocalizedUrl } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
-import { generateHubHreflangLinks } from '@/lib/seo';
+import { generateHubHreflangLinks, buildCollectionPageSchema } from '@/lib/seo';
 import { canonicalUrl, formatDate } from '@/lib/utils';
 import { getCollection } from 'astro:content';
 
@@ -20,15 +20,27 @@ const hreflangLinks = generateHubHreflangLinks('articles');
 
 const allArticles = await getCollection('articles', ({ data }) => data.lang === lang);
 const articles = allArticles.sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+
+const pageUrl = canonicalUrl(getLocalizedUrl(lang, 'articles'));
+const structuredData = buildCollectionPageSchema({
+  name: translations['seo.articlesTitle'],
+  description: translations['seo.articlesDescription'],
+  url: pageUrl,
+  items: articles.map((a) => ({
+    name: a.data.title[lang],
+    url: canonicalUrl(getLocalizedUrl(lang, 'articles', a.data.slugs[lang])),
+  })),
+});
 ---
 
 <Page
-  title={translations['articles.title']}
-  description={translations['articles.subtitle']}
+  title={translations['seo.articlesTitle']}
+  description={translations['seo.articlesDescription']}
   lang={lang}
   translations={translations}
-  canonicalUrl={canonicalUrl(getLocalizedUrl(lang, 'articles'))}
+  canonicalUrl={pageUrl}
   hreflangLinks={hreflangLinks}
+  structuredData={structuredData}
 >
   <Hero
     title={translations['articles.title']}

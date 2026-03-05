@@ -11,6 +11,7 @@ export default defineConfig({
 
   redirects: {
     '/': '/en/',
+    '/sitemap.xml': '/sitemap-index.xml',
   },
 
   integrations: [

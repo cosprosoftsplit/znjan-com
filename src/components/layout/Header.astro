@@ -95,4 +95,11 @@ const navItems = [
     const isHidden = menu?.classList.toggle('hidden');
     btn.setAttribute('aria-expanded', String(!isHidden));
   });
+  // Auto-close mobile menu when a nav link is clicked
+  menu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      btn?.setAttribute('aria-expanded', 'false');
+    });
+  });
 </script>

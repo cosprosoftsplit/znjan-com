@@ -245,6 +245,17 @@ Every work item must pass ALL of:
 - Build: 281 pages (up from 261), 142 i18n keys x 4 langs, all checks pass
 - Pagefind: 19,646 indexed words across 4 languages
 
+### 2026-03-05 — Cluster Strengthening: 4 New Articles (16 MDX files)
+- Targeted thin content clusters to build topical authority
+- **4 new articles created**, each in all 4 languages (EN, HR, DE, IT):
+  1. **Water Sports & Beach Activities** (activities-sports cluster): SUP, kayaking, beach volleyball, jet ski, pedal boats, skate park, upcoming aquapark/diving/windsurfing
+  2. **What to Pack for Žnjan Beach** (getting-started cluster): Comprehensive packing list by category — sun protection, comfort, tech, families, active visitors, seasonal adjustments
+  3. **Beach Rules & Etiquette** (getting-started cluster): Official rules, sunbed protocol, tipping, photography, noise, swimming zones, environmental etiquette, Croatian customs
+  4. **Where to Eat: Restaurant Guide** (food-drink cluster): Meal-by-meal dining guide (breakfast to dinner), all 7 venues, Croatian specialties, dietary options, budget guide
+- Cluster improvements: activities-sports 2→3, getting-started 1→3, food-drink 3→4
+- Build: 297 pages (up from 281), 142 i18n keys x 4 langs, all checks pass
+- Pagefind: 21,621 indexed words (up from 19,646)
+
 ### 2026-03-03 — Phase 1 Complete: Site is LIVE
 - Created `WORKBOARD.md` as self-maintaining project board
 - Committed and pushed P3 content + A++ upgrade (40 files) + workboard (2 files)

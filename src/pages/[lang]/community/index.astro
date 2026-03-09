@@ -1,0 +1,167 @@
+---
+export const prerender = false;
+
+import Page from '@/layouts/Page.astro';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import { getTranslations, t } from '@/lib/translations';
+import AuthBanner from '@/components/community/AuthBanner.astro';
+import PostFilters from '@/components/community/PostFilters.astro';
+import Leaderboard from '@/components/community/Leaderboard.astro';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/');
+
+const translations = getTranslations(lang);
+const user = Astro.locals.user;
+const activeType = Astro.url.searchParams.get('type') || '';
+const activeCategory = Astro.url.searchParams.get('category') || '';
+---
+
+<Page
+  title={t(lang, 'community.title')}
+  description={t(lang, 'community.subtitle')}
+  lang={lang}
+  translations={translations}
+  noIndex={true}
+>
+  <section class="container-page py-10">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-display text-ocean-900 mb-2">
+        {t(lang, 'community.title')}
+      </h1>
+      <p class="text-warm-600 text-lg">{t(lang, 'community.subtitle')}</p>
+    </div>
+
+    <!-- Auth Banner -->
+    <div class="mb-6">
+      <AuthBanner lang={lang} user={user} />
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <!-- Main content -->
+      <div class="lg:col-span-3 space-y-6">
+        <!-- Filters + Create button -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <PostFilters lang={lang} activeType={activeType} activeCategory={activeCategory} />
+          {user && (
+            <a
+              href={`/${lang}/community/create/`}
+              class="inline-flex items-center gap-2 bg-ocean-600 hover:bg-ocean-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors shrink-0"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              {t(lang, 'community.createPost')}
+            </a>
+          )}
+        </div>
+
+        <!-- Posts list (loaded client-side) -->
+        <div id="posts-container">
+          <div class="text-center py-12 text-warm-400">{t(lang, 'common.loading')}</div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        <Leaderboard lang={lang} />
+      </div>
+    </div>
+  </section>
+</Page>
+
+<script define:vars={{ lang, activeType, activeCategory }}>
+  let currentType = activeType;
+  let currentCategory = activeCategory;
+
+  async function loadPosts() {
+    const container = document.getElementById('posts-container');
+    if (!container) return;
+    container.innerHTML = '<div class="text-center py-12 text-warm-400">Loading...</div>';
+
+    const params = new URLSearchParams();
+    if (currentType) params.set('type', currentType);
+    if (currentCategory) params.set('category', currentCategory);
+
+    try {
+      const res = await fetch(`/api/posts/?${params}`);
+      const data = await res.json();
+
+      if (!data.posts?.length) {
+        container.innerHTML = `<div class="text-center py-12 text-warm-400">${document.querySelector('[data-no-posts]')?.textContent || 'No posts yet.'}</div>`;
+        return;
+      }
+
+      const typeColors = {
+        meetup: 'bg-ocean-100 text-ocean-800',
+        'event-idea': 'bg-sand-100 text-sand-800',
+        'partner-search': 'bg-coral-50 text-coral-700',
+        discussion: 'bg-warm-100 text-warm-700',
+      };
+
+      container.innerHTML = `<div class="space-y-4">${data.posts
+        .map(
+          (p) => `
+        <a href="/${lang}/community/${p.id}/" class="block bg-white rounded-xl border border-warm-200 hover:border-ocean-300 hover:shadow-md transition-all duration-200 p-5 group">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs font-medium px-2 py-0.5 rounded-full ${typeColors[p.type] || 'bg-warm-100 text-warm-700'}">${p.type.replace('-', ' ')}</span>
+              <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-warm-50 text-warm-600">${p.category.replace('-', ' ')}</span>
+            </div>
+            ${
+              p.event_date
+                ? `<span class="text-xs text-warm-500 shrink-0">${new Date(p.event_date).toLocaleDateString(lang, { month: 'short', day: 'numeric' })}${p.event_time ? ' · ' + p.event_time : ''}</span>`
+                : ''
+            }
+          </div>
+          <h3 class="text-lg font-semibold text-ocean-900 group-hover:text-ocean-700 transition-colors mb-2 line-clamp-2">${p.title}</h3>
+          <p class="text-warm-600 text-sm line-clamp-2 mb-4">${p.body.slice(0, 150)}${p.body.length > 150 ? '...' : ''}</p>
+          ${p.location ? `<div class="flex items-center gap-1.5 text-xs text-warm-500 mb-3"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>${p.location}</div>` : ''}
+          <div class="flex items-center justify-between pt-3 border-t border-warm-100">
+            <div class="flex items-center gap-1 text-xs text-warm-500"><span class="font-medium text-warm-700">${p.author_name}</span><span>·</span><span>${new Date(p.created_at).toLocaleDateString(lang, { month: 'short', day: 'numeric' })}</span></div>
+            <div class="flex items-center gap-3 text-xs text-warm-500">
+              ${p.type === 'meetup' ? `<span>${p.join_count}${p.max_participants ? '/' + p.max_participants : ''} joined</span>` : ''}
+              <span>${p.comment_count} comments</span>
+              <span>${p.views} views</span>
+            </div>
+          </div>
+        </a>`,
+        )
+        .join('')}</div>`;
+    } catch {
+      container.innerHTML = '<div class="text-center py-12 text-coral-500">Failed to load posts</div>';
+    }
+  }
+
+  // Filter clicks
+  document.querySelectorAll('[data-filter]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filterType = btn.getAttribute('data-filter');
+      const value = btn.getAttribute('data-value');
+
+      if (filterType === 'type') {
+        currentType = value;
+        document.querySelectorAll('[data-filter="type"]').forEach((b) => {
+          b.className = b.getAttribute('data-value') === value
+            ? 'px-3 py-1.5 text-sm rounded-full font-medium transition-colors bg-ocean-600 text-white'
+            : 'px-3 py-1.5 text-sm rounded-full font-medium transition-colors bg-warm-100 text-warm-600 hover:bg-warm-200';
+        });
+      } else {
+        currentCategory = value;
+        document.querySelectorAll('[data-filter="category"]').forEach((b) => {
+          b.className = b.getAttribute('data-value') === value
+            ? 'px-3 py-1.5 text-sm rounded-full font-medium transition-colors bg-sand-500 text-white'
+            : 'px-3 py-1.5 text-sm rounded-full font-medium transition-colors bg-warm-50 text-warm-500 hover:bg-warm-100';
+        });
+      }
+
+      loadPosts();
+    });
+  });
+
+  loadPosts();
+</script>
+
+<span data-no-posts class="hidden">{t(lang, 'community.noPostsYet')}</span>

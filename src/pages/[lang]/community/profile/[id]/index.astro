@@ -1,0 +1,166 @@
+---
+export const prerender = false;
+
+import Page from '@/layouts/Page.astro';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import { getTranslations, t } from '@/lib/translations';
+import AuthBanner from '@/components/community/AuthBanner.astro';
+
+const lang = Astro.params.lang as Language;
+const profileId = Astro.params.id;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/');
+
+const translations = getTranslations(lang);
+const user = Astro.locals.user;
+const isOwnProfile = user?.id === profileId;
+---
+
+<Page
+  title={t(lang, 'profile.title')}
+  description={t(lang, 'community.subtitle')}
+  lang={lang}
+  translations={translations}
+  noIndex={true}
+>
+  <section class="container-page py-10 max-w-3xl mx-auto">
+    <a href={`/${lang}/community/`} class="inline-flex items-center gap-1 text-sm text-ocean-600 hover:text-ocean-800 mb-6 transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      {t(lang, 'community.backToCommunity')}
+    </a>
+
+    <div id="profile-container">
+      <div class="text-center py-12 text-warm-400">{t(lang, 'common.loading')}</div>
+    </div>
+  </section>
+</Page>
+
+<script define:vars={{ lang, profileId, isOwnProfile }}>
+  async function loadProfile() {
+    const container = document.getElementById('profile-container');
+    if (!container) return;
+
+    try {
+      const res = await fetch(`/api/users/${profileId}/`);
+      if (!res.ok) {
+        container.innerHTML = '<div class="text-center py-12 text-coral-500">User not found</div>';
+        return;
+      }
+
+      const { user: profile, stats, badges, recentPosts } = await res.json();
+      const joinDate = new Date(profile.created_at).toLocaleDateString(lang, { year: 'numeric', month: 'long' });
+
+      const badgeDefs = {
+        'first-post': { name: 'First Post', icon: '📝' },
+        'first-meetup': { name: 'First Meetup', icon: '🤝' },
+        organizer: { name: 'Organizer', icon: '🎯' },
+        connector: { name: 'Connector', icon: '🔗' },
+        multilingual: { name: 'Multilingual', icon: '🌍' },
+        regular: { name: 'Regular', icon: '🔥' },
+        helpful: { name: 'Helpful', icon: '💬' },
+        popular: { name: 'Popular', icon: '⭐' },
+      };
+
+      container.innerHTML = `
+        <!-- Profile Header -->
+        <div class="bg-white rounded-2xl border border-warm-200 p-6 md:p-8 mb-6">
+          <div class="flex items-start gap-5 mb-6">
+            <div class="w-16 h-16 rounded-full bg-ocean-100 flex items-center justify-center text-ocean-700 text-2xl font-bold shrink-0">
+              ${profile.display_name.charAt(0).toUpperCase()}
+            </div>
+            <div class="flex-1">
+              <h1 class="text-2xl font-display text-ocean-900 mb-1">${profile.display_name}</h1>
+              <div class="text-sm text-warm-500">Level ${profile.level} · ${profile.points} points · Member since ${joinDate}</div>
+              ${profile.bio ? `<p class="text-warm-600 mt-3">${profile.bio}</p>` : ''}
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div class="bg-warm-50 rounded-lg p-3">
+              <div class="text-xl font-bold text-ocean-800">${stats.posts}</div>
+              <div class="text-xs text-warm-500">Posts</div>
+            </div>
+            <div class="bg-warm-50 rounded-lg p-3">
+              <div class="text-xl font-bold text-ocean-800">${stats.meetups}</div>
+              <div class="text-xs text-warm-500">Meetups</div>
+            </div>
+            <div class="bg-warm-50 rounded-lg p-3">
+              <div class="text-xl font-bold text-ocean-800">${stats.comments}</div>
+              <div class="text-xs text-warm-500">Comments</div>
+            </div>
+          </div>
+
+          ${isOwnProfile ? `
+          <div class="mt-6 pt-6 border-t border-warm-100">
+            <button id="edit-profile-btn" class="text-sm text-ocean-600 hover:text-ocean-800 font-medium">Edit Profile</button>
+            <form id="edit-profile-form" class="hidden mt-4 space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-warm-700 mb-1">Display Name</label>
+                <input type="text" name="display_name" value="${profile.display_name.replace(/"/g, '&quot;')}" minlength="2" maxlength="50" class="w-full px-3 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 text-sm" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-warm-700 mb-1">Bio</label>
+                <textarea name="bio" rows="3" maxlength="500" class="w-full px-3 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 text-sm resize-y">${profile.bio || ''}</textarea>
+              </div>
+              <button type="submit" class="bg-ocean-600 hover:bg-ocean-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Save</button>
+            </form>
+          </div>` : ''}
+        </div>
+
+        <!-- Badges -->
+        ${badges.length ? `
+        <div class="bg-white rounded-2xl border border-warm-200 p-6 mb-6">
+          <h2 class="font-display text-lg text-ocean-900 mb-4">Badges</h2>
+          <div class="flex flex-wrap gap-3">
+            ${badges.map((b) => {
+              const def = badgeDefs[b.badge_id] || { name: b.badge_id, icon: '🏅' };
+              return `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-warm-50 rounded-full text-sm"><span class="text-lg">${def.icon}</span>${def.name}</span>`;
+            }).join('')}
+          </div>
+        </div>` : ''}
+
+        <!-- Recent Posts -->
+        ${recentPosts.length ? `
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="font-display text-lg text-ocean-900 mb-4">Recent Posts</h2>
+          <div class="space-y-3">
+            ${recentPosts.map((p) => `
+              <a href="/${lang}/community/${p.id}/" class="block p-3 rounded-lg hover:bg-warm-50 transition-colors">
+                <div class="text-sm font-medium text-ocean-900">${p.title}</div>
+                <div class="text-xs text-warm-500 mt-1">${p.type} · ${p.category} · ${new Date(p.created_at).toLocaleDateString(lang, { month: 'short', day: 'numeric' })}</div>
+              </a>
+            `).join('')}
+          </div>
+        </div>` : ''}
+      `;
+
+      // Edit profile toggle
+      document.getElementById('edit-profile-btn')?.addEventListener('click', () => {
+        document.getElementById('edit-profile-form')?.classList.toggle('hidden');
+      });
+
+      // Save profile
+      document.getElementById('edit-profile-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const res = await fetch('/api/users/me/', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            display_name: form.display_name.value,
+            bio: form.bio.value,
+          }),
+        });
+        if (res.ok) window.location.reload();
+        else alert('Failed to update profile');
+      });
+    } catch {
+      container.innerHTML = '<div class="text-center py-12 text-coral-500">Failed to load profile</div>';
+    }
+  }
+
+  loadProfile();
+</script>

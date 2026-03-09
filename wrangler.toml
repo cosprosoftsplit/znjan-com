@@ -1,0 +1,8 @@
+name = "znjan-com"
+compatibility_date = "2024-12-01"
+pages_build_output_dir = "./dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "znjan-community"
+database_id = "35ad720b-182b-4357-b979-2c1e54825a4b"

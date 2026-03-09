@@ -1,0 +1,65 @@
+---
+import type { Language } from '@/lib/i18n';
+import { t } from '@/lib/translations';
+
+interface Props {
+  lang: Language;
+  activeType?: string;
+  activeCategory?: string;
+}
+
+const { lang, activeType, activeCategory } = Astro.props;
+
+const types = [
+  { value: '', label: t(lang, 'community.filterAll') },
+  { value: 'meetup', label: t(lang, 'community.filterMeetup') },
+  { value: 'event-idea', label: t(lang, 'community.filterEventIdea') },
+  { value: 'partner-search', label: t(lang, 'community.filterPartnerSearch') },
+  { value: 'discussion', label: t(lang, 'community.filterDiscussion') },
+];
+
+const categories = [
+  { value: '', label: t(lang, 'community.filterAll') },
+  { value: 'sports', label: t(lang, 'community.categorySports') },
+  { value: 'social', label: t(lang, 'community.categorySocial') },
+  { value: 'culture', label: t(lang, 'community.categoryCulture') },
+  { value: 'food-drink', label: t(lang, 'community.categoryFoodDrink') },
+  { value: 'other', label: t(lang, 'community.categoryOther') },
+];
+---
+
+<div class="flex flex-wrap gap-2" id="post-filters">
+  <div class="flex flex-wrap gap-1.5">
+    {types.map((type) => (
+      <button
+        data-filter="type"
+        data-value={type.value}
+        class:list={[
+          'px-3 py-1.5 text-sm rounded-full font-medium transition-colors',
+          (activeType || '') === type.value
+            ? 'bg-ocean-600 text-white'
+            : 'bg-warm-100 text-warm-600 hover:bg-warm-200',
+        ]}
+      >
+        {type.label}
+      </button>
+    ))}
+  </div>
+  <div class="w-px h-8 bg-warm-200 self-center hidden sm:block"></div>
+  <div class="flex flex-wrap gap-1.5">
+    {categories.map((cat) => (
+      <button
+        data-filter="category"
+        data-value={cat.value}
+        class:list={[
+          'px-3 py-1.5 text-sm rounded-full font-medium transition-colors',
+          (activeCategory || '') === cat.value
+            ? 'bg-sand-500 text-white'
+            : 'bg-warm-50 text-warm-500 hover:bg-warm-100',
+        ]}
+      >
+        {cat.label}
+      </button>
+    ))}
+  </div>
+</div>

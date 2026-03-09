@@ -1,0 +1,137 @@
+---
+export const prerender = false;
+
+import Page from '@/layouts/Page.astro';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import { getTranslations, t } from '@/lib/translations';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/');
+
+const translations = getTranslations(lang);
+const user = Astro.locals.user;
+
+// Admin only
+if (!user || user.role !== 'admin') {
+  return Astro.redirect(`/${lang}/community/`);
+}
+---
+
+<Page
+  title={t(lang, 'admin.title')}
+  description="Admin dashboard"
+  lang={lang}
+  translations={translations}
+  noIndex={true}
+>
+  <section class="container-page py-10">
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl font-display text-ocean-900">{t(lang, 'admin.title')}</h1>
+      <a href={`/${lang}/community/`} class="text-sm text-ocean-600 hover:text-ocean-800 font-medium">
+        {t(lang, 'community.backToCommunity')}
+      </a>
+    </div>
+
+    <!-- Stats -->
+    <div id="admin-stats" class="grid grid-cols-3 gap-4 mb-8">
+      <div class="bg-white rounded-xl border border-warm-200 p-5 text-center">
+        <div class="text-2xl font-bold text-ocean-800" id="stat-users">-</div>
+        <div class="text-sm text-warm-500">{t(lang, 'admin.totalUsers')}</div>
+      </div>
+      <div class="bg-white rounded-xl border border-warm-200 p-5 text-center">
+        <div class="text-2xl font-bold text-ocean-800" id="stat-posts">-</div>
+        <div class="text-sm text-warm-500">{t(lang, 'admin.totalPosts')}</div>
+      </div>
+      <div class="bg-white rounded-xl border border-warm-200 p-5 text-center">
+        <div class="text-2xl font-bold text-coral-600" id="stat-pending">-</div>
+        <div class="text-sm text-warm-500">{t(lang, 'admin.pendingCount')}</div>
+      </div>
+    </div>
+
+    <!-- Pending Posts -->
+    <div class="bg-white rounded-2xl border border-warm-200 p-6">
+      <h2 class="font-display text-xl text-ocean-900 mb-6">{t(lang, 'admin.pendingPosts')}</h2>
+      <div id="pending-list">
+        <div class="text-center py-8 text-warm-400">{t(lang, 'common.loading')}</div>
+      </div>
+    </div>
+  </section>
+</Page>
+
+<script define:vars={{ lang }}>
+  async function loadAdmin() {
+    try {
+      const res = await fetch('/api/admin/posts/');
+      if (!res.ok) {
+        document.getElementById('pending-list').innerHTML = '<div class="text-center py-8 text-coral-500">Access denied</div>';
+        return;
+      }
+
+      const { posts, stats } = await res.json();
+
+      document.getElementById('stat-users').textContent = stats.totalUsers;
+      document.getElementById('stat-posts').textContent = stats.totalPosts;
+      document.getElementById('stat-pending').textContent = stats.pendingPosts;
+
+      const list = document.getElementById('pending-list');
+
+      if (!posts.length) {
+        list.innerHTML = '<div class="text-center py-8 text-warm-400">No posts pending review.</div>';
+        return;
+      }
+
+      list.innerHTML = posts
+        .map(
+          (p) => `
+        <div class="border-b border-warm-100 last:border-0 py-5 first:pt-0 last:pb-0" id="post-${p.id}">
+          <div class="flex items-start justify-between gap-4 mb-3">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-sand-100 text-sand-800">${p.type}</span>
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-warm-50 text-warm-600">${p.category}</span>
+              </div>
+              <h3 class="font-semibold text-ocean-900">${p.title}</h3>
+              <div class="text-xs text-warm-500 mt-1">${p.author_name} (${p.author_email}) · ${new Date(p.created_at).toLocaleDateString(lang)}</div>
+            </div>
+          </div>
+          <p class="text-sm text-warm-600 mb-4 whitespace-pre-wrap">${p.body.slice(0, 300)}${p.body.length > 300 ? '...' : ''}</p>
+          <div class="flex items-center gap-3">
+            <button onclick="moderatePost('${p.id}', 'approve')" class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Approve</button>
+            <button onclick="moderatePost('${p.id}', 'reject')" class="bg-coral-600 hover:bg-coral-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Reject</button>
+          </div>
+        </div>`,
+        )
+        .join('');
+    } catch {
+      document.getElementById('pending-list').innerHTML = '<div class="text-center py-8 text-coral-500">Failed to load</div>';
+    }
+  }
+
+  window.moderatePost = async function (postId, action) {
+    let rejection_reason;
+    if (action === 'reject') {
+      rejection_reason = prompt('Reason for rejection (optional):');
+    }
+
+    const res = await fetch(`/api/admin/posts/${postId}/`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, rejection_reason }),
+    });
+
+    if (res.ok) {
+      const el = document.getElementById(`post-${postId}`);
+      if (el) {
+        el.innerHTML = `<div class="text-sm text-warm-500 py-4">Post ${action === 'approve' ? 'approved' : 'rejected'}.</div>`;
+      }
+      // Update pending count
+      const pending = document.getElementById('stat-pending');
+      pending.textContent = Math.max(0, parseInt(pending.textContent) - 1);
+    } else {
+      alert('Failed to moderate post');
+    }
+  };
+
+  loadAdmin();
+</script>

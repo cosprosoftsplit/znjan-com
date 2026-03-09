@@ -1,0 +1,47 @@
+---
+import type { Language } from '@/lib/i18n';
+import { t } from '@/lib/translations';
+import { getLevelInfo } from '@/lib/gamification';
+import type { User } from '@/lib/auth';
+
+interface Props {
+  lang: Language;
+  user: User;
+}
+
+const { lang, user } = Astro.props;
+const info = getLevelInfo(user.points);
+const progress = info.nextLevelPoints
+  ? ((user.points - info.minPoints) / (info.nextLevelPoints - info.minPoints)) * 100
+  : 100;
+---
+
+<div class="bg-gradient-to-r from-ocean-50 to-aqua-50 rounded-xl border border-ocean-200 p-5">
+  <div class="flex items-center justify-between mb-3">
+    <div>
+      <span class="text-2xl font-bold text-ocean-800">{user.points}</span>
+      <span class="text-sm text-ocean-600 ml-1">{t(lang, 'gamification.points')}</span>
+    </div>
+    <div class="text-right">
+      <div class="text-sm font-semibold text-ocean-700">{t(lang, 'gamification.level')} {info.level}</div>
+      <div class="text-xs text-ocean-500">{t(lang, `gamification.levelName${info.level}`)}</div>
+    </div>
+  </div>
+  {info.nextLevelPoints && (
+    <div>
+      <div class="flex justify-between text-xs text-ocean-500 mb-1">
+        <span>{info.name}</span>
+        <span>{info.nextLevelName}</span>
+      </div>
+      <div class="w-full bg-ocean-200 rounded-full h-2">
+        <div
+          class="bg-ocean-500 rounded-full h-2 transition-all duration-500"
+          style={`width: ${Math.min(progress, 100)}%`}
+        ></div>
+      </div>
+      <div class="text-xs text-ocean-500 mt-1 text-right">
+        {info.nextLevelPoints - user.points} {t(lang, 'gamification.pointsToNext')}
+      </div>
+    </div>
+  )}
+</div>

@@ -18,6 +18,7 @@ export const ROUTE_SEGMENTS: Record<string, Record<Language, string>> = {
   about: { en: 'about', hr: 'o-nama', de: 'ueber-uns', it: 'chi-siamo' },
   contact: { en: 'contact', hr: 'kontakt', de: 'kontakt', it: 'contatti' },
   privacy: { en: 'privacy', hr: 'privatnost', de: 'datenschutz', it: 'privacy' },
+  community: { en: 'community', hr: 'zajednica', de: 'gemeinschaft', it: 'comunita' },
 };
 
 /** Reverse lookup: find the canonical segment from a localized one */

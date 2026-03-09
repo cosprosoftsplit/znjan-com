@@ -1,0 +1,203 @@
+---
+export const prerender = false;
+
+import Page from '@/layouts/Page.astro';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import { getTranslations, t } from '@/lib/translations';
+import AuthBanner from '@/components/community/AuthBanner.astro';
+
+const lang = Astro.params.lang as Language;
+const postId = Astro.params.id;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/');
+
+const translations = getTranslations(lang);
+const user = Astro.locals.user;
+---
+
+<Page
+  title={t(lang, 'community.title')}
+  description={t(lang, 'community.subtitle')}
+  lang={lang}
+  translations={translations}
+  noIndex={true}
+>
+  <section class="container-page py-10 max-w-3xl mx-auto">
+    <a href={`/${lang}/community/`} class="inline-flex items-center gap-1 text-sm text-ocean-600 hover:text-ocean-800 mb-6 transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      {t(lang, 'community.backToCommunity')}
+    </a>
+
+    <div class="mb-6">
+      <AuthBanner lang={lang} user={user} />
+    </div>
+
+    <!-- Post content loaded client-side -->
+    <div id="post-detail">
+      <div class="text-center py-12 text-warm-400">{t(lang, 'common.loading')}</div>
+    </div>
+  </section>
+</Page>
+
+<script define:vars={{ lang, postId, userId: user?.id || '' }}>
+  async function loadPost() {
+    const container = document.getElementById('post-detail');
+    if (!container) return;
+
+    try {
+      const res = await fetch(`/api/posts/${postId}/`);
+      if (!res.ok) {
+        container.innerHTML = '<div class="text-center py-12 text-coral-500">Post not found</div>';
+        return;
+      }
+
+      const { post } = await res.json();
+      if (!post || (post.status !== 'approved' && post.user_id !== userId)) {
+        container.innerHTML = '<div class="text-center py-12 text-warm-400">This post is not available.</div>';
+        return;
+      }
+
+      const typeColors = {
+        meetup: 'bg-ocean-100 text-ocean-800',
+        'event-idea': 'bg-sand-100 text-sand-800',
+        'partner-search': 'bg-coral-50 text-coral-700',
+        discussion: 'bg-warm-100 text-warm-700',
+      };
+
+      const isOwner = userId === post.user_id;
+
+      container.innerHTML = `
+        <article class="bg-white rounded-2xl border border-warm-200 p-6 md:p-8 mb-8">
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full ${typeColors[post.type] || 'bg-warm-100'}">${post.type.replace('-', ' ')}</span>
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-warm-50 text-warm-600">${post.category.replace('-', ' ')}</span>
+            ${post.status !== 'approved' ? `<span class="text-xs font-medium px-2.5 py-1 rounded-full bg-sand-100 text-sand-800">${post.status}</span>` : ''}
+          </div>
+
+          <h1 class="text-2xl md:text-3xl font-display text-ocean-900 mb-4">${post.title}</h1>
+
+          <div class="flex items-center gap-3 text-sm text-warm-500 mb-6">
+            <span class="font-medium text-warm-700">${post.author_name}</span>
+            <span>·</span>
+            <span>Lv.${post.author_level}</span>
+            <span>·</span>
+            <span>${new Date(post.created_at).toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <span>·</span>
+            <span>${post.views} views</span>
+          </div>
+
+          ${post.event_date || post.location ? `
+          <div class="bg-warm-50 rounded-lg p-4 mb-6 space-y-2">
+            ${post.event_date ? `<div class="flex items-center gap-2 text-sm"><svg class="w-4 h-4 text-ocean-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><span>${new Date(post.event_date).toLocaleDateString(lang, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}${post.event_time ? ' · ' + post.event_time : ''}</span></div>` : ''}
+            ${post.location ? `<div class="flex items-center gap-2 text-sm"><svg class="w-4 h-4 text-ocean-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg><span>${post.location}</span></div>` : ''}
+          </div>` : ''}
+
+          <div class="prose-beach max-w-none mb-6">
+            <p class="whitespace-pre-wrap text-warm-700 leading-relaxed">${post.body}</p>
+          </div>
+
+          ${post.type === 'meetup' ? `
+          <div class="border-t border-warm-100 pt-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-semibold text-ocean-900">Participants (${post.join_count}${post.max_participants ? '/' + post.max_participants : ''})</h3>
+              ${userId ? (post.has_joined
+                ? `<button id="leave-btn" class="px-4 py-2 text-sm font-medium rounded-lg border border-warm-300 text-warm-600 hover:bg-warm-50 transition-colors">Leave</button>`
+                : `<button id="join-btn" class="px-4 py-2 text-sm font-medium rounded-lg bg-ocean-600 text-white hover:bg-ocean-700 transition-colors">Join</button>`)
+              : ''}
+            </div>
+            ${post.joiners?.length ? `<div class="flex flex-wrap gap-2">${post.joiners.map((j) => `<span class="inline-flex items-center gap-1 px-3 py-1 bg-ocean-50 text-ocean-700 text-sm rounded-full"><span class="w-5 h-5 rounded-full bg-ocean-200 flex items-center justify-center text-xs font-bold">${j.display_name.charAt(0).toUpperCase()}</span>${j.display_name}</span>`).join('')}</div>` : '<p class="text-sm text-warm-400">No one has joined yet.</p>'}
+          </div>` : ''}
+
+          ${isOwner ? `
+          <div class="border-t border-warm-100 pt-4 mt-6 flex gap-3">
+            <a href="/${lang}/community/edit/${post.id}/" class="text-sm text-ocean-600 hover:text-ocean-800 font-medium">Edit Post</a>
+            <button id="delete-btn" class="text-sm text-coral-600 hover:text-coral-800 font-medium">Delete Post</button>
+          </div>` : ''}
+        </article>
+
+        <!-- Comments -->
+        <div class="space-y-4">
+          <h3 class="font-display text-lg text-ocean-900">Comments (${post.comment_count})</h3>
+
+          ${userId ? `
+          <form id="comment-form" class="flex gap-3">
+            <input type="text" id="comment-input" placeholder="Write a comment..." class="flex-1 px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 text-sm" maxlength="2000" />
+            <button type="submit" class="bg-ocean-600 hover:bg-ocean-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors shrink-0">Post</button>
+          </form>` : ''}
+
+          <div id="comments-list" class="space-y-3">
+            ${post.comments?.length ? post.comments.map((c) => `
+              <div class="bg-warm-50 rounded-lg p-4">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="w-6 h-6 rounded-full bg-ocean-100 flex items-center justify-center text-ocean-700 text-xs font-bold">${c.author_name.charAt(0).toUpperCase()}</span>
+                  <span class="text-sm font-medium text-ocean-900">${c.author_name}</span>
+                  <span class="text-xs text-warm-400">Lv.${c.author_level}</span>
+                  <span class="text-xs text-warm-400">${new Date(c.created_at).toLocaleDateString(lang, { month: 'short', day: 'numeric' })}</span>
+                </div>
+                <p class="text-sm text-warm-700">${c.body}</p>
+              </div>
+            `).join('') : '<p class="text-sm text-warm-400">No comments yet.</p>'}
+          </div>
+        </div>
+      `;
+
+      // Join/Leave handlers
+      document.getElementById('join-btn')?.addEventListener('click', async () => {
+        const res = await fetch(`/api/posts/${postId}/join/`, { method: 'POST' });
+        if (res.ok) window.location.reload();
+        else alert((await res.json()).error || 'Failed');
+      });
+
+      document.getElementById('leave-btn')?.addEventListener('click', async () => {
+        const res = await fetch(`/api/posts/${postId}/leave/`, { method: 'POST' });
+        if (res.ok) window.location.reload();
+      });
+
+      // Delete handler
+      document.getElementById('delete-btn')?.addEventListener('click', async () => {
+        if (!confirm('Are you sure?')) return;
+        const res = await fetch(`/api/posts/${postId}/`, { method: 'DELETE' });
+        if (res.ok) window.location.href = `/${lang}/community/`;
+      });
+
+      // Comment handler
+      document.getElementById('comment-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = document.getElementById('comment-input');
+        const body = input.value.trim();
+        if (!body) return;
+
+        const res = await fetch(`/api/posts/${postId}/responses/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ body }),
+        });
+
+        if (res.ok) {
+          const comment = await res.json();
+          const list = document.getElementById('comments-list');
+          const noComments = list?.querySelector('p.text-warm-400');
+          if (noComments) noComments.remove();
+          list.insertAdjacentHTML('beforeend', `
+            <div class="bg-warm-50 rounded-lg p-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 rounded-full bg-ocean-100 flex items-center justify-center text-ocean-700 text-xs font-bold">${comment.author_name.charAt(0).toUpperCase()}</span>
+                <span class="text-sm font-medium text-ocean-900">${comment.author_name}</span>
+                <span class="text-xs text-warm-400">Lv.${comment.author_level}</span>
+                <span class="text-xs text-warm-400">now</span>
+              </div>
+              <p class="text-sm text-warm-700">${comment.body}</p>
+            </div>
+          `);
+          input.value = '';
+        }
+      });
+    } catch (err) {
+      container.innerHTML = '<div class="text-center py-12 text-coral-500">Failed to load post</div>';
+    }
+  }
+
+  loadPost();
+</script>

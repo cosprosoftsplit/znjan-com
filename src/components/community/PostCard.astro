@@ -1,0 +1,125 @@
+---
+import type { Language } from '@/lib/i18n';
+import { t } from '@/lib/translations';
+
+interface Props {
+  lang: Language;
+  post: {
+    id: string;
+    title: string;
+    type: string;
+    category: string;
+    body: string;
+    location?: string;
+    event_date?: string;
+    event_time?: string;
+    max_participants?: number;
+    views: number;
+    created_at: string;
+    author_name: string;
+    author_level: number;
+    join_count: number;
+    comment_count: number;
+  };
+}
+
+const { lang, post } = Astro.props;
+
+const typeColors: Record<string, string> = {
+  meetup: 'bg-ocean-100 text-ocean-800',
+  'event-idea': 'bg-sand-100 text-sand-800',
+  'partner-search': 'bg-coral-50 text-coral-700',
+  discussion: 'bg-warm-100 text-warm-700',
+};
+
+const typeLabels: Record<string, string> = {
+  meetup: t(lang, 'community.filterMeetup'),
+  'event-idea': t(lang, 'community.filterEventIdea'),
+  'partner-search': t(lang, 'community.filterPartnerSearch'),
+  discussion: t(lang, 'community.filterDiscussion'),
+};
+
+const categoryLabels: Record<string, string> = {
+  sports: t(lang, 'community.categorySports'),
+  social: t(lang, 'community.categorySocial'),
+  culture: t(lang, 'community.categoryCulture'),
+  'food-drink': t(lang, 'community.categoryFoodDrink'),
+  other: t(lang, 'community.categoryOther'),
+};
+
+const date = new Date(post.created_at).toLocaleDateString(lang, {
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<a
+  href={`/${lang}/community/${post.id}/`}
+  class="block bg-white rounded-xl border border-warm-200 hover:border-ocean-300 hover:shadow-md transition-all duration-200 p-5 group"
+>
+  <div class="flex items-start justify-between gap-3 mb-3">
+    <div class="flex flex-wrap gap-2">
+      <span class={`text-xs font-medium px-2 py-0.5 rounded-full ${typeColors[post.type] || 'bg-warm-100 text-warm-700'}`}>
+        {typeLabels[post.type] || post.type}
+      </span>
+      <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-warm-50 text-warm-600">
+        {categoryLabels[post.category] || post.category}
+      </span>
+    </div>
+    {post.event_date && (
+      <span class="text-xs text-warm-500 shrink-0">
+        {new Date(post.event_date).toLocaleDateString(lang, { month: 'short', day: 'numeric' })}
+        {post.event_time && ` · ${post.event_time}`}
+      </span>
+    )}
+  </div>
+
+  <h3 class="text-lg font-semibold text-ocean-900 group-hover:text-ocean-700 transition-colors mb-2 line-clamp-2">
+    {post.title}
+  </h3>
+
+  <p class="text-warm-600 text-sm line-clamp-2 mb-4">
+    {post.body.slice(0, 150)}{post.body.length > 150 ? '...' : ''}
+  </p>
+
+  {post.location && (
+    <div class="flex items-center gap-1.5 text-xs text-warm-500 mb-3">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+      {post.location}
+    </div>
+  )}
+
+  <div class="flex items-center justify-between pt-3 border-t border-warm-100">
+    <div class="flex items-center gap-1 text-xs text-warm-500">
+      <span class="font-medium text-warm-700">{post.author_name}</span>
+      <span>·</span>
+      <span>{date}</span>
+    </div>
+    <div class="flex items-center gap-3 text-xs text-warm-500">
+      {post.type === 'meetup' && (
+        <span class="flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          {post.join_count}{post.max_participants ? `/${post.max_participants}` : ''}
+        </span>
+      )}
+      <span class="flex items-center gap-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+        {post.comment_count}
+      </span>
+      <span class="flex items-center gap-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+        {post.views}
+      </span>
+    </div>
+  </div>
+</a>

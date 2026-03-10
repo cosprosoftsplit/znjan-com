@@ -84,8 +84,9 @@ export const GET: APIRoute = async ({ url, locals }) => {
       },
     );
   } catch (err) {
-    console.error('[posts/list]', err);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error('[posts/list]', msg);
+    return new Response(JSON.stringify({ error: 'Internal server error', detail: msg }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

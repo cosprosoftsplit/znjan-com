@@ -17,8 +17,9 @@ export const GET: APIRoute = async ({ locals }) => {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (err) {
-    console.error('[leaderboard]', err);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error('[leaderboard]', msg);
+    return new Response(JSON.stringify({ error: 'Internal server error', detail: msg }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

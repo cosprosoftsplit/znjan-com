@@ -30,7 +30,17 @@ type D1ExecResult = {
 
 /** Extract D1 database from Astro runtime */
 export function getDB(runtime: App.Locals['runtime']): D1Database {
-  return (runtime.env as Record<string, unknown>).DB as D1Database;
+  if (!runtime) {
+    throw new Error('Cloudflare runtime not available — is this an SSR page with prerender = false?');
+  }
+  if (!runtime.env) {
+    throw new Error('Cloudflare env not available on runtime');
+  }
+  const db = (runtime.env as Record<string, unknown>).DB;
+  if (!db) {
+    throw new Error('D1 binding "DB" not found — check CF Pages D1 binding name matches "DB"');
+  }
+  return db as D1Database;
 }
 
 /** Generate a crypto-random ID */

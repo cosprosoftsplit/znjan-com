@@ -26,8 +26,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
       const db = getDB(context.locals.runtime);
       const user = await getUserFromSession(db, sessionId);
       context.locals.user = user;
-    } catch {
+    } catch (err) {
       // DB not available (e.g., during build)
+      console.error('[middleware] DB access failed:', err instanceof Error ? err.message : err);
       context.locals.user = null;
     }
   } else {

@@ -34,15 +34,7 @@ export async function createMagicLink(
   db: D1Database,
   email: string,
 ): Promise<{ token: string } | { error: string }> {
-  // Rate limiting: max 5 per email per hour
-  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-  const recent = await db
-    .prepare('SELECT COUNT(*) as cnt FROM magic_links WHERE email = ? AND created_at > ?')
-    .bind(email, oneHourAgo)
-    .first<{ cnt: number }>();
-
-  // magic_links doesn't have created_at — use expires_at offset instead
-  // Actually, let's check by counting unexpired links
+  // Rate limiting: max 5 unused links per email
   const recentCount = await db
     .prepare('SELECT COUNT(*) as cnt FROM magic_links WHERE email = ? AND used = 0')
     .bind(email)

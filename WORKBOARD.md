@@ -145,21 +145,81 @@ Every work item must pass ALL of:
 
 ---
 
-## Phase 6: Contact & Engagement
-**Goal:** Let users contact/interact
-**Priority:** LOW — requires CF Worker backend
+## Phase 6: Community Platform (Meetups, Events & Gamification)
+**Goal:** Dynamic community where visitors create meetups, find sports partners, propose events
+**Priority:** HIGH — adds user engagement layer on top of static content
 
-- [ ] **6.1 Contact Form Backend**
+- [x] **6.1 Infrastructure** (2026-03-08)
+  - Installed `@astrojs/cloudflare` adapter, `output: 'static'` with per-page SSR opt-in
+  - Created `wrangler.toml` with D1 binding
+  - Created `src/env.d.ts` runtime types
+  - Created `src/middleware.ts` (session auth + CSRF for community/API routes)
+  - Build verified: 297 static pages unaffected
+
+- [x] **6.2 D1 Database** (2026-03-08)
+  - Created `znjan-community` database (ID: `35ad720b-...`)
+  - Ran `migrations/0001_initial.sql`: 7 tables, 13 indexes
+  - Tables: users, magic_links, sessions, posts, responses, point_transactions, user_badges
+
+- [x] **6.3 Auth System** (2026-03-08)
+  - Magic link auth (instant — no email provider needed, verify URL returned directly)
+  - Session cookies: HttpOnly, Secure, SameSite=Strict, 7-day expiry
+  - `src/lib/auth.ts`: createMagicLink, verifyMagicLink, getUserFromSession, session cookie helpers
+  - Login page at `/[lang]/community/login/`
+
+- [x] **6.4 Core Community** (2026-03-08)
+  - 18 API endpoints: auth (4), posts CRUD + join/leave/comments (8), users (3), admin (2), leaderboard (1)
+  - 7 SSR pages: board, post detail, create, edit, login, profile, admin dashboard
+  - 6 components: AuthBanner, PostCard, PostFilters, Leaderboard, PointsDisplay, UserBadges
+  - Post types: meetup, event-idea, partner-search, discussion
+  - Categories: sports, social, culture, food-drink, other
+  - All posts require admin approval before visibility
+
+- [x] **6.5 Gamification** (2026-03-08)
+  - 8 point actions (create-post, post-approved, comment, join, organize, first-post, daily-login, profile)
+  - 8 levels: Beach Newbie → Sand Walker → Wave Rider → Beach Regular → Seaside Explorer → Ocean Lover → Beach Ambassador → Žnjan Legend
+  - 8 badges: first-post, first-meetup, organizer, connector, multilingual, regular, helpful, popular
+  - Leaderboard (top 20, sidebar widget)
+
+- [x] **6.6 i18n** (2026-03-08)
+  - 252 keys per language (110 new community keys)
+  - Sections: auth (13), community (30), postForm (17), gamification (17), profile (9), admin (10)
+  - All 4 languages in parity, `check-i18n` passes
+
+- [x] **6.7 Community in Navigation** (2026-03-08)
+  - Added "Community" to Header.astro nav + `nav.community` i18n key
+  - Route segment added to `src/lib/i18n.ts`
+
+- [x] **6.8 Content Cleanup** (2026-03-08)
+  - Removed 3 fictional events (12 MDX files): Season Opening, Summer Music Festival, Volleyball Tournament
+  - Only verified content remains; events listing shows "coming soon"
+
+- [ ] **6.9 D1 Binding in CF Pages**
+  - Scope: User must add D1 binding in CF Pages dashboard (Settings → Bindings → DB → znjan-community)
+  - Then redeploy for community pages to connect to database
+
+- [ ] **6.10 Email Provider (Future)**
+  - Currently no email — auth uses instant magic link (no email needed)
+  - Admin notifications logged to console
+  - Scope: Plug in Brevo/SendGrid/etc. when needed for notification emails
+
+---
+
+## Phase 7: Contact Form
+**Goal:** Let users send messages
+**Priority:** LOW — requires email backend
+
+- [ ] **7.1 Contact Form Backend**
   - Scope: Cloudflare Worker that receives form POST and sends email
   - Verify: Form submits; email arrives; error cases handled
 
-- [ ] **6.2 Contact Form Frontend**
+- [ ] **7.2 Contact Form Frontend**
   - Scope: Update contact page with working form (name, email, message)
   - Verify: Form validates inputs; submits to Worker; shows success/error state
 
 ---
 
-## Phase 7: Business Expansion
+## Phase 8: Business Expansion
 **Goal:** Add remaining businesses as they're confirmed
 **Priority:** ONGOING — depends on owner intel
 
@@ -255,6 +315,19 @@ Every work item must pass ALL of:
 - Cluster improvements: activities-sports 2→3, getting-started 1→3, food-drink 3→4
 - Build: 297 pages (up from 281), 142 i18n keys x 4 langs, all checks pass
 - Pagefind: 21,621 indexed words (up from 19,646)
+
+### 2026-03-08 — Community Platform: Full Implementation + Deploy
+- **Phase 6 complete** (items 6.1–6.8 all done)
+- Built full community platform: D1 database, magic link auth, posts/comments, gamification, admin
+- ~35 new files: 4 lib modules, middleware, 18 API endpoints, 7 SSR pages, 6 components
+- 252 i18n keys per language (110 new), all 4 languages in parity
+- Removed Resend dependency — auth uses instant magic link (no email provider needed)
+- Removed 3 fictional events (12 MDX files) — only verified content remains
+- Created D1 database `znjan-community` via wrangler, ran schema migration (7 tables, 13 indexes)
+- **Remaining:** User needs to add D1 binding in CF Pages dashboard (Settings → Bindings → DB)
+- GitGuardian false positive investigated — triggered by "noPassword" i18n keys, no real secrets exposed
+- Build: 285 pages (297 static - 12 events), 21,353 indexed words, all checks pass
+- Commits: `bd0e1e2` (community platform, 44 files) + `21be143` (remove fictional events, 12 files)
 
 ### 2026-03-03 — Phase 1 Complete: Site is LIVE
 - Created `WORKBOARD.md` as self-maintaining project board

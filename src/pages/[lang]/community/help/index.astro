@@ -1,0 +1,388 @@
+---
+export const prerender = false;
+
+import Page from '@/layouts/Page.astro';
+import Button from '@/components/ui/Button.astro';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import { getFounderSprintOgImagePath } from '@/lib/founder-social-card';
+import { getTranslations, t } from '@/lib/translations';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/help/');
+
+const translations = getTranslations(lang);
+const alternates = Object.fromEntries(
+  LANGUAGES.map((locale) => [locale, `/${locale}/community/help/`]),
+) as Record<Language, string>;
+
+const actionCards = [
+  {
+    title: t(lang, 'community.helpCardLocalTitle'),
+    body: t(lang, 'community.helpCardLocalBody'),
+    href: `/${lang}/community/start/`,
+    cta: t(lang, 'community.startCta'),
+    tone: 'from-ocean-500/10 via-ocean-100 to-white',
+  },
+  {
+    title: t(lang, 'community.helpCardShareTitle'),
+    body: t(lang, 'community.helpCardShareBody'),
+    href: `/${lang}/community/pilot/`,
+    cta: t(lang, 'community.pilotUpdateCta'),
+    tone: 'from-sand-300/20 via-sand-100 to-white',
+  },
+  {
+    title: t(lang, 'community.helpCardOnSiteTitle'),
+    body: t(lang, 'community.helpCardOnSiteBody'),
+    href: `/${lang}/play/`,
+    cta: t(lang, 'reservations.quickStartTitle'),
+    tone: 'from-coral-300/15 via-coral-50 to-white',
+  },
+  {
+    title: t(lang, 'community.helpCardSignalTitle'),
+    body: t(lang, 'community.helpCardSignalBody'),
+    href: `/${lang}/community/help/#support-signal-form`,
+    cta: t(lang, 'community.helpSignalSubmit'),
+    tone: 'from-aqua-300/20 via-aqua-50 to-white',
+  },
+];
+
+const whoPoints = [1, 2, 3, 4].map((item) => t(lang, `community.helpWhoPoint${item}`));
+const steps = [1, 2, 3, 4].map((item) => t(lang, `community.helpStep${item}`));
+const supportSignalTypes = [
+  { value: 'local-intro', label: t(lang, 'community.helpSignalTypeLocalIntro') },
+  { value: 'on-site-help', label: t(lang, 'community.helpSignalTypeOnSite') },
+  { value: 'venue-connection', label: t(lang, 'community.helpSignalTypeVenue') },
+  { value: 'pilot-feedback', label: t(lang, 'community.helpSignalTypeFeedback') },
+];
+---
+
+<Page
+  title={t(lang, 'community.helpTitle')}
+  description={t(lang, 'community.helpDescription')}
+  lang={lang}
+  translations={translations}
+  alternates={alternates}
+  ogImage={getFounderSprintOgImagePath(lang, 'help')}
+  ogImageAlt={t(lang, 'community.helpTitle')}
+  noIndex={true}
+>
+  <section class="relative overflow-hidden border-b border-warm-200 bg-[linear-gradient(135deg,#f4fbff_0%,#ffffff_42%,#fff5ea_100%)]">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute -top-24 right-[-6rem] h-72 w-72 rounded-full bg-ocean-200/40 blur-3xl"></div>
+      <div class="absolute bottom-[-5rem] left-[-3rem] h-56 w-56 rounded-full bg-coral-200/35 blur-3xl"></div>
+    </div>
+
+    <div class="container-page relative py-16 md:py-24">
+      <div class="max-w-4xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-ocean-600">
+          {t(lang, 'community.helpEyebrow')}
+        </p>
+        <h1 class="mt-4 max-w-3xl text-4xl md:text-6xl font-display leading-tight text-ocean-950">
+          {t(lang, 'community.helpTitle')}
+        </h1>
+        <p class="mt-5 max-w-3xl text-lg leading-8 text-warm-700">
+          {t(lang, 'community.helpDescription')}
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button href={`/${lang}/community/start/`} variant="primary" size="lg">
+            {t(lang, 'community.startCta')}
+          </Button>
+          <Button href={`/${lang}/community/pilot/`} variant="outline" size="lg">
+            {t(lang, 'community.pilotUpdateCta')}
+          </Button>
+          <Button href={`/${lang}/play/`} variant="outline" size="lg">
+            {t(lang, 'reservations.quickStartTitle')}
+          </Button>
+          <Button href={`/${lang}/contact/`} variant="secondary" size="lg">
+            {t(lang, 'reservations.contactCta')}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page py-12 md:py-16">
+    <div class="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)]">
+      <div class="max-w-xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-ocean-600">
+          {t(lang, 'community.helpCardsTitle')}
+        </p>
+        <h2 class="mt-3 text-3xl font-display text-ocean-900">
+          {t(lang, 'community.helpCardsDescription')}
+        </h2>
+      </div>
+
+      <div class="overflow-hidden rounded-[1.75rem] border border-warm-200 bg-white">
+        {actionCards.map((card, index) => (
+          <article class:list={[
+            'bg-gradient-to-br px-6 py-6 md:px-7 md:py-7',
+            card.tone,
+            { 'border-t border-warm-200': index > 0 },
+          ]}>
+            <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div class="max-w-2xl">
+                <h3 class="text-xl font-semibold text-ocean-900">{card.title}</h3>
+                <p class="mt-2 text-sm leading-7 text-warm-700">{card.body}</p>
+              </div>
+              <a
+                href={card.href}
+                class="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-ocean-700 hover:text-ocean-900"
+              >
+                {card.cta}
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page pb-12 md:pb-16">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <article class="overflow-hidden rounded-[1.75rem] border border-warm-200 bg-white">
+        <div class="border-b border-warm-100 bg-warm-50 px-6 py-5">
+          <p class="text-sm font-semibold uppercase tracking-[0.14em] text-warm-600">
+            {t(lang, 'community.helpWhoTitle')}
+          </p>
+          <p class="mt-3 max-w-xl text-base leading-7 text-warm-700">
+            {t(lang, 'community.helpWhoDescription')}
+          </p>
+        </div>
+        <div class="px-6 py-6">
+          <ul class="space-y-4">
+            {whoPoints.map((point) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ocean-600 text-xs font-semibold text-white">
+                  ✓
+                </span>
+                <span class="text-sm leading-7 text-warm-700">{point}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </article>
+
+      <article class="overflow-hidden rounded-[1.75rem] border border-ocean-200 bg-[linear-gradient(180deg,#fbfeff_0%,#eef8fd_100%)]">
+        <div class="border-b border-ocean-100 px-6 py-5">
+          <p class="text-sm font-semibold uppercase tracking-[0.14em] text-ocean-600">
+            {t(lang, 'community.helpStepsTitle')}
+          </p>
+          <p class="mt-3 max-w-xl text-base leading-7 text-warm-700">
+            {t(lang, 'community.helpStepsDescription')}
+          </p>
+        </div>
+        <div class="px-6 py-6">
+          <div class="space-y-5">
+            {steps.map((point, index) => (
+              <div class="flex gap-4">
+                <div class="flex flex-col items-center">
+                  <span class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-ocean-200 bg-white text-sm font-semibold text-ocean-700">
+                    {index + 1}
+                  </span>
+                  {index < steps.length - 1 && <span class="mt-2 h-full w-px bg-ocean-200"></span>}
+                </div>
+                <p class="pb-4 pt-1 text-sm leading-7 text-warm-700">{point}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="container-page pb-12 md:pb-16">
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+      <article class="overflow-hidden rounded-[1.75rem] border border-ocean-200 bg-[linear-gradient(180deg,#fbfeff_0%,#eef8fd_100%)]">
+        <div class="border-b border-ocean-100 px-6 py-5">
+          <p class="text-sm font-semibold uppercase tracking-[0.14em] text-ocean-600">
+            {t(lang, 'community.helpSignalTitle')}
+          </p>
+          <p class="mt-3 max-w-xl text-base leading-7 text-warm-700">
+            {t(lang, 'community.helpSignalDescription')}
+          </p>
+        </div>
+        <div class="px-6 py-6 space-y-4">
+          {[1, 2, 3].map((item) => (
+            <div class="rounded-xl border border-white/70 bg-white/80 px-4 py-4 text-sm leading-7 text-warm-700">
+              {t(lang, `community.helpSignalPoint${item}`)}
+            </div>
+          ))}
+        </div>
+      </article>
+
+      <article class="overflow-hidden rounded-[1.75rem] border border-warm-200 bg-white">
+        <div class="border-b border-warm-100 bg-warm-50 px-6 py-5">
+          <p class="text-sm font-semibold uppercase tracking-[0.14em] text-warm-600">
+            {t(lang, 'community.helpSignalFormTitle')}
+          </p>
+          <p class="mt-3 max-w-xl text-base leading-7 text-warm-700">
+            {t(lang, 'community.helpSignalFormDescription')}
+          </p>
+        </div>
+        <div class="px-6 py-6">
+          <div
+            id="support-signal-feedback"
+            aria-live="polite"
+            class="hidden mb-5 rounded-xl px-4 py-3 text-sm font-medium"
+          ></div>
+
+          <form id="support-signal-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'community.helpSignalType')}</span>
+              <select
+                name="signalType"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {supportSignalTypes.map((signalType) => (
+                  <option value={signalType.value}>{signalType.label}</option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'community.helpSignalName')}</span>
+              <input
+                type="text"
+                name="name"
+                required
+                maxlength="80"
+                placeholder={t(lang, 'community.helpSignalNamePlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              />
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'community.helpSignalContact')}</span>
+              <input
+                type="text"
+                name="contact"
+                required
+                maxlength="160"
+                placeholder={t(lang, 'community.helpSignalContactPlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              />
+            </label>
+
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'community.helpSignalAvailability')}</span>
+              <input
+                type="text"
+                name="availability"
+                maxlength="140"
+                placeholder={t(lang, 'community.helpSignalAvailabilityPlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              />
+            </label>
+
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'community.helpSignalNotes')}</span>
+              <textarea
+                name="notes"
+                rows="5"
+                required
+                maxlength="600"
+                placeholder={t(lang, 'community.helpSignalNotesPlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              ></textarea>
+            </label>
+
+            <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <p class="text-sm text-warm-600">
+                {t(lang, 'community.helpSignalRuleNote')}
+              </p>
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center rounded-lg bg-ocean-600 px-5 py-3 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+              >
+                {t(lang, 'community.helpSignalSubmit')}
+              </button>
+            </div>
+          </form>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="container-page pb-16">
+    <div class="rounded-[2rem] border border-coral-200 bg-[linear-gradient(135deg,#fff7f2_0%,#ffffff_50%,#f4fbff_100%)] px-6 py-8 md:px-10 md:py-10">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-coral-500">
+          {t(lang, 'community.helpFinalTitle')}
+        </p>
+        <p class="mt-4 text-lg leading-8 text-warm-700">
+          {t(lang, 'community.helpFinalDescription')}
+        </p>
+      </div>
+
+      <div class="mt-7 flex flex-wrap gap-3">
+        <Button href={`/${lang}/community/pilot/`} variant="primary">
+          {t(lang, 'community.pilotUpdateCta')}
+        </Button>
+        <Button href={`/${lang}/community/start/`} variant="outline">
+          {t(lang, 'community.startCta')}
+        </Button>
+        <Button href={`/${lang}/community/reservations/`} variant="outline">
+          {t(lang, 'reservations.viewSportsReservations')}
+        </Button>
+        <Button href={`/${lang}/contact/`} variant="secondary">
+          {t(lang, 'reservations.contactCta')}
+        </Button>
+      </div>
+    </div>
+  </section>
+</Page>
+
+<script define:vars={{
+  successMessage: t(lang, 'community.helpSignalSuccess'),
+  genericErrorMessage: t(lang, 'community.helpSignalError'),
+}}>
+  const form = document.getElementById('support-signal-form');
+  const feedback = document.getElementById('support-signal-feedback');
+
+  function showFeedback(message, isError = false) {
+    if (!feedback) return;
+    feedback.textContent = message;
+    feedback.className = isError
+      ? 'mb-5 rounded-xl px-4 py-3 text-sm font-medium bg-coral-50 text-coral-800 border border-coral-200'
+      : 'mb-5 rounded-xl px-4 py-3 text-sm font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
+  }
+
+  async function requestJson(url, options) {
+    const response = await fetch(url, options);
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.error || genericErrorMessage);
+    }
+    return data;
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+
+    try {
+      const formData = new FormData(form);
+      await requestJson('/api/pilot-support-signals/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          signalType: formData.get('signalType'),
+          name: formData.get('name'),
+          contact: formData.get('contact'),
+          availability: formData.get('availability'),
+          notes: formData.get('notes'),
+        }),
+      });
+      form.reset();
+      showFeedback(successMessage);
+    } catch (error) {
+      showFeedback(error instanceof Error ? error.message : genericErrorMessage, true);
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+</script>

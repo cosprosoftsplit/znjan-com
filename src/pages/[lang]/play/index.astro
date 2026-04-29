@@ -1,0 +1,138 @@
+---
+export const prerender = false;
+
+import Page from '@/layouts/Page.astro';
+import Button from '@/components/ui/Button.astro';
+import ReservationTrustPanel from '@/components/community/ReservationTrustPanel.astro';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES, ROUTE_SEGMENTS } from '@/lib/i18n';
+import { getTranslations, t } from '@/lib/translations';
+import { getFounderSprintOgImagePath } from '@/lib/founder-social-card';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/play/');
+
+const translations = getTranslations(lang);
+const alternates = Object.fromEntries(
+  LANGUAGES.map((locale) => [locale, `/${locale}/play/`]),
+) as Record<Language, string>;
+
+const steps = [
+  t(lang, 'reservations.quickStartStep1'),
+  t(lang, 'reservations.quickStartStep2'),
+  t(lang, 'reservations.quickStartStep3'),
+  t(lang, 'reservations.quickStartStep4'),
+];
+
+const summaryCards = [
+  {
+    title: t(lang, 'reservations.ruleFree'),
+    body: t(lang, 'reservations.quickStartPilotResourcesBody'),
+  },
+  {
+    title: t(lang, 'reservations.ruleWindow'),
+    body: t(lang, 'reservations.quickStartOpenTodayBody'),
+  },
+  {
+    title: t(lang, 'reservations.ruleDailyLimit'),
+    body: t(lang, 'reservations.quickStartWindowBody'),
+  },
+];
+
+const contactUrl = `/${lang}/${ROUTE_SEGMENTS.contact[lang]}/`;
+---
+
+<Page
+  title={t(lang, 'reservations.quickStartTitle')}
+  description={t(lang, 'reservations.quickStartDescription')}
+  lang={lang}
+  translations={translations}
+  alternates={alternates}
+  ogImage={getFounderSprintOgImagePath(lang, 'play')}
+  ogImageAlt={t(lang, 'reservations.quickStartTitle')}
+>
+  <section class="container-page py-10">
+    <div class="max-w-4xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.18em] text-ocean-600 mb-3">
+        {t(lang, 'reservations.quickStartEyebrow')}
+      </p>
+      <h1 class="text-3xl md:text-5xl font-display text-ocean-900 mb-4">
+        {t(lang, 'reservations.quickStartTitle')}
+      </h1>
+      <p class="text-lg text-warm-600 max-w-3xl">
+        {t(lang, 'reservations.quickStartDescription')}
+      </p>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <Button href={`/${lang}/community/reservations/`} variant="primary" size="lg">
+          {t(lang, 'reservations.viewSportsReservations')}
+        </Button>
+        <Button href={`/${lang}/community/reservations/rules/`} variant="secondary" size="lg">
+          {t(lang, 'reservations.rulesCta')}
+        </Button>
+        <Button href={`/${lang}/community/start/`} variant="outline" size="lg">
+          {t(lang, 'community.startCta')}
+        </Button>
+        <Button href={`/${lang}/community/help/`} variant="outline" size="lg">
+          {t(lang, 'community.helpCta')}
+        </Button>
+        <Button href={contactUrl} variant="outline" size="lg">
+          {t(lang, 'reservations.contactCta')}
+        </Button>
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <ReservationTrustPanel lang={lang} />
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-6 mt-6">
+      <article class="bg-white rounded-2xl border border-warm-200 p-6">
+        <div class="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-2xl font-semibold text-ocean-900">{t(lang, 'reservations.quickStartHowTitle')}</h2>
+            <p class="text-sm text-warm-600 mt-2">{t(lang, 'reservations.quickStartOnSiteBody')}</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {steps.map((step, index) => (
+            <div class="rounded-2xl border border-ocean-100 bg-ocean-50 px-5 py-5">
+              <div class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-semibold text-ocean-700 border border-ocean-200">
+                {index + 1}
+              </div>
+              <p class="mt-4 text-sm leading-7 text-warm-700">{step}</p>
+            </div>
+          ))}
+        </div>
+      </article>
+
+      <div class="space-y-6">
+        <article class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900 mb-4">{t(lang, 'reservations.quickStartLiveNowTitle')}</h2>
+          <div class="space-y-3">
+            {summaryCards.map((card) => (
+              <div class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-4">
+                <p class="font-semibold text-ocean-900">{card.title}</p>
+                <p class="mt-2 text-sm text-warm-600">{card.body}</p>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article class="bg-sand-50 rounded-2xl border border-sand-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'reservations.quickStartOnSiteTitle')}</h2>
+          <p class="text-sm text-warm-700 mt-3">{t(lang, 'reservations.quickStartOnSiteBody')}</p>
+          <div class="mt-5 flex flex-wrap gap-3">
+            <Button href={`/${lang}/community/reservations/dashboard/`} variant="secondary">
+              {t(lang, 'reservations.viewTransparencyDashboard')}
+            </Button>
+            <Button href={`/${lang}/play/materials/`} variant="outline">
+              {t(lang, 'reservations.pilotKitCta')}
+            </Button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</Page>

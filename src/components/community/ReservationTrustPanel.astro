@@ -1,0 +1,53 @@
+---
+import type { Language } from '@/lib/i18n';
+import { ROUTE_SEGMENTS } from '@/lib/i18n';
+import { t } from '@/lib/translations';
+
+interface Props {
+  lang: Language;
+  compact?: boolean;
+}
+
+const { lang, compact = false } = Astro.props;
+const contactUrl = `/${lang}/${ROUTE_SEGMENTS.contact[lang]}/`;
+const privacyUrl = `/${lang}/${ROUTE_SEGMENTS.privacy[lang]}/`;
+---
+
+<div class:list={[
+  'rounded-2xl border border-ocean-200 bg-ocean-50',
+  compact ? 'p-5' : 'p-6',
+]}>
+  <h2 class="text-lg font-semibold text-ocean-900">
+    {t(lang, 'reservations.trustNoteTitle')}
+  </h2>
+  <p class="mt-3 text-sm text-warm-700">
+    {t(lang, 'reservations.trustNoteBody')}
+  </p>
+
+  <ul class="mt-4 space-y-3 text-sm text-warm-700">
+    <li class="rounded-xl border border-ocean-100 bg-white/80 px-4 py-3">
+      {t(lang, 'reservations.trustPointCoordination')}
+    </li>
+    <li class="rounded-xl border border-ocean-100 bg-white/80 px-4 py-3">
+      {t(lang, 'reservations.trustPointPrivacy')}
+    </li>
+    <li class="rounded-xl border border-ocean-100 bg-white/80 px-4 py-3">
+      {t(lang, 'reservations.trustPointReport')}
+    </li>
+  </ul>
+
+  <div class="mt-5 flex flex-wrap gap-3">
+    <a
+      href={contactUrl}
+      class="inline-flex items-center justify-center rounded-lg bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+    >
+      {t(lang, 'reservations.contactCta')}
+    </a>
+    <a
+      href={privacyUrl}
+      class="inline-flex items-center justify-center rounded-lg border border-ocean-200 bg-white px-4 py-2.5 text-sm font-semibold text-ocean-700 hover:border-ocean-400 transition-colors"
+    >
+      {t(lang, 'reservations.privacyCta')}
+    </a>
+  </div>
+</div>

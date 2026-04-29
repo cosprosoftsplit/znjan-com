@@ -10,10 +10,10 @@ title:
   de: "Stand-Up Paddling (SUP)"
   it: "Stand-Up Paddle (SUP)"
 description:
-  en: "Glide across the crystal-clear Adriatic waters on a stand-up paddleboard. SUP rentals and lessons are available at multiple spots along Žnjan Beach, perfect for beginners and experienced paddlers alike."
-  hr: "Klizite po kristalno čistim vodama Jadrana na SUP dasci. Najam SUP dasaka i lekcije dostupni su na više lokacija duž plaže Žnjan, savršeno za početnike i iskusne veslače."
-  de: "Gleiten Sie auf einem Stand-Up-Paddleboard über das kristallklare Adriawasser. SUP-Verleih und Kurse sind an mehreren Stellen entlang des Strandes Žnjan verfügbar, perfekt für Anfänger und erfahrene Paddler."
-  it: "Scivola sulle acque cristalline dell'Adriatico su una tavola da stand-up paddle. Noleggio SUP e lezioni sono disponibili in diversi punti lungo la spiaggia di Žnjan, perfetti per principianti ed esperti."
+  en: "Glide across the crystal-clear Adriatic waters on a stand-up paddleboard. If you bring your own board, Žnjan's public shoreline offers an easy place to paddle, with no reservation system and first-come, first-served access to the launch areas."
+  hr: "Klizite po kristalno čistim vodama Jadrana na SUP dasci. Ako ponesete vlastitu dasku, javna obala Žnjana nudi jednostavan pristup za veslanje, bez sustava rezervacija i po principu tko prvi dođe, prvi koristi."
+  de: "Gleiten Sie auf einem Stand-Up-Paddleboard über das kristallklare Adriawasser. Wenn Sie Ihr eigenes Board mitbringen, bietet die öffentliche Uferlinie von Žnjan einen einfachen Einstieg zum Paddeln, ohne Reservierungssystem und nach dem Prinzip 'wer zuerst kommt, nutzt den Platz zuerst'."
+  it: "Scivola sulle acque cristalline dell'Adriatico su una tavola da stand-up paddle. Se porti la tua tavola, la riva pubblica di Žnjan offre un accesso semplice per pagaiare, senza sistema di prenotazione e in base al principio del primo arrivato, primo servito."
 shortDescription:
   en: "Explore the Adriatic on a paddleboard"
   hr: "Istražite Jadran na SUP dasci"
@@ -29,7 +29,7 @@ duration:
   hr: "1-2 sata"
   de: "1-2 Stunden"
   it: "1-2 ore"
-priceRange: "€15-30/hour"
+priceRange: "Free"
 season: summer
 featured: true
 order: 1

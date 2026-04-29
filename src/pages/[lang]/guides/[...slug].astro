@@ -1,6 +1,6 @@
 ---
 import Guide from '@/layouts/Guide.astro';
-import { LANGUAGES, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
+import { LANGUAGES, getAlternateUrls, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { canonicalUrl } from '@/lib/utils';
@@ -22,6 +22,7 @@ const translations = getTranslations(lang);
 const title = getLocalized(guide.data.title, lang);
 const description = getLocalized(guide.data.description, lang);
 const hreflangLinks = getHreflangLinks('guides', guide.data.slugs);
+const alternates = getAlternateUrls('guides', guide.data.slugs);
 
 const structuredData = [
   buildArticleSchema({
@@ -47,6 +48,7 @@ const { Content } = await guide.render();
   description={description}
   lang={lang}
   translations={translations}
+  alternates={alternates}
   canonicalUrl={canonicalUrl(`/${lang}/guides/${guide.data.slugs[lang]}/`)}
   hreflangLinks={hreflangLinks}
   structuredData={structuredData}

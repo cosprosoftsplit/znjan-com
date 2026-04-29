@@ -41,6 +41,18 @@ if (!user) return Astro.redirect(`/${lang}/community/login/`);
 </Page>
 
 <script define:vars={{ lang, postId }}>
+  const HTML_ESCAPE_MAP = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
+  }
+
   async function loadEditForm() {
     const container = document.getElementById('edit-form-container');
     if (!container) return;
@@ -53,6 +65,12 @@ if (!user) return Astro.redirect(`/${lang}/community/login/`);
       }
 
       const { post } = await res.json();
+      const safeTitle = escapeHtml(post.title);
+      const safeBody = escapeHtml(post.body);
+      const safeLocation = escapeHtml(post.location || '');
+      const safeEventDate = escapeHtml(post.event_date || '');
+      const safeEventTime = escapeHtml(post.event_time || '');
+      const safeMaxParticipants = escapeHtml(post.max_participants || '');
 
       container.innerHTML = `
         <form id="edit-form" class="space-y-5">
@@ -68,31 +86,31 @@ if (!user) return Astro.redirect(`/${lang}/community/login/`);
           </div>
           <div>
             <label class="block text-sm font-medium text-warm-700 mb-1.5">Title</label>
-            <input type="text" name="title" required minlength="3" maxlength="200" value="${post.title.replace(/"/g, '&quot;')}" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500" />
+            <input type="text" name="title" required minlength="3" maxlength="200" value="${safeTitle}" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500" />
           </div>
           <div>
             <label class="block text-sm font-medium text-warm-700 mb-1.5">Description</label>
-            <textarea name="body" required rows="5" minlength="10" maxlength="5000" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 resize-y">${post.body}</textarea>
+            <textarea name="body" required rows="5" minlength="10" maxlength="5000" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 resize-y">${safeBody}</textarea>
           </div>
           <div>
             <label class="block text-sm font-medium text-warm-700 mb-1.5">Location</label>
-            <input type="text" name="location" value="${(post.location || '').replace(/"/g, '&quot;')}" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500" />
+            <input type="text" name="location" value="${safeLocation}" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500" />
           </div>
           ${post.type === 'meetup' || post.type === 'event-idea' ? `
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-warm-700 mb-1.5">Date</label>
-              <input type="date" name="event_date" value="${post.event_date || ''}" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500" />
+              <input type="date" name="event_date" value="${safeEventDate}" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500" />
             </div>
             <div>
               <label class="block text-sm font-medium text-warm-700 mb-1.5">Time</label>
-              <input type="time" name="event_time" value="${post.event_time || ''}" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500" />
+              <input type="time" name="event_time" value="${safeEventTime}" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500" />
             </div>
           </div>` : ''}
           ${post.type === 'meetup' ? `
           <div>
             <label class="block text-sm font-medium text-warm-700 mb-1.5">Max Participants</label>
-            <input type="number" name="max_participants" min="2" max="100" value="${post.max_participants || ''}" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500" />
+            <input type="number" name="max_participants" min="2" max="100" value="${safeMaxParticipants}" class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500" />
           </div>` : ''}
           <div class="bg-sand-50 border border-sand-200 text-sand-800 px-4 py-3 rounded-lg text-sm">
             Editing will reset the post to pending review.

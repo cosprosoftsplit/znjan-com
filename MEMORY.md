@@ -1,0 +1,181 @@
+# MEMORY — znjan.com
+
+## Runtime Patterns
+
+- The site remains static-first, but community and reservation features use Astro SSR pages with `prerender = false`.
+- Dynamic features rely on the Cloudflare D1 binding named `DB`.
+- Google OAuth requires `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and the callback URL `https://znjan.com/api/auth/callback`.
+
+## Community + Reservations
+
+- Current public sports message across the site:
+  - all sports activities are free
+  - there is no current reservation system
+  - the sports areas are open to the public on a first-come, first-served basis
+- Community auth now uses Google OAuth plus D1-backed session cookies.
+- Sports reservations currently publish 9 pilot resources:
+  - 3 beach volleyball courts
+  - 1 tennis court
+  - 1 basketball court
+  - 1 cage football pitch
+- 3 skate park shared sessions:
+  - beginner session at 09:00 with capacity 8
+  - open session at 17:00 with capacity 12
+  - sunset session at 19:00 with capacity 12
+- Skate park now runs as a shared-capacity session pilot instead of exclusive whole-park booking.
+- The public sports-reservations surface now has three user-facing pages:
+  - `/[lang]/community/reservations/`
+  - `/[lang]/community/reservations/rules/`
+  - `/[lang]/community/reservations/dashboard/`
+- The transparency dashboard reports the live 7-day booking window with occupancy, closures, cancellation rate, collision rate, busiest hour, and per-resource breakdowns.
+- Collision reporting is now part of the live reservation system:
+  - users can submit follow-up for recent finished reservations from `/[lang]/community/reservations/`
+  - admins can log direct admin or ambassador incidents from `/[lang]/community/admin/reservations/`
+  - collision rate is calculated against completed active reservations in the current reporting window
+- The web reservation surfaces now include explicit trust framing:
+  - the schedule, rules, and dashboard pages explain that this is a public coordination pilot rather than legal beachfront control
+  - users are told reservation visibility is public and are given clear privacy/contact paths for issue reporting
+- A permission-light physical-pilot entry route now exists at `/[lang]/play/`:
+  - intended for QR stickers, flyers, and pavilion handouts
+  - designed as the fastest public path into reservations, rules, dashboard, and sign-in
+  - shows a live snapshot so on-site users immediately understand whether the pilot is active and useful
+- A print-ready materials route now exists at `/[lang]/play/materials/`:
+  - generates a real QR for the production quick-start page
+  - contains flyer, sticker, and partner-poster copy for the founder sprint
+  - is linked from `/[lang]/play/` and the admin dashboard so the physical pilot has a usable internal handoff surface
+- Founder and ambassador material placement is now measurable from `/[lang]/community/admin/reservations/`:
+  - admins can log real QR sticker, flyer, poster, table-card, and handout placements
+  - each log captures a recent date, location type, location name, quantity, and optional field notes
+  - the admin page now shows recent distribution logs plus summary totals for distribution points and materials placed
+- A dedicated founder operations surface now exists at `/[lang]/community/admin/pilot/`:
+  - combines today's reservation snapshot, active closures, recent collisions, and distribution activity
+  - provides quick links into `/play/`, `/play/materials/`, the public reservations pages, and the reservation admin route
+  - acts as the daily founder operating note for the permission-light sprint
+  - now also includes a D1-backed coverage planner for named founder, ambassador, and helper blocks with next-7-days totals
+- A dedicated seed-community toolkit now exists at `/[lang]/community/admin/seed/`:
+  - gives the founder a first-50-locals checklist and helper guidance
+  - includes 3 starter meetup templates that open directly into prefilled community drafts
+  - supports Phase 11.3 without needing a separate manual planning document for every meetup
+  - now also shows recent D1-backed support signals coming from the public help page so founder follow-up does not depend on scattered private messages
+  - support signals can now move through `new`, `followed up`, and `handled` states and be archived once acted on
+  - the founder queue is updated through `/api/admin/pilot-support-signals/[id]/` instead of relying on private notes or memory
+  - each support signal can now carry an internal follow-up note so the founder can preserve the actual next step, intro context, or agreement between sessions
+- `/[lang]/community/create/` now accepts safe query-string prefills for founder/admin starter templates:
+  - type
+  - category
+  - title
+  - body
+  - location
+  - event date/time
+  - max participants
+- `/[lang]/community/login/` now includes a small privacy/session note before Google sign-in so the auth flow is paired with policy disclosure.
+
+## Mobile App Direction
+
+- The future iOS and Android apps should reuse the same backend foundation:
+  - Astro API routes for application logic
+  - Cloudflare D1 for dynamic state
+  - Astro content collections for verified public content
+- A versioned mobile namespace now exists for app clients:
+  - `/api/mobile/v1/bootstrap`
+  - `/api/mobile/v1/discover`
+  - `/api/mobile/v1/auth/session`
+  - `/api/mobile/v1/reservations`
+  - `/api/mobile/v1/reservations/:id`
+  - `/api/mobile/v1/community/feed`
+  - `/api/mobile/v1/community/posts/:id`
+- The mobile API is currently read-first, with reservation write support already available under the versioned mobile namespace.
+- Native auth is still a gap:
+  - current auth is Google OAuth plus cookie-backed web sessions
+  - mobile will need an explicit native-friendly session/token contract before reservation writes and community writes feel first-class
+- The first Expo workspace now lives at `apps/mobile`:
+  - uses `EXPO_PUBLIC_API_BASE_URL` to point at production or local runtime
+  - currently renders discover, reservations, community, and auth-status tabs against the live mobile API
+  - local verification is `cd apps/mobile && npm run typecheck`
+- App-factory handoff bundles now live under `deliverables/`:
+  - one docs-only zip
+  - one code-and-docs zip with the Expo shell, mobile API endpoints, and relevant backend support code
+- Mobile backend contracts are now documented in:
+  - `docs/mobile-auth-contract.md`
+  - `docs/mobile-reservations-api-contract.md`
+  - `docs/mobile-community-api-contract.md`
+- Community read behavior is now centralized in `src/lib/community-api.ts` so website and mobile read contracts share the same moderation and view-count rules.
+- Root `tsconfig.json` now excludes `apps/mobile` so Astro diagnostics stay scoped to the website codebase.
+
+## Local Verification
+
+- Full baseline checks:
+  - `npm run build`
+  - `npx astro check`
+  - `npm run check-i18n`
+  - `npm run check-refs`
+- Runtime preview after build:
+  - `npm run preview:runtime`
+- Latest mobile runtime spot-checks passed locally for:
+  - `/api/mobile/v1/bootstrap`
+  - `/api/mobile/v1/auth/session`
+  - `/api/mobile/v1/reservations`
+  - `/api/mobile/v1/community/feed`
+
+## Release Notes
+
+- Cloudflare Pages still needs production runtime verification for dynamic routes after bindings/env vars are configured.
+- Phase 11.1 web trust work is locally verified, but the remaining gate is still production:
+  - re-run the same smoke test on live Cloudflare Pages once final env vars and bindings are confirmed
+- Phase 11.2 now has a web entry surface ready for physical distribution:
+  - `/[lang]/play/` should be part of the production smoke test before QR stickers and flyers are handed out
+  - `/[lang]/play/materials/` should also be smoke-tested before printing or reprinting any founder/ambassador materials
+- Phase 11.2 also now has an operations log:
+  - `/[lang]/community/admin/reservations/` should be smoke-tested for distribution logging before the founder pilot starts daily field distribution
+- Phase 11.2 now also has a founder control room:
+  - `/[lang]/community/admin/pilot/` should be part of the production smoke test before the founder starts daily field blocks
+  - the pilot-ops page now also includes a D1-backed coverage planner for named founder, ambassador, and helper blocks
+  - those coverage blocks are stored via `/api/admin/reservations/coverage/` instead of living only in private notes
+- Phase 11.3 now has a web toolkit:
+  - `/[lang]/community/admin/seed/` should be part of the production smoke test before founder-led invites and the first meetup scheduling push
+  - the seed-community page now also needs a smoke pass for support-signal triage actions, not just read-only visibility
+  - the same smoke pass should cover saving and reloading founder follow-up notes on support-signal cards
+- Phase 11.3 now also has a public onboarding layer:
+  - `/[lang]/community/start/` is the public “start here” route for invite links, QR follow-through, and early social traffic
+  - it should be part of the smoke test before public community invites start going out widely
+- Phase 11.4 now has a web operating surface:
+  - `/[lang]/community/admin/venues/` is the founder-facing venue-validation toolkit for walking the 11 pavilion targets, separating confirmed venues from still-unconfirmed spaces, and logging real buying signals
+  - venue validation signals are now stored in D1 through `/api/admin/venues/signals/`
+  - the page also keeps the commercial boundary explicit by splitting sell-now web inventory from surfaces that still belong to later roadmap phases
+  - `/[lang]/community/admin/venues/sell-sheet/` is now the lightweight founder sell sheet for Summer 2026 venue conversations, based on live website surfaces and current proof points instead of speculative reach
+  - `/[lang]/community/admin/venues/sell-sheet/print/` is now the printable venue one-pager with QR links into the live public pilot and venue directory for real walk-in conversations
+- Phase 11.5 now has a public narrative layer:
+  - `/[lang]/community/pilot/` is the short public status/update page for social sharing, venue follow-ups, and early supporter onboarding
+  - it should be part of the smoke test before broader public sharing starts
+- Phase 11.5 now also has a public support/action layer:
+  - `/[lang]/community/help/` is the clean public page for helpers, locals, and supporters who want one concrete way to help the pilot this week
+  - it is linked from the play, start, pilot, community, and admin comms surfaces so the help path is now part of the real founder-sprint web flow
+  - the page now also includes a public support-signal intake form backed by `/api/pilot-support-signals/`
+  - the founder can review and triage those signals from `/[lang]/community/admin/seed/`
+- Phase 11.5 now also has an internal founder comms layer:
+  - `/[lang]/community/admin/comms/` gives the founder reusable messaging, bios, outreach starters, post scripts, and public-language guardrails
+  - it now also includes a first-week publishing cadence plus route-specific public/social-card URLs for the pilot, start, and quick-start surfaces
+  - it should be part of the production smoke test before the first coordinated social or venue-sharing push
+- Phase 11.5 now also has a share-ready social layer:
+  - `/api/og/founder-sprint.svg` generates dedicated social cards for `/[lang]/play/`, `/[lang]/community/start/`, `/[lang]/community/pilot/`, and `/[lang]/community/help/`
+  - those pages no longer rely on the generic site OG image when shared into WhatsApp, Instagram DM, X, or other link-preview surfaces
+- The current production smoke test should now explicitly cover collision logging:
+  - user follow-up path on the public reservations page
+  - admin/ambassador logging on the admin reservations page
+  - collision counts on the public transparency dashboard
+- Exact public inventory for basketball and cage football may expand once final operating counts are confirmed on site.
+- A current whole-project documentation artifact now exists at `docs/project-dossier.md` covering:
+  - website
+  - backend
+  - community
+  - reservations
+  - apps/mobile
+  - social/media
+  - research tracks for roadmap planning
+- A compressed founder-operating plan now exists at `docs/founder-15-day-execution-roadmap.md`.
+- The current planning stance is:
+  - trust and production readiness before promotion
+  - permission-light physical legitimacy before institutional assumptions
+  - community seed before broad rollout
+  - sell-before-build for venue monetization
+  - later-stage ideas like Znjan Radio / BI / Place-OS stay out of the immediate execution path

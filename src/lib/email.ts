@@ -1,24 +1,9 @@
 /**
- * Email utilities — notification helpers
- * Currently no external email provider. Auth uses direct magic link (no email needed).
- * To add email later: plug in any HTTP-based email API (Brevo, SendGrid, etc.) in sendNotification().
+ * Email utilities — stub for future use
+ * No email service currently configured (Google OAuth replaces magic link auth).
  */
 
-interface SendNotificationParams {
-  to: string;
-  subject: string;
-  html: string;
-}
-
-/** Send a notification email (no-op until email provider is configured) */
-export async function sendNotification(
-  { to, subject }: SendNotificationParams,
-): Promise<{ success: boolean }> {
-  console.log(`[email] Would send "${subject}" to ${to} — no email provider configured`);
-  return { success: false };
-}
-
-/** Build notification email HTML */
+/** Build notification email HTML (for potential future use) */
 export function buildNotificationEmail(
   heading: string,
   body: string,

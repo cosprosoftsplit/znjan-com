@@ -19,49 +19,74 @@ export const POST: APIRoute = async ({ params, locals }) => {
   try {
     const db = getDB(locals.runtime);
     const post = await db
-      .prepare('SELECT * FROM posts WHERE id = ?')
+      .prepare('SELECT id, user_id, type, max_participants, status FROM posts WHERE id = ?')
       .bind(params.id)
-      .first<{ id: string; user_id: string; max_participants: number | null; status: string }>();
+      .first<{
+        id: string;
+        user_id: string;
+        type: string;
+        max_participants: number | null;
+        status: string;
+      }>();
 
-    if (!post || post.status !== 'approved') {
+    if (!post || post.status !== 'approved' || post.type !== 'meetup') {
       return new Response(JSON.stringify({ error: 'Post not found' }), {
         status: 404,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    // Check if already joined
-    const existing = await db
-      .prepare("SELECT id FROM responses WHERE post_id = ? AND user_id = ? AND type = 'join'")
-      .bind(params.id, user.id)
-      .first();
+    const responseId = generateId();
+    const inserted = await db
+      .prepare(
+        `INSERT INTO responses (id, post_id, user_id, type, created_at)
+         SELECT ?, ?, ?, 'join', ?
+         WHERE NOT EXISTS (
+           SELECT 1 FROM responses WHERE post_id = ? AND user_id = ? AND type = 'join'
+         )
+         AND (
+           ? IS NULL OR (
+             SELECT COUNT(*)
+             FROM responses
+             WHERE post_id = ? AND type = 'join'
+           ) < ?
+         )`,
+      )
+      .bind(
+        responseId,
+        params.id,
+        user.id,
+        now(),
+        params.id,
+        user.id,
+        post.max_participants,
+        params.id,
+        post.max_participants,
+      )
+      .run();
 
-    if (existing) {
-      return new Response(JSON.stringify({ error: 'Already joined' }), {
-        status: 409,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
+    const changes = Number(
+      (inserted.meta as Record<string, unknown> | undefined)?.changes ?? 0,
+    );
 
-    // Check max participants
-    if (post.max_participants) {
-      const joinCount = await db
-        .prepare("SELECT COUNT(*) as cnt FROM responses WHERE post_id = ? AND type = 'join'")
-        .bind(params.id)
-        .first<{ cnt: number }>();
-      if (joinCount && joinCount.cnt >= post.max_participants) {
-        return new Response(JSON.stringify({ error: 'This meetup is full' }), {
+    if (changes === 0) {
+      const existing = await db
+        .prepare("SELECT id FROM responses WHERE post_id = ? AND user_id = ? AND type = 'join'")
+        .bind(params.id, user.id)
+        .first();
+
+      if (existing) {
+        return new Response(JSON.stringify({ error: 'Already joined' }), {
           status: 409,
           headers: { 'Content-Type': 'application/json' },
         });
       }
-    }
 
-    const id = generateId();
-    await db
-      .prepare("INSERT INTO responses (id, post_id, user_id, type, created_at) VALUES (?, ?, ?, 'join', ?)")
-      .bind(id, params.id, user.id, now())
-      .run();
+      return new Response(JSON.stringify({ error: 'This meetup is full' }), {
+        status: 409,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
 
     // Award points
     await awardPoints(db, user.id, 'join-meetup', params.id);
@@ -71,11 +96,14 @@ export const POST: APIRoute = async ({ params, locals }) => {
       .prepare("SELECT COUNT(*) as cnt FROM responses WHERE post_id = ? AND type = 'join'")
       .bind(params.id)
       .first<{ cnt: number }>();
-    if (totalJoins && totalJoins.cnt >= 3) {
+    if (totalJoins && totalJoins.cnt === 3) {
       await awardPoints(db, post.user_id, 'organize-meetup', params.id);
     }
 
     await checkBadges(db, user.id);
+    if (post.user_id !== user.id) {
+      await checkBadges(db, post.user_id);
+    }
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,

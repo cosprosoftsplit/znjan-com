@@ -1,0 +1,828 @@
+---
+export const prerender = false;
+
+import Page from '@/layouts/Page.astro';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import { getTranslations, t } from '@/lib/translations';
+import { getDB } from '@/lib/db';
+import {
+  getCollisionReportDateOptions,
+  getPilotDistributionDateOptions,
+  getReservationDateOptions,
+  getTimeSlots,
+  listActiveSportsBlackouts,
+  listSportsCollisionReports,
+  listSportsPilotDistributionLogs,
+  listSportsResources,
+} from '@/lib/sports-reservations';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/admin/reservations/');
+
+const translations = getTranslations(lang);
+const user = Astro.locals.user;
+
+if (!user || user.role !== 'admin') {
+  return Astro.redirect(`/${lang}/community/`);
+}
+
+const db = getDB(Astro.locals.runtime);
+const [resources, blackouts, collisionReports, distributionLogs] = await Promise.all([
+  listSportsResources(db),
+  listActiveSportsBlackouts(db),
+  listSportsCollisionReports(db),
+  listSportsPilotDistributionLogs(db),
+]);
+
+const dateOptions = getReservationDateOptions();
+const collisionDateOptions = getCollisionReportDateOptions();
+const distributionDateOptions = getPilotDistributionDateOptions();
+const timeSlots = getTimeSlots();
+const startOptions = timeSlots.map((slot) => slot.start);
+const endOptions = Array.from(new Set(timeSlots.map((slot) => slot.end)));
+
+const alternates = Object.fromEntries(
+  LANGUAGES.map((locale) => [locale, `/${locale}/community/admin/reservations/`]),
+) as Record<Language, string>;
+
+const locale = lang === 'en' ? 'en-GB' : lang;
+
+function formatDate(dateString: string, options: Intl.DateTimeFormatOptions): string {
+  return new Intl.DateTimeFormat(locale, {
+    ...options,
+    timeZone: 'Europe/Zagreb',
+  }).format(new Date(`${dateString}T12:00:00Z`));
+}
+
+const distributionLocationLabels = {
+  pavilion: t(lang, 'admin.distributionLocationTypePavilion'),
+  bar: t(lang, 'admin.distributionLocationTypeBar'),
+  restaurant: t(lang, 'admin.distributionLocationTypeRestaurant'),
+  'beach-touchpoint': t(lang, 'admin.distributionLocationTypeBeachTouchpoint'),
+  other: t(lang, 'admin.distributionLocationTypeOther'),
+};
+
+const distributionMaterialLabels = {
+  'qr-sticker': t(lang, 'admin.distributionMaterialTypeQrSticker'),
+  flyer: t(lang, 'admin.distributionMaterialTypeFlyer'),
+  poster: t(lang, 'admin.distributionMaterialTypePoster'),
+  'table-card': t(lang, 'admin.distributionMaterialTypeTableCard'),
+  handout: t(lang, 'admin.distributionMaterialTypeHandout'),
+};
+
+const totalDistributedQuantity = distributionLogs.reduce((sum, log) => sum + log.quantity, 0);
+const totalDistributionPoints = new Set(distributionLogs.map((log) => `${log.locationType}:${log.locationName.toLowerCase()}`)).size;
+---
+
+<Page
+  title={t(lang, 'admin.reservationControls')}
+  description={t(lang, 'admin.reservationControlsDescription')}
+  lang={lang}
+  translations={translations}
+  alternates={alternates}
+  noIndex={true}
+>
+  <section class="container-page py-10 space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-ocean-600 mb-3">
+          {t(lang, 'admin.title')}
+        </p>
+        <h1 class="text-3xl md:text-4xl font-display text-ocean-900 mb-3">
+          {t(lang, 'admin.reservationControls')}
+        </h1>
+        <p class="text-lg text-warm-600">
+          {t(lang, 'admin.reservationControlsDescription')}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <a
+          href={`/${lang}/community/admin/pilot/`}
+          class="inline-flex items-center justify-center rounded-lg border border-ocean-200 bg-white px-4 py-2.5 text-sm font-semibold text-ocean-700 hover:border-ocean-400 transition-colors"
+        >
+          {t(lang, 'admin.managePilotOps')}
+        </a>
+        <a
+          href={`/${lang}/community/admin/`}
+          class="inline-flex items-center justify-center rounded-lg border border-warm-200 bg-white px-4 py-2.5 text-sm font-semibold text-ocean-700 hover:border-ocean-300 transition-colors"
+        >
+          {t(lang, 'admin.title')}
+        </a>
+        <a
+          href={`/${lang}/community/reservations/`}
+          class="inline-flex items-center justify-center rounded-lg bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+        >
+          {t(lang, 'reservations.viewSportsReservations')}
+        </a>
+      </div>
+    </div>
+
+    <div id="blackout-feedback" class="hidden rounded-xl px-4 py-3 text-sm font-medium"></div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_24rem] gap-8">
+      <div class="space-y-6">
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.blackoutFormTitle')}</h2>
+              <p class="text-sm text-warm-600 mt-1">{t(lang, 'reservations.ruleWindow')}</p>
+            </div>
+            <div class="rounded-full bg-coral-50 px-3 py-1 text-sm font-semibold text-coral-700">
+              {blackouts.length} {t(lang, 'admin.activeBlackouts').toLowerCase()}
+            </div>
+          </div>
+
+          <form id="blackout-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.blackoutDate')}</span>
+              <select
+                name="blackoutDate"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {dateOptions.map((date) => (
+                  <option value={date}>
+                    {formatDate(date, { weekday: 'short', day: 'numeric', month: 'short' })}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.blackoutResource')}</span>
+              <select
+                name="resourceSlug"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                <option value="all">{t(lang, 'admin.blackoutAllResources')}</option>
+                {resources.map((resource) => (
+                  <option value={resource.slug}>{resource.titles[lang]}</option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.blackoutStart')}</span>
+              <select
+                id="blackout-slot-start"
+                name="slotStart"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {startOptions.map((time) => (
+                  <option value={time}>{time}</option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.blackoutEnd')}</span>
+              <select
+                id="blackout-slot-end"
+                name="slotEnd"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {endOptions.map((time, index) => (
+                  <option value={time} selected={index === 0}>{time}</option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.blackoutReason')}</span>
+              <input
+                type="text"
+                name="reason"
+                maxlength="200"
+                placeholder={t(lang, 'admin.blackoutReasonPlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              />
+            </label>
+
+            <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <p class="text-sm text-warm-600">
+                {t(lang, 'admin.blackoutRuleNote')}
+              </p>
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center rounded-lg bg-coral-600 px-5 py-3 text-sm font-semibold text-white hover:bg-coral-700 transition-colors"
+              >
+                {t(lang, 'admin.blackoutSubmit')}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.collisionFormTitle')}</h2>
+              <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.collisionFormDescription')}</p>
+            </div>
+            <div class="rounded-full bg-coral-50 px-3 py-1 text-sm font-semibold text-coral-700">
+              {collisionReports.length} {t(lang, 'admin.collisionReports').toLowerCase()}
+            </div>
+          </div>
+
+          <div id="collision-feedback-admin" class="hidden mb-4 rounded-xl px-4 py-3 text-sm font-medium"></div>
+
+          <form id="collision-form-admin" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.collisionSource')}</span>
+              <select
+                name="source"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                <option value="admin-report">{t(lang, 'admin.collisionSourceAdmin')}</option>
+                <option value="ambassador-report">{t(lang, 'admin.collisionSourceAmbassador')}</option>
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.blackoutResource')}</span>
+              <select
+                name="resourceSlug"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {resources.map((resource) => (
+                  <option value={resource.slug}>{resource.titles[lang]}</option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.collisionDate')}</span>
+              <select
+                name="collisionDate"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {collisionDateOptions.map((date) => (
+                  <option value={date}>
+                    {formatDate(date, { weekday: 'short', day: 'numeric', month: 'short' })}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'reservations.collisionIssueTypeLabel')}</span>
+              <select
+                name="issueType"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                <option value="occupied-on-arrival">{t(lang, 'reservations.collisionIssueOccupiedOnArrival')}</option>
+                <option value="double-booking">{t(lang, 'reservations.collisionIssueDoubleBooking')}</option>
+                <option value="closure-mismatch">{t(lang, 'reservations.collisionIssueClosureMismatch')}</option>
+                <option value="session-over-capacity">{t(lang, 'reservations.collisionIssueSessionOverCapacity')}</option>
+                <option value="other">{t(lang, 'reservations.collisionIssueOther')}</option>
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.blackoutStart')}</span>
+              <select
+                id="collision-slot-start"
+                name="slotStart"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {startOptions.map((time) => (
+                  <option value={time}>{time}</option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.blackoutEnd')}</span>
+              <select
+                id="collision-slot-end"
+                name="slotEnd"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {endOptions.map((time, index) => (
+                  <option value={time} selected={index === 0}>{time}</option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'reservations.collisionNotesLabel')}</span>
+              <textarea
+                name="notes"
+                rows="4"
+                maxlength="500"
+                placeholder={t(lang, 'admin.collisionNotesPlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              ></textarea>
+            </label>
+
+            <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <p class="text-sm text-warm-600">
+                {t(lang, 'admin.collisionRuleNote')}
+              </p>
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center rounded-lg bg-coral-600 px-5 py-3 text-sm font-semibold text-white hover:bg-coral-700 transition-colors"
+              >
+                {t(lang, 'admin.collisionSubmit')}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.distributionLogTitle')}</h2>
+              <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.distributionLogDescription')}</p>
+            </div>
+            <div class="rounded-full bg-sand-50 px-3 py-1 text-sm font-semibold text-sand-700">
+              {distributionLogs.length} {t(lang, 'admin.distributionLogs').toLowerCase()}
+            </div>
+          </div>
+
+          <div id="distribution-feedback-admin" class="hidden mb-4 rounded-xl px-4 py-3 text-sm font-medium"></div>
+
+          <form id="distribution-form-admin" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.distributionDate')}</span>
+              <select
+                name="distributionDate"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {distributionDateOptions.map((date) => (
+                  <option value={date}>
+                    {formatDate(date, { weekday: 'short', day: 'numeric', month: 'short' })}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.distributionLocationType')}</span>
+              <select
+                name="locationType"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                <option value="pavilion">{t(lang, 'admin.distributionLocationTypePavilion')}</option>
+                <option value="bar">{t(lang, 'admin.distributionLocationTypeBar')}</option>
+                <option value="restaurant">{t(lang, 'admin.distributionLocationTypeRestaurant')}</option>
+                <option value="beach-touchpoint">{t(lang, 'admin.distributionLocationTypeBeachTouchpoint')}</option>
+                <option value="other">{t(lang, 'admin.distributionLocationTypeOther')}</option>
+              </select>
+            </label>
+
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.distributionLocationName')}</span>
+              <input
+                type="text"
+                name="locationName"
+                maxlength="120"
+                placeholder={t(lang, 'admin.distributionLocationNamePlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              />
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.distributionMaterialType')}</span>
+              <select
+                name="materialType"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                <option value="qr-sticker">{t(lang, 'admin.distributionMaterialTypeQrSticker')}</option>
+                <option value="flyer">{t(lang, 'admin.distributionMaterialTypeFlyer')}</option>
+                <option value="poster">{t(lang, 'admin.distributionMaterialTypePoster')}</option>
+                <option value="table-card">{t(lang, 'admin.distributionMaterialTypeTableCard')}</option>
+                <option value="handout">{t(lang, 'admin.distributionMaterialTypeHandout')}</option>
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.distributionQuantity')}</span>
+              <input
+                type="number"
+                name="quantity"
+                value="1"
+                min="1"
+                max="500"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              />
+            </label>
+
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'reservations.collisionNotesLabel')}</span>
+              <textarea
+                name="notes"
+                rows="4"
+                maxlength="300"
+                placeholder={t(lang, 'admin.distributionNotesPlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              ></textarea>
+            </label>
+
+            <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <p class="text-sm text-warm-600">
+                {t(lang, 'admin.distributionRuleNote')}
+              </p>
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center rounded-lg bg-coral-600 px-5 py-3 text-sm font-semibold text-white hover:bg-coral-700 transition-colors"
+              >
+                {t(lang, 'admin.distributionSubmit')}
+              </button>
+            </div>
+          </form>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6">
+            <div class="rounded-xl bg-warm-50 border border-warm-100 px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.14em] text-warm-500">{t(lang, 'admin.distributionPoints')}</div>
+              <div class="mt-2 text-2xl font-semibold text-ocean-900">{totalDistributionPoints}</div>
+            </div>
+            <div class="rounded-xl bg-sand-50 border border-sand-100 px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.14em] text-sand-700">{t(lang, 'admin.materialsDistributed')}</div>
+              <div class="mt-2 text-2xl font-semibold text-sand-800">{totalDistributedQuantity}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.activeBlackouts')}</h2>
+              <p class="text-sm text-warm-600 mt-1">{t(lang, 'reservations.transparencyNote')}</p>
+            </div>
+            <div class="rounded-full bg-ocean-50 px-3 py-1 text-sm font-semibold text-ocean-700">
+              {blackouts.length}
+            </div>
+          </div>
+
+          {blackouts.length === 0 ? (
+            <div class="rounded-xl border border-dashed border-warm-200 bg-warm-50 px-5 py-6 text-sm text-warm-500">
+              {t(lang, 'admin.noActiveBlackouts')}
+            </div>
+          ) : (
+            <div class="space-y-3">
+              {blackouts.map((blackout) => (
+                <article class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-4">
+                  <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                    <div class="space-y-1.5">
+                      <p class="font-semibold text-ocean-900">
+                        {blackout.resource ? blackout.resource.titles[lang] : t(lang, 'admin.blackoutAllResources')}
+                      </p>
+                      <p class="text-sm text-warm-600">
+                        {formatDate(blackout.blackoutDate, { weekday: 'short', day: 'numeric', month: 'short' })} · {blackout.slotStart} - {blackout.slotEnd}
+                      </p>
+                      {blackout.reason && (
+                        <p class="text-sm text-warm-700">{blackout.reason}</p>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      data-delete-blackout
+                      data-blackout-id={blackout.id}
+                      class="inline-flex items-center justify-center rounded-lg border border-coral-200 bg-white px-4 py-2 text-sm font-semibold text-coral-700 hover:border-coral-400 transition-colors"
+                    >
+                      {t(lang, 'admin.removeBlackout')}
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.collisionReports')}</h2>
+              <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.collisionReportsDescription')}</p>
+            </div>
+            <div class="rounded-full bg-ocean-50 px-3 py-1 text-sm font-semibold text-ocean-700">
+              {collisionReports.length}
+            </div>
+          </div>
+
+          {collisionReports.length === 0 ? (
+            <div class="rounded-xl border border-dashed border-warm-200 bg-warm-50 px-5 py-6 text-sm text-warm-500">
+              {t(lang, 'admin.noCollisionReports')}
+            </div>
+          ) : (
+            <div class="space-y-3">
+              {collisionReports.map((report) => (
+                <article class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-4">
+                  <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                    <div class="space-y-1.5">
+                      <p class="font-semibold text-ocean-900">{report.resource.titles[lang]}</p>
+                      <p class="text-sm text-warm-600">
+                        {formatDate(report.collisionDate, { weekday: 'short', day: 'numeric', month: 'short' })} · {report.slotStart} - {report.slotEnd}
+                      </p>
+                      <p class="text-sm text-warm-700">
+                        {t(lang, `reservations.collisionIssueLabel.${report.issueType}`)}
+                      </p>
+                      {report.notes && (
+                        <p class="text-sm text-warm-700">{report.notes}</p>
+                      )}
+                    </div>
+
+                    <div class="text-right space-y-1">
+                      <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ocean-600">
+                        {report.source === 'reservation-followup'
+                          ? t(lang, 'admin.collisionSourceUser')
+                          : report.source === 'ambassador-report'
+                            ? t(lang, 'admin.collisionSourceAmbassador')
+                            : t(lang, 'admin.collisionSourceAdmin')}
+                      </p>
+                      <p class="text-xs text-warm-500">
+                        {new Intl.DateTimeFormat(locale, {
+                          dateStyle: 'medium',
+                          timeStyle: 'short',
+                          timeZone: 'Europe/Zagreb',
+                        }).format(new Date(report.createdAt))}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.distributionLogs')}</h2>
+              <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.distributionLogsDescription')}</p>
+            </div>
+            <div class="rounded-full bg-ocean-50 px-3 py-1 text-sm font-semibold text-ocean-700">
+              {distributionLogs.length}
+            </div>
+          </div>
+
+          {distributionLogs.length === 0 ? (
+            <div class="rounded-xl border border-dashed border-warm-200 bg-warm-50 px-5 py-6 text-sm text-warm-500">
+              {t(lang, 'admin.noDistributionLogs')}
+            </div>
+          ) : (
+            <div class="space-y-3">
+              {distributionLogs.map((log) => (
+                <article class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-4">
+                  <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                    <div class="space-y-1.5">
+                      <p class="font-semibold text-ocean-900">{log.locationName}</p>
+                      <p class="text-sm text-warm-600">
+                        {distributionLocationLabels[log.locationType]} · {distributionMaterialLabels[log.materialType]} · {log.quantity}
+                      </p>
+                      <p class="text-sm text-warm-600">
+                        {formatDate(log.distributionDate, { weekday: 'short', day: 'numeric', month: 'short' })}
+                      </p>
+                      {log.notes && (
+                        <p class="text-sm text-warm-700">{log.notes}</p>
+                      )}
+                    </div>
+
+                    <div class="text-right space-y-1">
+                      <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ocean-600">
+                        {t(lang, 'admin.distributionLoggedMeta')}
+                      </p>
+                      <p class="text-xs text-warm-500">
+                        {new Intl.DateTimeFormat(locale, {
+                          dateStyle: 'medium',
+                          timeStyle: 'short',
+                          timeZone: 'Europe/Zagreb',
+                        }).format(new Date(log.createdAt))}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <aside class="space-y-6">
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-lg font-semibold text-ocean-900 mb-4">{t(lang, 'admin.reservationControls')}</h2>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="rounded-xl bg-warm-50 border border-warm-100 px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.14em] text-warm-500">{t(lang, 'reservations.totalResourcesLabel')}</div>
+              <div class="mt-2 text-2xl font-semibold text-ocean-900">{resources.length}</div>
+            </div>
+            <div class="rounded-xl bg-coral-50 border border-coral-100 px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.14em] text-coral-700">{t(lang, 'admin.activeBlackouts')}</div>
+              <div class="mt-2 text-2xl font-semibold text-coral-800">{blackouts.length}</div>
+            </div>
+            <div class="rounded-xl bg-ocean-50 border border-ocean-100 px-4 py-3 col-span-2">
+              <div class="text-xs uppercase tracking-[0.14em] text-ocean-700">{t(lang, 'admin.collisionReports')}</div>
+              <div class="mt-2 text-2xl font-semibold text-ocean-900">{collisionReports.length}</div>
+            </div>
+            <div class="rounded-xl bg-sand-50 border border-sand-100 px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.14em] text-sand-700">{t(lang, 'admin.distributionPoints')}</div>
+              <div class="mt-2 text-2xl font-semibold text-sand-800">{totalDistributionPoints}</div>
+            </div>
+            <div class="rounded-xl bg-warm-50 border border-warm-100 px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.14em] text-warm-500">{t(lang, 'admin.materialsDistributed')}</div>
+              <div class="mt-2 text-2xl font-semibold text-ocean-900">{totalDistributedQuantity}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-sand-50 rounded-2xl border border-sand-200 p-6">
+          <h2 class="text-lg font-semibold text-ocean-900 mb-3">{t(lang, 'reservations.bookingRules')}</h2>
+          <ul class="space-y-3 text-sm text-warm-700">
+            <li>{t(lang, 'reservations.ruleFree')}</li>
+            <li>{t(lang, 'reservations.ruleWindow')}</li>
+            <li>{t(lang, 'admin.blackoutRuleNote')}</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Page>
+
+<script define:vars={{
+  blackoutCreatedMessage: t(lang, 'admin.blackoutCreated'),
+  blackoutRemovedMessage: t(lang, 'admin.blackoutRemoved'),
+  collisionCreatedMessage: t(lang, 'admin.collisionCreated'),
+  distributionLoggedMessage: t(lang, 'admin.distributionLogged'),
+  genericErrorMessage: t(lang, 'reservations.errorGeneric'),
+  timeSlots,
+}}>
+  const form = document.getElementById('blackout-form');
+  const feedback = document.getElementById('blackout-feedback');
+  const collisionForm = document.getElementById('collision-form-admin');
+  const collisionFeedback = document.getElementById('collision-feedback-admin');
+  const distributionForm = document.getElementById('distribution-form-admin');
+  const distributionFeedback = document.getElementById('distribution-feedback-admin');
+  const startSelect = document.getElementById('blackout-slot-start');
+  const endSelect = document.getElementById('blackout-slot-end');
+  const collisionStartSelect = document.getElementById('collision-slot-start');
+  const collisionEndSelect = document.getElementById('collision-slot-end');
+
+  function toMinutes(value) {
+    const [hours, minutes] = String(value).split(':').map(Number);
+    return (hours * 60) + minutes;
+  }
+
+  function showFeedback(message, isError = false) {
+    if (!feedback) return;
+    feedback.textContent = message;
+    feedback.className = isError
+      ? 'rounded-xl px-4 py-3 text-sm font-medium bg-coral-50 text-coral-800 border border-coral-200'
+      : 'rounded-xl px-4 py-3 text-sm font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
+  }
+
+  function showCollisionFeedback(message, isError = false) {
+    if (!collisionFeedback) return;
+    collisionFeedback.textContent = message;
+    collisionFeedback.className = isError
+      ? 'mb-4 rounded-xl px-4 py-3 text-sm font-medium bg-coral-50 text-coral-800 border border-coral-200'
+      : 'mb-4 rounded-xl px-4 py-3 text-sm font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
+  }
+
+  function showDistributionFeedback(message, isError = false) {
+    if (!distributionFeedback) return;
+    distributionFeedback.textContent = message;
+    distributionFeedback.className = isError
+      ? 'mb-4 rounded-xl px-4 py-3 text-sm font-medium bg-coral-50 text-coral-800 border border-coral-200'
+      : 'mb-4 rounded-xl px-4 py-3 text-sm font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
+  }
+
+  async function requestJson(url, options) {
+    const response = await fetch(url, options);
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.error || genericErrorMessage);
+    }
+    return data;
+  }
+
+  function syncEndOptions(startElement, endElement) {
+    if (!startElement || !endElement) return;
+
+    const selectedStartMinutes = toMinutes(startElement.value);
+    const optionList = Array.from(endElement.options);
+    let nextValidValue = null;
+
+    optionList.forEach((option) => {
+      const enabled = toMinutes(option.value) > selectedStartMinutes;
+      option.disabled = !enabled;
+      option.hidden = !enabled;
+      if (enabled && nextValidValue === null) {
+        nextValidValue = option.value;
+      }
+    });
+
+    if (!nextValidValue) return;
+    if (endElement.selectedOptions[0]?.disabled) {
+      endElement.value = nextValidValue;
+    }
+  }
+
+  startSelect?.addEventListener('change', () => syncEndOptions(startSelect, endSelect));
+  collisionStartSelect?.addEventListener('change', () => syncEndOptions(collisionStartSelect, collisionEndSelect));
+  syncEndOptions(startSelect, endSelect);
+  syncEndOptions(collisionStartSelect, collisionEndSelect);
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+
+    try {
+      const formData = new FormData(form);
+      await requestJson('/api/admin/reservations/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          blackoutDate: formData.get('blackoutDate'),
+          resourceSlug: formData.get('resourceSlug'),
+          slotStart: formData.get('slotStart'),
+          slotEnd: formData.get('slotEnd'),
+          reason: formData.get('reason'),
+        }),
+      });
+      showFeedback(blackoutCreatedMessage);
+      window.location.reload();
+    } catch (error) {
+      showFeedback(error instanceof Error ? error.message : genericErrorMessage, true);
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
+  document.querySelectorAll('[data-delete-blackout]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+      try {
+        const blackoutId = button.getAttribute('data-blackout-id');
+        await requestJson(`/api/admin/reservations/${blackoutId}`, {
+          method: 'DELETE',
+        });
+        showFeedback(blackoutRemovedMessage);
+        window.location.reload();
+      } catch (error) {
+        showFeedback(error instanceof Error ? error.message : genericErrorMessage, true);
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+
+  collisionForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const submitButton = collisionForm.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+
+    try {
+      const formData = new FormData(collisionForm);
+      await requestJson('/api/admin/reservations/collision-reports/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: formData.get('source'),
+          resourceSlug: formData.get('resourceSlug'),
+          collisionDate: formData.get('collisionDate'),
+          slotStart: formData.get('slotStart'),
+          slotEnd: formData.get('slotEnd'),
+          issueType: formData.get('issueType'),
+          notes: formData.get('notes'),
+        }),
+      });
+      showCollisionFeedback(collisionCreatedMessage);
+      window.location.reload();
+    } catch (error) {
+      showCollisionFeedback(error instanceof Error ? error.message : genericErrorMessage, true);
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
+  distributionForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const submitButton = distributionForm.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+
+    try {
+      const formData = new FormData(distributionForm);
+      await requestJson('/api/admin/reservations/distribution-logs/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          distributionDate: formData.get('distributionDate'),
+          locationName: formData.get('locationName'),
+          locationType: formData.get('locationType'),
+          materialType: formData.get('materialType'),
+          quantity: Number(formData.get('quantity')),
+          notes: formData.get('notes'),
+        }),
+      });
+      showDistributionFeedback(distributionLoggedMessage);
+      window.location.reload();
+    } catch (error) {
+      showDistributionFeedback(error instanceof Error ? error.message : genericErrorMessage, true);
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+</script>

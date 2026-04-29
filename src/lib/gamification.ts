@@ -43,6 +43,10 @@ export const BADGES = {
 
 export type BadgeId = keyof typeof BADGES;
 
+function isUniqueConstraintError(err: unknown): boolean {
+  return err instanceof Error && /unique/i.test(err.message);
+}
+
 /** Award points to a user */
 export async function awardPoints(
   db: D1Database,
@@ -56,12 +60,30 @@ export async function awardPoints(
   const txId = generateId();
   const timestamp = now();
 
-  await db
-    .prepare(
-      'INSERT INTO point_transactions (id, user_id, action, points, reference_id, created_at) VALUES (?, ?, ?, ?, ?, ?)',
-    )
-    .bind(txId, userId, action, points, referenceId ?? null, timestamp)
-    .run();
+  try {
+    await db
+      .prepare(
+        'INSERT INTO point_transactions (id, user_id, action, points, reference_id, created_at) VALUES (?, ?, ?, ?, ?, ?)',
+      )
+      .bind(txId, userId, action, points, referenceId ?? null, timestamp)
+      .run();
+  } catch (err) {
+    if (isUniqueConstraintError(err)) {
+      const existingUser = await db
+        .prepare('SELECT points, level FROM users WHERE id = ?')
+        .bind(userId)
+        .first<{ points: number; level: number }>();
+
+      if (!existingUser) return null;
+
+      return {
+        newPoints: existingUser.points,
+        newLevel: existingUser.level,
+      };
+    }
+
+    throw err;
+  }
 
   await db
     .prepare('UPDATE users SET points = points + ?, updated_at = ? WHERE id = ?')

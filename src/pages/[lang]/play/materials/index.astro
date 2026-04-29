@@ -1,0 +1,212 @@
+---
+export const prerender = false;
+
+import Page from '@/layouts/Page.astro';
+import Button from '@/components/ui/Button.astro';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import { getTranslations, t } from '@/lib/translations';
+import { createQrSvg } from '@/lib/qr';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/play/materials/');
+
+const translations = getTranslations(lang);
+const alternates = Object.fromEntries(
+  LANGUAGES.map((locale) => [locale, `/${locale}/play/materials/`]),
+) as Record<Language, string>;
+
+const playUrl = `https://znjan.com/${lang}/play/`;
+const qrSvg = await createQrSvg(playUrl);
+
+const usagePoints = [
+  t(lang, 'reservations.pilotKitUsagePoint1'),
+  t(lang, 'reservations.pilotKitUsagePoint2'),
+  t(lang, 'reservations.pilotKitUsagePoint3'),
+];
+
+const supportPoints = [
+  t(lang, 'reservations.pilotKitSupportPoint1'),
+  t(lang, 'reservations.pilotKitSupportPoint2'),
+  t(lang, 'reservations.pilotKitSupportPoint3'),
+];
+---
+
+<Page
+  title={t(lang, 'reservations.pilotKitTitle')}
+  description={t(lang, 'reservations.pilotKitDescription')}
+  lang={lang}
+  translations={translations}
+  alternates={alternates}
+  noIndex={true}
+>
+  <section class="container-page py-10 print-shell">
+    <div class="max-w-5xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.18em] text-ocean-600 mb-3">
+        {t(lang, 'reservations.pilotKitEyebrow')}
+      </p>
+      <h1 class="text-3xl md:text-5xl font-display text-ocean-900 mb-4">
+        {t(lang, 'reservations.pilotKitTitle')}
+      </h1>
+      <p class="text-lg text-warm-600 max-w-4xl">
+        {t(lang, 'reservations.pilotKitDescription')}
+      </p>
+
+      <div data-print-hide class="mt-6 flex flex-wrap gap-3">
+        <button
+          type="button"
+          id="print-pilot-kit"
+          class="inline-flex items-center justify-center rounded-lg bg-coral-500 px-6 py-3 text-base font-semibold uppercase tracking-wider text-white transition-colors hover:bg-coral-600"
+        >
+          {t(lang, 'reservations.pilotKitPrintCta')}
+        </button>
+        <Button href={`/${lang}/play/`} variant="outline" size="lg">
+          {t(lang, 'reservations.pilotKitOpenPlayCta')}
+        </Button>
+        <Button href={`/${lang}/community/reservations/`} variant="secondary" size="lg">
+          {t(lang, 'reservations.viewSportsReservations')}
+        </Button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_24rem] gap-6 mt-8">
+      <article class="print-card bg-white rounded-[2rem] border border-ocean-200 p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_18rem] gap-8 items-center">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-ocean-600">
+              {t(lang, 'reservations.pilotKitPosterTitle')}
+            </p>
+            <h2 class="mt-3 text-3xl font-display text-ocean-900">
+              {t(lang, 'reservations.pilotKitPosterHeadline')}
+            </h2>
+            <p class="mt-4 text-base leading-7 text-warm-700">
+              {t(lang, 'reservations.pilotKitPosterBody')}
+            </p>
+
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="rounded-2xl border border-ocean-100 bg-ocean-50 px-4 py-4">
+                <p class="text-xs uppercase tracking-[0.14em] text-ocean-600">{t(lang, 'reservations.ruleFree')}</p>
+              </div>
+              <div class="rounded-2xl border border-sand-100 bg-sand-50 px-4 py-4">
+                <p class="text-xs uppercase tracking-[0.14em] text-sand-700">{t(lang, 'reservations.ruleWindow')}</p>
+              </div>
+              <div class="rounded-2xl border border-coral-100 bg-coral-50 px-4 py-4">
+                <p class="text-xs uppercase tracking-[0.14em] text-coral-700">{t(lang, 'reservations.ruleDailyLimit')}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-[2rem] border border-warm-200 bg-warm-50 p-5 text-center">
+            <div class="mx-auto w-full max-w-[16rem] rounded-[1.5rem] bg-white p-4 shadow-sm" set:html={qrSvg}></div>
+            <h3 class="mt-4 text-xl font-semibold text-ocean-900">{t(lang, 'reservations.pilotKitQrTitle')}</h3>
+            <p class="mt-2 text-sm leading-6 text-warm-700">{t(lang, 'reservations.pilotKitQrBody')}</p>
+            <div class="mt-4 rounded-2xl border border-ocean-100 bg-ocean-50 px-4 py-3">
+              <div class="text-xs uppercase tracking-[0.14em] text-ocean-600">{t(lang, 'reservations.pilotKitUrlLabel')}</div>
+              <div class="mt-2 text-sm font-semibold text-ocean-900 break-all">{playUrl}</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="space-y-6">
+        <article class="print-card bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'reservations.pilotKitUsageTitle')}</h2>
+          <div class="mt-4 space-y-3">
+            {usagePoints.map((point, index) => (
+              <div class="rounded-2xl border border-warm-100 bg-warm-50 px-4 py-4">
+                <div class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-ocean-200 bg-white text-sm font-semibold text-ocean-700">
+                  {index + 1}
+                </div>
+                <p class="mt-3 text-sm leading-6 text-warm-700">{point}</p>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article class="print-card bg-sand-50 rounded-2xl border border-sand-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'reservations.pilotKitSupportTitle')}</h2>
+          <div class="mt-4 space-y-3">
+            {supportPoints.map((point) => (
+              <div class="rounded-2xl border border-sand-100 bg-white/80 px-4 py-4 text-sm leading-6 text-warm-700">
+                {point}
+              </div>
+            ))}
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+      <article class="print-card rounded-[2rem] border border-ocean-200 bg-ocean-50 p-6">
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-ocean-600">
+          {t(lang, 'reservations.pilotKitStickerTitle')}
+        </p>
+        <h2 class="mt-3 text-2xl font-display text-ocean-900">
+          {t(lang, 'reservations.pilotKitStickerHeadline')}
+        </h2>
+        <p class="mt-4 text-sm leading-7 text-warm-700">
+          {t(lang, 'reservations.pilotKitStickerBody')}
+        </p>
+      </article>
+
+      <article class="print-card rounded-[2rem] border border-sand-200 bg-sand-50 p-6">
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-sand-700">
+          {t(lang, 'reservations.pilotKitFlyerTitle')}
+        </p>
+        <h2 class="mt-3 text-2xl font-display text-ocean-900">
+          {t(lang, 'reservations.pilotKitFlyerHeadline')}
+        </h2>
+        <p class="mt-4 text-sm leading-7 text-warm-700">
+          {t(lang, 'reservations.pilotKitFlyerBody')}
+        </p>
+      </article>
+
+      <article class="print-card rounded-[2rem] border border-coral-200 bg-coral-50 p-6">
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-coral-700">
+          {t(lang, 'reservations.pilotKitPosterTitle')}
+        </p>
+        <h2 class="mt-3 text-2xl font-display text-ocean-900">
+          {t(lang, 'reservations.pilotKitPosterHeadline')}
+        </h2>
+        <p class="mt-4 text-sm leading-7 text-warm-700">
+          {t(lang, 'reservations.pilotKitPosterBody')}
+        </p>
+      </article>
+    </div>
+  </section>
+</Page>
+
+<script>
+  document.getElementById('print-pilot-kit')?.addEventListener('click', () => {
+    window.print();
+  });
+</script>
+
+<style is:global>
+  @media print {
+    header,
+    footer,
+    [data-print-hide] {
+      display: none !important;
+    }
+
+    main {
+      padding: 0 !important;
+    }
+
+    body {
+      background: white !important;
+    }
+
+    .print-shell {
+      max-width: none !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    .print-card {
+      break-inside: avoid;
+      box-shadow: none !important;
+    }
+  }
+</style>

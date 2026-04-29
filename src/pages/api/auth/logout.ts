@@ -9,6 +9,7 @@ export const prerender = false;
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
+    const url = new URL(request.url);
     const sessionId = getSessionIdFromCookie(request.headers.get('cookie'));
     if (sessionId) {
       const db = getDB(locals.runtime);
@@ -19,7 +20,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Set-Cookie': clearSessionCookie(),
+        'Set-Cookie': clearSessionCookie(url),
       },
     });
   } catch (err) {

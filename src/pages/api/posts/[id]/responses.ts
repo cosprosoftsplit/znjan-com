@@ -50,6 +50,9 @@ export const POST: APIRoute = async ({ params, request, locals }) => {
     // Award points
     await awardPoints(db, user.id, 'leave-comment', id);
     await checkBadges(db, user.id);
+    if (post.user_id !== user.id) {
+      await checkBadges(db, post.user_id);
+    }
 
     return new Response(
       JSON.stringify({

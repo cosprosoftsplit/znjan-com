@@ -1,0 +1,255 @@
+---
+export const prerender = false;
+
+import { getCollection, getEntry } from 'astro:content';
+import Page from '@/layouts/Page.astro';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import { getTranslations, t } from '@/lib/translations';
+import { createQrSvg } from '@/lib/qr';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/admin/venues/sell-sheet/print/');
+
+const translations = getTranslations(lang);
+const user = Astro.locals.user;
+
+if (!user || user.role !== 'admin') {
+  return Astro.redirect(`/${lang}/community/`);
+}
+
+const [siteConfig, places, guides, articles, activities] = await Promise.all([
+  getEntry('global', 'site-config'),
+  getCollection('places'),
+  getCollection('guides'),
+  getCollection('articles'),
+  getCollection('activities'),
+]);
+
+const alternates = Object.fromEntries(
+  LANGUAGES.map((locale) => [locale, `/${locale}/community/admin/venues/sell-sheet/print/`]),
+) as Record<Language, string>;
+
+const siteUrl = siteConfig?.data.siteUrl ?? 'https://znjan.com';
+const locale = lang === 'en' ? 'en-GB' : lang;
+
+const pilotUrl = `${siteUrl}/${lang}/community/pilot/`;
+const placesUrl = `${siteUrl}/${lang}/places/`;
+const scheduleUrl = `${siteUrl}/${lang}/community/reservations/`;
+const pilotQrSvg = await createQrSvg(pilotUrl);
+const placesQrSvg = await createQrSvg(placesUrl);
+
+const proofStats = [
+  {
+    label: t(lang, 'admin.commercialSellSheetStatLanguages'),
+    value: '4',
+  },
+  {
+    label: t(lang, 'admin.commercialSellSheetProofStatPlaces'),
+    value: String(places.length),
+  },
+  {
+    label: t(lang, 'admin.commercialSellSheetProofStatActivities'),
+    value: String(activities.length),
+  },
+  {
+    label: t(lang, 'admin.commercialSellSheetProofStatEditorial'),
+    value: String(guides.length + articles.length),
+  },
+];
+
+const offerCards = [
+  {
+    title: t(lang, 'admin.commercialOfferVerifiedListing'),
+    body: t(lang, 'admin.commercialSellSheetOfferVerifiedBody'),
+  },
+  {
+    title: t(lang, 'admin.commercialOfferFeaturePlacement'),
+    body: t(lang, 'admin.commercialSellSheetOfferFeatureBody'),
+  },
+  {
+    title: t(lang, 'admin.commercialOfferEventVisibility'),
+    body: t(lang, 'admin.commercialSellSheetOfferEventBody'),
+  },
+  {
+    title: t(lang, 'admin.commercialOfferPilotStory'),
+    body: t(lang, 'admin.commercialSellSheetOfferStoryBody'),
+  },
+];
+
+const prompts = [1, 2, 3].map((item) => t(lang, `admin.commercialPrompt${item}`));
+
+function formatUpdatedAt(): string {
+  return new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'Europe/Zagreb',
+  }).format(new Date());
+}
+---
+
+<Page
+  title={t(lang, 'admin.commercialSellSheetPrintTitle')}
+  description={t(lang, 'admin.commercialSellSheetPrintDescription')}
+  lang={lang}
+  translations={translations}
+  alternates={alternates}
+  noIndex={true}
+>
+  <section class="container-page py-10 print-shell space-y-6">
+    <div data-print-hide class="flex flex-wrap gap-3">
+      <button
+        type="button"
+        id="print-commercial-sheet"
+        class="inline-flex items-center justify-center rounded-lg bg-coral-500 px-6 py-3 text-base font-semibold uppercase tracking-wider text-white transition-colors hover:bg-coral-600"
+      >
+        {t(lang, 'admin.commercialSellSheetPrintCta')}
+      </button>
+      <a
+        href={`/${lang}/community/admin/venues/sell-sheet/`}
+        class="inline-flex items-center justify-center rounded-lg border border-warm-200 bg-white px-5 py-3 text-sm font-semibold text-ocean-700 transition-colors hover:border-ocean-300"
+      >
+        {t(lang, 'admin.commercialSellSheetTitle')}
+      </a>
+      <a
+        href={`/${lang}/community/admin/venues/`}
+        class="inline-flex items-center justify-center rounded-lg border border-warm-200 bg-white px-5 py-3 text-sm font-semibold text-ocean-700 transition-colors hover:border-ocean-300"
+      >
+        {t(lang, 'admin.manageCommercialValidation')}
+      </a>
+    </div>
+
+    <article class="print-card rounded-[2rem] border border-ocean-200 bg-gradient-to-br from-ocean-900 via-ocean-800 to-sand-900 px-8 py-8 text-white shadow-xl">
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-3xl">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-aqua-200">
+            {t(lang, 'admin.commercialSellSheetEyebrow')}
+          </p>
+          <h1 class="mt-3 text-3xl font-display leading-tight md:text-4xl">
+            {t(lang, 'admin.commercialSellSheetPrintHeroTitle')}
+          </h1>
+          <p class="mt-4 max-w-2xl text-base leading-8 text-aqua-50/90">
+            {t(lang, 'admin.commercialSellSheetPrintHeroBody')}
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-white/15 bg-white/10 px-5 py-4 text-sm text-aqua-50/90 backdrop-blur">
+          <div class="text-xs uppercase tracking-[0.14em] text-aqua-200">{t(lang, 'admin.commercialSellSheetUpdatedLabel')}</div>
+          <div class="mt-2 font-semibold text-white">{formatUpdatedAt()}</div>
+          <div class="mt-3 border-t border-white/10 pt-3 text-xs uppercase tracking-[0.14em] text-aqua-200">
+            {scheduleUrl}
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <div class="grid grid-cols-2 gap-4 xl:grid-cols-4">
+      {proofStats.map((item) => (
+        <div class="print-card rounded-2xl border border-warm-200 bg-white px-5 py-5">
+          <div class="text-xs font-semibold uppercase tracking-[0.14em] text-warm-500">{item.label}</div>
+          <div class="mt-3 text-3xl font-semibold text-ocean-900">{item.value}</div>
+        </div>
+      ))}
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_25rem]">
+      <article class="print-card rounded-[2rem] border border-warm-200 bg-white p-6">
+        <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialSellNowTitle')}</h2>
+        <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialSellSheetOffersDescription')}</p>
+
+        <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+          {offerCards.map((card) => (
+            <div class="rounded-2xl border border-sand-200 bg-sand-50 px-5 py-5">
+              <h3 class="text-lg font-semibold text-ocean-900">{card.title}</h3>
+              <p class="mt-3 text-sm leading-7 text-warm-700">{card.body}</p>
+            </div>
+          ))}
+        </div>
+      </article>
+
+      <article class="print-card rounded-[2rem] border border-warm-200 bg-white p-6">
+        <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialSellSheetPrintQrTitle')}</h2>
+        <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialSellSheetPrintQrBody')}</p>
+
+        <div class="mt-5 space-y-4">
+          <div class="rounded-2xl border border-ocean-100 bg-ocean-50 p-4">
+            <div class="mx-auto w-full max-w-[13rem] rounded-[1.5rem] bg-white p-3 shadow-sm" set:html={pilotQrSvg}></div>
+            <h3 class="mt-4 text-lg font-semibold text-ocean-900">{t(lang, 'admin.commercialSellSheetPrintQrPilotTitle')}</h3>
+            <div class="mt-2 break-all text-sm text-ocean-700">{pilotUrl}</div>
+          </div>
+
+          <div class="rounded-2xl border border-sand-100 bg-sand-50 p-4">
+            <div class="mx-auto w-full max-w-[13rem] rounded-[1.5rem] bg-white p-3 shadow-sm" set:html={placesQrSvg}></div>
+            <h3 class="mt-4 text-lg font-semibold text-ocean-900">{t(lang, 'admin.commercialSellSheetPrintQrPlacesTitle')}</h3>
+            <div class="mt-2 break-all text-sm text-ocean-700">{placesUrl}</div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_23rem]">
+      <article class="print-card rounded-[2rem] border border-warm-200 bg-white p-6">
+        <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialPromptsTitle')}</h2>
+        <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialSellSheetPromptsDescription')}</p>
+
+        <div class="mt-5 space-y-3">
+          {prompts.map((prompt) => (
+            <div class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-3 text-sm leading-7 text-warm-700">
+              {prompt}
+            </div>
+          ))}
+        </div>
+      </article>
+
+      <article class="print-card rounded-[2rem] border border-warm-200 bg-white p-6">
+        <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialSellSheetPrintNotesTitle')}</h2>
+        <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialSellSheetPrintNotesDescription')}</p>
+
+        <div class="mt-5 space-y-4">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div
+              class="h-12 rounded-xl border border-dashed border-warm-300 bg-warm-50/70"
+              aria-label={`Conversation note line ${index + 1}`}
+            ></div>
+          ))}
+        </div>
+      </article>
+    </div>
+  </section>
+</Page>
+
+<script>
+  document.getElementById('print-commercial-sheet')?.addEventListener('click', () => {
+    window.print();
+  });
+</script>
+
+<style is:global>
+  @media print {
+    header,
+    footer,
+    [data-print-hide] {
+      display: none !important;
+    }
+
+    main {
+      padding: 0 !important;
+    }
+
+    body {
+      background: white !important;
+    }
+
+    .print-shell {
+      max-width: none !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    .print-card {
+      break-inside: avoid;
+      box-shadow: none !important;
+    }
+  }
+</style>

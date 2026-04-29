@@ -1,0 +1,187 @@
+---
+export const prerender = false;
+
+import Page from '@/layouts/Page.astro';
+import Button from '@/components/ui/Button.astro';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES, ROUTE_SEGMENTS } from '@/lib/i18n';
+import { getFounderSprintOgImagePath } from '@/lib/founder-social-card';
+import { getTranslations, t } from '@/lib/translations';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/pilot/');
+
+const translations = getTranslations(lang);
+const alternates = Object.fromEntries(
+  LANGUAGES.map((locale) => [locale, `/${locale}/community/pilot/`]),
+) as Record<Language, string>;
+
+const liveNowPoints = [
+  t(lang, 'community.pilotUpdateNowPoint1'),
+  t(lang, 'community.pilotUpdateNowPoint2'),
+  t(lang, 'community.pilotUpdateNowPoint3'),
+];
+
+const notPromisedPoints = [
+  t(lang, 'community.pilotUpdateNotPoint1'),
+  t(lang, 'community.pilotUpdateNotPoint2'),
+  t(lang, 'community.pilotUpdateNotPoint3'),
+];
+
+const helpPoints = [
+  t(lang, 'community.pilotUpdateHelpPoint1'),
+  t(lang, 'community.pilotUpdateHelpPoint2'),
+  t(lang, 'community.pilotUpdateHelpPoint3'),
+];
+
+const contactUrl = `/${lang}/${ROUTE_SEGMENTS.contact[lang]}/`;
+---
+
+<Page
+  title={t(lang, 'community.pilotUpdateTitle')}
+  description={t(lang, 'community.pilotUpdateDescription')}
+  lang={lang}
+  translations={translations}
+  alternates={alternates}
+  ogImage={getFounderSprintOgImagePath(lang, 'pilot')}
+  ogImageAlt={t(lang, 'community.pilotUpdateTitle')}
+>
+  <section class="relative overflow-hidden border-b border-warm-200 bg-[linear-gradient(135deg,#eef8fd_0%,#ffffff_45%,#fff4ec_100%)]">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute left-[-5rem] top-[-4rem] h-56 w-56 rounded-full bg-ocean-200/45 blur-3xl"></div>
+      <div class="absolute right-[-5rem] bottom-[-5rem] h-64 w-64 rounded-full bg-coral-200/35 blur-3xl"></div>
+    </div>
+
+    <div class="container-page relative py-16 md:py-24">
+      <div class="max-w-4xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-ocean-600">
+          {t(lang, 'community.pilotUpdateEyebrow')}
+        </p>
+        <h1 class="mt-4 max-w-3xl text-4xl md:text-6xl font-display leading-tight text-ocean-950">
+          {t(lang, 'community.pilotUpdateTitle')}
+        </h1>
+        <p class="mt-5 max-w-3xl text-lg leading-8 text-warm-700">
+          {t(lang, 'community.pilotUpdateDescription')}
+        </p>
+        <p class="mt-4 max-w-2xl text-sm leading-7 text-warm-600">
+          {t(lang, 'community.pilotUpdateFounderNote')}
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button href={`/${lang}/community/start/`} variant="primary" size="lg">
+            {t(lang, 'community.startCta')}
+          </Button>
+          <Button href={`/${lang}/community/help/`} variant="secondary" size="lg">
+            {t(lang, 'community.helpCta')}
+          </Button>
+          <Button href={`/${lang}/community/reservations/`} variant="outline" size="lg">
+            {t(lang, 'reservations.viewSportsReservations')}
+          </Button>
+          <Button href={`/${lang}/play/`} variant="outline" size="lg">
+            {t(lang, 'reservations.quickStartTitle')}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page py-12 md:py-16">
+    <div class="rounded-[1.75rem] border border-warm-200 bg-white px-6 py-6">
+      <p class="text-lg leading-8 text-warm-700">
+        {t(lang, 'reservations.subtitle')}
+      </p>
+    </div>
+  </section>
+
+  <section class="container-page pb-12 md:pb-16">
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+      <article class="overflow-hidden rounded-[1.75rem] border border-warm-200 bg-white">
+        <div class="border-b border-warm-100 bg-ocean-50 px-6 py-5">
+          <p class="text-sm font-semibold uppercase tracking-[0.14em] text-ocean-600">
+            {t(lang, 'community.pilotUpdateNowTitle')}
+          </p>
+        </div>
+        <div class="px-6 py-6">
+          <ul class="space-y-4">
+            {liveNowPoints.map((point) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ocean-600 text-xs font-semibold text-white">
+                  ✓
+                </span>
+                <span class="text-sm leading-7 text-warm-700">{point}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </article>
+
+      <article class="overflow-hidden rounded-[1.75rem] border border-warm-200 bg-white">
+        <div class="border-b border-warm-100 bg-sand-50 px-6 py-5">
+          <p class="text-sm font-semibold uppercase tracking-[0.14em] text-sand-700">
+            {t(lang, 'community.pilotUpdateNotTitle')}
+          </p>
+        </div>
+        <div class="px-6 py-6">
+          <ul class="space-y-4">
+            {notPromisedPoints.map((point) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sand-500 text-xs font-semibold text-white">
+                  !
+                </span>
+                <span class="text-sm leading-7 text-warm-700">{point}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </article>
+
+      <article class="overflow-hidden rounded-[1.75rem] border border-warm-200 bg-white">
+        <div class="border-b border-warm-100 bg-coral-50 px-6 py-5">
+          <p class="text-sm font-semibold uppercase tracking-[0.14em] text-coral-600">
+            {t(lang, 'community.pilotUpdateHelpTitle')}
+          </p>
+        </div>
+        <div class="px-6 py-6">
+          <ul class="space-y-4">
+            {helpPoints.map((point) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-coral-400 text-xs font-semibold text-white">
+                  →
+                </span>
+                <span class="text-sm leading-7 text-warm-700">{point}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="container-page pb-16">
+    <div class="rounded-[2rem] border border-ocean-200 bg-[linear-gradient(135deg,#fbfeff_0%,#ffffff_50%,#fff7f2_100%)] px-6 py-8 md:px-10 md:py-10">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-ocean-600">
+          {t(lang, 'community.pilotUpdateFinalTitle')}
+        </p>
+        <p class="mt-4 text-lg leading-8 text-warm-700">
+          {t(lang, 'community.pilotUpdateFinalDescription')}
+        </p>
+      </div>
+
+      <div class="mt-7 flex flex-wrap gap-3">
+        <Button href={`/${lang}/community/reservations/`} variant="primary">
+          {t(lang, 'reservations.viewSportsReservations')}
+        </Button>
+        <Button href={`/${lang}/play/`} variant="outline">
+          {t(lang, 'reservations.quickStartTitle')}
+        </Button>
+        <Button href={`/${lang}/community/help/`} variant="outline">
+          {t(lang, 'community.helpCta')}
+        </Button>
+        <Button href={contactUrl} variant="secondary">
+          {t(lang, 'reservations.contactCta')}
+        </Button>
+      </div>
+    </div>
+  </section>
+</Page>

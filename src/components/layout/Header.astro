@@ -7,9 +7,10 @@ import SearchDialog from '@/components/widgets/SearchDialog.astro';
 interface Props {
   lang: Language;
   translations: Record<string, string>;
+  alternates?: Partial<Record<Language, string>>;
 }
 
-const { lang, translations } = Astro.props;
+const { lang, translations, alternates } = Astro.props;
 
 const navItems = [
   { key: 'guides', label: translations['nav.guides'] || 'Guides' },
@@ -52,7 +53,7 @@ const navItems = [
           </a>
         ))}
         <SearchDialog lang={lang} />
-        <LanguageSwitcher lang={lang} />
+        <LanguageSwitcher lang={lang} alternates={alternates} />
       </div>
 
       <!-- Mobile Menu Button -->
@@ -83,7 +84,7 @@ const navItems = [
       ))}
       <div class="pt-3 border-t border-ocean-700/50 flex items-center gap-4">
         <SearchDialog lang={lang} />
-        <LanguageSwitcher lang={lang} />
+        <LanguageSwitcher lang={lang} alternates={alternates} />
       </div>
     </div>
   </div>

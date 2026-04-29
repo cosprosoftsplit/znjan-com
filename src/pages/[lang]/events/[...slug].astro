@@ -1,7 +1,7 @@
 ---
 import Guide from '@/layouts/Guide.astro';
 import Badge from '@/components/ui/Badge.astro';
-import { LANGUAGES, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
+import { LANGUAGES, getAlternateUrls, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { canonicalUrl, formatDate } from '@/lib/utils';
@@ -24,6 +24,7 @@ const translations = getTranslations(lang);
 const title = getLocalized(event.data.title, lang);
 const description = getLocalized(event.data.description, lang);
 const hreflangLinks = getHreflangLinks('events', event.data.slugs);
+const alternates = getAlternateUrls('events', event.data.slugs);
 
 const structuredData = [
   buildEventSchema({
@@ -51,6 +52,7 @@ const { Content } = await event.render();
   description={description}
   lang={lang}
   translations={translations}
+  alternates={alternates}
   canonicalUrl={canonicalUrl(`/${lang}/events/${event.data.slugs[lang]}/`)}
   hreflangLinks={hreflangLinks}
   structuredData={structuredData}

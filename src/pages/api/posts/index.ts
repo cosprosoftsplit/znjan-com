@@ -5,78 +5,51 @@
 import type { APIRoute } from 'astro';
 import { getDB, generateId, now } from '@/lib/db';
 import { awardPoints, checkBadges } from '@/lib/gamification';
+import { listCommunityPosts, normalizeCommunityListFilters } from '@/lib/community-api';
 
 export const prerender = false;
 
 export const GET: APIRoute = async ({ url, locals }) => {
   try {
     const db = getDB(locals.runtime);
-    const type = url.searchParams.get('type');
-    const category = url.searchParams.get('category');
-    const page = parseInt(url.searchParams.get('page') || '1');
-    const limit = Math.min(parseInt(url.searchParams.get('limit') || '20'), 50);
-    const offset = (page - 1) * limit;
-
-    let query = "SELECT p.*, u.display_name as author_name, u.level as author_level FROM posts p JOIN users u ON p.user_id = u.id WHERE p.status = 'approved'";
-    const params: unknown[] = [];
-
-    if (type) {
-      query += ' AND p.type = ?';
-      params.push(type);
-    }
-    if (category) {
-      query += ' AND p.category = ?';
-      params.push(category);
-    }
-
-    query += ' ORDER BY p.created_at DESC LIMIT ? OFFSET ?';
-    params.push(limit, offset);
-
-    const stmt = db.prepare(query);
-    const result = await stmt.bind(...params).all();
-
-    // Get join counts for each post
-    const posts = await Promise.all(
-      (result.results as Record<string, unknown>[]).map(async (post) => {
-        const joins = await db
-          .prepare("SELECT COUNT(*) as cnt FROM responses WHERE post_id = ? AND type = 'join'")
-          .bind(post.id)
-          .first<{ cnt: number }>();
-        const comments = await db
-          .prepare("SELECT COUNT(*) as cnt FROM responses WHERE post_id = ? AND type = 'comment'")
-          .bind(post.id)
-          .first<{ cnt: number }>();
-        return {
-          ...post,
-          join_count: joins?.cnt ?? 0,
-          comment_count: comments?.cnt ?? 0,
-        };
-      }),
-    );
-
-    // Get total count for pagination
-    let countQuery = "SELECT COUNT(*) as cnt FROM posts WHERE status = 'approved'";
-    const countParams: unknown[] = [];
-    if (type) {
-      countQuery += ' AND type = ?';
-      countParams.push(type);
-    }
-    if (category) {
-      countQuery += ' AND category = ?';
-      countParams.push(category);
-    }
-
-    const total = await db
-      .prepare(countQuery)
-      .bind(...countParams)
-      .first<{ cnt: number }>();
+    const filters = normalizeCommunityListFilters({
+      type: url.searchParams.get('type'),
+      category: url.searchParams.get('category'),
+      page: parseInt(url.searchParams.get('page') || '1', 10),
+      limit: parseInt(url.searchParams.get('limit') || '20', 10),
+    });
+    const result = await listCommunityPosts(db, filters);
 
     return new Response(
       JSON.stringify({
-        posts,
-        total: total?.cnt ?? 0,
-        page,
-        limit,
+        posts: result.posts.map((post) => ({
+          id: post.id,
+          user_id: post.userId,
+          type: post.type,
+          category: post.category,
+          title: post.title,
+          body: post.body,
+          lang: post.lang,
+          location: post.location,
+          lat: post.lat,
+          lng: post.lng,
+          event_date: post.eventDate,
+          event_time: post.eventTime,
+          max_participants: post.maxParticipants,
+          status: post.status,
+          views: post.views,
+          created_at: post.createdAt,
+          updated_at: post.updatedAt,
+          author_id: post.author.id,
+          author_name: post.author.displayName,
+          author_avatar: post.author.avatarUrl,
+          author_level: post.author.level,
+          join_count: post.joinCount,
+          comment_count: post.commentCount,
+        })),
+        total: result.total,
+        page: result.page,
+        limit: result.limit,
       }),
       {
         status: 200,

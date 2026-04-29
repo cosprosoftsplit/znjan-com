@@ -4,7 +4,7 @@
 import type { APIRoute } from 'astro';
 import { getDB, now } from '@/lib/db';
 import { awardPoints, checkBadges } from '@/lib/gamification';
-import { sendNotification, buildNotificationEmail } from '@/lib/email';
+
 
 export const prerender = false;
 
@@ -59,18 +59,13 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
       await checkBadges(db, post.user_id);
     }
 
-    // Email notification to author (logged only — no email provider configured yet)
+    // Log notification (no email provider configured — future: send via email)
     const heading = action === 'approve' ? 'Your post was approved!' : 'Your post was not approved';
     const emailBody =
       action === 'approve'
         ? `Your post "${post.title}" is now live on the Žnjan Community board.`
         : `Your post "${post.title}" was not approved.${rejection_reason ? ` Reason: ${rejection_reason}` : ''}`;
-
-    await sendNotification({
-      to: post.author_email,
-      subject: heading,
-      html: buildNotificationEmail(heading, emailBody),
-    });
+    console.log('[admin/posts] Notification:', { to: post.author_email, heading, emailBody });
 
     return new Response(JSON.stringify({ success: true, status: newStatus }), {
       status: 200,

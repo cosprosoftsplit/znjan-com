@@ -1,0 +1,34 @@
+id: tennis
+slug:
+  en: tennis
+  hr: tenis
+  de: tennis
+  it: tennis
+title:
+  en: "Tennis"
+  hr: "Tenis"
+  de: "Tennis"
+  it: "Tennis"
+description:
+  en: "Play on the tennis court in Žnjan's sports zone. The court is part of the new beachfront sports complex, free to use, and currently open on a first-come, first-served basis with no reservation system."
+  hr: "Zaigrajte na teniskom terenu u sportskoj zoni Žnjana. Teren je dio novog sportskog kompleksa uz more, besplatan je za korištenje i trenutačno je otvoren po principu tko prvi dođe, prvi koristi, bez sustava rezervacija."
+  de: "Spielen Sie auf dem Tennisplatz in der Sportzone von Žnjan. Der Platz ist Teil des neuen Sportkomplexes am Meer, kostenlos nutzbar und derzeit ohne Reservierungssystem nach dem Prinzip 'wer zuerst kommt, spielt zuerst' geöffnet."
+  it: "Gioca sul campo da tennis nella zona sportiva di Žnjan. Il campo fa parte del nuovo complesso sportivo sul mare, è gratuito e al momento è aperto senza prenotazione in base al principio del primo arrivato, primo servito."
+shortDescription:
+  en: "A public tennis court in the sports zone"
+  hr: "Javni teniski teren u sportskoj zoni"
+  de: "Ein öffentlicher Tennisplatz in der Sportzone"
+  it: "Un campo da tennis pubblico nella zona sportiva"
+category: beach-sports
+beachAreas:
+  - sports-zone
+difficulty: moderate
+duration:
+  en: "1 hour"
+  hr: "1 sat"
+  de: "1 Stunde"
+  it: "1 ora"
+priceRange: "Free"
+season: year-round
+featured: true
+order: 3

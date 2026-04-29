@@ -41,7 +41,68 @@ const user = Astro.locals.user;
   </section>
 </Page>
 
-<script define:vars={{ lang, postId, userId: user?.id || '' }}>
+<script define:vars={{ lang, postId, userId: user?.id || '', isAdmin: user?.role === 'admin' }}>
+  const HTML_ESCAPE_MAP = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
+  }
+
+  function formatLabel(value) {
+    return escapeHtml(String(value ?? '').replace(/-/g, ' '));
+  }
+
+  function renderJoiners(joiners) {
+    if (!joiners?.length) {
+      return '<p class="text-sm text-warm-400">No one has joined yet.</p>';
+    }
+
+    return `<div class="flex flex-wrap gap-2">${joiners
+      .map((joiner) => {
+        const name = escapeHtml(joiner.display_name);
+        const initial = escapeHtml(String(joiner.display_name ?? '').charAt(0).toUpperCase() || '?');
+
+        return `<span class="inline-flex items-center gap-1 px-3 py-1 bg-ocean-50 text-ocean-700 text-sm rounded-full"><span class="w-5 h-5 rounded-full bg-ocean-200 flex items-center justify-center text-xs font-bold">${initial}</span>${name}</span>`;
+      })
+      .join('')}</div>`;
+  }
+
+  function renderComments(comments) {
+    if (!comments?.length) {
+      return '<p class="text-sm text-warm-400">No comments yet.</p>';
+    }
+
+    return comments
+      .map((comment) => {
+        const name = escapeHtml(comment.author_name);
+        const initial = escapeHtml(String(comment.author_name ?? '').charAt(0).toUpperCase() || '?');
+        const createdAt = escapeHtml(
+          new Date(comment.created_at).toLocaleDateString(lang, {
+            month: 'short',
+            day: 'numeric',
+          }),
+        );
+
+        return `
+          <div class="bg-warm-50 rounded-lg p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="w-6 h-6 rounded-full bg-ocean-100 flex items-center justify-center text-ocean-700 text-xs font-bold">${initial}</span>
+              <span class="text-sm font-medium text-ocean-900">${name}</span>
+              <span class="text-xs text-warm-400">Lv.${escapeHtml(comment.author_level)}</span>
+              <span class="text-xs text-warm-400">${createdAt}</span>
+            </div>
+            <p class="text-sm text-warm-700">${escapeHtml(comment.body)}</p>
+          </div>`;
+      })
+      .join('');
+  }
+
   async function loadPost() {
     const container = document.getElementById('post-detail');
     if (!container) return;
@@ -54,7 +115,7 @@ const user = Astro.locals.user;
       }
 
       const { post } = await res.json();
-      if (!post || (post.status !== 'approved' && post.user_id !== userId)) {
+      if (!post || (post.status !== 'approved' && post.user_id !== userId && !isAdmin)) {
         container.innerHTML = '<div class="text-center py-12 text-warm-400">This post is not available.</div>';
         return;
       }
@@ -67,52 +128,66 @@ const user = Astro.locals.user;
       };
 
       const isOwner = userId === post.user_id;
+      const encodedPostId = encodeURIComponent(String(post.id ?? postId));
+      const createdAt = escapeHtml(
+        new Date(post.created_at).toLocaleDateString(lang, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }),
+      );
+      const eventDate = post.event_date
+        ? `<div class="flex items-center gap-2 text-sm"><svg class="w-4 h-4 text-ocean-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><span>${escapeHtml(new Date(post.event_date).toLocaleDateString(lang, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }))}${post.event_time ? ' · ' + escapeHtml(post.event_time) : ''}</span></div>`
+        : '';
+      const location = post.location
+        ? `<div class="flex items-center gap-2 text-sm"><svg class="w-4 h-4 text-ocean-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg><span>${escapeHtml(post.location)}</span></div>`
+        : '';
 
       container.innerHTML = `
         <article class="bg-white rounded-2xl border border-warm-200 p-6 md:p-8 mb-8">
           <div class="flex flex-wrap gap-2 mb-4">
-            <span class="text-xs font-medium px-2.5 py-1 rounded-full ${typeColors[post.type] || 'bg-warm-100'}">${post.type.replace('-', ' ')}</span>
-            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-warm-50 text-warm-600">${post.category.replace('-', ' ')}</span>
-            ${post.status !== 'approved' ? `<span class="text-xs font-medium px-2.5 py-1 rounded-full bg-sand-100 text-sand-800">${post.status}</span>` : ''}
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full ${typeColors[post.type] || 'bg-warm-100'}">${formatLabel(post.type)}</span>
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-warm-50 text-warm-600">${formatLabel(post.category)}</span>
+            ${post.status !== 'approved' ? `<span class="text-xs font-medium px-2.5 py-1 rounded-full bg-sand-100 text-sand-800">${escapeHtml(post.status)}</span>` : ''}
           </div>
 
-          <h1 class="text-2xl md:text-3xl font-display text-ocean-900 mb-4">${post.title}</h1>
+          <h1 class="text-2xl md:text-3xl font-display text-ocean-900 mb-4">${escapeHtml(post.title)}</h1>
 
           <div class="flex items-center gap-3 text-sm text-warm-500 mb-6">
-            <span class="font-medium text-warm-700">${post.author_name}</span>
+            <span class="font-medium text-warm-700">${escapeHtml(post.author_name)}</span>
             <span>·</span>
-            <span>Lv.${post.author_level}</span>
+            <span>Lv.${escapeHtml(post.author_level)}</span>
             <span>·</span>
-            <span>${new Date(post.created_at).toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <span>${createdAt}</span>
             <span>·</span>
-            <span>${post.views} views</span>
+            <span>${escapeHtml(post.views)} views</span>
           </div>
 
           ${post.event_date || post.location ? `
           <div class="bg-warm-50 rounded-lg p-4 mb-6 space-y-2">
-            ${post.event_date ? `<div class="flex items-center gap-2 text-sm"><svg class="w-4 h-4 text-ocean-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><span>${new Date(post.event_date).toLocaleDateString(lang, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}${post.event_time ? ' · ' + post.event_time : ''}</span></div>` : ''}
-            ${post.location ? `<div class="flex items-center gap-2 text-sm"><svg class="w-4 h-4 text-ocean-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg><span>${post.location}</span></div>` : ''}
+            ${eventDate}
+            ${location}
           </div>` : ''}
 
           <div class="prose-beach max-w-none mb-6">
-            <p class="whitespace-pre-wrap text-warm-700 leading-relaxed">${post.body}</p>
+            <p class="whitespace-pre-wrap text-warm-700 leading-relaxed">${escapeHtml(post.body)}</p>
           </div>
 
           ${post.type === 'meetup' ? `
           <div class="border-t border-warm-100 pt-6">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="font-semibold text-ocean-900">Participants (${post.join_count}${post.max_participants ? '/' + post.max_participants : ''})</h3>
+              <h3 class="font-semibold text-ocean-900">Participants (${escapeHtml(post.join_count)}${post.max_participants ? '/' + escapeHtml(post.max_participants) : ''})</h3>
               ${userId ? (post.has_joined
                 ? `<button id="leave-btn" class="px-4 py-2 text-sm font-medium rounded-lg border border-warm-300 text-warm-600 hover:bg-warm-50 transition-colors">Leave</button>`
                 : `<button id="join-btn" class="px-4 py-2 text-sm font-medium rounded-lg bg-ocean-600 text-white hover:bg-ocean-700 transition-colors">Join</button>`)
               : ''}
             </div>
-            ${post.joiners?.length ? `<div class="flex flex-wrap gap-2">${post.joiners.map((j) => `<span class="inline-flex items-center gap-1 px-3 py-1 bg-ocean-50 text-ocean-700 text-sm rounded-full"><span class="w-5 h-5 rounded-full bg-ocean-200 flex items-center justify-center text-xs font-bold">${j.display_name.charAt(0).toUpperCase()}</span>${j.display_name}</span>`).join('')}</div>` : '<p class="text-sm text-warm-400">No one has joined yet.</p>'}
+            ${renderJoiners(post.joiners)}
           </div>` : ''}
 
           ${isOwner ? `
           <div class="border-t border-warm-100 pt-4 mt-6 flex gap-3">
-            <a href="/${lang}/community/edit/${post.id}/" class="text-sm text-ocean-600 hover:text-ocean-800 font-medium">Edit Post</a>
+            <a href="/${lang}/community/edit/${encodedPostId}/" class="text-sm text-ocean-600 hover:text-ocean-800 font-medium">Edit Post</a>
             <button id="delete-btn" class="text-sm text-coral-600 hover:text-coral-800 font-medium">Delete Post</button>
           </div>` : ''}
         </article>
@@ -128,17 +203,7 @@ const user = Astro.locals.user;
           </form>` : ''}
 
           <div id="comments-list" class="space-y-3">
-            ${post.comments?.length ? post.comments.map((c) => `
-              <div class="bg-warm-50 rounded-lg p-4">
-                <div class="flex items-center gap-2 mb-2">
-                  <span class="w-6 h-6 rounded-full bg-ocean-100 flex items-center justify-center text-ocean-700 text-xs font-bold">${c.author_name.charAt(0).toUpperCase()}</span>
-                  <span class="text-sm font-medium text-ocean-900">${c.author_name}</span>
-                  <span class="text-xs text-warm-400">Lv.${c.author_level}</span>
-                  <span class="text-xs text-warm-400">${new Date(c.created_at).toLocaleDateString(lang, { month: 'short', day: 'numeric' })}</span>
-                </div>
-                <p class="text-sm text-warm-700">${c.body}</p>
-              </div>
-            `).join('') : '<p class="text-sm text-warm-400">No comments yet.</p>'}
+            ${renderComments(post.comments)}
           </div>
         </div>
       `;
@@ -183,12 +248,12 @@ const user = Astro.locals.user;
           list.insertAdjacentHTML('beforeend', `
             <div class="bg-warm-50 rounded-lg p-4">
               <div class="flex items-center gap-2 mb-2">
-                <span class="w-6 h-6 rounded-full bg-ocean-100 flex items-center justify-center text-ocean-700 text-xs font-bold">${comment.author_name.charAt(0).toUpperCase()}</span>
-                <span class="text-sm font-medium text-ocean-900">${comment.author_name}</span>
-                <span class="text-xs text-warm-400">Lv.${comment.author_level}</span>
+                <span class="w-6 h-6 rounded-full bg-ocean-100 flex items-center justify-center text-ocean-700 text-xs font-bold">${escapeHtml(String(comment.author_name ?? '').charAt(0).toUpperCase() || '?')}</span>
+                <span class="text-sm font-medium text-ocean-900">${escapeHtml(comment.author_name)}</span>
+                <span class="text-xs text-warm-400">Lv.${escapeHtml(comment.author_level)}</span>
                 <span class="text-xs text-warm-400">now</span>
               </div>
-              <p class="text-sm text-warm-700">${comment.body}</p>
+              <p class="text-sm text-warm-700">${escapeHtml(comment.body)}</p>
             </div>
           `);
           input.value = '';

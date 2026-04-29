@@ -1,7 +1,6 @@
 ---
 import type { Language } from '@/lib/i18n';
 import { t } from '@/lib/translations';
-import { LEVELS } from '@/lib/gamification';
 
 interface Props {
   lang: Language;
@@ -18,6 +17,18 @@ const { lang } = Astro.props;
 </div>
 
 <script>
+  const HTML_ESCAPE_MAP: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+
+  function escapeHtml(value: unknown): string {
+    return String(value ?? '').replace(/[&<>"']/g, (char: string) => HTML_ESCAPE_MAP[char]);
+  }
+
   async function loadLeaderboard() {
     const container = document.getElementById('leaderboard-list');
     if (!container) return;
@@ -31,17 +42,22 @@ const { lang } = Astro.props;
       container.innerHTML = data.leaders
         .slice(0, 10)
         .map(
-          (u: { display_name: string; points: number; level: number }, i: number) => `
+          (u: { display_name: string; points: number; level: number }, i: number) => {
+            const displayName = escapeHtml(u.display_name);
+            const initial = escapeHtml(String(u.display_name ?? '').charAt(0).toUpperCase() || '?');
+
+            return `
           <div class="flex items-center gap-3 py-2 ${i < 3 ? 'font-medium' : ''}">
             <span class="w-6 text-center text-sm ${i === 0 ? 'text-sand-600' : i === 1 ? 'text-warm-400' : i === 2 ? 'text-sand-700' : 'text-warm-400'} font-bold">${i + 1}</span>
-            <div class="w-8 h-8 rounded-full bg-ocean-100 flex items-center justify-center text-ocean-700 text-sm font-bold shrink-0">${u.display_name.charAt(0).toUpperCase()}</div>
+            <div class="w-8 h-8 rounded-full bg-ocean-100 flex items-center justify-center text-ocean-700 text-sm font-bold shrink-0">${initial}</div>
             <div class="flex-1 min-w-0">
-              <div class="text-sm text-ocean-900 truncate">${u.display_name}</div>
-              <div class="text-xs text-warm-500">Lv.${u.level}</div>
+              <div class="text-sm text-ocean-900 truncate">${displayName}</div>
+              <div class="text-xs text-warm-500">Lv.${escapeHtml(u.level)}</div>
             </div>
-            <span class="text-sm font-semibold text-ocean-600">${u.points}</span>
+            <span class="text-sm font-semibold text-ocean-600">${escapeHtml(u.points)}</span>
           </div>
-        `,
+        `;
+          },
         )
         .join('');
     } catch {

@@ -1,0 +1,677 @@
+---
+export const prerender = false;
+
+import Page from '@/layouts/Page.astro';
+import { getDB } from '@/lib/db';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import {
+  getPilotCoverageDateOptions,
+  getPilotDistributionDateOptions,
+  getSportsTransparencySnapshot,
+  getTimeSlots,
+  getTodayInReservationTimezone,
+  listActiveSportsBlackouts,
+  listSportsCollisionReports,
+  listSportsPilotCoverageBlocks,
+  listSportsPilotDistributionLogs,
+} from '@/lib/sports-reservations';
+import { getTranslations, t } from '@/lib/translations';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/admin/pilot/');
+
+const translations = getTranslations(lang);
+const user = Astro.locals.user;
+
+if (!user || user.role !== 'admin') {
+  return Astro.redirect(`/${lang}/community/`);
+}
+
+const db = getDB(Astro.locals.runtime);
+const today = getTodayInReservationTimezone();
+const nextSevenDaysEnd = addDays(today, 6);
+const lastSevenDays = getPilotDistributionDateOptions(6);
+const lastSevenDaysStart = lastSevenDays.at(-1) ?? today;
+const coverageDateOptions = getPilotCoverageDateOptions();
+const timeSlots = getTimeSlots();
+const startOptions = timeSlots.map((slot) => slot.start);
+const endOptions = Array.from(new Set(timeSlots.map((slot) => slot.end)));
+
+const [snapshot, activeBlackouts, collisionReports, distributionLogs, coverageBlocks] = await Promise.all([
+  getSportsTransparencySnapshot(db),
+  listActiveSportsBlackouts(db),
+  listSportsCollisionReports(db, { fromDate: lastSevenDaysStart, toDate: today, limit: 8 }),
+  listSportsPilotDistributionLogs(db, { fromDate: lastSevenDaysStart, limit: 24 }),
+  listSportsPilotCoverageBlocks(db, { fromDate: today, toDate: coverageDateOptions.at(-1), limit: 24 }),
+]);
+
+const alternates = Object.fromEntries(
+  LANGUAGES.map((locale) => [locale, `/${locale}/community/admin/pilot/`]),
+) as Record<Language, string>;
+
+const locale = lang === 'en' ? 'en-GB' : lang;
+const todaySummary = snapshot.dateSummaries.find((summary) => summary.date === today);
+const todayDistributionLogs = distributionLogs.filter((log) => log.distributionDate === today);
+const todayDistributionPoints = new Set(
+  todayDistributionLogs.map((log) => `${log.locationType}:${log.locationName.toLowerCase()}`),
+).size;
+const todayMaterialsDistributed = todayDistributionLogs.reduce((sum, log) => sum + log.quantity, 0);
+const lastSevenDistributionPoints = new Set(
+  distributionLogs.map((log) => `${log.locationType}:${log.locationName.toLowerCase()}`),
+).size;
+const lastSevenMaterialsDistributed = distributionLogs.reduce((sum, log) => sum + log.quantity, 0);
+const todayCoverageBlocks = coverageBlocks.filter((block) => block.coverageDate === today);
+const upcomingCoverageBlocks = coverageBlocks.slice(0, 10);
+const nextSevenCoverageBlocks = coverageBlocks.filter((block) => block.coverageDate <= nextSevenDaysEnd);
+const todayCoverageHours = todayCoverageBlocks.reduce(
+  (sum, block) => sum + (parseTime(block.slotEnd) - parseTime(block.slotStart)) / 60,
+  0,
+);
+const nextSevenCoverageHours = nextSevenCoverageBlocks.reduce(
+  (sum, block) => sum + (parseTime(block.slotEnd) - parseTime(block.slotStart)) / 60,
+  0,
+);
+
+const collisionSourceLabels = {
+  'reservation-followup': t(lang, 'admin.collisionSourceUser'),
+  'ambassador-report': t(lang, 'admin.collisionSourceAmbassador'),
+  'admin-report': t(lang, 'admin.collisionSourceAdmin'),
+};
+
+const collisionIssueLabels = {
+  'occupied-on-arrival': t(lang, 'reservations.collisionIssueOccupiedOnArrival'),
+  'double-booking': t(lang, 'reservations.collisionIssueDoubleBooking'),
+  'closure-mismatch': t(lang, 'reservations.collisionIssueClosureMismatch'),
+  'session-over-capacity': t(lang, 'reservations.collisionIssueSessionOverCapacity'),
+  other: t(lang, 'reservations.collisionIssueOther'),
+};
+
+const distributionLocationLabels = {
+  pavilion: t(lang, 'admin.distributionLocationTypePavilion'),
+  bar: t(lang, 'admin.distributionLocationTypeBar'),
+  restaurant: t(lang, 'admin.distributionLocationTypeRestaurant'),
+  'beach-touchpoint': t(lang, 'admin.distributionLocationTypeBeachTouchpoint'),
+  other: t(lang, 'admin.distributionLocationTypeOther'),
+};
+
+const distributionMaterialLabels = {
+  'qr-sticker': t(lang, 'admin.distributionMaterialTypeQrSticker'),
+  flyer: t(lang, 'admin.distributionMaterialTypeFlyer'),
+  poster: t(lang, 'admin.distributionMaterialTypePoster'),
+  'table-card': t(lang, 'admin.distributionMaterialTypeTableCard'),
+  handout: t(lang, 'admin.distributionMaterialTypeHandout'),
+};
+
+const coverageRoleLabels = {
+  founder: t(lang, 'admin.coverageRoleFounder'),
+  ambassador: t(lang, 'admin.coverageRoleAmbassador'),
+  helper: t(lang, 'admin.coverageRoleHelper'),
+};
+
+const quickActions = [
+  { href: `/${lang}/play/`, label: t(lang, 'reservations.quickStartTitle') },
+  { href: `/${lang}/play/materials/`, label: t(lang, 'reservations.pilotKitCta') },
+  { href: `/${lang}/community/admin/seed/`, label: t(lang, 'admin.manageSeedCommunity') },
+  { href: `/${lang}/community/reservations/`, label: t(lang, 'reservations.viewSportsReservations') },
+  { href: `/${lang}/community/reservations/rules/`, label: t(lang, 'reservations.rulesCta') },
+  { href: `/${lang}/community/reservations/dashboard/`, label: t(lang, 'reservations.viewTransparencyDashboard') },
+  { href: `/${lang}/community/admin/reservations/`, label: t(lang, 'admin.manageReservations') },
+];
+
+function formatDate(dateString: string, options: Intl.DateTimeFormatOptions): string {
+  return new Intl.DateTimeFormat(locale, {
+    ...options,
+    timeZone: 'Europe/Zagreb',
+  }).format(new Date(`${dateString}T12:00:00Z`));
+}
+
+function addDays(dateString: string, days: number): string {
+  const date = new Date(`${dateString}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+function parseTime(value: string): number {
+  const [hours, minutes] = value.split(':').map(Number);
+  return hours * 60 + minutes;
+}
+
+function formatDateTime(dateString: string): string {
+  return new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Europe/Zagreb',
+  }).format(new Date(dateString));
+}
+---
+
+<Page
+  title={t(lang, 'admin.pilotOpsTitle')}
+  description={t(lang, 'admin.pilotOpsDescription')}
+  lang={lang}
+  translations={translations}
+  alternates={alternates}
+  noIndex={true}
+>
+  <section class="container-page py-10 space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-ocean-600 mb-3">
+          {t(lang, 'admin.title')}
+        </p>
+        <h1 class="text-3xl md:text-4xl font-display text-ocean-900 mb-3">
+          {t(lang, 'admin.pilotOpsTitle')}
+        </h1>
+        <p class="text-lg text-warm-600">
+          {t(lang, 'admin.pilotOpsDescription')}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <a
+          href={`/${lang}/community/admin/`}
+          class="inline-flex items-center justify-center rounded-lg border border-warm-200 bg-white px-4 py-2.5 text-sm font-semibold text-ocean-700 hover:border-ocean-300 transition-colors"
+        >
+          {t(lang, 'admin.title')}
+        </a>
+        <a
+          href={`/${lang}/community/admin/reservations/`}
+          class="inline-flex items-center justify-center rounded-lg bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+        >
+          {t(lang, 'admin.manageReservations')}
+        </a>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-warm-200 p-6">
+      <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.todayOpsTitle')}</h2>
+          <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.todayOpsDescription')}</p>
+        </div>
+        <div class="rounded-full bg-aqua-50 px-3 py-1 text-sm font-semibold text-ocean-700">
+          {t(lang, 'reservations.today')}: {formatDate(today, { weekday: 'long', day: 'numeric', month: 'long' })}
+        </div>
+      </div>
+
+      <div class="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-6">
+        <div class="rounded-2xl border border-aqua-100 bg-aqua-50 p-4">
+          <div class="text-3xl font-bold text-ocean-900">{todaySummary?.openSlots ?? 0}</div>
+          <div class="mt-1 text-sm text-warm-600">{t(lang, 'reservations.openSlotsLabel')}</div>
+        </div>
+        <div class="rounded-2xl border border-sand-200 bg-sand-50 p-4">
+          <div class="text-3xl font-bold text-ocean-900">{todaySummary?.reservedSlots ?? 0}</div>
+          <div class="mt-1 text-sm text-warm-600">{t(lang, 'reservations.reservedSlotsLabel')}</div>
+        </div>
+        <div class="rounded-2xl border border-coral-100 bg-coral-50 p-4">
+          <div class="text-3xl font-bold text-coral-700">{activeBlackouts.length}</div>
+          <div class="mt-1 text-sm text-warm-600">{t(lang, 'reservations.activeClosuresLabel')}</div>
+        </div>
+        <div class="rounded-2xl border border-ocean-100 bg-ocean-50/60 p-4">
+          <div class="text-3xl font-bold text-ocean-900">{todayMaterialsDistributed}</div>
+          <div class="mt-1 text-sm text-warm-600">{t(lang, 'admin.materialsDistributed')}</div>
+        </div>
+        <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
+          <div class="text-3xl font-bold text-emerald-700">{todayCoverageBlocks.length}</div>
+          <div class="mt-1 text-sm text-warm-600">{t(lang, 'admin.coverageBlocksToday')}</div>
+          <div class="mt-1 text-xs uppercase tracking-[0.12em] text-emerald-700">
+            {todayCoverageHours}h {t(lang, 'admin.coverageHoursLabel').toLowerCase()}
+          </div>
+        </div>
+        <div class="rounded-2xl border border-warm-200 bg-white p-4">
+          <div class="text-3xl font-bold text-ocean-900">{snapshot.collisionRatePercent}%</div>
+          <div class="mt-1 text-sm text-warm-600">{t(lang, 'reservations.collisionRateLabel')}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_24rem] gap-8">
+      <div class="space-y-6">
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.quickActionsTitle')}</h2>
+          <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.quickActionsDescription')}</p>
+
+          <div class="mt-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+            {quickActions.map((action) => (
+              <a
+                href={action.href}
+                class="inline-flex items-center justify-center rounded-xl border border-warm-200 bg-warm-50 px-4 py-3 text-sm font-semibold text-ocean-800 hover:border-ocean-300 hover:bg-aqua-50 transition-colors"
+              >
+                {action.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.fieldChecklistTitle')}</h2>
+          <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.fieldChecklistDescription')}</p>
+
+          <ul class="mt-5 space-y-3">
+            {[1, 2, 3, 4, 5].map((item) => (
+              <li class="flex items-start gap-3 rounded-xl border border-warm-100 bg-warm-50 px-4 py-3">
+                <span class="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ocean-600 text-xs font-bold text-white">
+                  {item}
+                </span>
+                <span class="text-sm text-warm-700">{t(lang, `admin.fieldChecklistPoint${item}`)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.recentSignalsTitle')}</h2>
+          <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.recentSignalsDescription')}</p>
+
+          <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-sm font-semibold uppercase tracking-[0.14em] text-ocean-700 mb-3">
+                {t(lang, 'admin.collisionReports')}
+              </h3>
+              <div class="space-y-3">
+                {collisionReports.length > 0 ? (
+                  collisionReports.map((report) => (
+                    <div class="rounded-xl border border-warm-100 bg-warm-50 p-4">
+                      <div class="flex items-start justify-between gap-3">
+                        <div>
+                          <p class="font-medium text-ocean-900">{report.resource.titles[lang]}</p>
+                          <p class="text-sm text-warm-600">
+                            {formatDate(report.collisionDate, { day: 'numeric', month: 'short' })} · {report.slotStart}-{report.slotEnd}
+                          </p>
+                        </div>
+                        <span class="rounded-full bg-coral-50 px-2.5 py-1 text-xs font-semibold text-coral-700">
+                          {collisionSourceLabels[report.source]}
+                        </span>
+                      </div>
+                      <p class="mt-3 text-sm text-warm-700">{collisionIssueLabels[report.issueType]}</p>
+                      {report.notes && <p class="mt-2 text-sm text-warm-500">{report.notes}</p>}
+                    </div>
+                  ))
+                ) : (
+                  <div class="rounded-xl border border-dashed border-warm-200 px-4 py-5 text-sm text-warm-500">
+                    {t(lang, 'admin.noCollisionReports')}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold uppercase tracking-[0.14em] text-ocean-700 mb-3">
+                {t(lang, 'admin.activeBlackouts')}
+              </h3>
+              <div class="space-y-3">
+                {activeBlackouts.length > 0 ? (
+                  activeBlackouts.slice(0, 8).map((blackout) => (
+                    <div class="rounded-xl border border-warm-100 bg-warm-50 p-4">
+                      <p class="font-medium text-ocean-900">
+                        {blackout.resource?.titles[lang] ?? t(lang, 'admin.blackoutAllResources')}
+                      </p>
+                      <p class="mt-1 text-sm text-warm-600">
+                        {formatDate(blackout.blackoutDate, { day: 'numeric', month: 'short' })} · {blackout.slotStart}-{blackout.slotEnd}
+                      </p>
+                      {blackout.reason && <p class="mt-3 text-sm text-warm-500">{blackout.reason}</p>}
+                    </div>
+                  ))
+                ) : (
+                  <div class="rounded-xl border border-dashed border-warm-200 px-4 py-5 text-sm text-warm-500">
+                    {t(lang, 'admin.noActiveBlackouts')}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.coverageTitle')}</h2>
+              <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.coverageDescription')}</p>
+            </div>
+            <div class="rounded-full bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700">
+              {upcomingCoverageBlocks.length} {t(lang, 'admin.coverageUpcomingBadge').toLowerCase()}
+            </div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
+              <div class="text-xs uppercase tracking-[0.14em] text-emerald-700">{t(lang, 'reservations.today')}</div>
+              <div class="mt-2 text-2xl font-semibold text-ocean-900">{todayCoverageBlocks.length}</div>
+              <div class="mt-1 text-sm text-warm-600">
+                {todayCoverageHours}h {t(lang, 'admin.coverageHoursLabel').toLowerCase()}
+              </div>
+            </div>
+            <div class="rounded-2xl border border-sand-200 bg-sand-50 p-4">
+              <div class="text-xs uppercase tracking-[0.14em] text-sand-700">{t(lang, 'admin.nextSevenDays')}</div>
+              <div class="mt-2 text-2xl font-semibold text-ocean-900">{nextSevenCoverageBlocks.length}</div>
+              <div class="mt-1 text-sm text-warm-600">
+                {nextSevenCoverageHours}h {t(lang, 'admin.coverageHoursLabel').toLowerCase()}
+              </div>
+            </div>
+          </div>
+
+          <div id="coverage-feedback-admin" class="hidden mt-5 rounded-xl px-4 py-3 text-sm font-medium"></div>
+
+          <form id="coverage-form-admin" class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.coverageDate')}</span>
+              <select
+                name="coverageDate"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {coverageDateOptions.map((date) => (
+                  <option value={date}>
+                    {formatDate(date, { weekday: 'short', day: 'numeric', month: 'short' })}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.coverageRole')}</span>
+              <select
+                name="role"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                <option value="founder">{t(lang, 'admin.coverageRoleFounder')}</option>
+                <option value="ambassador">{t(lang, 'admin.coverageRoleAmbassador')}</option>
+                <option value="helper">{t(lang, 'admin.coverageRoleHelper')}</option>
+              </select>
+            </label>
+
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.coveragePersonName')}</span>
+              <input
+                type="text"
+                name="personName"
+                maxlength="80"
+                placeholder={t(lang, 'admin.coveragePersonNamePlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              />
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.blackoutStart')}</span>
+              <select
+                id="coverage-slot-start"
+                name="slotStart"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {startOptions.map((time) => (
+                  <option value={time}>{time}</option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.blackoutEnd')}</span>
+              <select
+                id="coverage-slot-end"
+                name="slotEnd"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {endOptions.map((time, index) => (
+                  <option value={time} selected={index === 0}>{time}</option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.coverageFocusArea')}</span>
+              <input
+                type="text"
+                name="focusArea"
+                maxlength="140"
+                placeholder={t(lang, 'admin.coverageFocusAreaPlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              />
+            </label>
+
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'reservations.collisionNotesLabel')}</span>
+              <textarea
+                name="notes"
+                rows="3"
+                maxlength="300"
+                placeholder={t(lang, 'admin.coverageNotesPlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              ></textarea>
+            </label>
+
+            <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <p class="text-sm text-warm-600">
+                {t(lang, 'admin.coverageRuleNote')}
+              </p>
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-5 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
+              >
+                {t(lang, 'admin.coverageSubmit')}
+              </button>
+            </div>
+          </form>
+
+          <div class="mt-6 space-y-3">
+            {upcomingCoverageBlocks.length > 0 ? (
+              upcomingCoverageBlocks.map((block) => (
+                <div class="rounded-xl border border-warm-100 bg-warm-50 p-4">
+                  <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                    <div>
+                      <div class="flex flex-wrap items-center gap-2">
+                        <p class="font-medium text-ocean-900">{block.personName}</p>
+                        <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+                          {coverageRoleLabels[block.role]}
+                        </span>
+                      </div>
+                      <p class="mt-1 text-sm text-warm-600">
+                        {formatDate(block.coverageDate, { day: 'numeric', month: 'short' })} · {block.slotStart}-{block.slotEnd}
+                      </p>
+                      {block.focusArea && <p class="mt-2 text-sm text-warm-700">{block.focusArea}</p>}
+                      {block.notes && <p class="mt-2 text-sm text-warm-500">{block.notes}</p>}
+                    </div>
+                    <button
+                      type="button"
+                      data-delete-coverage
+                      data-coverage-id={block.id}
+                      class="inline-flex items-center justify-center rounded-lg border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-700 hover:border-emerald-400 transition-colors"
+                    >
+                      {t(lang, 'admin.removeCoverageBlock')}
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div class="rounded-xl border border-dashed border-warm-200 px-4 py-5 text-sm text-warm-500">
+                {t(lang, 'admin.noCoverageBlocks')}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.distributionLogTitle')}</h2>
+          <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.distributionLogsDescription')}</p>
+
+          <div class="mt-5 space-y-4">
+            <div class="rounded-2xl border border-ocean-100 bg-ocean-50/60 p-4">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <div class="text-sm font-semibold text-ocean-800">{t(lang, 'reservations.today')}</div>
+                  <div class="text-xs uppercase tracking-[0.14em] text-warm-500">{t(lang, 'admin.distributionPoints')}</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-2xl font-bold text-ocean-900">{todayDistributionPoints}</div>
+                  <div class="text-sm text-warm-600">{todayMaterialsDistributed} {t(lang, 'admin.materialsDistributed').toLowerCase()}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-sand-200 bg-sand-50 p-4">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <div class="text-sm font-semibold text-sand-800">{t(lang, 'admin.lastSevenDays')}</div>
+                  <div class="text-xs uppercase tracking-[0.14em] text-warm-500">{t(lang, 'admin.distributionPoints')}</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-2xl font-bold text-ocean-900">{lastSevenDistributionPoints}</div>
+                  <div class="text-sm text-warm-600">{lastSevenMaterialsDistributed} {t(lang, 'admin.materialsDistributed').toLowerCase()}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 space-y-3">
+            {distributionLogs.length > 0 ? (
+              distributionLogs.slice(0, 10).map((log) => (
+                <div class="rounded-xl border border-warm-100 bg-warm-50 p-4">
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <p class="font-medium text-ocean-900">{log.locationName}</p>
+                      <p class="text-sm text-warm-600">
+                        {distributionLocationLabels[log.locationType]} · {formatDate(log.distributionDate, { day: 'numeric', month: 'short' })}
+                      </p>
+                    </div>
+                    <span class="rounded-full bg-aqua-50 px-2.5 py-1 text-xs font-semibold text-ocean-700">
+                      {log.quantity} × {distributionMaterialLabels[log.materialType]}
+                    </span>
+                  </div>
+                  {log.notes && <p class="mt-3 text-sm text-warm-500">{log.notes}</p>}
+                  <p class="mt-2 text-xs uppercase tracking-[0.14em] text-warm-400">
+                    {t(lang, 'admin.distributionLoggedMeta')} · {formatDateTime(log.createdAt)}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div class="rounded-xl border border-dashed border-warm-200 px-4 py-5 text-sm text-warm-500">
+                {t(lang, 'admin.noDistributionLogs')}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.explainerTitle')}</h2>
+          <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.explainerDescription')}</p>
+
+          <div class="mt-5 space-y-3">
+            {[1, 2, 3].map((item) => (
+              <div class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-3 text-sm text-warm-700">
+                {t(lang, `admin.explainerLine${item}`)}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Page>
+
+<script define:vars={{
+  coverageCreatedMessage: t(lang, 'admin.coverageCreated'),
+  coverageRemovedMessage: t(lang, 'admin.coverageRemoved'),
+  genericErrorMessage: t(lang, 'reservations.errorGeneric'),
+}}>
+  const coverageForm = document.getElementById('coverage-form-admin');
+  const coverageFeedback = document.getElementById('coverage-feedback-admin');
+  const coverageStartSelect = document.getElementById('coverage-slot-start');
+  const coverageEndSelect = document.getElementById('coverage-slot-end');
+
+  function toMinutes(value) {
+    const [hours, minutes] = String(value).split(':').map(Number);
+    return (hours * 60) + minutes;
+  }
+
+  function showCoverageFeedback(message, isError = false) {
+    if (!coverageFeedback) return;
+    coverageFeedback.textContent = message;
+    coverageFeedback.className = isError
+      ? 'mt-5 rounded-xl px-4 py-3 text-sm font-medium bg-coral-50 text-coral-800 border border-coral-200'
+      : 'mt-5 rounded-xl px-4 py-3 text-sm font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
+  }
+
+  async function requestJson(url, options) {
+    const response = await fetch(url, options);
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.error || genericErrorMessage);
+    }
+    return data;
+  }
+
+  function syncEndOptions(startElement, endElement) {
+    if (!startElement || !endElement) return;
+
+    const selectedStartMinutes = toMinutes(startElement.value);
+    const optionList = Array.from(endElement.options);
+    let nextValidValue = null;
+
+    optionList.forEach((option) => {
+      const enabled = toMinutes(option.value) > selectedStartMinutes;
+      option.disabled = !enabled;
+      option.hidden = !enabled;
+      if (enabled && nextValidValue === null) {
+        nextValidValue = option.value;
+      }
+    });
+
+    if (!nextValidValue) return;
+    if (endElement.selectedOptions[0]?.disabled) {
+      endElement.value = nextValidValue;
+    }
+  }
+
+  coverageStartSelect?.addEventListener('change', () => syncEndOptions(coverageStartSelect, coverageEndSelect));
+  syncEndOptions(coverageStartSelect, coverageEndSelect);
+
+  coverageForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const submitButton = coverageForm.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+
+    try {
+      const formData = new FormData(coverageForm);
+      await requestJson('/api/admin/reservations/coverage/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          coverageDate: formData.get('coverageDate'),
+          slotStart: formData.get('slotStart'),
+          slotEnd: formData.get('slotEnd'),
+          role: formData.get('role'),
+          personName: formData.get('personName'),
+          focusArea: formData.get('focusArea'),
+          notes: formData.get('notes'),
+        }),
+      });
+      showCoverageFeedback(coverageCreatedMessage);
+      window.location.reload();
+    } catch (error) {
+      showCoverageFeedback(error instanceof Error ? error.message : genericErrorMessage, true);
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
+  document.querySelectorAll('[data-delete-coverage]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+      try {
+        const coverageId = button.getAttribute('data-coverage-id');
+        await requestJson(`/api/admin/reservations/coverage/${coverageId}`, {
+          method: 'DELETE',
+        });
+        showCoverageFeedback(coverageRemovedMessage);
+        window.location.reload();
+      } catch (error) {
+        showCoverageFeedback(error instanceof Error ? error.message : genericErrorMessage, true);
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>

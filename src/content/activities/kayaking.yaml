@@ -10,10 +10,10 @@ title:
   de: "Kajakfahren"
   it: "Kayak"
 description:
-  en: "Explore the coastline around Žnjan Beach by kayak. Rent single or tandem kayaks and paddle along the shore, discovering hidden coves and sea caves. Guided kayak tours are available for those who want a more structured adventure."
-  hr: "Istražite obalu oko plaže Žnjan kajakom. Iznajmite pojedinačne ili tandem kajake i veslajte duž obale, otkrivajući skrivene uvale i morske špilje. Vođene kajak ture dostupne su za one koji žele organiziraniji izlet."
-  de: "Erkunden Sie die Küste rund um den Strand Žnjan mit dem Kajak. Mieten Sie Einzel- oder Tandemkajaks und paddeln Sie entlang der Küste, entdecken Sie versteckte Buchten und Meereshöhlen. Geführte Kajaktouren sind für diejenigen verfügbar, die ein strukturierteres Abenteuer wünschen."
-  it: "Esplora la costa intorno alla spiaggia di Žnjan in kayak. Noleggia kayak singoli o tandem e pagaia lungo la costa, scoprendo calette nascoste e grotte marine. Tour guidati in kayak sono disponibili per chi desidera un'avventura più strutturata."
+  en: "Explore the coastline around Žnjan Beach by kayak. If you bring your own kayak, the public shoreline lets you paddle along the coast, discovering coves and sea views without a reservation system, on a first-come, first-served basis."
+  hr: "Istražite obalu oko plaže Žnjan kajakom. Ako ponesete vlastiti kajak, javna obala omogućuje vam veslanje uz obalu i otkrivanje uvala i pogleda na more bez sustava rezervacija, po principu tko prvi dođe, prvi koristi."
+  de: "Erkunden Sie die Küste rund um den Strand Žnjan mit dem Kajak. Wenn Sie Ihr eigenes Kajak mitbringen, können Sie entlang der öffentlichen Uferlinie paddeln und Buchten sowie Meerblicke ohne Reservierungssystem nach dem Prinzip 'wer zuerst kommt, nutzt zuerst' entdecken."
+  it: "Esplora la costa intorno alla spiaggia di Žnjan in kayak. Se porti il tuo kayak, la riva pubblica ti permette di pagaiare lungo la costa e scoprire calette e scorci sul mare senza sistema di prenotazione, in base al principio del primo arrivato, primo servito."
 shortDescription:
   en: "Coastal exploration by kayak"
   hr: "Istraživanje obale kajakom"
@@ -29,7 +29,7 @@ duration:
   hr: "1-3 sata"
   de: "1-3 Stunden"
   it: "1-3 ore"
-priceRange: "€20-40/hour"
+priceRange: "Free"
 season: summer
 featured: false
 order: 4

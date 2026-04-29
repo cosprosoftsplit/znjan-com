@@ -1,0 +1,295 @@
+---
+export const prerender = false;
+
+import { getCollection, getEntry } from 'astro:content';
+import Page from '@/layouts/Page.astro';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import { getTranslations, t } from '@/lib/translations';
+import { getDB } from '@/lib/db';
+import { listVenueValidationSignals } from '@/lib/venue-validation';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/admin/venues/sell-sheet/');
+
+const translations = getTranslations(lang);
+const user = Astro.locals.user;
+
+if (!user || user.role !== 'admin') {
+  return Astro.redirect(`/${lang}/community/`);
+}
+
+const db = getDB(Astro.locals.runtime);
+const [siteConfig, places, guides, articles, activities, signals] = await Promise.all([
+  getEntry('global', 'site-config'),
+  getCollection('places'),
+  getCollection('guides'),
+  getCollection('articles'),
+  getCollection('activities'),
+  listVenueValidationSignals(db),
+]);
+
+const alternates = Object.fromEntries(
+  LANGUAGES.map((locale) => [locale, `/${locale}/community/admin/venues/sell-sheet/`]),
+) as Record<Language, string>;
+
+const siteUrl = siteConfig?.data.siteUrl ?? 'https://znjan.com';
+const locale = lang === 'en' ? 'en-GB' : lang;
+
+const positiveSignalCount = signals.filter((signal) =>
+  signal.outcome === 'interested' || signal.outcome === 'conditional'
+).length;
+const walkedCount = new Set(signals.map((signal) => signal.venueKey)).size;
+
+const publicLinks = [
+  {
+    label: t(lang, 'admin.commercialSellSheetLinkPlaces'),
+    href: `${siteUrl}/${lang}/places/`,
+  },
+  {
+    label: t(lang, 'admin.commercialSellSheetLinkPilot'),
+    href: `${siteUrl}/${lang}/community/pilot/`,
+  },
+  {
+    label: t(lang, 'admin.commercialSellSheetLinkSchedule'),
+    href: `${siteUrl}/${lang}/community/reservations/`,
+  },
+  {
+    label: t(lang, 'admin.commercialSellSheetLinkDashboard'),
+    href: `${siteUrl}/${lang}/community/reservations/dashboard/`,
+  },
+];
+
+const proofStats = [
+  {
+    label: t(lang, 'admin.commercialSellSheetProofStatPlaces'),
+    value: String(places.length),
+  },
+  {
+    label: t(lang, 'admin.commercialSellSheetProofStatActivities'),
+    value: String(activities.length),
+  },
+  {
+    label: t(lang, 'admin.commercialSellSheetProofStatEditorial'),
+    value: String(guides.length + articles.length),
+  },
+];
+
+const offerCards = [
+  {
+    title: t(lang, 'admin.commercialOfferVerifiedListing'),
+    body: t(lang, 'admin.commercialSellSheetOfferVerifiedBody'),
+  },
+  {
+    title: t(lang, 'admin.commercialOfferFeaturePlacement'),
+    body: t(lang, 'admin.commercialSellSheetOfferFeatureBody'),
+  },
+  {
+    title: t(lang, 'admin.commercialOfferEventVisibility'),
+    body: t(lang, 'admin.commercialSellSheetOfferEventBody'),
+  },
+  {
+    title: t(lang, 'admin.commercialOfferPilotStory'),
+    body: t(lang, 'admin.commercialSellSheetOfferStoryBody'),
+  },
+];
+
+const notYetCards = [1, 2, 3, 4].map((item) => t(lang, `admin.commercialDoNotPitchPoint${item}`));
+const talkingPoints = [1, 2, 3].map((item) => t(lang, `admin.commercialPrompt${item}`));
+
+function formatUpdatedAt(): string {
+  return new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'Europe/Zagreb',
+  }).format(new Date());
+}
+---
+
+<Page
+  title={t(lang, 'admin.commercialSellSheetTitle')}
+  description={t(lang, 'admin.commercialSellSheetDescription')}
+  lang={lang}
+  translations={translations}
+  alternates={alternates}
+  noIndex={true}
+>
+  <section class="container-page py-10 space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-ocean-600 mb-3">
+          {t(lang, 'admin.title')}
+        </p>
+        <h1 class="text-3xl md:text-4xl font-display text-ocean-900 mb-3">
+          {t(lang, 'admin.commercialSellSheetTitle')}
+        </h1>
+        <p class="text-lg text-warm-600">
+          {t(lang, 'admin.commercialSellSheetDescription')}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <a
+          href={`/${lang}/community/admin/venues/`}
+          class="inline-flex items-center justify-center rounded-lg border border-warm-200 bg-white px-4 py-2.5 text-sm font-semibold text-ocean-700 hover:border-ocean-300 transition-colors"
+        >
+          {t(lang, 'admin.manageCommercialValidation')}
+        </a>
+        <a
+          href={`/${lang}/community/admin/venues/sell-sheet/print/`}
+          class="inline-flex items-center justify-center rounded-lg border border-coral-200 bg-coral-50 px-4 py-2.5 text-sm font-semibold text-coral-700 hover:border-coral-400 transition-colors"
+        >
+          {t(lang, 'admin.commercialSellSheetPrintCta')}
+        </a>
+        <a
+          href={`/${lang}/community/admin/comms/`}
+          class="inline-flex items-center justify-center rounded-lg border border-warm-200 bg-white px-4 py-2.5 text-sm font-semibold text-ocean-700 hover:border-ocean-300 transition-colors"
+        >
+          {t(lang, 'admin.manageComms')}
+        </a>
+      </div>
+    </div>
+
+    <div class="rounded-[2rem] border border-ocean-200 bg-gradient-to-br from-ocean-900 via-ocean-800 to-sand-900 px-6 py-8 text-white shadow-xl md:px-8">
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-3xl">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-aqua-200">
+            {t(lang, 'admin.commercialSellSheetEyebrow')}
+          </p>
+          <h2 class="mt-3 text-3xl font-display leading-tight md:text-4xl">
+            {t(lang, 'admin.commercialSellSheetHeroTitle')}
+          </h2>
+          <p class="mt-4 max-w-2xl text-base leading-8 text-aqua-50/90">
+            {t(lang, 'admin.commercialSellSheetHeroBody')}
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-white/15 bg-white/10 px-5 py-4 text-sm text-aqua-50/90 backdrop-blur">
+          <div class="text-xs uppercase tracking-[0.14em] text-aqua-200">{t(lang, 'admin.commercialSellSheetUpdatedLabel')}</div>
+          <div class="mt-2 font-semibold text-white">{formatUpdatedAt()}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 xl:grid-cols-5">
+      <div class="rounded-2xl border border-warm-200 bg-white px-5 py-5">
+        <div class="text-xs font-semibold uppercase tracking-[0.14em] text-warm-500">{t(lang, 'admin.commercialSellSheetStatLanguages')}</div>
+        <div class="mt-3 text-3xl font-semibold text-ocean-900">4</div>
+      </div>
+      <div class="rounded-2xl border border-warm-200 bg-white px-5 py-5">
+        <div class="text-xs font-semibold uppercase tracking-[0.14em] text-warm-500">{t(lang, 'admin.commercialSellSheetStatPlaces')}</div>
+        <div class="mt-3 text-3xl font-semibold text-ocean-900">{places.length}</div>
+      </div>
+      <div class="rounded-2xl border border-warm-200 bg-white px-5 py-5">
+        <div class="text-xs font-semibold uppercase tracking-[0.14em] text-warm-500">{t(lang, 'admin.commercialSellSheetStatEditorial')}</div>
+        <div class="mt-3 text-3xl font-semibold text-ocean-900">{guides.length + articles.length}</div>
+      </div>
+      <div class="rounded-2xl border border-warm-200 bg-white px-5 py-5">
+        <div class="text-xs font-semibold uppercase tracking-[0.14em] text-warm-500">{t(lang, 'admin.commercialSummaryWalked')}</div>
+        <div class="mt-3 text-3xl font-semibold text-ocean-900">{walkedCount}</div>
+      </div>
+      <div class="rounded-2xl border border-sand-200 bg-sand-50 px-5 py-5">
+        <div class="text-xs font-semibold uppercase tracking-[0.14em] text-sand-700">{t(lang, 'admin.commercialSummarySignals')}</div>
+        <div class="mt-3 text-3xl font-semibold text-sand-800">{positiveSignalCount}</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_24rem]">
+      <div class="space-y-6">
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialSellSheetWhatExistsTitle')}</h2>
+          <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialSellSheetWhatExistsDescription')}</p>
+
+          <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="rounded-2xl border border-warm-100 bg-warm-50 px-5 py-5">
+              <div class="text-xs font-semibold uppercase tracking-[0.14em] text-ocean-600">
+                {t(lang, 'admin.commercialSellSheetProofTitle')}
+              </div>
+              <div class="mt-4 space-y-3">
+                {proofStats.map((item) => (
+                  <div class="rounded-xl border border-warm-100 bg-white px-4 py-3">
+                    <div class="text-xs font-semibold uppercase tracking-[0.14em] text-warm-500">{item.label}</div>
+                    <div class="mt-2 text-2xl font-semibold text-ocean-900">{item.value}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-warm-100 bg-warm-50 px-5 py-5">
+              <div class="text-xs font-semibold uppercase tracking-[0.14em] text-ocean-600">
+                {t(lang, 'admin.commercialSellSheetPublicLinksTitle')}
+              </div>
+              <div class="mt-4 space-y-3 text-sm text-warm-700">
+                {publicLinks.map((link) => (
+                  <div>
+                    <div class="font-semibold text-ocean-900">{link.label}</div>
+                    <div class="mt-1 break-all text-ocean-600">{link.href}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialSellNowTitle')}</h2>
+          <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialSellSheetOffersDescription')}</p>
+
+          <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+            {offerCards.map((card) => (
+              <div class="rounded-2xl border border-sand-200 bg-sand-50 px-5 py-5">
+                <h3 class="text-lg font-semibold text-ocean-900">{card.title}</h3>
+                <p class="mt-3 text-sm leading-7 text-warm-700">{card.body}</p>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialPromptsTitle')}</h2>
+          <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialSellSheetPromptsDescription')}</p>
+
+          <div class="mt-5 space-y-3">
+            {talkingPoints.map((prompt) => (
+              <div class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-3 text-sm leading-7 text-warm-700">
+                {prompt}
+              </div>
+            ))}
+          </div>
+        </article>
+      </div>
+
+      <div class="space-y-6">
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialDoNotPitchTitle')}</h2>
+          <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialSellSheetNotYetDescription')}</p>
+
+          <ul class="mt-5 space-y-3">
+            {notYetCards.map((point) => (
+              <li class="flex items-start gap-3 rounded-xl border border-coral-100 bg-coral-50 px-4 py-3">
+                <span class="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-coral-600 text-xs font-semibold text-white">
+                  !
+                </span>
+                <span class="text-sm leading-7 text-warm-700">{point}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialSellSheetHowToUseTitle')}</h2>
+          <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialSellSheetHowToUseDescription')}</p>
+
+          <div class="mt-5 space-y-3">
+            {[1, 2, 3].map((item) => (
+              <div class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-3 text-sm leading-7 text-warm-700">
+                {t(lang, `admin.commercialSellSheetHowToUsePoint${item}`)}
+              </div>
+            ))}
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</Page>

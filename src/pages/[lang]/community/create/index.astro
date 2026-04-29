@@ -12,6 +12,31 @@ if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/');
 const translations = getTranslations(lang);
 const user = Astro.locals.user;
 if (!user) return Astro.redirect(`/${lang}/community/login/`);
+
+const allowedTypes = ['meetup', 'event-idea', 'partner-search', 'discussion'] as const;
+const allowedCategories = ['sports', 'social', 'culture', 'food-drink', 'other'] as const;
+
+function sanitizeText(value: string | null, maxLength: number): string {
+  return String(value ?? '').trim().slice(0, maxLength);
+}
+
+const initialType = allowedTypes.includes(Astro.url.searchParams.get('type') as (typeof allowedTypes)[number])
+  ? (Astro.url.searchParams.get('type') as (typeof allowedTypes)[number])
+  : '';
+const initialCategory = allowedCategories.includes(Astro.url.searchParams.get('category') as (typeof allowedCategories)[number])
+  ? (Astro.url.searchParams.get('category') as (typeof allowedCategories)[number])
+  : 'sports';
+const initialTitle = sanitizeText(Astro.url.searchParams.get('title'), 200);
+const initialBody = sanitizeText(Astro.url.searchParams.get('body'), 5000);
+const initialLocation = sanitizeText(Astro.url.searchParams.get('location'), 200);
+const initialEventDate = sanitizeText(Astro.url.searchParams.get('event_date'), 10);
+const initialEventTime = sanitizeText(Astro.url.searchParams.get('event_time'), 5);
+const initialMaxParticipantsRaw = Astro.url.searchParams.get('max_participants');
+const initialMaxParticipants = initialMaxParticipantsRaw && /^\d+$/.test(initialMaxParticipantsRaw)
+  ? Math.min(Math.max(Number.parseInt(initialMaxParticipantsRaw, 10), 2), 100)
+  : null;
+const showDateTimeFields = initialType === 'meetup' || initialType === 'event-idea';
+const showMaxParticipantsField = initialType === 'meetup';
 ---
 
 <Page
@@ -44,7 +69,7 @@ if (!user) return Astro.redirect(`/${lang}/community/login/`);
               { value: 'discussion', label: t(lang, 'postForm.typeDiscussion') },
             ].map((opt) => (
               <label class="flex items-center gap-2 p-3 rounded-lg border border-warm-200 hover:border-ocean-300 cursor-pointer has-[:checked]:border-ocean-500 has-[:checked]:bg-ocean-50 transition-colors">
-                <input type="radio" name="type" value={opt.value} class="text-ocean-600" required />
+                <input type="radio" name="type" value={opt.value} class="text-ocean-600" required checked={initialType === opt.value} />
                 <span class="text-sm">{opt.label}</span>
               </label>
             ))}
@@ -55,11 +80,11 @@ if (!user) return Astro.redirect(`/${lang}/community/login/`);
         <div>
           <label class="block text-sm font-medium text-warm-700 mb-1.5">{t(lang, 'postForm.categoryLabel')}</label>
           <select name="category" required class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500">
-            <option value="sports">{t(lang, 'community.categorySports')}</option>
-            <option value="social">{t(lang, 'community.categorySocial')}</option>
-            <option value="culture">{t(lang, 'community.categoryCulture')}</option>
-            <option value="food-drink">{t(lang, 'community.categoryFoodDrink')}</option>
-            <option value="other">{t(lang, 'community.categoryOther')}</option>
+            <option value="sports" selected={initialCategory === 'sports'}>{t(lang, 'community.categorySports')}</option>
+            <option value="social" selected={initialCategory === 'social'}>{t(lang, 'community.categorySocial')}</option>
+            <option value="culture" selected={initialCategory === 'culture'}>{t(lang, 'community.categoryCulture')}</option>
+            <option value="food-drink" selected={initialCategory === 'food-drink'}>{t(lang, 'community.categoryFoodDrink')}</option>
+            <option value="other" selected={initialCategory === 'other'}>{t(lang, 'community.categoryOther')}</option>
           </select>
         </div>
 
@@ -69,6 +94,7 @@ if (!user) return Astro.redirect(`/${lang}/community/login/`);
           <input
             type="text" id="title" name="title" required
             minlength="3" maxlength="200"
+            value={initialTitle}
             placeholder={t(lang, 'postForm.titlePlaceholder')}
             class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
           />
@@ -82,7 +108,7 @@ if (!user) return Astro.redirect(`/${lang}/community/login/`);
             minlength="10" maxlength="5000"
             placeholder={t(lang, 'postForm.bodyPlaceholder')}
             class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 resize-y"
-          ></textarea>
+          >{initialBody}</textarea>
         </div>
 
         <!-- Location -->
@@ -90,17 +116,19 @@ if (!user) return Astro.redirect(`/${lang}/community/login/`);
           <label for="location" class="block text-sm font-medium text-warm-700 mb-1.5">{t(lang, 'postForm.locationLabel')}</label>
           <input
             type="text" id="location" name="location"
+            value={initialLocation}
             placeholder={t(lang, 'postForm.locationPlaceholder')}
             class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
           />
         </div>
 
         <!-- Date/Time (for meetups/events) -->
-        <div id="date-time-fields" class="grid grid-cols-2 gap-4 hidden">
+        <div id="date-time-fields" class:list={['grid grid-cols-2 gap-4', { hidden: !showDateTimeFields }]}>
           <div>
             <label for="event_date" class="block text-sm font-medium text-warm-700 mb-1.5">{t(lang, 'postForm.dateLabel')}</label>
             <input
               type="date" id="event_date" name="event_date"
+              value={initialEventDate}
               class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
           </div>
@@ -108,17 +136,19 @@ if (!user) return Astro.redirect(`/${lang}/community/login/`);
             <label for="event_time" class="block text-sm font-medium text-warm-700 mb-1.5">{t(lang, 'postForm.timeLabel')}</label>
             <input
               type="time" id="event_time" name="event_time"
+              value={initialEventTime}
               class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
           </div>
         </div>
 
         <!-- Max participants (for meetups) -->
-        <div id="max-participants-field" class="hidden">
+        <div id="max-participants-field" class:list={[{ hidden: !showMaxParticipantsField }]}>
           <label for="max_participants" class="block text-sm font-medium text-warm-700 mb-1.5">{t(lang, 'postForm.maxParticipantsLabel')}</label>
           <input
             type="number" id="max_participants" name="max_participants"
             min="2" max="100"
+            value={initialMaxParticipants ?? undefined}
             class="w-full px-4 py-2.5 border border-warm-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
           />
         </div>

@@ -1,10 +1,11 @@
 ---
 import Page from '@/layouts/Page.astro';
-import { LANGUAGES, getLocalized } from '@/lib/i18n';
+import { LANGUAGES, getLocalized, getPageAlternateUrls } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { canonicalUrl } from '@/lib/utils';
 import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   const allPages = await getCollection('pages');
@@ -24,15 +25,16 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  page: any;
+  page: CollectionEntry<'pages'>;
   lang: Language;
 }
 
-const { page, lang } = Astro.props;
+const { page, lang } = Astro.props as Props;
 const translations = getTranslations(lang);
 const title = getLocalized(page.data.title, lang);
 const description = getLocalized(page.data.description, lang);
 const content = getLocalized(page.data.content, lang);
+const alternates = getPageAlternateUrls(page.data.slug);
 
 const hreflangLinks = LANGUAGES.map((l) => ({
   lang: l as Language | 'x-default',
@@ -49,6 +51,7 @@ hreflangLinks.push({
   description={description}
   lang={lang}
   translations={translations}
+  alternates={alternates}
   canonicalUrl={canonicalUrl(`/${lang}/${page.data.slug[lang]}/`)}
   hreflangLinks={hreflangLinks}
 >

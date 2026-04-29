@@ -76,6 +76,33 @@ export function getHreflangLinks(
   return links;
 }
 
+/** Build per-language alternate URLs for a localized detail page */
+export function getAlternateUrls(
+  segment: string,
+  slugs: Record<Language, string>,
+): Record<Language, string> {
+  const alternates = {} as Record<Language, string>;
+
+  for (const lang of LANGUAGES) {
+    alternates[lang] = getLocalizedUrl(lang, segment, slugs[lang]);
+  }
+
+  return alternates;
+}
+
+/** Build per-language alternate URLs for a localized standalone page */
+export function getPageAlternateUrls(
+  slugs: Record<Language, string>,
+): Record<Language, string> {
+  const alternates = {} as Record<Language, string>;
+
+  for (const lang of LANGUAGES) {
+    alternates[lang] = `/${lang}/${slugs[lang]}/`;
+  }
+
+  return alternates;
+}
+
 /** Language display names */
 export const LANGUAGE_NAMES: Record<Language, string> = {
   en: 'English',
@@ -92,13 +119,20 @@ export const LANGUAGE_FLAGS: Record<Language, string> = {
   it: '🇮🇹',
 };
 
+/** Check whether an arbitrary value is one of the supported site languages */
+export function isLanguage(value: string | null | undefined): value is Language {
+  return LANGUAGES.includes(value as Language);
+}
+
+/** Normalize arbitrary input to a supported language */
+export function normalizeLanguage(value: string | null | undefined): Language {
+  return isLanguage(value) ? value : DEFAULT_LANGUAGE;
+}
+
 /** Extract language from URL path */
 export function getLangFromUrl(url: URL): Language {
   const [, lang] = url.pathname.split('/');
-  if (LANGUAGES.includes(lang as Language)) {
-    return lang as Language;
-  }
-  return DEFAULT_LANGUAGE;
+  return normalizeLanguage(lang);
 }
 
 /** Get a field value for a specific language from a multilingual object */

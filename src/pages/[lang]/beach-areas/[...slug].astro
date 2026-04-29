@@ -2,7 +2,7 @@
 import Page from '@/layouts/Page.astro';
 import Badge from '@/components/ui/Badge.astro';
 import Button from '@/components/ui/Button.astro';
-import { LANGUAGES, getLocalized, getLocalizedUrl, getHreflangLinks } from '@/lib/i18n';
+import { LANGUAGES, getAlternateUrls, getLocalized, getLocalizedUrl, getHreflangLinks } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { canonicalUrl } from '@/lib/utils';
@@ -36,6 +36,7 @@ const title = getLocalized(area.data.title, lang);
 const description = getLocalized(area.data.description, lang);
 
 const hreflangLinks = getHreflangLinks('beach-areas', area.data.slug);
+const alternates = getAlternateUrls('beach-areas', area.data.slug);
 
 const structuredData = buildBreadcrumbSchema([
   { name: translations['nav.home'], url: `https://znjan.com/${lang}/` },
@@ -50,6 +51,7 @@ const structuredData = buildBreadcrumbSchema([
   description={description}
   lang={lang}
   translations={translations}
+  alternates={alternates}
   canonicalUrl={canonicalUrl(`/${lang}/beach-areas/${area.data.slug[lang]}/`)}
   hreflangLinks={hreflangLinks}
   structuredData={[structuredData]}
@@ -149,6 +151,25 @@ const structuredData = buildBreadcrumbSchema([
             </div>
           </dl>
         </div>
+
+        {area.data.id === 'sports-zone' && (
+          <div class="bg-ocean-50 rounded-xl border border-ocean-200 p-6">
+            <h2 class="font-semibold text-ocean-800 mb-2">
+              {translations['reservations.title']}
+            </h2>
+            <p class="text-sm text-warm-700 mb-4">
+              {translations['reservations.subtitle']}
+            </p>
+            <div class="space-y-3">
+              <Button href={`/${lang}/community/reservations/`} variant="primary" class="w-full">
+                {translations['reservations.viewSportsReservations']}
+              </Button>
+              <Button href={`/${lang}/play/`} variant="outline" class="w-full">
+                {translations['reservations.quickStartEyebrow']}
+              </Button>
+            </div>
+          </div>
+        )}
 
         <Button href={getLocalizedUrl(lang, 'beach-areas')} variant="outline" class="w-full">
           {lang === 'hr' ? 'Svi dijelovi plaže' : lang === 'de' ? 'Alle Strandbereiche' : lang === 'it' ? 'Tutte le zone' : 'All Beach Areas'}

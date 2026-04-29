@@ -2,7 +2,7 @@
 import Page from '@/layouts/Page.astro';
 import Badge from '@/components/ui/Badge.astro';
 import Button from '@/components/ui/Button.astro';
-import { LANGUAGES, getLocalized, getLocalizedUrl, getHreflangLinks } from '@/lib/i18n';
+import { LANGUAGES, getAlternateUrls, getLocalized, getLocalizedUrl, getHreflangLinks } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { canonicalUrl } from '@/lib/utils';
@@ -39,6 +39,7 @@ const shortDescription = activity.data.shortDescription
   : undefined;
 
 const hreflangLinks = getHreflangLinks('activities', activity.data.slug);
+const alternates = getAlternateUrls('activities', activity.data.slug);
 
 const structuredData = buildBreadcrumbSchema([
   { name: translations['nav.home'], url: `https://znjan.com/${lang}/` },
@@ -53,6 +54,7 @@ const structuredData = buildBreadcrumbSchema([
   description={shortDescription || description}
   lang={lang}
   translations={translations}
+  alternates={alternates}
   canonicalUrl={canonicalUrl(`/${lang}/activities/${activity.data.slug[lang]}/`)}
   hreflangLinks={hreflangLinks}
   structuredData={[structuredData]}

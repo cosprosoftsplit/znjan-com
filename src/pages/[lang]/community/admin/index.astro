@@ -28,9 +28,47 @@ if (!user || user.role !== 'admin') {
   <section class="container-page py-10">
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-3xl font-display text-ocean-900">{t(lang, 'admin.title')}</h1>
-      <a href={`/${lang}/community/`} class="text-sm text-ocean-600 hover:text-ocean-800 font-medium">
-        {t(lang, 'community.backToCommunity')}
-      </a>
+      <div class="flex items-center gap-3">
+        <a
+          href={`/${lang}/community/admin/venues/`}
+          class="inline-flex items-center justify-center rounded-lg border border-sand-200 bg-sand-50 px-4 py-2 text-sm font-semibold text-sand-800 hover:border-sand-400 transition-colors"
+        >
+          {t(lang, 'admin.manageCommercialValidation')}
+        </a>
+        <a
+          href={`/${lang}/community/admin/comms/`}
+          class="inline-flex items-center justify-center rounded-lg border border-ocean-200 bg-white px-4 py-2 text-sm font-semibold text-ocean-700 hover:border-ocean-400 transition-colors"
+        >
+          {t(lang, 'admin.manageComms')}
+        </a>
+        <a
+          href={`/${lang}/community/admin/seed/`}
+          class="inline-flex items-center justify-center rounded-lg border border-ocean-200 bg-white px-4 py-2 text-sm font-semibold text-ocean-700 hover:border-ocean-400 transition-colors"
+        >
+          {t(lang, 'admin.manageSeedCommunity')}
+        </a>
+        <a
+          href={`/${lang}/community/admin/pilot/`}
+          class="inline-flex items-center justify-center rounded-lg border border-ocean-200 bg-white px-4 py-2 text-sm font-semibold text-ocean-700 hover:border-ocean-400 transition-colors"
+        >
+          {t(lang, 'admin.managePilotOps')}
+        </a>
+        <a
+          href={`/${lang}/community/admin/reservations/`}
+          class="inline-flex items-center justify-center rounded-lg bg-ocean-600 px-4 py-2 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+        >
+          {t(lang, 'admin.manageReservations')}
+        </a>
+        <a
+          href={`/${lang}/play/materials/`}
+          class="inline-flex items-center justify-center rounded-lg border border-ocean-200 bg-white px-4 py-2 text-sm font-semibold text-ocean-700 hover:border-ocean-400 transition-colors"
+        >
+          {t(lang, 'reservations.pilotKitCta')}
+        </a>
+        <a href={`/${lang}/community/`} class="text-sm text-ocean-600 hover:text-ocean-800 font-medium">
+          {t(lang, 'community.backToCommunity')}
+        </a>
+      </div>
     </div>
 
     <!-- Stats -->
@@ -60,6 +98,52 @@ if (!user || user.role !== 'admin') {
 </Page>
 
 <script define:vars={{ lang }}>
+  const HTML_ESCAPE_MAP = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
+  }
+
+  function formatLabel(value) {
+    return escapeHtml(String(value ?? '').replace(/-/g, ' '));
+  }
+
+  function renderPendingPost(p) {
+    const postId = escapeHtml(p.id);
+    const title = escapeHtml(p.title);
+    const authorName = escapeHtml(p.author_name);
+    const authorEmail = escapeHtml(p.author_email);
+    const body = String(p.body ?? '');
+    const excerpt = escapeHtml(body.slice(0, 300));
+    const excerptSuffix = body.length > 300 ? '...' : '';
+    const createdAt = escapeHtml(new Date(p.created_at).toLocaleDateString(lang));
+
+    return `
+      <div class="border-b border-warm-100 last:border-0 py-5 first:pt-0 last:pb-0" id="post-${postId}">
+        <div class="flex items-start justify-between gap-4 mb-3">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-sand-100 text-sand-800">${formatLabel(p.type)}</span>
+              <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-warm-50 text-warm-600">${formatLabel(p.category)}</span>
+            </div>
+            <h3 class="font-semibold text-ocean-900">${title}</h3>
+            <div class="text-xs text-warm-500 mt-1">${authorName} (${authorEmail}) · ${createdAt}</div>
+          </div>
+        </div>
+        <p class="text-sm text-warm-600 mb-4 whitespace-pre-wrap">${excerpt}${excerptSuffix}</p>
+        <div class="flex items-center gap-3">
+          <button type="button" data-post-action="approve" data-post-id="${postId}" class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Approve</button>
+          <button type="button" data-post-action="reject" data-post-id="${postId}" class="bg-coral-600 hover:bg-coral-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Reject</button>
+        </div>
+      </div>`;
+  }
+
   async function loadAdmin() {
     try {
       const res = await fetch('/api/admin/posts/');
@@ -81,28 +165,15 @@ if (!user || user.role !== 'admin') {
         return;
       }
 
-      list.innerHTML = posts
-        .map(
-          (p) => `
-        <div class="border-b border-warm-100 last:border-0 py-5 first:pt-0 last:pb-0" id="post-${p.id}">
-          <div class="flex items-start justify-between gap-4 mb-3">
-            <div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-sand-100 text-sand-800">${p.type}</span>
-                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-warm-50 text-warm-600">${p.category}</span>
-              </div>
-              <h3 class="font-semibold text-ocean-900">${p.title}</h3>
-              <div class="text-xs text-warm-500 mt-1">${p.author_name} (${p.author_email}) · ${new Date(p.created_at).toLocaleDateString(lang)}</div>
-            </div>
-          </div>
-          <p class="text-sm text-warm-600 mb-4 whitespace-pre-wrap">${p.body.slice(0, 300)}${p.body.length > 300 ? '...' : ''}</p>
-          <div class="flex items-center gap-3">
-            <button onclick="moderatePost('${p.id}', 'approve')" class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Approve</button>
-            <button onclick="moderatePost('${p.id}', 'reject')" class="bg-coral-600 hover:bg-coral-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">Reject</button>
-          </div>
-        </div>`,
-        )
-        .join('');
+      list.innerHTML = posts.map(renderPendingPost).join('');
+      list.querySelectorAll('[data-post-action]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const postId = button.getAttribute('data-post-id');
+          const action = button.getAttribute('data-post-action');
+          if (!postId || !action) return;
+          window.moderatePost(postId, action);
+        });
+      });
     } catch {
       document.getElementById('pending-list').innerHTML = '<div class="text-center py-8 text-coral-500">Failed to load</div>';
     }
@@ -127,7 +198,7 @@ if (!user || user.role !== 'admin') {
       }
       // Update pending count
       const pending = document.getElementById('stat-pending');
-      pending.textContent = Math.max(0, parseInt(pending.textContent) - 1);
+      pending.textContent = String(Math.max(0, Number.parseInt(pending.textContent || '0', 10) - 1));
     } else {
       alert('Failed to moderate post');
     }

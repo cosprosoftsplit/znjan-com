@@ -10,8 +10,10 @@ interface Props {
   description: string;
   lang: Language;
   translations: Record<string, string>;
+  alternates?: Partial<Record<Language, string>>;
   canonicalUrl?: string;
   ogImage?: string;
+  ogImageAlt?: string;
   ogType?: string;
   hreflangLinks?: HreflangLink[];
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
@@ -23,8 +25,10 @@ const {
   description,
   lang,
   translations,
+  alternates,
   canonicalUrl,
   ogImage,
+  ogImageAlt,
   ogType,
   hreflangLinks,
   structuredData,
@@ -38,12 +42,13 @@ const {
   lang={lang}
   canonicalUrl={canonicalUrl}
   ogImage={ogImage}
+  ogImageAlt={ogImageAlt}
   ogType={ogType}
   hreflangLinks={hreflangLinks}
   structuredData={structuredData}
   noIndex={noIndex}
 >
-  <Header lang={lang} translations={translations} />
+  <Header lang={lang} translations={translations} alternates={alternates} />
   <main id="main-content">
     <slot />
   </main>

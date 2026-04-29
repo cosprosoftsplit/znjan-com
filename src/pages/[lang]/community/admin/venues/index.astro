@@ -1,0 +1,574 @@
+---
+export const prerender = false;
+
+import { getCollection } from 'astro:content';
+import Page from '@/layouts/Page.astro';
+import Button from '@/components/ui/Button.astro';
+import { getPilotDistributionDateOptions } from '@/lib/sports-reservations';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import { getTranslations, t } from '@/lib/translations';
+import { getDB } from '@/lib/db';
+import type {
+  VenueValidationOfferFocus,
+  VenueValidationOutcome,
+  VenueValidationSignal,
+  VenueValidationVenueType,
+} from '@/lib/venue-validation';
+import { listVenueValidationSignals } from '@/lib/venue-validation';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/admin/venues/');
+
+const translations = getTranslations(lang);
+const user = Astro.locals.user;
+
+if (!user || user.role !== 'admin') {
+  return Astro.redirect(`/${lang}/community/`);
+}
+
+const db = getDB(Astro.locals.runtime);
+const [allPlaces, signals] = await Promise.all([
+  getCollection('places'),
+  listVenueValidationSignals(db),
+]);
+
+const alternates = Object.fromEntries(
+  LANGUAGES.map((locale) => [locale, `/${locale}/community/admin/venues/`]),
+) as Record<Language, string>;
+
+const locale = lang === 'en' ? 'en-GB' : lang;
+
+type TargetConfig = {
+  key: string;
+  type: VenueValidationVenueType;
+  status: 'confirmed' | 'unconfirmed';
+  placeId?: string;
+  fallbackTitleKey?: string;
+};
+
+type VenueWalkTarget = {
+  key: string;
+  type: VenueValidationVenueType;
+  status: 'confirmed' | 'unconfirmed';
+  title: string;
+  publicHref: string | null;
+  website: string | null;
+  phone: string | null;
+  latestSignal: VenueValidationSignal | null;
+};
+
+const targetConfigs: TargetConfig[] = [
+  { key: 'palma-beach-club', placeId: 'palma-beach-club', type: 'beach-club', status: 'confirmed' },
+  { key: 'mistral-beach-club', placeId: 'mistral-beach-club', type: 'beach-club', status: 'confirmed' },
+  { key: 'taboo-beach-club', placeId: 'taboo-beach-club', type: 'beach-club', status: 'confirmed' },
+  { key: 'casa-sol', placeId: 'casa-sol', type: 'restaurant', status: 'confirmed' },
+  { key: 'central-beach', placeId: 'central-beach', type: 'restaurant', status: 'confirmed' },
+  { key: 'mimi-italian-clubino', placeId: 'mimi-italian-clubino', type: 'restaurant', status: 'confirmed' },
+  { key: 'gal-split', placeId: 'gal-split', type: 'restaurant', status: 'confirmed' },
+  {
+    key: 'unknown-hospitality-1',
+    type: 'unknown-hospitality',
+    status: 'unconfirmed',
+    fallbackTitleKey: 'admin.commercialUnknownHospitality1',
+  },
+  {
+    key: 'unknown-hospitality-2',
+    type: 'unknown-hospitality',
+    status: 'unconfirmed',
+    fallbackTitleKey: 'admin.commercialUnknownHospitality2',
+  },
+  {
+    key: 'unknown-mini-market',
+    type: 'mini-market',
+    status: 'unconfirmed',
+    fallbackTitleKey: 'admin.commercialUnknownMiniMarket',
+  },
+  {
+    key: 'unknown-kiosk',
+    type: 'kiosk',
+    status: 'unconfirmed',
+    fallbackTitleKey: 'admin.commercialUnknownKiosk',
+  },
+];
+
+const outcomeLabels: Record<VenueValidationOutcome, string> = {
+  interested: t(lang, 'admin.commercialOutcomeInterested'),
+  conditional: t(lang, 'admin.commercialOutcomeConditional'),
+  'not-now': t(lang, 'admin.commercialOutcomeNotNow'),
+  'no-fit': t(lang, 'admin.commercialOutcomeNoFit'),
+};
+
+const offerLabels: Record<VenueValidationOfferFocus, string> = {
+  'verified-listing': t(lang, 'admin.commercialOfferVerifiedListing'),
+  'feature-placement': t(lang, 'admin.commercialOfferFeaturePlacement'),
+  'event-visibility': t(lang, 'admin.commercialOfferEventVisibility'),
+  'pilot-story': t(lang, 'admin.commercialOfferPilotStory'),
+};
+
+const typeLabels: Record<VenueValidationVenueType, string> = {
+  restaurant: t(lang, 'admin.commercialTypeRestaurant'),
+  'beach-club': t(lang, 'admin.commercialTypeBeachClub'),
+  'unknown-hospitality': t(lang, 'admin.commercialTypeHospitality'),
+  'mini-market': t(lang, 'admin.commercialTypeMiniMarket'),
+  kiosk: t(lang, 'admin.commercialTypeKiosk'),
+};
+
+const placeMap = new Map(allPlaces.map((place) => [place.id, place]));
+const latestSignalByVenue = new Map<string, VenueValidationSignal>();
+for (const signal of signals) {
+  if (!latestSignalByVenue.has(signal.venueKey)) {
+    latestSignalByVenue.set(signal.venueKey, signal);
+  }
+}
+
+const venueTargets: VenueWalkTarget[] = targetConfigs.map((target) => {
+  const place = target.placeId ? placeMap.get(target.placeId) : null;
+  return {
+    key: target.key,
+    type: target.type,
+    status: target.status,
+    title: place ? place.data.title[lang] : t(lang, target.fallbackTitleKey ?? 'admin.commercialUnknownHospitality1'),
+    publicHref: place ? `/${lang}/places/${place.data.slug[lang]}/` : null,
+    website: place?.data.website ?? null,
+    phone: place?.data.phone ?? null,
+    latestSignal: latestSignalByVenue.get(target.key) ?? null,
+  };
+});
+
+const dateOptions = getPilotDistributionDateOptions();
+const walkedCount = new Set(signals.map((signal) => signal.venueKey)).size;
+const positiveSignalCount = signals.filter((signal) =>
+  signal.outcome === 'interested' || signal.outcome === 'conditional'
+).length;
+const unconfirmedCount = venueTargets.filter((target) => target.status === 'unconfirmed').length;
+
+const sellNowPoints = [1, 2, 3, 4].map((item) => t(lang, `admin.commercialSellNowPoint${item}`));
+const doNotPitchPoints = [1, 2, 3, 4].map((item) => t(lang, `admin.commercialDoNotPitchPoint${item}`));
+const prompts = [1, 2, 3].map((item) => t(lang, `admin.commercialPrompt${item}`));
+
+const quickActions = [
+  { href: `/${lang}/community/admin/venues/sell-sheet/`, label: t(lang, 'admin.commercialSellSheetTitle') },
+  { href: `/${lang}/community/admin/venues/sell-sheet/print/`, label: t(lang, 'admin.commercialSellSheetPrintCta') },
+  { href: `/${lang}/community/admin/comms/`, label: t(lang, 'admin.manageComms') },
+  { href: `/${lang}/community/pilot/`, label: t(lang, 'community.pilotUpdateCta') },
+  { href: `/${lang}/places/`, label: t(lang, 'places.title') },
+  { href: `/${lang}/play/materials/`, label: t(lang, 'reservations.pilotKitCta') },
+];
+
+function formatDate(dateString: string): string {
+  return new Intl.DateTimeFormat(locale, {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    timeZone: 'Europe/Zagreb',
+  }).format(new Date(`${dateString}T12:00:00Z`));
+}
+---
+
+<Page
+  title={t(lang, 'admin.commercialValidationTitle')}
+  description={t(lang, 'admin.commercialValidationDescription')}
+  lang={lang}
+  translations={translations}
+  alternates={alternates}
+  noIndex={true}
+>
+  <section class="container-page py-10 space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-ocean-600 mb-3">
+          {t(lang, 'admin.title')}
+        </p>
+        <h1 class="text-3xl md:text-4xl font-display text-ocean-900 mb-3">
+          {t(lang, 'admin.commercialValidationTitle')}
+        </h1>
+        <p class="text-lg text-warm-600">
+          {t(lang, 'admin.commercialValidationDescription')}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <a
+          href={`/${lang}/community/admin/`}
+          class="inline-flex items-center justify-center rounded-lg border border-warm-200 bg-white px-4 py-2.5 text-sm font-semibold text-ocean-700 hover:border-ocean-300 transition-colors"
+        >
+          {t(lang, 'admin.title')}
+        </a>
+        <a
+          href={`/${lang}/community/admin/comms/`}
+          class="inline-flex items-center justify-center rounded-lg border border-warm-200 bg-white px-4 py-2.5 text-sm font-semibold text-ocean-700 hover:border-ocean-300 transition-colors"
+        >
+          {t(lang, 'admin.manageComms')}
+        </a>
+        <a
+          href={`/${lang}/community/admin/venues/sell-sheet/`}
+          class="inline-flex items-center justify-center rounded-lg border border-sand-200 bg-sand-50 px-4 py-2.5 text-sm font-semibold text-sand-800 hover:border-sand-400 transition-colors"
+        >
+          {t(lang, 'admin.commercialSellSheetTitle')}
+        </a>
+        <a
+          href={`/${lang}/places/`}
+          class="inline-flex items-center justify-center rounded-lg bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+        >
+          {t(lang, 'places.title')}
+        </a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 xl:grid-cols-4">
+      <div class="rounded-2xl border border-warm-200 bg-white px-5 py-5">
+        <div class="text-xs font-semibold uppercase tracking-[0.14em] text-warm-500">{t(lang, 'admin.commercialSummaryTargets')}</div>
+        <div class="mt-3 text-3xl font-semibold text-ocean-900">{venueTargets.length}</div>
+      </div>
+      <div class="rounded-2xl border border-warm-200 bg-white px-5 py-5">
+        <div class="text-xs font-semibold uppercase tracking-[0.14em] text-warm-500">{t(lang, 'admin.commercialSummaryWalked')}</div>
+        <div class="mt-3 text-3xl font-semibold text-ocean-900">{walkedCount}</div>
+      </div>
+      <div class="rounded-2xl border border-sand-200 bg-sand-50 px-5 py-5">
+        <div class="text-xs font-semibold uppercase tracking-[0.14em] text-sand-700">{t(lang, 'admin.commercialSummarySignals')}</div>
+        <div class="mt-3 text-3xl font-semibold text-sand-800">{positiveSignalCount}</div>
+      </div>
+      <div class="rounded-2xl border border-coral-200 bg-coral-50 px-5 py-5">
+        <div class="text-xs font-semibold uppercase tracking-[0.14em] text-coral-700">{t(lang, 'admin.commercialSummaryUnknown')}</div>
+        <div class="mt-3 text-3xl font-semibold text-coral-700">{unconfirmedCount}</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_24rem]">
+      <div class="space-y-6">
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialWalkTitle')}</h2>
+          <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialWalkDescription')}</p>
+
+          <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+            {venueTargets.map((target) => (
+              <article class="rounded-2xl border border-warm-100 bg-warm-50 px-5 py-5">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <p class="text-xs font-semibold uppercase tracking-[0.14em] text-ocean-600">
+                      {typeLabels[target.type]}
+                    </p>
+                    <h3 class="mt-2 text-lg font-semibold text-ocean-900">{target.title}</h3>
+                  </div>
+                  <span class:list={[
+                    'rounded-full px-2.5 py-1 text-xs font-semibold',
+                    target.status === 'confirmed'
+                      ? 'bg-ocean-100 text-ocean-700'
+                      : 'bg-coral-100 text-coral-700',
+                  ]}>
+                    {target.status === 'confirmed'
+                      ? t(lang, 'admin.commercialConfirmedStatus')
+                      : t(lang, 'admin.commercialNeedsGroundTruthStatus')}
+                  </span>
+                </div>
+
+                <div class="mt-4 space-y-2 text-sm text-warm-700">
+                  {target.publicHref && (
+                    <div class="flex flex-wrap gap-2">
+                      <span class="font-semibold text-ocean-800">{t(lang, 'places.viewDetails')}:</span>
+                      <a href={target.publicHref} class="text-ocean-600 hover:text-ocean-800">
+                        {target.publicHref}
+                      </a>
+                    </div>
+                  )}
+                  {target.website && (
+                    <div class="flex flex-wrap gap-2">
+                      <span class="font-semibold text-ocean-800">{t(lang, 'places.website')}:</span>
+                      <a href={target.website} class="text-ocean-600 hover:text-ocean-800 break-all">
+                        {target.website}
+                      </a>
+                    </div>
+                  )}
+                  {target.phone && (
+                    <div class="flex flex-wrap gap-2">
+                      <span class="font-semibold text-ocean-800">{t(lang, 'places.phone')}:</span>
+                      <span>{target.phone}</span>
+                    </div>
+                  )}
+                  {target.latestSignal && (
+                    <div class="rounded-xl border border-sand-200 bg-white px-4 py-3">
+                      <div class="text-xs font-semibold uppercase tracking-[0.14em] text-sand-700">
+                        {t(lang, 'admin.commercialLatestSignal')}
+                      </div>
+                      <div class="mt-2 text-sm text-warm-800">
+                        {formatDate(target.latestSignal.walkDate)} · {outcomeLabels[target.latestSignal.outcome]}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </article>
+
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialSignalFormTitle')}</h2>
+              <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialSignalFormDescription')}</p>
+            </div>
+            <div class="rounded-full bg-sand-50 px-3 py-1 text-sm font-semibold text-sand-700">
+              {signals.length} {t(lang, 'admin.commercialRecentSignalsTitle').toLowerCase()}
+            </div>
+          </div>
+
+          <div id="venue-signal-feedback" class="hidden mt-4 rounded-xl px-4 py-3 text-sm font-medium"></div>
+
+          <form id="venue-signal-form" class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.commercialVenueLabel')}</span>
+              <select
+                name="venueKey"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {venueTargets.map((target) => (
+                  <option value={target.key} data-venue-label={target.title} data-venue-type={target.type}>
+                    {target.title}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.commercialWalkDate')}</span>
+              <select
+                name="walkDate"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                {dateOptions.map((date) => (
+                  <option value={date}>{formatDate(date)}</option>
+                ))}
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.commercialOutcome')}</span>
+              <select
+                name="outcome"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                <option value="interested">{outcomeLabels.interested}</option>
+                <option value="conditional">{outcomeLabels.conditional}</option>
+                <option value="not-now">{outcomeLabels['not-now']}</option>
+                <option value="no-fit">{outcomeLabels['no-fit']}</option>
+              </select>
+            </label>
+
+            <label class="space-y-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.commercialOfferFocus')}</span>
+              <select
+                name="offerFocus"
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              >
+                <option value="verified-listing">{offerLabels['verified-listing']}</option>
+                <option value="feature-placement">{offerLabels['feature-placement']}</option>
+                <option value="event-visibility">{offerLabels['event-visibility']}</option>
+                <option value="pilot-story">{offerLabels['pilot-story']}</option>
+              </select>
+            </label>
+
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.commercialContactName')}</span>
+              <input
+                type="text"
+                name="contactName"
+                maxlength="120"
+                placeholder={t(lang, 'admin.commercialContactNamePlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              />
+            </label>
+
+            <label class="space-y-2 md:col-span-2">
+              <span class="text-sm font-medium text-ocean-900">{t(lang, 'admin.commercialNotes')}</span>
+              <textarea
+                name="notes"
+                rows="4"
+                maxlength="600"
+                placeholder={t(lang, 'admin.commercialNotesPlaceholder')}
+                class="w-full rounded-xl border border-warm-200 bg-white px-4 py-3 text-warm-800 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+              ></textarea>
+            </label>
+
+            <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <p class="text-sm text-warm-600">
+                {t(lang, 'admin.commercialSignalRuleNote')}
+              </p>
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center rounded-lg bg-ocean-600 px-5 py-3 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+              >
+                {t(lang, 'admin.commercialSubmit')}
+              </button>
+            </div>
+          </form>
+        </article>
+
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialRecentSignalsTitle')}</h2>
+          <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialRecentSignalsDescription')}</p>
+
+          {signals.length === 0 ? (
+            <div class="mt-5 rounded-xl border border-dashed border-warm-200 bg-warm-50 px-5 py-6 text-sm text-warm-500">
+              {t(lang, 'admin.commercialNoSignals')}
+            </div>
+          ) : (
+            <div class="mt-6 space-y-3">
+              {signals.map((signal) => (
+                <article class="rounded-2xl border border-warm-100 bg-warm-50 px-5 py-4">
+                  <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                    <div class="space-y-1.5">
+                      <h3 class="text-base font-semibold text-ocean-900">{signal.venueLabel}</h3>
+                      <p class="text-sm text-warm-600">
+                        {formatDate(signal.walkDate)} · {typeLabels[signal.venueType]}
+                      </p>
+                      <div class="flex flex-wrap gap-2 pt-1">
+                        <span class="rounded-full bg-sand-100 px-2.5 py-1 text-xs font-semibold text-sand-800">
+                          {outcomeLabels[signal.outcome]}
+                        </span>
+                        <span class="rounded-full bg-ocean-100 px-2.5 py-1 text-xs font-semibold text-ocean-700">
+                          {offerLabels[signal.offerFocus]}
+                        </span>
+                      </div>
+                      {signal.contactName && (
+                        <p class="text-sm text-warm-700">
+                          {t(lang, 'admin.commercialContactLabel')}: {signal.contactName}
+                        </p>
+                      )}
+                      {signal.notes && (
+                        <p class="text-sm leading-7 text-warm-800">{signal.notes}</p>
+                      )}
+                    </div>
+                    <div class="text-xs uppercase tracking-[0.14em] text-warm-500">
+                      {t(lang, 'admin.commercialLoggedMeta')} · {new Date(signal.createdAt).toLocaleString(locale)}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </article>
+      </div>
+
+      <div class="space-y-6">
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.quickActionsTitle')}</h2>
+          <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.quickActionsDescription')}</p>
+
+          <div class="mt-5 flex flex-col gap-3">
+            {quickActions.map((action) => (
+              <Button href={action.href} variant="outline" class="w-full">
+                {action.label}
+              </Button>
+            ))}
+          </div>
+        </article>
+
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialSellNowTitle')}</h2>
+          <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialSellNowDescription')}</p>
+
+          <ul class="mt-5 space-y-3">
+            {sellNowPoints.map((point) => (
+              <li class="flex items-start gap-3 rounded-xl border border-warm-100 bg-warm-50 px-4 py-3">
+                <span class="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ocean-600 text-xs font-semibold text-white">
+                  ✓
+                </span>
+                <span class="text-sm leading-7 text-warm-700">{point}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialDoNotPitchTitle')}</h2>
+          <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialDoNotPitchDescription')}</p>
+
+          <ul class="mt-5 space-y-3">
+            {doNotPitchPoints.map((point) => (
+              <li class="flex items-start gap-3 rounded-xl border border-coral-100 bg-coral-50 px-4 py-3">
+                <span class="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-coral-600 text-xs font-semibold text-white">
+                  !
+                </span>
+                <span class="text-sm leading-7 text-warm-700">{point}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        <article class="rounded-2xl border border-warm-200 bg-white p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.commercialPromptsTitle')}</h2>
+          <p class="mt-2 text-sm text-warm-600">{t(lang, 'admin.commercialPromptsDescription')}</p>
+
+          <div class="mt-5 space-y-3">
+            {prompts.map((prompt) => (
+              <div class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-3 text-sm leading-7 text-warm-700">
+                {prompt}
+              </div>
+            ))}
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</Page>
+
+<script
+  define:vars={{
+    successMessage: t(lang, 'admin.commercialLogged'),
+    fallbackErrorMessage: t(lang, 'admin.commercialErrorFallback'),
+  }}
+>
+  const form = document.getElementById('venue-signal-form');
+  const feedback = document.getElementById('venue-signal-feedback');
+
+  function setFeedback(message, isError = false) {
+    if (!feedback) return;
+    feedback.textContent = message;
+    feedback.className = isError
+      ? 'mt-4 rounded-xl bg-coral-50 px-4 py-3 text-sm font-medium text-coral-700'
+      : 'mt-4 rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700';
+  }
+
+  if (form instanceof HTMLFormElement) {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const venueSelect = form.elements.namedItem('venueKey');
+      const selectedOption =
+        venueSelect instanceof HTMLSelectElement ? venueSelect.selectedOptions[0] : null;
+
+      const payload = {
+        venueKey: String(formData.get('venueKey') ?? ''),
+        venueLabel: selectedOption?.dataset.venueLabel ?? '',
+        venueType: selectedOption?.dataset.venueType ?? '',
+        walkDate: String(formData.get('walkDate') ?? ''),
+        outcome: String(formData.get('outcome') ?? ''),
+        offerFocus: String(formData.get('offerFocus') ?? ''),
+        contactName: String(formData.get('contactName') ?? ''),
+        notes: String(formData.get('notes') ?? ''),
+      };
+
+      try {
+        const response = await fetch('/api/admin/venues/signals/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          setFeedback(data.error || fallbackErrorMessage, true);
+          return;
+        }
+
+        setFeedback(successMessage);
+        window.setTimeout(() => window.location.reload(), 500);
+      } catch {
+        setFeedback(fallbackErrorMessage, true);
+      }
+    });
+  }
+</script>

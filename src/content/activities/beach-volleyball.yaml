@@ -10,10 +10,10 @@ title:
   de: "Beachvolleyball"
   it: "Beach volley"
 description:
-  en: "Play beach volleyball on the dedicated courts in Žnjan's sports zone. Join pickup games or rent a court for your group — a classic beach activity with a beautiful Adriatic backdrop."
-  hr: "Igrajte odbojku na pijesku na terenima u sportskoj zoni Žnjana. Pridružite se igrama ili iznajmite teren za svoju grupu — klasična aktivnost na plaži s prekrasnom jadranskom pozadinom."
-  de: "Spielen Sie Beachvolleyball auf den Plätzen in der Sportzone von Žnjan. Nehmen Sie an Spielen teil oder mieten Sie einen Platz für Ihre Gruppe — eine klassische Strandaktivität vor der schönen Adriakulisse."
-  it: "Gioca a beach volley sui campi dedicati nella zona sportiva di Žnjan. Unisciti alle partite o affitta un campo per il tuo gruppo — un'attività classica in spiaggia con un bellissimo sfondo adriatico."
+  en: "Play beach volleyball on the dedicated courts in Žnjan's sports zone. The courts are part of the public beach area, free to use, and currently operate on a first-come, first-served basis with no reservation system."
+  hr: "Igrajte odbojku na pijesku na terenima u sportskoj zoni Žnjana. Tereni su dio javnog prostora plaže, besplatni su za korištenje i trenutačno rade po principu tko prvi dođe, prvi koristi, bez sustava rezervacija."
+  de: "Spielen Sie Beachvolleyball auf den Plätzen in der Sportzone von Žnjan. Die Plätze sind Teil des öffentlichen Strandbereichs, kostenlos nutzbar und funktionieren derzeit ohne Reservierungssystem nach dem Prinzip 'wer zuerst kommt, spielt zuerst'."
+  it: "Gioca a beach volley sui campi dedicati nella zona sportiva di Žnjan. I campi fanno parte dell'area pubblica della spiaggia, sono gratuiti e al momento funzionano senza prenotazione in base al principio del primo arrivato, primo servito."
 shortDescription:
   en: "Courts available in the sports zone"
   hr: "Tereni dostupni u sportskoj zoni"
@@ -28,7 +28,7 @@ duration:
   hr: "1-2 sata"
   de: "1-2 Stunden"
   it: "1-2 ore"
-priceRange: "Free / €10 court rental"
+priceRange: "Free"
 season: summer
 featured: true
 order: 2

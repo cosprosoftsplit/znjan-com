@@ -45,17 +45,56 @@ const activeCategory = Astro.url.searchParams.get('category') || '';
         <!-- Filters + Create button -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <PostFilters lang={lang} activeType={activeType} activeCategory={activeCategory} />
-          {user && (
+          <div class="flex flex-wrap items-center gap-3">
             <a
-              href={`/${lang}/community/create/`}
-              class="inline-flex items-center gap-2 bg-ocean-600 hover:bg-ocean-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors shrink-0"
+              href={`/${lang}/community/start/`}
+              class="inline-flex items-center gap-2 bg-sand-50 border border-sand-200 hover:border-coral-300 text-warm-700 font-semibold px-5 py-2.5 rounded-lg transition-colors shrink-0"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
-              {t(lang, 'community.createPost')}
+              {t(lang, 'community.startCta')}
             </a>
-          )}
+            <a
+              href={`/${lang}/community/help/`}
+              class="inline-flex items-center gap-2 bg-white border border-coral-200 hover:border-coral-400 text-coral-700 font-semibold px-5 py-2.5 rounded-lg transition-colors shrink-0"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.868v4.264a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {t(lang, 'community.helpCta')}
+            </a>
+            <a
+              href={`/${lang}/community/reservations/`}
+              class="inline-flex items-center gap-2 bg-white border border-ocean-200 hover:border-ocean-400 text-ocean-700 font-semibold px-5 py-2.5 rounded-lg transition-colors shrink-0"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10m-11 9h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v11a2 2 0 002 2z" />
+              </svg>
+              {t(lang, 'reservations.viewSportsReservations')}
+            </a>
+            <a
+              href={`/${lang}/community/reservations/dashboard/`}
+              class="inline-flex items-center gap-2 bg-white border border-warm-200 hover:border-ocean-300 text-warm-700 font-semibold px-5 py-2.5 rounded-lg transition-colors shrink-0"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19h16M7 15l3-3 3 2 4-6" />
+              </svg>
+              {t(lang, 'reservations.viewTransparencyDashboard')}
+            </a>
+            {user && (
+              <a
+                href={`/${lang}/community/create/`}
+                class="inline-flex items-center gap-2 bg-ocean-600 hover:bg-ocean-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors shrink-0"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                {t(lang, 'community.createPost')}
+              </a>
+            )}
+          </div>
         </div>
 
         <!-- Posts list (loaded client-side) -->
@@ -75,6 +114,72 @@ const activeCategory = Astro.url.searchParams.get('category') || '';
 <script define:vars={{ lang, activeType, activeCategory }}>
   let currentType = activeType;
   let currentCategory = activeCategory;
+  const HTML_ESCAPE_MAP = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
+  }
+
+  function formatLabel(value) {
+    return escapeHtml(String(value ?? '').replace(/-/g, ' '));
+  }
+
+  const typeColors = {
+    meetup: 'bg-ocean-100 text-ocean-800',
+    'event-idea': 'bg-sand-100 text-sand-800',
+    'partner-search': 'bg-coral-50 text-coral-700',
+    discussion: 'bg-warm-100 text-warm-700',
+  };
+
+  function renderPostCard(p) {
+    const postId = encodeURIComponent(String(p.id ?? ''));
+    const title = escapeHtml(p.title);
+    const body = String(p.body ?? '');
+    const excerpt = escapeHtml(body.slice(0, 150));
+    const excerptSuffix = body.length > 150 ? '...' : '';
+    const authorName = escapeHtml(p.author_name);
+    const createdAt = escapeHtml(new Date(p.created_at).toLocaleDateString(lang, {
+      month: 'short',
+      day: 'numeric',
+    }));
+    const eventDate = p.event_date
+      ? `<span class="text-xs text-warm-500 shrink-0">${escapeHtml(new Date(p.event_date).toLocaleDateString(lang, { month: 'short', day: 'numeric' }))}${p.event_time ? ' · ' + escapeHtml(p.event_time) : ''}</span>`
+      : '';
+    const location = p.location
+      ? `<div class="flex items-center gap-1.5 text-xs text-warm-500 mb-3"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>${escapeHtml(p.location)}</div>`
+      : '';
+    const meetupInfo = p.type === 'meetup'
+      ? `<span>${escapeHtml(p.join_count)}${p.max_participants ? '/' + escapeHtml(p.max_participants) : ''} joined</span>`
+      : '';
+
+    return `
+      <a href="/${lang}/community/${postId}/" class="block bg-white rounded-xl border border-warm-200 hover:border-ocean-300 hover:shadow-md transition-all duration-200 p-5 group">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full ${typeColors[p.type] || 'bg-warm-100 text-warm-700'}">${formatLabel(p.type)}</span>
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-warm-50 text-warm-600">${formatLabel(p.category)}</span>
+          </div>
+          ${eventDate}
+        </div>
+        <h3 class="text-lg font-semibold text-ocean-900 group-hover:text-ocean-700 transition-colors mb-2 line-clamp-2">${title}</h3>
+        <p class="text-warm-600 text-sm line-clamp-2 mb-4">${excerpt}${excerptSuffix}</p>
+        ${location}
+        <div class="flex items-center justify-between pt-3 border-t border-warm-100">
+          <div class="flex items-center gap-1 text-xs text-warm-500"><span class="font-medium text-warm-700">${authorName}</span><span>·</span><span>${createdAt}</span></div>
+          <div class="flex items-center gap-3 text-xs text-warm-500">
+            ${meetupInfo}
+            <span>${escapeHtml(p.comment_count)} comments</span>
+            <span>${escapeHtml(p.views)} views</span>
+          </div>
+        </div>
+      </a>`;
+  }
 
   async function loadPosts() {
     const container = document.getElementById('posts-container');
@@ -94,42 +199,7 @@ const activeCategory = Astro.url.searchParams.get('category') || '';
         return;
       }
 
-      const typeColors = {
-        meetup: 'bg-ocean-100 text-ocean-800',
-        'event-idea': 'bg-sand-100 text-sand-800',
-        'partner-search': 'bg-coral-50 text-coral-700',
-        discussion: 'bg-warm-100 text-warm-700',
-      };
-
-      container.innerHTML = `<div class="space-y-4">${data.posts
-        .map(
-          (p) => `
-        <a href="/${lang}/community/${p.id}/" class="block bg-white rounded-xl border border-warm-200 hover:border-ocean-300 hover:shadow-md transition-all duration-200 p-5 group">
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div class="flex flex-wrap gap-2">
-              <span class="text-xs font-medium px-2 py-0.5 rounded-full ${typeColors[p.type] || 'bg-warm-100 text-warm-700'}">${p.type.replace('-', ' ')}</span>
-              <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-warm-50 text-warm-600">${p.category.replace('-', ' ')}</span>
-            </div>
-            ${
-              p.event_date
-                ? `<span class="text-xs text-warm-500 shrink-0">${new Date(p.event_date).toLocaleDateString(lang, { month: 'short', day: 'numeric' })}${p.event_time ? ' · ' + p.event_time : ''}</span>`
-                : ''
-            }
-          </div>
-          <h3 class="text-lg font-semibold text-ocean-900 group-hover:text-ocean-700 transition-colors mb-2 line-clamp-2">${p.title}</h3>
-          <p class="text-warm-600 text-sm line-clamp-2 mb-4">${p.body.slice(0, 150)}${p.body.length > 150 ? '...' : ''}</p>
-          ${p.location ? `<div class="flex items-center gap-1.5 text-xs text-warm-500 mb-3"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>${p.location}</div>` : ''}
-          <div class="flex items-center justify-between pt-3 border-t border-warm-100">
-            <div class="flex items-center gap-1 text-xs text-warm-500"><span class="font-medium text-warm-700">${p.author_name}</span><span>·</span><span>${new Date(p.created_at).toLocaleDateString(lang, { month: 'short', day: 'numeric' })}</span></div>
-            <div class="flex items-center gap-3 text-xs text-warm-500">
-              ${p.type === 'meetup' ? `<span>${p.join_count}${p.max_participants ? '/' + p.max_participants : ''} joined</span>` : ''}
-              <span>${p.comment_count} comments</span>
-              <span>${p.views} views</span>
-            </div>
-          </div>
-        </a>`,
-        )
-        .join('')}</div>`;
+      container.innerHTML = `<div class="space-y-4">${data.posts.map(renderPostCard).join('')}</div>`;
     } catch {
       container.innerHTML = '<div class="text-center py-12 text-coral-500">Failed to load posts</div>';
     }

@@ -5,20 +5,19 @@
  */
 import type { APIRoute } from 'astro';
 import { getDB, now } from '@/lib/db';
+import { getCommunityPostDetail } from '@/lib/community-api';
 
 export const prerender = false;
 
 export const GET: APIRoute = async ({ params, locals }) => {
   try {
     const db = getDB(locals.runtime);
-    const post = await db
-      .prepare(
-        `SELECT p.*, u.display_name as author_name, u.level as author_level, u.avatar_url as author_avatar
-         FROM posts p JOIN users u ON p.user_id = u.id
-         WHERE p.id = ?`,
-      )
-      .bind(params.id)
-      .first();
+    const user = locals.user;
+    const post = await getCommunityPostDetail(
+      db,
+      params.id ?? '',
+      user ? { id: user.id, role: user.role } : null,
+    );
 
     if (!post) {
       return new Response(JSON.stringify({ error: 'Post not found' }), {
@@ -27,46 +26,50 @@ export const GET: APIRoute = async ({ params, locals }) => {
       });
     }
 
-    // Increment views
-    await db
-      .prepare('UPDATE posts SET views = views + 1 WHERE id = ?')
-      .bind(params.id)
-      .run();
-
-    // Get join count and comment count
-    const joins = await db
-      .prepare("SELECT COUNT(*) as cnt FROM responses WHERE post_id = ? AND type = 'join'")
-      .bind(params.id)
-      .first<{ cnt: number }>();
-    const comments = await db
-      .prepare("SELECT r.*, u.display_name as author_name, u.level as author_level FROM responses r JOIN users u ON r.user_id = u.id WHERE r.post_id = ? AND r.type = 'comment' ORDER BY r.created_at ASC")
-      .bind(params.id)
-      .all();
-    const joiners = await db
-      .prepare("SELECT r.user_id, u.display_name FROM responses r JOIN users u ON r.user_id = u.id WHERE r.post_id = ? AND r.type = 'join'")
-      .bind(params.id)
-      .all();
-
-    // Check if current user has joined
-    const user = locals.user;
-    let hasJoined = false;
-    if (user) {
-      const userJoin = await db
-        .prepare("SELECT id FROM responses WHERE post_id = ? AND user_id = ? AND type = 'join'")
-        .bind(params.id, user.id)
-        .first();
-      hasJoined = !!userJoin;
-    }
-
     return new Response(
       JSON.stringify({
         post: {
-          ...(post as Record<string, unknown>),
-          join_count: joins?.cnt ?? 0,
-          comment_count: comments.results.length,
-          comments: comments.results,
-          joiners: joiners.results,
-          has_joined: hasJoined,
+          id: post.id,
+          user_id: post.userId,
+          type: post.type,
+          category: post.category,
+          title: post.title,
+          body: post.body,
+          lang: post.lang,
+          location: post.location,
+          lat: post.lat,
+          lng: post.lng,
+          event_date: post.eventDate,
+          event_time: post.eventTime,
+          max_participants: post.maxParticipants,
+          status: post.status,
+          views: post.views,
+          created_at: post.createdAt,
+          updated_at: post.updatedAt,
+          author_id: post.author.id,
+          author_name: post.author.displayName,
+          author_avatar: post.author.avatarUrl,
+          author_level: post.author.level,
+          join_count: post.joinCount,
+          comment_count: post.commentCount,
+          comments: post.comments.map((comment) => ({
+            id: comment.id,
+            user_id: comment.userId,
+            body: comment.body,
+            created_at: comment.createdAt,
+            author_id: comment.author.id,
+            author_name: comment.author.displayName,
+            author_avatar: comment.author.avatarUrl,
+            author_level: comment.author.level,
+          })),
+          joiners: post.joiners.map((joiner) => ({
+            user_id: joiner.userId,
+            display_name: joiner.displayName,
+            avatar_url: joiner.avatarUrl,
+          })),
+          has_joined: post.hasJoined,
+          viewer_can_edit: post.viewerCanEdit,
+          viewer_can_delete: post.viewerCanDelete,
         },
       }),
       {

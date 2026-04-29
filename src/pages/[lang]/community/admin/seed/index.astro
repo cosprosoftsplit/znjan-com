@@ -1,0 +1,561 @@
+---
+export const prerender = false;
+
+import Page from '@/layouts/Page.astro';
+import { getDB } from '@/lib/db';
+import {
+  getPilotSupportSignalSummary,
+  listPilotSupportSignals,
+  type PilotSupportSignalStatus,
+} from '@/lib/pilot-support';
+import { getTodayInReservationTimezone } from '@/lib/sports-reservations';
+import type { Language } from '@/lib/i18n';
+import { LANGUAGES } from '@/lib/i18n';
+import { getTranslations, t } from '@/lib/translations';
+
+const lang = Astro.params.lang as Language;
+if (!LANGUAGES.includes(lang)) return Astro.redirect('/en/community/admin/seed/');
+
+const translations = getTranslations(lang);
+const user = Astro.locals.user;
+
+if (!user || user.role !== 'admin') {
+  return Astro.redirect(`/${lang}/community/`);
+}
+
+const db = getDB(Astro.locals.runtime);
+const [supportSignals, supportSignalSummary] = await Promise.all([
+  listPilotSupportSignals(db, { limit: 12 }),
+  getPilotSupportSignalSummary(db),
+]);
+
+const alternates = Object.fromEntries(
+  LANGUAGES.map((locale) => [locale, `/${locale}/community/admin/seed/`]),
+) as Record<Language, string>;
+
+const locale = lang === 'en' ? 'en-GB' : lang;
+const today = getTodayInReservationTimezone();
+
+function addDays(dateString: string, days: number): string {
+  const date = new Date(`${dateString}T12:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+function formatDate(dateString: string): string {
+  return new Intl.DateTimeFormat(locale, {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    timeZone: 'Europe/Zagreb',
+  }).format(new Date(`${dateString}T12:00:00Z`));
+}
+
+function formatDateTime(dateString: string): string {
+  return new Intl.DateTimeFormat(locale, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone: 'Europe/Zagreb',
+  }).format(new Date(dateString));
+}
+
+type SeedTemplateCategory = 'sports' | 'social';
+type SeedMeetupTemplate = {
+  title: string;
+  description: string;
+  location: string;
+  category: SeedTemplateCategory;
+  eventDate: string;
+  eventTime: string;
+  maxParticipants: string;
+};
+
+const categoryLabels: Record<'sports' | 'social', string> = {
+  sports: t(lang, 'community.categorySports'),
+  social: t(lang, 'community.categorySocial'),
+};
+
+const baseMeetupTemplates: SeedMeetupTemplate[] = [
+  {
+    title: t(lang, 'admin.seedTemplateVolleyballTitle'),
+    description: t(lang, 'admin.seedTemplateVolleyballDescription'),
+    location: t(lang, 'admin.seedLocationVolleyball'),
+    category: 'sports',
+    eventDate: addDays(today, 1),
+    eventTime: '08:00',
+    maxParticipants: '8',
+  },
+  {
+    title: t(lang, 'admin.seedTemplateTennisTitle'),
+    description: t(lang, 'admin.seedTemplateTennisDescription'),
+    location: t(lang, 'admin.seedLocationTennis'),
+    category: 'sports',
+    eventDate: addDays(today, 2),
+    eventTime: '18:00',
+    maxParticipants: '4',
+  },
+  {
+    title: t(lang, 'admin.seedTemplateSunsetTitle'),
+    description: t(lang, 'admin.seedTemplateSunsetDescription'),
+    location: t(lang, 'admin.seedLocationSunset'),
+    category: 'social',
+    eventDate: addDays(today, 3),
+    eventTime: '19:00',
+    maxParticipants: '12',
+  },
+];
+
+const meetupTemplates: Array<SeedMeetupTemplate & { href: string }> = baseMeetupTemplates.map((template) => ({
+  ...template,
+  href:
+    `/${lang}/community/create/?` +
+    new URLSearchParams({
+      type: 'meetup',
+      category: template.category,
+      title: template.title,
+      body: template.description,
+      location: template.location,
+      event_date: template.eventDate,
+      event_time: template.eventTime,
+      max_participants: template.maxParticipants,
+    }).toString(),
+}));
+
+const quickActions = [
+  { href: `/${lang}/community/`, label: t(lang, 'community.title') },
+  { href: `/${lang}/community/start/`, label: t(lang, 'community.startCta') },
+  { href: `/${lang}/community/help/`, label: t(lang, 'community.helpCta') },
+  { href: `/${lang}/community/create/`, label: t(lang, 'community.createPost') },
+  { href: `/${lang}/community/admin/pilot/`, label: t(lang, 'admin.managePilotOps') },
+  { href: `/${lang}/community/reservations/`, label: t(lang, 'reservations.viewSportsReservations') },
+  { href: `/${lang}/play/`, label: t(lang, 'reservations.quickStartTitle') },
+  { href: `/${lang}/play/materials/`, label: t(lang, 'reservations.pilotKitCta') },
+];
+
+const supportSignalTypeLabels = {
+  'local-intro': t(lang, 'community.helpSignalTypeLocalIntro'),
+  'on-site-help': t(lang, 'community.helpSignalTypeOnSite'),
+  'venue-connection': t(lang, 'community.helpSignalTypeVenue'),
+  'pilot-feedback': t(lang, 'community.helpSignalTypeFeedback'),
+};
+
+const supportSignalStatusLabels: Record<PilotSupportSignalStatus, string> = {
+  new: t(lang, 'admin.supportSignalStatusNew'),
+  'followed-up': t(lang, 'admin.supportSignalStatusFollowedUp'),
+  handled: t(lang, 'admin.supportSignalStatusHandled'),
+};
+
+function getSupportSignalStatusClasses(status: PilotSupportSignalStatus): string {
+  if (status === 'handled') {
+    return 'bg-emerald-50 text-emerald-700 border border-emerald-200';
+  }
+
+  if (status === 'followed-up') {
+    return 'bg-coral-50 text-coral-700 border border-coral-200';
+  }
+
+  return 'bg-aqua-50 text-ocean-700 border border-aqua-200';
+}
+
+const supportSignalStatusCounts: Array<{ key: PilotSupportSignalStatus; count: number }> = [
+  { key: 'new', count: supportSignalSummary.newCount },
+  { key: 'followed-up', count: supportSignalSummary.followedUpCount },
+  { key: 'handled', count: supportSignalSummary.handledCount },
+];
+---
+
+<Page
+  title={t(lang, 'admin.seedCommunityTitle')}
+  description={t(lang, 'admin.seedCommunityDescription')}
+  lang={lang}
+  translations={translations}
+  alternates={alternates}
+  noIndex={true}
+>
+  <section class="container-page py-10 space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-ocean-600 mb-3">
+          {t(lang, 'admin.title')}
+        </p>
+        <h1 class="text-3xl md:text-4xl font-display text-ocean-900 mb-3">
+          {t(lang, 'admin.seedCommunityTitle')}
+        </h1>
+        <p class="text-lg text-warm-600">
+          {t(lang, 'admin.seedCommunityDescription')}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <a
+          href={`/${lang}/community/admin/`}
+          class="inline-flex items-center justify-center rounded-lg border border-warm-200 bg-white px-4 py-2.5 text-sm font-semibold text-ocean-700 hover:border-ocean-300 transition-colors"
+        >
+          {t(lang, 'admin.title')}
+        </a>
+        <a
+          href={`/${lang}/community/create/`}
+          class="inline-flex items-center justify-center rounded-lg bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+        >
+          {t(lang, 'community.createPost')}
+        </a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_24rem] gap-8">
+      <div class="space-y-6">
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.seedInviteTitle')}</h2>
+          <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.seedInviteDescription')}</p>
+
+          <ul class="mt-5 space-y-3">
+            {[1, 2, 3, 4].map((item) => (
+              <li class="flex items-start gap-3 rounded-xl border border-warm-100 bg-warm-50 px-4 py-3">
+                <span class="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ocean-600 text-xs font-bold text-white">
+                  {item}
+                </span>
+                <span class="text-sm text-warm-700">{t(lang, `admin.seedInvitePoint${item}`)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.seedMeetupTemplatesTitle')}</h2>
+          <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.seedMeetupTemplatesDescription')}</p>
+
+          <div class="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-3">
+            {meetupTemplates.map((template) => (
+              <article class="rounded-2xl border border-warm-200 bg-warm-50 p-5">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <p class="text-xs font-semibold uppercase tracking-[0.14em] text-ocean-600">
+                      {t(lang, 'postForm.typeMeetup')}
+                    </p>
+                    <h3 class="mt-2 text-lg font-semibold text-ocean-900">{template.title}</h3>
+                  </div>
+                  <span class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-warm-600">
+                    {categoryLabels[template.category]}
+                  </span>
+                </div>
+
+                <p class="mt-3 text-sm leading-6 text-warm-700">{template.description}</p>
+
+                <div class="mt-4 space-y-2 text-sm text-warm-600">
+                  <div><span class="font-semibold text-ocean-800">{formatDate(template.eventDate)}</span> · {template.eventTime}</div>
+                  <div>{template.location}</div>
+                  <div>{template.maxParticipants} max</div>
+                </div>
+
+                <a
+                  href={template.href}
+                  class="mt-5 inline-flex items-center justify-center rounded-lg bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+                >
+                  {t(lang, 'admin.seedTemplateCreate')}
+                </a>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.seedHelperTitle')}</h2>
+          <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.seedHelperDescription')}</p>
+
+          <div class="mt-5 space-y-3">
+            {[1, 2, 3].map((item) => (
+              <div class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-3 text-sm text-warm-700">
+                {t(lang, `admin.seedHelperPoint${item}`)}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.seedSupportSignalsTitle')}</h2>
+              <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.seedSupportSignalsDescription')}</p>
+            </div>
+            <div class="rounded-full bg-aqua-50 px-3 py-1 text-sm font-semibold text-ocean-700">
+              {supportSignalSummary.total}
+            </div>
+          </div>
+
+          <div
+            id="support-signal-triage-feedback"
+            class="hidden mb-5 rounded-xl border border-coral-200 bg-coral-50 px-4 py-3 text-sm font-medium text-coral-800"
+          ></div>
+
+          <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {supportSignalStatusCounts.map((item) => (
+              <div class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-3">
+                <p class="text-xs font-semibold uppercase tracking-[0.12em] text-warm-600">
+                  {supportSignalStatusLabels[item.key]}
+                </p>
+                <p class="mt-2 text-2xl font-semibold text-ocean-900">{item.count}</p>
+              </div>
+            ))}
+          </div>
+
+          {supportSignals.length === 0 ? (
+            <div class="rounded-xl border border-dashed border-warm-200 bg-warm-50 px-5 py-6 text-sm text-warm-500">
+              {t(lang, 'admin.noSupportSignals')}
+            </div>
+          ) : (
+            <div class="space-y-3">
+              {supportSignals.map((signal) => (
+                <article
+                  class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-4"
+                  data-support-signal-card
+                  data-support-signal-id={signal.id}
+                >
+                  <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                    <div class="space-y-1.5">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <p class="font-semibold text-ocean-900">{signal.name}</p>
+                        <span class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-ocean-700">
+                          {supportSignalTypeLabels[signal.signalType]}
+                        </span>
+                        <span
+                          class:list={[
+                            'rounded-full px-2.5 py-1 text-xs font-semibold',
+                            getSupportSignalStatusClasses(signal.status),
+                          ]}
+                        >
+                          {supportSignalStatusLabels[signal.status]}
+                        </span>
+                      </div>
+                      <p class="text-sm text-warm-700">{signal.contact}</p>
+                      {signal.availability && (
+                        <p class="text-sm text-warm-600">{signal.availability}</p>
+                      )}
+                      <p class="text-sm text-warm-700">{signal.notes}</p>
+                    </div>
+
+                    <div class="text-right space-y-1">
+                      <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ocean-600">
+                        {t(lang, 'admin.supportSignalReceivedMeta')}
+                      </p>
+                      <p class="text-xs text-warm-500">
+                        {formatDateTime(signal.createdAt)}
+                      </p>
+                      <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ocean-600 pt-2">
+                        {t(lang, 'admin.supportSignalUpdatedMeta')}
+                      </p>
+                      <p class="text-xs text-warm-500">
+                        {formatDateTime(signal.triageUpdatedAt)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 rounded-xl border border-warm-200 bg-white px-4 py-4">
+                    <label
+                      for={`support-note-${signal.id}`}
+                      class="block text-xs font-semibold uppercase tracking-[0.12em] text-ocean-600"
+                    >
+                      {t(lang, 'admin.supportSignalFollowUpNote')}
+                    </label>
+                    <textarea
+                      id={`support-note-${signal.id}`}
+                      data-support-note-input
+                      class="mt-3 min-h-[6.5rem] w-full rounded-lg border border-warm-200 bg-warm-50 px-3 py-2 text-sm text-warm-700 placeholder:text-warm-400 focus:border-ocean-400 focus:outline-none focus:ring-2 focus:ring-ocean-100"
+                      placeholder={t(lang, 'admin.supportSignalFollowUpNotePlaceholder')}
+                    >{signal.followUpNote ?? ''}</textarea>
+                    <div class="mt-3 flex justify-end">
+                      <button
+                        type="button"
+                        data-support-note-button
+                        data-support-signal-id={signal.id}
+                        class="inline-flex items-center justify-center rounded-lg border border-ocean-200 bg-white px-3 py-2 text-xs font-semibold text-ocean-700 hover:border-ocean-300 hover:bg-aqua-50 transition-colors"
+                      >
+                        {t(lang, 'admin.supportSignalSaveNote')}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 flex flex-wrap gap-2 border-t border-warm-200 pt-4">
+                    {(['new', 'followed-up', 'handled'] as const).map((status) => (
+                      <button
+                        type="button"
+                        data-support-status-button
+                        data-support-signal-id={signal.id}
+                        data-support-status={status}
+                        disabled={signal.status === status}
+                        class:list={[
+                          'inline-flex items-center justify-center rounded-lg px-3 py-2 text-xs font-semibold transition-colors',
+                          signal.status === status
+                            ? 'cursor-not-allowed border border-warm-200 bg-white text-warm-400'
+                            : 'border border-ocean-200 bg-white text-ocean-700 hover:border-ocean-300 hover:bg-aqua-50',
+                        ]}
+                      >
+                        {status === 'new'
+                          ? t(lang, 'admin.supportSignalMarkNew')
+                          : status === 'followed-up'
+                            ? t(lang, 'admin.supportSignalMarkFollowedUp')
+                            : t(lang, 'admin.supportSignalMarkHandled')}
+                      </button>
+                    ))}
+
+                    <button
+                      type="button"
+                      data-support-archive-button
+                      data-support-signal-id={signal.id}
+                      class="inline-flex items-center justify-center rounded-lg border border-coral-200 bg-white px-3 py-2 text-xs font-semibold text-coral-700 hover:bg-coral-50 transition-colors"
+                    >
+                      {t(lang, 'admin.supportSignalArchive')}
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.quickActionsTitle')}</h2>
+          <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.quickActionsDescription')}</p>
+
+          <div class="mt-5 grid grid-cols-1 gap-3">
+            {quickActions.map((action) => (
+              <a
+                href={action.href}
+                class="inline-flex items-center justify-center rounded-xl border border-warm-200 bg-warm-50 px-4 py-3 text-sm font-semibold text-ocean-800 hover:border-ocean-300 hover:bg-aqua-50 transition-colors"
+              >
+                {action.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-warm-200 p-6">
+          <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.explainerTitle')}</h2>
+          <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.explainerDescription')}</p>
+
+          <div class="mt-5 space-y-3">
+            {[1, 2, 3].map((item) => (
+              <div class="rounded-xl border border-warm-100 bg-warm-50 px-4 py-3 text-sm text-warm-700">
+                {t(lang, `admin.explainerLine${item}`)}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Page>
+
+<script define:vars={{
+  triageErrorMessage: t(lang, 'admin.supportSignalTriageError'),
+  archiveConfirmMessage: t(lang, 'admin.supportSignalArchiveConfirm'),
+}}>
+  const triageFeedback = document.getElementById('support-signal-triage-feedback');
+  const triageCards = document.querySelectorAll('[data-support-signal-card]');
+
+  function showTriageError(message) {
+    if (!triageFeedback) return;
+    triageFeedback.textContent = message;
+    triageFeedback.classList.remove('hidden');
+  }
+
+  function clearTriageError() {
+    if (!triageFeedback) return;
+    triageFeedback.textContent = '';
+    triageFeedback.classList.add('hidden');
+  }
+
+  function setCardDisabled(card, disabled) {
+    card.querySelectorAll('button, textarea').forEach((control) => {
+      if (!control.dataset.originalDisabled) {
+        control.dataset.originalDisabled = control.disabled ? 'true' : 'false';
+      }
+
+      const originallyDisabled = control.dataset.originalDisabled === 'true';
+      control.disabled = disabled ? true : originallyDisabled;
+
+      if (disabled) {
+        control.classList.add('opacity-60');
+      } else {
+        control.classList.remove('opacity-60');
+      }
+    });
+  }
+
+  async function runSignalRequest(signalId, options) {
+    const response = await fetch(`/api/admin/pilot-support-signals/${signalId}/`, options);
+    if (response.ok) {
+      window.location.reload();
+      return;
+    }
+
+    const payload = await response.json().catch(() => null);
+    throw new Error(payload?.error || triageErrorMessage);
+  }
+
+  triageCards.forEach((card) => {
+    const signalId = card.dataset.supportSignalId;
+    if (!signalId) return;
+
+    card.querySelectorAll('[data-support-status-button]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const status = button.dataset.supportStatus;
+        if (!status) return;
+
+        clearTriageError();
+        setCardDisabled(card, true);
+
+        try {
+          await runSignalRequest(signalId, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status }),
+          });
+        } catch (error) {
+          setCardDisabled(card, false);
+          showTriageError(error instanceof Error ? error.message : triageErrorMessage);
+        }
+      });
+    });
+
+    card.querySelectorAll('[data-support-archive-button]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        if (!window.confirm(archiveConfirmMessage)) return;
+
+        clearTriageError();
+        setCardDisabled(card, true);
+
+        try {
+          await runSignalRequest(signalId, {
+            method: 'DELETE',
+          });
+        } catch (error) {
+          setCardDisabled(card, false);
+          showTriageError(error instanceof Error ? error.message : triageErrorMessage);
+        }
+      });
+    });
+
+    card.querySelectorAll('[data-support-note-button]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const noteInput = card.querySelector('[data-support-note-input]');
+        if (!(noteInput instanceof HTMLTextAreaElement)) return;
+
+        clearTriageError();
+        setCardDisabled(card, true);
+
+        try {
+          await runSignalRequest(signalId, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ followUpNote: noteInput.value }),
+          });
+        } catch (error) {
+          setCardDisabled(card, false);
+          showTriageError(error instanceof Error ? error.message : triageErrorMessage);
+        }
+      });
+    });
+  });
+</script>

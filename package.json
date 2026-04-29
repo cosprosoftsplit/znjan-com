@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
+    "preview:runtime": "npx wrangler pages dev dist --compatibility-flag nodejs_compat --kv SESSION",
     "astro": "astro",
     "check": "astro check",
     "check-i18n": "npx tsx scripts/check-i18n.ts",
@@ -19,11 +20,13 @@
     "@astrojs/tailwind": "^6.0.2",
     "@tailwindcss/typography": "^0.5.19",
     "astro": "^5.17.1",
+    "qrcode": "^1.5.4",
     "tailwindcss": "^3.4.19",
     "zod": "^3.25.76"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
+    "@types/qrcode": "^1.5.6",
     "pagefind": "^1.4.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

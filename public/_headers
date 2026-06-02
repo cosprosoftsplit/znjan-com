@@ -4,7 +4,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://*.cdninstagram.com https://*.fbcdn.net data:; frame-src https://www.instagram.com; connect-src 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.instagram.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' https://*.cdninstagram.com https://*.fbcdn.net data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://unpkg.com; frame-src https://www.instagram.com; connect-src 'self'
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable

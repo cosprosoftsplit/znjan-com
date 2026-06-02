@@ -141,31 +141,28 @@ const activitiesData = sortedActivities.map((activity) => ({
   href: getLocalizedUrl(lang, 'activities', activity.data.slug[lang]),
 }));
 
-// Story blocks — with images from znjan.hr and business sites
+// Story blocks — golden-hour brand photography (Žnjan Design System).
 const storyBlocks = [
   {
     eyebrow: translations['home.storyEyebrow1'],
     title: translations['home.storyTitle1'],
     text: translations['home.storyText1'],
     variant: 'ocean' as const,
-    image: '/images/story/znjan-hero-render-1.png',
-    credit: 'Photo: znjan.hr',
+    image: '/images/story/vision-aerial.jpg',
   },
   {
     eyebrow: translations['home.storyEyebrow2'],
     title: translations['home.storyTitle2'],
     text: translations['home.storyText2'],
     variant: 'sunset' as const,
-    image: '/images/places/gal-cocktails.jpg',
-    credit: 'Photo: GAL Split',
+    image: '/images/story/dining-sunset.jpg',
   },
   {
     eyebrow: translations['home.storyEyebrow3'],
     title: translations['home.storyTitle3'],
     text: translations['home.storyText3'],
     variant: 'adriatic' as const,
-    image: '/images/beach-areas/znjan-diving-platform.jpg',
-    credit: 'Photo: znjan.hr',
+    image: '/images/story/activities-sports.jpg',
   },
 ];
 ---

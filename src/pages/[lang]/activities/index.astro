@@ -55,6 +55,18 @@ const activityIcons: Record<string, string> = {
   kayaking: '🛶',
   snorkeling: '🤿',
 };
+
+// Golden-hour activity photography (Žnjan Design System). Activities without a
+// photo fall back to a brand gradient + emoji glyph.
+const activityImages: Record<string, string> = {
+  swimming: '/images/activities/swimming.jpg',
+  paddleboarding: '/images/activities/paddleboarding.jpg',
+  'beach-volleyball': '/images/activities/beach-volleyball.jpg',
+  cycling: '/images/activities/cycling.jpg',
+  kayaking: '/images/activities/kayaking.jpg',
+  snorkeling: '/images/activities/snorkeling.jpg',
+};
+const activityFallback = 'linear-gradient(135deg, #2d8a9b 0%, #0077B6 50%, #48cae4 100%)';
 ---
 
 <Page
@@ -87,25 +99,32 @@ const activityIcons: Record<string, string> = {
             <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {group.items.map((activity, i) => (
                 <ScrollReveal animation="fade-up" delay={i * 60}>
-                  <Card href={getLocalizedUrl(lang, 'activities', activity.data.slug[lang])}>
-                    <div class="p-6">
-                      <div class="flex items-center gap-3 mb-3">
-                        <span class="text-2xl">{activityIcons[activity.data.id] || '🏖️'}</span>
-                        <div class="flex items-center gap-2">
-                          {activity.data.difficulty && (
-                            <Badge variant="sand">{difficultyLabels[activity.data.difficulty]?.[lang]}</Badge>
-                          )}
+                  <Card href={getLocalizedUrl(lang, 'activities', activity.data.slug[lang])} class="group">
+                    <div class="relative aspect-[16/10] overflow-hidden">
+                      {activityImages[activity.data.id] ? (
+                        <img src={activityImages[activity.data.id]} alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                      ) : (
+                        <div class="absolute inset-0 flex items-center justify-center" style={`background: ${activityFallback}`}>
+                          <span class="text-5xl">{activityIcons[activity.data.id] || '🏖️'}</span>
                         </div>
-                      </div>
-                      <h3 class="text-lg font-semibold text-ocean-700">
+                      )}
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                      {activity.data.difficulty && (
+                        <div class="absolute top-3 left-3">
+                          <Badge variant="sand">{difficultyLabels[activity.data.difficulty]?.[lang]}</Badge>
+                        </div>
+                      )}
+                    </div>
+                    <div class="p-5">
+                      <h3 class="text-lg font-display font-semibold text-ocean-700 group-hover:text-adriatic-400 transition-colors">
                         {getLocalized(activity.data.title, lang)}
                       </h3>
-                      <p class="mt-2 text-sm text-stone line-clamp-3">
+                      <p class="mt-2 text-sm text-stone line-clamp-2">
                         {activity.data.shortDescription
                           ? getLocalized(activity.data.shortDescription, lang)
                           : getLocalized(activity.data.description, lang)}
                       </p>
-                      <div class="mt-4 flex items-center gap-3 text-xs text-stone/70">
+                      <div class="mt-3 flex items-center gap-3 text-xs text-stone/70">
                         {activity.data.duration && (
                           <span>{translations['activities.duration']}: {getLocalized(activity.data.duration, lang)}</span>
                         )}

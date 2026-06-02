@@ -73,14 +73,11 @@ const gradientMap: Record<string, string> = {
   sand: 'linear-gradient(135deg, #d4c4a8 0%, #b8a88a 100%)',
 };
 
-// Beach area images (from znjan.hr)
-const areaImages: Record<string, { src: string; credit: string }> = {
-  'main-beach': { src: '/images/hero/znjan-aerial-1.jpg', credit: 'Photo: znjan.hr' },
-  'sports-zone': { src: '/images/hero/znjan-aerial-2.jpg', credit: 'Photo: znjan.hr' },
-  'kids-area': { src: '/images/hero/znjan-aerial-3.jpg', credit: 'Photo: znjan.hr' },
-  'amphitheater': { src: '/images/hero/znjan-aerial-4.jpg', credit: 'Photo: znjan.hr' },
-  'promenade': { src: '/images/hero/znjan-still-2.jpg', credit: 'Photo: znjan.hr' },
-};
+// Beach area cards use the on-brand gradient fallback — consistent with the homepage
+// and per the Žnjan Design System (which advises against construction-phase imagery).
+// The only available zone photos are construction-era; repopulate this map with finished
+// zone photos when they land to restore photography here.
+const areaImages: Record<string, { src: string; credit: string }> = {};
 ---
 
 <Page

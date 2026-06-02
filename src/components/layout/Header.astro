@@ -33,7 +33,7 @@ const navItems = [
       </a>
 
       <!-- Desktop Nav -->
-      <div class="hidden md:flex items-center gap-6">
+      <div class="hidden lg:flex items-center gap-4 xl:gap-6">
         {navItems.map((item) => (
           <a
             href={getLocalizedUrl(lang, item.key)}
@@ -49,7 +49,7 @@ const navItems = [
       <!-- Mobile Menu Button -->
       <button
         id="mobile-menu-btn"
-        class="md:hidden p-2 text-cream/80 hover:text-white focus:outline-none focus:ring-2 focus:ring-cream/30 focus:ring-offset-2 focus:ring-offset-ocean-800 transition-colors duration-200"
+        class="lg:hidden p-2 text-cream/80 hover:text-white focus:outline-none focus:ring-2 focus:ring-cream/30 focus:ring-offset-2 focus:ring-offset-ocean-800 transition-colors duration-200"
         aria-label={translations['nav.menu'] || 'Menu'}
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -62,7 +62,7 @@ const navItems = [
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-ocean-800 border-t border-ocean-700/50">
+  <div id="mobile-menu" class="hidden lg:hidden bg-ocean-800 border-t border-ocean-700/50">
     <div class="container-page py-4 space-y-3">
       {navItems.map((item) => (
         <a

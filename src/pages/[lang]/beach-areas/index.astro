@@ -73,11 +73,15 @@ const gradientMap: Record<string, string> = {
   sand: 'linear-gradient(135deg, #d4c4a8 0%, #b8a88a 100%)',
 };
 
-// Beach area cards use the on-brand gradient fallback — consistent with the homepage
-// and per the Žnjan Design System (which advises against construction-phase imagery).
-// The only available zone photos are construction-era; repopulate this map with finished
-// zone photos when they land to restore photography here.
-const areaImages: Record<string, { src: string; credit: string }> = {};
+// Beach area cards — golden-hour zone photography (matches the homepage).
+// Cards without an entry fall back to their assigned brand-gradient.
+const areaImages: Record<string, string> = {
+  'main-beach': '/images/zones/main-beach.jpg',
+  'kids-area': '/images/zones/kids-area.jpg',
+  'sports-zone': '/images/zones/sports-zone.jpg',
+  'promenade': '/images/zones/promenade.jpg',
+  'amphitheater': '/images/zones/amphitheater.jpg',
+};
 ---
 
 <Page
@@ -132,12 +136,7 @@ const areaImages: Record<string, { src: string; credit: string }> = {};
             >
               {/* Background */}
               {areaImages[area.data.id] ? (
-                <>
-                  <img src={areaImages[area.data.id].src} alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
-                  <span class="absolute top-2 right-2 px-1.5 py-0.5 text-[9px] text-white/60 bg-black/30 backdrop-blur-sm rounded z-10">
-                    {areaImages[area.data.id].credit}
-                  </span>
-                </>
+                <img src={areaImages[area.data.id]} alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
               ) : (
                 <div class="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={`background: ${gradient}`}>
                   <svg class="absolute inset-0 w-full h-full opacity-10" preserveAspectRatio="none" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">

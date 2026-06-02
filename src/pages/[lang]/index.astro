@@ -75,11 +75,15 @@ const faqSchemaItems = faqs.map((f) => ({
 // Beach areas data for grid
 const sortedAreas = allAreas.sort((a, b) => a.data.order - b.data.order);
 const areaVariants: ('ocean' | 'adriatic' | 'sunset' | 'coral' | 'sand')[] = ['ocean', 'adriatic', 'sunset', 'coral', 'sand'];
-// Beach area tiles use the on-brand gradient fallback (per the Žnjan Design System,
-// which sanctions brand gradients for cards without photography and advises against
-// construction-phase imagery). The only available zone photos are construction-era,
-// so tiles fall back to their assigned variant gradients until finished zone photos exist.
-const areaImages: Record<string, string> = {};
+// Beach area tiles — golden-hour zone photography (Žnjan Design System north star).
+// Tiles without an entry fall back to their assigned brand-gradient.
+const areaImages: Record<string, string> = {
+  'main-beach': '/images/zones/main-beach.jpg',
+  'kids-area': '/images/zones/kids-area.jpg',
+  'sports-zone': '/images/zones/sports-zone.jpg',
+  'promenade': '/images/zones/promenade.jpg',
+  'amphitheater': '/images/zones/amphitheater.jpg',
+};
 const areasData = sortedAreas.map((area, i) => ({
   title: getLocalized(area.data.title, lang),
   href: getLocalizedUrl(lang, 'beach-areas', area.data.slug[lang]),
@@ -182,7 +186,7 @@ const storyBlocks = [
     ctaText={translations['home.readGuides']}
     ctaHref={getLocalizedUrl(lang, 'guides')}
     scrollText={translations['home.scrollDown']}
-    heroImage="/images/places/taboo-sunset.jpg"
+    heroImage="/images/hero/znjan-promenade-golden.jpg"
   />
 
   <!-- Anchor for scroll indicator -->

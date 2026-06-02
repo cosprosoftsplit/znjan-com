@@ -179,7 +179,7 @@ const user = Astro.locals.user;
               <h3 class="font-semibold text-ocean-900">Participants (${escapeHtml(post.join_count)}${post.max_participants ? '/' + escapeHtml(post.max_participants) : ''})</h3>
               ${userId ? (post.has_joined
                 ? `<button id="leave-btn" class="px-4 py-2 text-sm font-medium rounded-lg border border-warm-300 text-warm-600 hover:bg-warm-50 transition-colors">Leave</button>`
-                : `<button id="join-btn" class="px-4 py-2 text-sm font-medium rounded-lg bg-ocean-600 text-white hover:bg-ocean-700 transition-colors">Join</button>`)
+                : `<button id="join-btn" class="px-4 py-2 text-sm font-medium rounded-full bg-ocean-600 text-white hover:bg-ocean-700 transition-colors">Join</button>`)
               : ''}
             </div>
             ${renderJoiners(post.joiners)}

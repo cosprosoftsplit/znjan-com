@@ -25,7 +25,7 @@ import type {
 } from './src/lib/mobileTypes';
 
 const LANGUAGES: Language[] = ['en', 'hr', 'de', 'it'];
-const TABS = ['discover', 'reservations', 'community', 'account'] as const;
+const TABS = ['discover', 'sports', 'community', 'account'] as const;
 
 const COLORS = {
   background: '#F4EFE5',
@@ -148,7 +148,7 @@ function App() {
     () => fetchMobileData<MobileDiscoverData>(`/api/mobile/v1/discover/?lang=${lang}`),
     [lang, refreshKey],
   );
-  const reservations = useLoadableResource(
+  const sportsAccess = useLoadableResource(
     () => fetchMobileData<MobileReservationsData>(`/api/mobile/v1/reservations/?lang=${lang}&date=${reservationDate}`),
     [lang, reservationDate, refreshKey],
   );
@@ -161,7 +161,7 @@ function App() {
     [lang, refreshKey],
   );
 
-  const anyLoading = bootstrap.loading || discover.loading || reservations.loading || community.loading || auth.loading;
+  const anyLoading = bootstrap.loading || discover.loading || sportsAccess.loading || community.loading || auth.loading;
 
   useEffect(() => {
     if (refreshing && !anyLoading) {
@@ -287,41 +287,36 @@ function App() {
     );
   }
 
-  function renderReservationsTab() {
-    if (!reservations.data && reservations.loading) {
+  function renderSportsAccessTab() {
+    if (!sportsAccess.data && sportsAccess.loading) {
       return renderStateCard();
     }
 
-    if (!reservations.data) {
-      return renderStateCard(reservations.error);
+    if (!sportsAccess.data) {
+      return renderStateCard(sportsAccess.error);
     }
+
+    const accessData = sportsAccess.data;
 
     return (
       <>
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>{labels.sections.reservationPolicy}</Text>
+          <Text style={styles.cardTitle}>{labels.sections.publicAccessNote}</Text>
+          <Text style={styles.bodyText}>{accessData.publicAccessMessage}</Text>
           <View style={styles.policyGrid}>
             <View style={styles.policyTile}>
-              <Text style={styles.policyValue}>{reservations.data.policy.bookingWindowDays}d</Text>
-              <Text style={styles.policyLabel}>{labels.labels.bookingWindow}</Text>
+              <Text style={styles.policyValue}>{accessData.resources.length}</Text>
+              <Text style={styles.policyLabel}>{labels.labels.resources}</Text>
             </View>
             <View style={styles.policyTile}>
-              <Text style={styles.policyValue}>{reservations.data.policy.slotDurationMinutes}m</Text>
-              <Text style={styles.policyLabel}>{labels.labels.slotLength}</Text>
-            </View>
-            <View style={styles.policyTile}>
-              <Text style={styles.policyValue}>{reservations.data.policy.maxReservationsPerDay}</Text>
-              <Text style={styles.policyLabel}>{labels.labels.dayLimit}</Text>
-            </View>
-            <View style={styles.policyTile}>
-              <Text style={styles.policyValue}>{reservations.data.policy.maxUpcomingReservations}</Text>
-              <Text style={styles.policyLabel}>{labels.labels.upcomingLimit}</Text>
+              <Text style={styles.policyValue}>{accessData.dateOptions.length}d</Text>
+              <Text style={styles.policyLabel}>{labels.labels.daysInView}</Text>
             </View>
           </View>
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.pillRow}>
-          {reservations.data.dateOptions.map((option) => (
+          {accessData.dateOptions.map((option) => (
             <Pressable
               key={option}
               onPress={() => setReservationDate(option)}
@@ -335,15 +330,19 @@ function App() {
         </ScrollView>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>{labels.sections.reservationResources}</Text>
-          <Text style={styles.captionText}>{formatLongDate(reservations.data.reservationDate, lang)}</Text>
-          {reservations.data.resources.map((resource) => {
+          <Text style={styles.cardTitle}>{labels.sections.sportsAreas}</Text>
+          <Text style={styles.captionText}>
+            {labels.labels.accessDate}: {formatLongDate(accessData.reservationDate, lang)}
+          </Text>
+          {accessData.resources.map((resource) => {
             const visibleSlots = resource.slots.filter((slot) => slot.status !== 'past').slice(0, 3);
             return (
               <View key={resource.id} style={styles.resourceCard}>
                 <Text style={styles.listTitle}>{resource.titles[lang] ?? resource.titles.en}</Text>
                 <Text style={styles.captionText}>
-                  {resource.reservationMode === 'shared-session' ? 'Shared session' : 'Exclusive booking'}
+                  {resource.reservationMode === 'shared-session'
+                    ? labels.labels.sharedSession
+                    : labels.labels.sharedPublicArea}
                 </Text>
                 {visibleSlots.length === 0 ? (
                   <Text style={styles.listText}>{labels.labels.noOpenSlots}</Text>
@@ -383,24 +382,6 @@ function App() {
               </View>
             );
           })}
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>{labels.sections.upcomingReservations}</Text>
-          {reservations.data.upcomingReservations.length === 0 ? (
-            <Text style={styles.bodyText}>{labels.states.emptyReservations}</Text>
-          ) : (
-            reservations.data.upcomingReservations.map((reservation) => (
-              <View key={reservation.id} style={styles.listRow}>
-                <View style={styles.listCopy}>
-                  <Text style={styles.listTitle}>{reservation.resource.titles[lang] ?? reservation.resource.titles.en}</Text>
-                  <Text style={styles.listText}>
-                    {formatLongDate(reservation.reservationDate, lang)} · {reservation.slotStart} - {reservation.slotEnd}
-                  </Text>
-                </View>
-              </View>
-            ))
-          )}
         </View>
       </>
     );
@@ -551,7 +532,7 @@ function App() {
 
         <View style={styles.body}>
           {activeTab === 'discover' ? renderDiscoverTab() : null}
-          {activeTab === 'reservations' ? renderReservationsTab() : null}
+          {activeTab === 'sports' ? renderSportsAccessTab() : null}
           {activeTab === 'community' ? renderCommunityTab() : null}
           {activeTab === 'account' ? renderAccountTab() : null}
         </View>

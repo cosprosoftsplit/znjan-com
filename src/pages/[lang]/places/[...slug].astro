@@ -2,13 +2,14 @@
 import Place from '@/layouts/Place.astro';
 import Badge from '@/components/ui/Badge.astro';
 import Button from '@/components/ui/Button.astro';
+import Card from '@/components/ui/Card.astro';
 import InstagramEmbed from '@/components/widgets/InstagramEmbed.astro';
-import { LANGUAGES, getAlternateUrls, getLocalized, getHreflangLinks } from '@/lib/i18n';
+import { LANGUAGES, getAlternateUrls, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
-import { getTranslations } from '@/lib/translations';
+import { getTranslations, t } from '@/lib/translations';
 import { canonicalUrl } from '@/lib/utils';
 import { buildPlaceSchema, buildBreadcrumbSchema } from '@/lib/seo';
-import { tagLabels } from '@/lib/labels';
+import { tagLabels, placeCategoryLabels } from '@/lib/labels';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -32,6 +33,7 @@ const { place, lang } = Astro.props as {
   lang: Language;
 };
 
+const allPlaces = await getCollection('places');
 const translations = getTranslations(lang);
 const title = getLocalized(place.data.title, lang);
 const description = getLocalized(place.data.description, lang);
@@ -42,19 +44,35 @@ const shortDescription = place.data.shortDescription
 const hreflangLinks = getHreflangLinks('places', place.data.slug);
 const alternates = getAlternateUrls('places', place.data.slug);
 
-const categoryToSchemaType: Record<string, 'Restaurant' | 'BarOrPub' | 'CafeOrCoffeeShop' | 'Store' | 'TouristAttraction'> = {
+const categoryToSchemaType: Record<string, 'Restaurant' | 'BarOrPub' | 'CafeOrCoffeeShop' | 'Store' | 'TouristAttraction' | 'Hotel' | 'Resort'> = {
   restaurant: 'Restaurant',
   bar: 'BarOrPub',
   'beach-club': 'TouristAttraction',
   cafe: 'CafeOrCoffeeShop',
   shop: 'Store',
-  hotel: 'TouristAttraction',
+  hotel: 'Hotel',
   other: 'TouristAttraction',
 };
 
+// Place images (same mapping as the listing page) — surfaced into schema.org `image`
+const placeImages: Record<string, string> = {
+  'taboo-beach-club': '/images/places/taboo-daybeds.jpg',
+  'mistral-beach-club': '/images/places/mistral-lounge.jpg',
+  'central-beach': '/images/places/central-beach-indoor.webp',
+  'mimi-italian-clubino': '/images/places/mimi-main.webp',
+  'gal-split': '/images/places/gal-terrace.jpg',
+};
+
+// radisson-blu-resort is specifically a Resort; all other hotels map to Hotel.
+const schemaType = place.data.id === 'radisson-blu-resort'
+  ? 'Resort'
+  : (categoryToSchemaType[place.data.category] || 'TouristAttraction');
+
+const placeImage = placeImages[place.data.id];
+
 const structuredData = [
   buildPlaceSchema({
-    type: categoryToSchemaType[place.data.category] || 'TouristAttraction',
+    type: schemaType,
     name: title,
     description,
     url: `https://znjan.com/${lang}/places/${place.data.slug[lang]}/`,
@@ -64,6 +82,10 @@ const structuredData = [
     phone: place.data.phone,
     priceRange: place.data.priceRange,
     starRating: place.data.starRating,
+    cuisine: place.data.cuisine,
+    website: place.data.website,
+    instagram: place.data.instagram,
+    images: placeImage ? [`https://znjan.com${placeImage}`] : undefined,
   }),
   buildBreadcrumbSchema([
     { name: translations['nav.home'], url: `https://znjan.com/${lang}/` },
@@ -72,10 +94,29 @@ const structuredData = [
   ]),
 ];
 
+// Intent-rich SEO title (the on-page H1 stays the bare venue name)
+const catLabel = placeCategoryLabels[place.data.category]?.[lang] || place.data.category;
+const isFood = place.data.category === 'restaurant' || place.data.category === 'cafe';
+const seoTitle = `${title} — ${catLabel}${isFood ? ' & ' + t(lang, 'places.menuWord') : ''}, ${t(lang, 'places.titleNear')}`;
+
+// Related venues — same beachArea, excluding self, max 4
+const relatedVenues = place.data.beachArea
+  ? allPlaces
+      .filter((p) => p.data.id !== place.data.id && p.data.beachArea === place.data.beachArea)
+      .sort((a, b) => a.data.order - b.data.order)
+      .slice(0, 4)
+      .map((p) => ({
+        title: getLocalized(p.data.title, lang),
+        category: p.data.category,
+        href: getLocalizedUrl(lang, 'places', p.data.slug[lang]),
+      }))
+  : [];
+
 ---
 
 <Place
   title={title}
+  seoTitle={seoTitle}
   description={shortDescription || description}
   lang={lang}
   translations={translations}
@@ -174,4 +215,24 @@ const structuredData = [
       </div>
     )}
   </div>
+
+  {relatedVenues.length > 0 && (
+    <section class="mt-12 pt-8 border-t border-sand-200">
+      <h2 class="text-lg font-semibold text-ocean-700 mb-4">
+        {translations['places.nearbyVenues']}
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {relatedVenues.map((venue) => (
+          <Card href={venue.href}>
+            <div class="p-5">
+              <Badge variant="sand">{placeCategoryLabels[venue.category]?.[lang] || venue.category}</Badge>
+              <h3 class="mt-2 text-base font-semibold text-ocean-700">
+                {venue.title}
+              </h3>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </section>
+  )}
 </Place>

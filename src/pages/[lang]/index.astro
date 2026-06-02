@@ -9,6 +9,7 @@ import ActivitiesStrip from '@/components/sections/ActivitiesStrip.astro';
 import BeachMap from '@/components/maps/BeachMap.astro';
 import InstagramGrid from '@/components/widgets/InstagramGrid.astro';
 import ScrollReveal from '@/components/ui/ScrollReveal.astro';
+import Card from '@/components/ui/Card.astro';
 import { LANGUAGES, getLocalizedUrl, getLocalized } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
@@ -30,6 +31,21 @@ const allAreas = await getCollection('beach-areas');
 const allActivities = await getCollection('activities');
 const allFaqs = await getCollection('faq');
 const siteConfig = await getEntry('global', 'site-config');
+
+// Featured guides — the two demand-phrase "money" guides
+const allGuides = await getCollection('guides', ({ data }) => data.lang === lang);
+const featuredGuideAnchors: Record<string, string> = {
+  'things-to-do': translations['home.guideThingsToDoAnchor'],
+  'best-beaches-in-split': translations['home.guideBeachesAnchor'],
+};
+const featuredGuides = (['things-to-do', 'best-beaches-in-split'] as const)
+  .map((id) => allGuides.find((g) => g.data.guideId === id))
+  .filter((g): g is NonNullable<typeof g> => Boolean(g))
+  .map((g) => ({
+    anchor: featuredGuideAnchors[g.data.guideId],
+    description: getLocalized(g.data.description, lang),
+    href: getLocalizedUrl(lang, 'guides', g.data.slugs[lang]),
+  }));
 
 // Map markers
 const mapMarkers = [
@@ -208,6 +224,43 @@ const storyBlocks = [
     title={translations['activities.title']}
     activities={activitiesData}
   />
+
+  <!-- 6b. Featured Guides — demand-phrase money guides -->
+  {featuredGuides.length > 0 && (
+    <section class="container-page section-breathe">
+      <ScrollReveal>
+        <span class="eyebrow">{translations['nav.guides']}</span>
+        <h2 class="mt-3 text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-ocean-800 tracking-tight">
+          {translations['home.featuredGuides']}
+        </h2>
+        <p class="mt-3 max-w-2xl text-lg text-stone leading-relaxed">
+          {translations['home.featuredGuidesSubtitle']}
+        </p>
+      </ScrollReveal>
+      <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {featuredGuides.map((g, i) => (
+          <ScrollReveal animation="fade-up" delay={i * 80}>
+            <Card href={g.href}>
+              <div class="p-6">
+                <h3 class="text-xl font-display font-semibold text-ocean-700">
+                  {g.anchor}
+                </h3>
+                <p class="mt-2 text-sm text-stone line-clamp-3">
+                  {g.description}
+                </p>
+                <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-adriatic-400">
+                  {translations['guides.readMore']}
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </div>
+            </Card>
+          </ScrollReveal>
+        ))}
+      </div>
+    </section>
+  )}
 
   <!-- 7. Map — Full Width -->
   <section class="section-breathe">

@@ -1,6 +1,6 @@
 # Release Readiness Checklist
 
-This is the short operational checklist for shipping the dynamic community and sports-reservation layers cleanly.
+This is the short operational checklist for shipping the dynamic community and public sports-access layers cleanly.
 
 ## Verified Locally
 
@@ -31,9 +31,9 @@ This is the short operational checklist for shipping the dynamic community and s
 
 - Public content pages still load in all 4 languages.
 - `/en/community/` loads and signed-out state works.
-- `/en/play/` loads as the QR/flyer quick-start entry point and links onward to reservations, rules, dashboard, and sign-in.
+- `/en/play/` loads as the QR/flyer quick-start entry point and links onward to sports access, rules, dashboard, and community onboarding.
 - `/en/play/materials/` loads as the print-ready pilot-materials page and renders the QR plus print actions.
-- `/en/community/start/` loads as the public community onboarding page and gives clear paths into schedule, meetups, and feedback.
+- `/en/community/start/` loads as the public community onboarding page and gives clear paths into sports access, meetups, and feedback.
 - `/en/community/pilot/` loads as the public pilot-update page and clearly explains what is live, what is not promised yet, and how to help this week.
 - `/en/community/help/` loads as the public support page and gives helpers, locals, and supporters one clear action path instead of scattered founder-sprint copy.
 - `/en/community/help/` can submit a real support signal and show inline success feedback instead of dropping the user into a generic contact flow.
@@ -51,20 +51,20 @@ This is the short operational checklist for shipping the dynamic community and s
 - `/en/community/admin/comms/` opens for admins, stays hidden for non-admins, and shows the founder comms kit with reusable messaging, a first-week publishing cadence, and live public/social-card URLs tied to the pilot/start/play routes.
 - Admin reservations page can log a founder/ambassador distribution placement and refresh the recent-log list.
 - Admin venue-validation page can log a real venue conversation and refresh the recent-signal list.
-- `/en/community/reservations/` shows the public schedule.
-- `/en/community/reservations/rules/` shows the public policy and pilot scope.
-- Signed-in users with recent finished reservations can submit collision follow-up from `/en/community/reservations/`.
-- Reservation pages show the public trust framing:
-  - coordination, not legal control
-  - public slot visibility without personal detail exposure
+- `/en/community/sports/` shows the public sports-access note.
+- `/en/community/sports/rules/` shows the public policy and pilot scope.
+- `/en/community/reservations/`, `/en/community/reservations/rules/`, and `/en/community/reservations/dashboard/` redirect to the matching `/en/community/sports/*` routes.
+- Sports-access pages show the public trust framing:
+  - public information, not legal control
+  - no current reservation system
   - a clear path to contact/report issues
-- `/en/community/reservations/dashboard/` shows collision counts and collision rate, not just occupancy and cancellations.
+- `/en/community/sports/dashboard/` shows the public-access update and current conflict-reporting note.
 - `/en/privacy/` reflects the live dynamic product:
   - Google sign-in
   - session cookies
   - public community content
-  - anonymous public reservation availability
-- `/en/contact/` clearly invites reservation-pilot issue reports and directory corrections.
+  - public sports-access information
+- `/en/contact/` clearly invites sports-access issue reports and directory corrections.
 - Google sign-in completes successfully.
 - Admin reservation-closure page opens for admins and remains hidden for non-admins.
 - Admin reservation page can log an admin or ambassador collision report.
@@ -99,4 +99,4 @@ This is the short operational checklist for shipping the dynamic community and s
 
 1. Configure production bindings and OAuth environment variables.
 2. Run the smoke test above on the deployed site.
-3. Announce the public sports-access pages only after the rules page, dashboard/update page, quick-start page, and printed QR/flyer flow all verify on production.
+3. Announce the public sports-access pages only after the sports page, rules page, dashboard/update page, quick-start page, and printed QR/flyer flow all verify on production.

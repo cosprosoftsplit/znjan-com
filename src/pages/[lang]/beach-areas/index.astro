@@ -25,6 +25,14 @@ const areas = allAreas.sort((a, b) => a.data.order - b.data.order);
 
 const allPlaces = await getCollection('places');
 
+// Contextual callout to the best-beaches money guide (same language)
+const bestBeachesGuide = (
+  await getCollection('guides', ({ data }) => data.lang === lang && data.guideId === 'best-beaches-in-split')
+)[0];
+const bestBeachesGuideUrl = bestBeachesGuide
+  ? getLocalizedUrl(lang, 'guides', bestBeachesGuide.data.slugs[lang])
+  : undefined;
+
 const mapMarkers = [
   ...areas.map((area) => ({
     lat: area.data.coordinates.lat,
@@ -88,6 +96,17 @@ const areaImages: Record<string, { src: string; credit: string }> = {
     title={translations['beachAreas.title']}
     subtitle={translations['beachAreas.subtitle']}
   />
+
+  {bestBeachesGuideUrl && (
+    <div class="container-page pt-8">
+      <a
+        href={bestBeachesGuideUrl}
+        class="inline-flex items-center gap-1.5 text-sm font-medium text-adriatic-400 hover:text-adriatic-500 hover:underline transition-colors duration-200"
+      >
+        {translations['beachAreas.compareGuideCta']}
+      </a>
+    </div>
+  )}
 
   <!-- Interactive Map -->
   <section class="container-page pt-12 pb-4">

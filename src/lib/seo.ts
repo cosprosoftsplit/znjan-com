@@ -186,7 +186,7 @@ export function buildFAQSchema(
 }
 
 export function buildPlaceSchema(options: {
-  type: 'Restaurant' | 'BarOrPub' | 'CafeOrCoffeeShop' | 'Store' | 'TouristAttraction';
+  type: 'Restaurant' | 'BarOrPub' | 'CafeOrCoffeeShop' | 'Store' | 'TouristAttraction' | 'Hotel' | 'Resort';
   name: string;
   description: string;
   url: string;
@@ -196,7 +196,16 @@ export function buildPlaceSchema(options: {
   phone?: string;
   priceRange?: string;
   starRating?: number;
+  cuisine?: string[];
+  website?: string;
+  instagram?: string;
+  images?: string[];
 }) {
+  const sameAs = [
+    ...(options.website ? [options.website] : []),
+    ...(options.instagram ? [`https://www.instagram.com/${options.instagram}/`] : []),
+  ];
+
   return {
     '@context': 'https://schema.org',
     '@type': options.type,
@@ -219,12 +228,16 @@ export function buildPlaceSchema(options: {
     }),
     ...(options.phone && { telephone: options.phone }),
     ...(options.priceRange && { priceRange: options.priceRange }),
+    ...(options.cuisine && options.cuisine.length > 0 && { servesCuisine: options.cuisine }),
+    ...(sameAs.length > 0 && { sameAs }),
+    ...(options.images && options.images.length > 0 && { image: options.images }),
+    // Hotel/resort class is a star rating of the property, not a review rating.
+    // Emit it as schema.org Rating (starRating) — never as aggregateRating.
     ...(options.starRating && {
-      aggregateRating: {
-        '@type': 'AggregateRating',
+      starRating: {
+        '@type': 'Rating',
         ratingValue: options.starRating,
         bestRating: 5,
-        worstRating: 1,
       },
     }),
   };

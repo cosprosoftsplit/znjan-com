@@ -10,12 +10,10 @@ import {
   createMobileViewer,
 } from '@/lib/mobile-api';
 import {
+  PUBLIC_SPORTS_ACCESS_MESSAGE,
   RESERVATION_POLICY,
-  SportsReservationError,
-  createSportsReservation,
   getReservationDateOptions,
   getSportsScheduleForDate,
-  listUpcomingSportsReservations,
   resolveReservationDate,
 } from '@/lib/sports-reservations';
 
@@ -26,14 +24,12 @@ export const GET: APIRoute = async ({ url, locals }) => {
     const lang = normalizeLanguage(url.searchParams.get('lang'));
     const db = getDB(locals.runtime);
     const reservationDate = resolveReservationDate(url.searchParams.get('date'));
-
-    const [resources, upcomingReservations] = await Promise.all([
-      getSportsScheduleForDate(db, reservationDate, locals.user?.id),
-      locals.user ? listUpcomingSportsReservations(db, locals.user.id) : Promise.resolve([]),
-    ]);
+    const resources = await getSportsScheduleForDate(db, reservationDate, locals.user?.id);
 
     const body = createMobileEnvelope(lang, {
       viewer: createMobileViewer(locals.user),
+      reservationsEnabled: false,
+      publicAccessMessage: PUBLIC_SPORTS_ACCESS_MESSAGE,
       reservationDate,
       dateOptions: getReservationDateOptions(),
       policy: RESERVATION_POLICY,
@@ -49,27 +45,10 @@ export const GET: APIRoute = async ({ url, locals }) => {
         isActive: resource.isActive,
         slots: resource.slots,
       })),
-      upcomingReservations: upcomingReservations.map((reservation) => ({
-        id: reservation.id,
-        reservationDate: reservation.reservationDate,
-        slotStart: reservation.slotStart,
-        slotEnd: reservation.slotEnd,
-        canCancel: reservation.canCancel,
-        resource: {
-          id: reservation.resource.id,
-          slug: reservation.resource.slug,
-          kind: reservation.resource.kind,
-          sortOrder: reservation.resource.sortOrder,
-          reservationMode: reservation.resource.reservationMode,
-          capacity: reservation.resource.capacity,
-          availableSlotStarts: reservation.resource.availableSlotStarts,
-          titles: reservation.resource.titles,
-          isActive: reservation.resource.isActive,
-        },
-      })),
+      upcomingReservations: [],
       actions: {
-        createReservation: `/api/mobile/v1/reservations`,
-        cancelReservation: '/api/mobile/v1/reservations/:id',
+        createReservation: null,
+        cancelReservation: null,
       },
     });
 
@@ -85,56 +64,11 @@ export const GET: APIRoute = async ({ url, locals }) => {
   }
 };
 
-export const POST: APIRoute = async ({ request, url, locals }) => {
-  const user = locals.user;
-  if (!user) {
-    return createMobileErrorResponse(
-      'authentication-required',
-      'Authentication required',
-      401,
-      { authRequired: true },
-    );
-  }
-
-  try {
-    const lang = normalizeLanguage(url.searchParams.get('lang'));
-    const db = getDB(locals.runtime);
-    const body = await request.json();
-    const resourceSlug = typeof body?.resourceSlug === 'string' ? body.resourceSlug : '';
-    const reservationDate = typeof body?.reservationDate === 'string' ? body.reservationDate : '';
-    const slotStart = typeof body?.slotStart === 'string' ? body.slotStart : '';
-
-    const reservation = await createSportsReservation(db, user.id, {
-      resourceSlug,
-      reservationDate,
-      slotStart,
-    });
-
-    return createMobileResponse(
-      createMobileEnvelope(lang, {
-        reservation: {
-          id: reservation.id,
-          resourceSlug,
-          reservationDate,
-          slotStart,
-        },
-      }),
-      201,
-      MOBILE_PRIVATE_CACHE_CONTROL,
-    );
-  } catch (error) {
-    if (error instanceof SportsReservationError) {
-      return createMobileErrorResponse(error.code, error.message, error.status, {
-        cacheControl: MOBILE_PRIVATE_CACHE_CONTROL,
-      });
-    }
-
-    console.error('[mobile/reservations/post]', error);
-    return createMobileErrorResponse(
-      'internal-error',
-      'Internal server error',
-      500,
-      { retryable: true },
-    );
-  }
+export const POST: APIRoute = async () => {
+  return createMobileErrorResponse(
+    'reservations-disabled',
+    PUBLIC_SPORTS_ACCESS_MESSAGE,
+    409,
+    { cacheControl: MOBILE_PRIVATE_CACHE_CONTROL },
+  );
 };

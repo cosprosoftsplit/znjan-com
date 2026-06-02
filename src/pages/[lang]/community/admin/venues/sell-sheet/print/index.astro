@@ -35,7 +35,7 @@ const locale = lang === 'en' ? 'en-GB' : lang;
 
 const pilotUrl = `${siteUrl}/${lang}/community/pilot/`;
 const placesUrl = `${siteUrl}/${lang}/places/`;
-const scheduleUrl = `${siteUrl}/${lang}/community/reservations/`;
+const scheduleUrl = `${siteUrl}/${lang}/community/sports/`;
 const pilotQrSvg = await createQrSvg(pilotUrl);
 const placesQrSvg = await createQrSvg(placesUrl);
 
@@ -102,7 +102,7 @@ function formatUpdatedAt(): string {
       <button
         type="button"
         id="print-commercial-sheet"
-        class="inline-flex items-center justify-center rounded-lg bg-coral-500 px-6 py-3 text-base font-semibold uppercase tracking-wider text-white transition-colors hover:bg-coral-600"
+        class="inline-flex items-center justify-center rounded-full bg-coral-400 px-7 py-3.5 text-base font-semibold text-white shadow-coral transition-all hover:bg-coral-500 hover:-translate-y-px"
       >
         {t(lang, 'admin.commercialSellSheetPrintCta')}
       </button>

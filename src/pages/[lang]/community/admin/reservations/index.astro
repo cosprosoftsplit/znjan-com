@@ -111,8 +111,8 @@ const totalDistributionPoints = new Set(distributionLogs.map((log) => `${log.loc
           {t(lang, 'admin.title')}
         </a>
         <a
-          href={`/${lang}/community/reservations/`}
-          class="inline-flex items-center justify-center rounded-lg bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+          href={`/${lang}/community/sports/`}
+          class="inline-flex items-center justify-center rounded-full bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
         >
           {t(lang, 'reservations.viewSportsReservations')}
         </a>
@@ -127,7 +127,7 @@ const totalDistributionPoints = new Set(distributionLogs.map((log) => `${log.loc
           <div class="flex items-center justify-between gap-4 mb-6">
             <div>
               <h2 class="text-xl font-semibold text-ocean-900">{t(lang, 'admin.blackoutFormTitle')}</h2>
-              <p class="text-sm text-warm-600 mt-1">{t(lang, 'reservations.ruleWindow')}</p>
+              <p class="text-sm text-warm-600 mt-1">{t(lang, 'admin.blackoutFormDescription')}</p>
             </div>
             <div class="rounded-full bg-coral-50 px-3 py-1 text-sm font-semibold text-coral-700">
               {blackouts.length} {t(lang, 'admin.activeBlackouts').toLowerCase()}
@@ -205,7 +205,7 @@ const totalDistributionPoints = new Set(distributionLogs.map((log) => `${log.loc
               </p>
               <button
                 type="submit"
-                class="inline-flex items-center justify-center rounded-lg bg-coral-600 px-5 py-3 text-sm font-semibold text-white hover:bg-coral-700 transition-colors"
+                class="inline-flex items-center justify-center rounded-full bg-coral-600 px-5 py-3 text-sm font-semibold text-white hover:bg-coral-700 transition-colors"
               >
                 {t(lang, 'admin.blackoutSubmit')}
               </button>
@@ -321,7 +321,7 @@ const totalDistributionPoints = new Set(distributionLogs.map((log) => `${log.loc
               </p>
               <button
                 type="submit"
-                class="inline-flex items-center justify-center rounded-lg bg-coral-600 px-5 py-3 text-sm font-semibold text-white hover:bg-coral-700 transition-colors"
+                class="inline-flex items-center justify-center rounded-full bg-coral-600 px-5 py-3 text-sm font-semibold text-white hover:bg-coral-700 transition-colors"
               >
                 {t(lang, 'admin.collisionSubmit')}
               </button>
@@ -425,7 +425,7 @@ const totalDistributionPoints = new Set(distributionLogs.map((log) => `${log.loc
               </p>
               <button
                 type="submit"
-                class="inline-flex items-center justify-center rounded-lg bg-coral-600 px-5 py-3 text-sm font-semibold text-white hover:bg-coral-700 transition-colors"
+                class="inline-flex items-center justify-center rounded-full bg-coral-600 px-5 py-3 text-sm font-semibold text-white hover:bg-coral-700 transition-colors"
               >
                 {t(lang, 'admin.distributionSubmit')}
               </button>

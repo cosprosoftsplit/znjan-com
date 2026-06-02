@@ -3,16 +3,15 @@ import type { Language } from './mobileTypes';
 type Labels = {
   tagline: string;
   apiTarget: string;
-  tabs: Record<'discover' | 'reservations' | 'community' | 'account', string>;
+  tabs: Record<'discover' | 'sports' | 'community' | 'account', string>;
   sections: {
     overview: string;
     featuredAreas: string;
     featuredActivities: string;
     featuredPlaces: string;
     commonQuestions: string;
-    reservationPolicy: string;
-    reservationResources: string;
-    upcomingReservations: string;
+    publicAccessNote: string;
+    sportsAreas: string;
     communityFeed: string;
     authStatus: string;
     nextMilestone: string;
@@ -27,7 +26,6 @@ type Labels = {
   states: {
     loading: string;
     emptyPosts: string;
-    emptyReservations: string;
     emptyFaq: string;
     signedIn: string;
     signedOut: string;
@@ -41,11 +39,12 @@ type Labels = {
     past: string;
     spotsLeft: string;
     noOpenSlots: string;
+    sharedPublicArea: string;
+    sharedSession: string;
+    resources: string;
+    daysInView: string;
+    accessDate: string;
     loginOnWeb: string;
-    bookingWindow: string;
-    slotLength: string;
-    dayLimit: string;
-    upcomingLimit: string;
     comments: string;
     joins: string;
     views: string;
@@ -56,11 +55,11 @@ type Labels = {
 
 const LABELS: Record<Language, Labels> = {
   en: {
-    tagline: 'Verified beach information, public reservations, and community updates for Znjan.',
+    tagline: 'Verified beach information, public sports access, and community updates for Znjan.',
     apiTarget: 'API target',
     tabs: {
       discover: 'Discover',
-      reservations: 'Reservations',
+      sports: 'Sports Access',
       community: 'Community',
       account: 'Account',
     },
@@ -70,9 +69,8 @@ const LABELS: Record<Language, Labels> = {
       featuredActivities: 'Activities',
       featuredPlaces: 'Places',
       commonQuestions: 'Common questions',
-      reservationPolicy: 'Reservation policy',
-      reservationResources: 'Resources',
-      upcomingReservations: 'Upcoming reservations',
+      publicAccessNote: 'Public access note',
+      sportsAreas: 'Sports areas',
       communityFeed: 'Latest posts',
       authStatus: 'Auth status',
       nextMilestone: 'Next milestone',
@@ -87,25 +85,25 @@ const LABELS: Record<Language, Labels> = {
     states: {
       loading: 'Loading live data...',
       emptyPosts: 'No approved community posts yet.',
-      emptyReservations: 'No upcoming reservations yet.',
       emptyFaq: 'No FAQ highlights available yet.',
       signedIn: 'Signed in',
       signedOut: 'Signed out',
       nativeNotReady: 'Native auth is documented, but not implemented yet.',
     },
     labels: {
-      available: 'Available',
-      reserved: 'Reserved',
+      available: 'Open',
+      reserved: 'Busy',
       mine: 'Mine',
       closed: 'Closed',
       past: 'Past',
       spotsLeft: 'spots left',
-      noOpenSlots: 'No open slots on this date',
+      noOpenSlots: 'No live access blocks on this date',
+      sharedPublicArea: 'Shared public area',
+      sharedSession: 'Shared session',
+      resources: 'Resources',
+      daysInView: 'Days in view',
+      accessDate: 'Access date',
       loginOnWeb: 'Open web login',
-      bookingWindow: 'Booking window',
-      slotLength: 'Slot length',
-      dayLimit: 'Daily limit',
-      upcomingLimit: 'Upcoming cap',
       comments: 'Comments',
       joins: 'Joins',
       views: 'Views',
@@ -114,11 +112,11 @@ const LABELS: Record<Language, Labels> = {
     },
   },
   hr: {
-    tagline: 'Provjerene informacije o plazi, javne rezervacije i novosti zajednice za Znjan.',
+    tagline: 'Provjerene informacije o plazi, javnom sportskom pristupu i novostima zajednice za Znjan.',
     apiTarget: 'API okruzenje',
     tabs: {
       discover: 'Otkrij',
-      reservations: 'Rezervacije',
+      sports: 'Sportski pristup',
       community: 'Zajednica',
       account: 'Racun',
     },
@@ -128,9 +126,8 @@ const LABELS: Record<Language, Labels> = {
       featuredActivities: 'Aktivnosti',
       featuredPlaces: 'Mjesta',
       commonQuestions: 'Cesta pitanja',
-      reservationPolicy: 'Pravila rezervacija',
-      reservationResources: 'Resursi',
-      upcomingReservations: 'Nadolazece rezervacije',
+      publicAccessNote: 'Napomena o javnom pristupu',
+      sportsAreas: 'Sportske zone',
       communityFeed: 'Najnovije objave',
       authStatus: 'Status prijave',
       nextMilestone: 'Sljedeci korak',
@@ -145,25 +142,25 @@ const LABELS: Record<Language, Labels> = {
     states: {
       loading: 'Ucitavanje podataka...',
       emptyPosts: 'Jos nema odobrenih objava zajednice.',
-      emptyReservations: 'Jos nema nadolazecih rezervacija.',
       emptyFaq: 'Jos nema izdvojenih FAQ stavki.',
       signedIn: 'Prijavljen',
       signedOut: 'Niste prijavljeni',
       nativeNotReady: 'Nativna prijava je definirana, ali jos nije implementirana.',
     },
     labels: {
-      available: 'Dostupno',
-      reserved: 'Rezervirano',
+      available: 'Otvoreno',
+      reserved: 'Zauzeto',
       mine: 'Moje',
       closed: 'Zatvoreno',
       past: 'Proslo',
       spotsLeft: 'slobodnih mjesta',
-      noOpenSlots: 'Nema slobodnih termina za ovaj datum',
+      noOpenSlots: 'Nema aktivnih blokova za ovaj datum',
+      sharedPublicArea: 'Dijeljeni javni prostor',
+      sharedSession: 'Zajednicki termin',
+      resources: 'Resursi',
+      daysInView: 'Dani u prikazu',
+      accessDate: 'Datum pristupa',
       loginOnWeb: 'Otvori web prijavu',
-      bookingWindow: 'Rok rezervacije',
-      slotLength: 'Trajanje termina',
-      dayLimit: 'Dnevni limit',
-      upcomingLimit: 'Ukupni limit',
       comments: 'Komentari',
       joins: 'Pridruzivanja',
       views: 'Pregledi',
@@ -172,11 +169,11 @@ const LABELS: Record<Language, Labels> = {
     },
   },
   de: {
-    tagline: 'Verifizierte Strandinfos, offentliche Reservierungen und Community-Updates fur Znjan.',
+    tagline: 'Verifizierte Strandinfos, Hinweise zum offentlichen Sportzugang und Community-Updates fur Znjan.',
     apiTarget: 'API-Ziel',
     tabs: {
       discover: 'Entdecken',
-      reservations: 'Reservierungen',
+      sports: 'Sportzugang',
       community: 'Community',
       account: 'Konto',
     },
@@ -186,9 +183,8 @@ const LABELS: Record<Language, Labels> = {
       featuredActivities: 'Aktivitaten',
       featuredPlaces: 'Orte',
       commonQuestions: 'Haufige Fragen',
-      reservationPolicy: 'Reservierungsregeln',
-      reservationResources: 'Ressourcen',
-      upcomingReservations: 'Bevorstehende Reservierungen',
+      publicAccessNote: 'Hinweis zum offentlichen Zugang',
+      sportsAreas: 'Sportbereiche',
       communityFeed: 'Neueste Beitrage',
       authStatus: 'Anmeldestatus',
       nextMilestone: 'Nachster Meilenstein',
@@ -203,25 +199,25 @@ const LABELS: Record<Language, Labels> = {
     states: {
       loading: 'Live-Daten werden geladen...',
       emptyPosts: 'Noch keine freigegebenen Community-Beitrage.',
-      emptyReservations: 'Noch keine bevorstehenden Reservierungen.',
       emptyFaq: 'Noch keine FAQ-Highlights verfugbar.',
       signedIn: 'Angemeldet',
       signedOut: 'Nicht angemeldet',
       nativeNotReady: 'Native Anmeldung ist dokumentiert, aber noch nicht umgesetzt.',
     },
     labels: {
-      available: 'Verfugbar',
-      reserved: 'Reserviert',
+      available: 'Offen',
+      reserved: 'Belegt',
       mine: 'Mein',
       closed: 'Geschlossen',
       past: 'Vergangen',
       spotsLeft: 'freie Platze',
-      noOpenSlots: 'Keine offenen Zeitfenster an diesem Tag',
+      noOpenSlots: 'Keine aktiven Zeitblocke fur dieses Datum',
+      sharedPublicArea: 'Geteilter offentlicher Bereich',
+      sharedSession: 'Gemeinsame Session',
+      resources: 'Ressourcen',
+      daysInView: 'Tage im Blick',
+      accessDate: 'Zugangsdatum',
       loginOnWeb: 'Web-Login offnen',
-      bookingWindow: 'Buchungsfenster',
-      slotLength: 'Slot-Lange',
-      dayLimit: 'Tageslimit',
-      upcomingLimit: 'Gesamtlimit',
       comments: 'Kommentare',
       joins: 'Teilnahmen',
       views: 'Aufrufe',
@@ -230,11 +226,11 @@ const LABELS: Record<Language, Labels> = {
     },
   },
   it: {
-    tagline: 'Informazioni verificate sulla spiaggia, prenotazioni pubbliche e aggiornamenti della community per Znjan.',
+    tagline: 'Informazioni verificate sulla spiaggia, accesso pubblico allo sport e aggiornamenti della community per Znjan.',
     apiTarget: 'Destinazione API',
     tabs: {
       discover: 'Scopri',
-      reservations: 'Prenotazioni',
+      sports: 'Accesso sport',
       community: 'Community',
       account: 'Account',
     },
@@ -244,9 +240,8 @@ const LABELS: Record<Language, Labels> = {
       featuredActivities: 'Attivita',
       featuredPlaces: 'Luoghi',
       commonQuestions: 'Domande frequenti',
-      reservationPolicy: 'Regole di prenotazione',
-      reservationResources: 'Risorse',
-      upcomingReservations: 'Prenotazioni future',
+      publicAccessNote: 'Nota di accesso pubblico',
+      sportsAreas: 'Aree sportive',
       communityFeed: 'Ultimi post',
       authStatus: 'Stato accesso',
       nextMilestone: 'Prossimo traguardo',
@@ -261,25 +256,25 @@ const LABELS: Record<Language, Labels> = {
     states: {
       loading: 'Caricamento dati in corso...',
       emptyPosts: 'Nessun post community approvato al momento.',
-      emptyReservations: 'Nessuna prenotazione futura al momento.',
       emptyFaq: 'Nessuna FAQ evidenziata disponibile.',
       signedIn: 'Accesso effettuato',
       signedOut: 'Non autenticato',
       nativeNotReady: 'L accesso nativo e documentato ma non ancora implementato.',
     },
     labels: {
-      available: 'Disponibile',
-      reserved: 'Prenotato',
+      available: 'Aperto',
+      reserved: 'Occupato',
       mine: 'Mio',
       closed: 'Chiuso',
       past: 'Passato',
       spotsLeft: 'posti liberi',
-      noOpenSlots: 'Nessuno slot libero in questa data',
+      noOpenSlots: 'Nessun blocco attivo in questa data',
+      sharedPublicArea: 'Area pubblica condivisa',
+      sharedSession: 'Sessione condivisa',
+      resources: 'Risorse',
+      daysInView: 'Giorni visibili',
+      accessDate: 'Data accesso',
       loginOnWeb: 'Apri login web',
-      bookingWindow: 'Finestra prenotazioni',
-      slotLength: 'Durata slot',
-      dayLimit: 'Limite giornaliero',
-      upcomingLimit: 'Limite totale',
       comments: 'Commenti',
       joins: 'Partecipanti',
       views: 'Visualizzazioni',

@@ -6,14 +6,14 @@
 - Dynamic features rely on the Cloudflare D1 binding named `DB`.
 - Google OAuth requires `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and the callback URL `https://znjan.com/api/auth/callback`.
 
-## Community + Reservations
+## Community + Sports Access
 
 - Current public sports message across the site:
   - all sports activities are free
   - there is no current reservation system
   - the sports areas are open to the public on a first-come, first-served basis
 - Community auth now uses Google OAuth plus D1-backed session cookies.
-- Sports reservations currently publish 9 pilot resources:
+- The sports-access layer currently tracks 9 public sports resources:
   - 3 beach volleyball courts
   - 1 tennis court
   - 1 basketball court
@@ -23,21 +23,21 @@
   - open session at 17:00 with capacity 12
   - sunset session at 19:00 with capacity 12
 - Skate park now runs as a shared-capacity session pilot instead of exclusive whole-park booking.
-- The public sports-reservations surface now has three user-facing pages:
-  - `/[lang]/community/reservations/`
-  - `/[lang]/community/reservations/rules/`
-  - `/[lang]/community/reservations/dashboard/`
-- The transparency dashboard reports the live 7-day booking window with occupancy, closures, cancellation rate, collision rate, busiest hour, and per-resource breakdowns.
-- Collision reporting is now part of the live reservation system:
-  - users can submit follow-up for recent finished reservations from `/[lang]/community/reservations/`
-  - admins can log direct admin or ambassador incidents from `/[lang]/community/admin/reservations/`
-  - collision rate is calculated against completed active reservations in the current reporting window
-- The web reservation surfaces now include explicit trust framing:
-  - the schedule, rules, and dashboard pages explain that this is a public coordination pilot rather than legal beachfront control
-  - users are told reservation visibility is public and are given clear privacy/contact paths for issue reporting
+- The public sports-access surface now has three user-facing pages:
+  - `/[lang]/community/sports/`
+  - `/[lang]/community/sports/rules/`
+  - `/[lang]/community/sports/dashboard/`
+- The legacy public `/[lang]/community/reservations/*` routes now redirect to `/[lang]/community/sports/*` so older shares still work without keeping reservation-shaped URLs as the main public path.
+- The public sports dashboard is currently a trust/update surface, not a live occupancy or booking board.
+- Collision/admin incident logging remains available from `/[lang]/community/admin/reservations/`:
+  - admins can log direct admin or ambassador incidents there
+  - the old user-side reservation-follow-up endpoint is disabled and should be treated as legacy behavior
+- The web sports-access surfaces now include explicit trust framing:
+  - the sports, rules, and dashboard pages explain that this is a public-information layer rather than legal beachfront control
+  - users are given clear privacy/contact paths for corrections or issue reporting
 - A permission-light physical-pilot entry route now exists at `/[lang]/play/`:
   - intended for QR stickers, flyers, and pavilion handouts
-  - designed as the fastest public path into reservations, rules, dashboard, and sign-in
+  - designed as the fastest public path into sports access, rules, dashboard, and community onboarding
   - shows a live snapshot so on-site users immediately understand whether the pilot is active and useful
 - A print-ready materials route now exists at `/[lang]/play/materials/`:
   - generates a real QR for the production quick-start page
@@ -49,7 +49,7 @@
   - the admin page now shows recent distribution logs plus summary totals for distribution points and materials placed
 - A dedicated founder operations surface now exists at `/[lang]/community/admin/pilot/`:
   - combines today's reservation snapshot, active closures, recent collisions, and distribution activity
-  - provides quick links into `/play/`, `/play/materials/`, the public reservations pages, and the reservation admin route
+  - provides quick links into `/play/`, `/play/materials/`, the public sports pages, and the reservation admin route
   - acts as the daily founder operating note for the permission-light sprint
   - now also includes a D1-backed coverage planner for named founder, ambassador, and helper blocks with next-7-days totals
 - A dedicated seed-community toolkit now exists at `/[lang]/community/admin/seed/`:
@@ -84,13 +84,16 @@
   - `/api/mobile/v1/reservations/:id`
   - `/api/mobile/v1/community/feed`
   - `/api/mobile/v1/community/posts/:id`
-- The mobile API is currently read-first, with reservation write support already available under the versioned mobile namespace.
+- The mobile API is currently read-first:
+  - sports access is exposed through the existing `/api/mobile/v1/reservations*` namespace for compatibility
+  - create/cancel behavior is disabled there just like on the web API
+  - the mobile payload now treats that surface as public sports-access information, not a live booking flow
 - Native auth is still a gap:
   - current auth is Google OAuth plus cookie-backed web sessions
-  - mobile will need an explicit native-friendly session/token contract before reservation writes and community writes feel first-class
+  - mobile will need an explicit native-friendly session/token contract before community writes feel first-class
 - The first Expo workspace now lives at `apps/mobile`:
   - uses `EXPO_PUBLIC_API_BASE_URL` to point at production or local runtime
-  - currently renders discover, reservations, community, and auth-status tabs against the live mobile API
+  - currently renders discover, sports-access, community, and auth-status tabs against the live mobile API
   - local verification is `cd apps/mobile && npm run typecheck`
 - App-factory handoff bundles now live under `deliverables/`:
   - one docs-only zip
@@ -159,10 +162,7 @@
 - Phase 11.5 now also has a share-ready social layer:
   - `/api/og/founder-sprint.svg` generates dedicated social cards for `/[lang]/play/`, `/[lang]/community/start/`, `/[lang]/community/pilot/`, and `/[lang]/community/help/`
   - those pages no longer rely on the generic site OG image when shared into WhatsApp, Instagram DM, X, or other link-preview surfaces
-- The current production smoke test should now explicitly cover collision logging:
-  - user follow-up path on the public reservations page
-  - admin/ambassador logging on the admin reservations page
-  - collision counts on the public transparency dashboard
+- The current production smoke test should now explicitly cover collision/admin logging on the admin reservations page.
 - Exact public inventory for basketball and cage football may expand once final operating counts are confirmed on site.
 - A current whole-project documentation artifact now exists at `docs/project-dossier.md` covering:
   - website
@@ -179,3 +179,10 @@
   - community seed before broad rollout
   - sell-before-build for venue monetization
   - later-stage ideas like Znjan Radio / BI / Place-OS stay out of the immediate execution path
+- Sports access should now be treated as a strict public-information surface:
+  - public copy across EN / HR / DE / IT should consistently say all sports activities are free, there is no current reservation system, and access is first-come, first-served
+  - public route references should point to `/[lang]/community/sports/*`, with `/[lang]/community/reservations/*` treated as legacy redirects
+  - reservation-era wording should be treated as stale copy unless it is deliberately internal and clearly documented
+  - reservation create/cancel endpoints are disabled on both web and mobile API surfaces so runtime behavior matches the public product claim
+  - the old reservation-follow-up endpoint is also disabled; public collision logging should not imply user-held reservation IDs anymore
+  - mobile reservation read payloads should not advertise create/cancel action URLs while writes are off

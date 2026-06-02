@@ -4,7 +4,7 @@ import { LANGUAGES, getAlternateUrls, getLocalized, getHreflangLinks, getLocaliz
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { canonicalUrl } from '@/lib/utils';
-import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/seo';
+import { buildArticleSchema, buildBreadcrumbSchema, buildFAQSchema } from '@/lib/seo';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -24,7 +24,55 @@ const description = getLocalized(guide.data.description, lang);
 const hreflangLinks = getHreflangLinks('guides', guide.data.slugs);
 const alternates = getAlternateUrls('guides', guide.data.slugs);
 
-const structuredData = [
+// Related content links (same-language siblings, guarded against missing entities)
+const allGuides = await getCollection('guides', ({ data }) => data.lang === lang);
+const allActivities = await getCollection('activities');
+const allBeachAreas = await getCollection('beach-areas');
+const allPlaces = await getCollection('places');
+
+const relatedLinks: Array<{ label: string; href: string }> = [];
+
+for (const guideId of guide.data.relatedGuides) {
+  const related = allGuides.find((g) => g.data.guideId === guideId);
+  if (related) {
+    relatedLinks.push({
+      label: getLocalized(related.data.title, lang),
+      href: getLocalizedUrl(lang, 'guides', related.data.slugs[lang]),
+    });
+  }
+}
+
+for (const activityId of guide.data.relatedActivities) {
+  const related = allActivities.find((a) => a.data.id === activityId);
+  if (related) {
+    relatedLinks.push({
+      label: getLocalized(related.data.title, lang),
+      href: getLocalizedUrl(lang, 'activities', related.data.slug[lang]),
+    });
+  }
+}
+
+for (const areaId of guide.data.relatedBeachAreas) {
+  const related = allBeachAreas.find((a) => a.data.id === areaId);
+  if (related) {
+    relatedLinks.push({
+      label: getLocalized(related.data.title, lang),
+      href: getLocalizedUrl(lang, 'beach-areas', related.data.slug[lang]),
+    });
+  }
+}
+
+for (const placeId of guide.data.relatedPlaces) {
+  const related = allPlaces.find((p) => p.data.id === placeId);
+  if (related) {
+    relatedLinks.push({
+      label: getLocalized(related.data.title, lang),
+      href: getLocalizedUrl(lang, 'places', related.data.slug[lang]),
+    });
+  }
+}
+
+const structuredData: Record<string, unknown>[] = [
   buildArticleSchema({
     title,
     description,
@@ -39,6 +87,10 @@ const structuredData = [
     { name: title, url: `https://znjan.com/${lang}/guides/${guide.data.slugs[lang]}/` },
   ]),
 ];
+
+if (guide.data.faqs?.length) {
+  structuredData.push(buildFAQSchema(guide.data.faqs));
+}
 
 const { Content } = await guide.render();
 ---
@@ -57,6 +109,7 @@ const { Content } = await guide.render();
   author={guide.data.author || 'Znjan.com Team'}
   readingTime={guide.data.readingTime}
   cluster={guide.data.cluster}
+  relatedLinks={relatedLinks}
 >
   <Content />
 </Guide>

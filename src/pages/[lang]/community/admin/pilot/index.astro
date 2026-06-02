@@ -51,7 +51,6 @@ const alternates = Object.fromEntries(
 ) as Record<Language, string>;
 
 const locale = lang === 'en' ? 'en-GB' : lang;
-const todaySummary = snapshot.dateSummaries.find((summary) => summary.date === today);
 const todayDistributionLogs = distributionLogs.filter((log) => log.distributionDate === today);
 const todayDistributionPoints = new Set(
   todayDistributionLogs.map((log) => `${log.locationType}:${log.locationName.toLowerCase()}`),
@@ -113,9 +112,9 @@ const quickActions = [
   { href: `/${lang}/play/`, label: t(lang, 'reservations.quickStartTitle') },
   { href: `/${lang}/play/materials/`, label: t(lang, 'reservations.pilotKitCta') },
   { href: `/${lang}/community/admin/seed/`, label: t(lang, 'admin.manageSeedCommunity') },
-  { href: `/${lang}/community/reservations/`, label: t(lang, 'reservations.viewSportsReservations') },
-  { href: `/${lang}/community/reservations/rules/`, label: t(lang, 'reservations.rulesCta') },
-  { href: `/${lang}/community/reservations/dashboard/`, label: t(lang, 'reservations.viewTransparencyDashboard') },
+  { href: `/${lang}/community/sports/`, label: t(lang, 'reservations.viewSportsReservations') },
+  { href: `/${lang}/community/sports/rules/`, label: t(lang, 'reservations.rulesCta') },
+  { href: `/${lang}/community/sports/dashboard/`, label: t(lang, 'reservations.viewTransparencyDashboard') },
   { href: `/${lang}/community/admin/reservations/`, label: t(lang, 'admin.manageReservations') },
 ];
 
@@ -179,7 +178,7 @@ function formatDateTime(dateString: string): string {
         </a>
         <a
           href={`/${lang}/community/admin/reservations/`}
-          class="inline-flex items-center justify-center rounded-lg bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+          class="inline-flex items-center justify-center rounded-full bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
         >
           {t(lang, 'admin.manageReservations')}
         </a>
@@ -199,12 +198,15 @@ function formatDateTime(dateString: string): string {
 
       <div class="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-6">
         <div class="rounded-2xl border border-aqua-100 bg-aqua-50 p-4">
-          <div class="text-3xl font-bold text-ocean-900">{todaySummary?.openSlots ?? 0}</div>
-          <div class="mt-1 text-sm text-warm-600">{t(lang, 'reservations.openSlotsLabel')}</div>
+          <div class="text-3xl font-bold text-ocean-900">{snapshot.totalResources}</div>
+          <div class="mt-1 text-sm text-warm-600">{t(lang, 'reservations.totalResourcesLabel')}</div>
         </div>
         <div class="rounded-2xl border border-sand-200 bg-sand-50 p-4">
-          <div class="text-3xl font-bold text-ocean-900">{todaySummary?.reservedSlots ?? 0}</div>
-          <div class="mt-1 text-sm text-warm-600">{t(lang, 'reservations.reservedSlotsLabel')}</div>
+          <div class="text-3xl font-bold text-ocean-900">{todayDistributionPoints}</div>
+          <div class="mt-1 text-sm text-warm-600">{t(lang, 'admin.distributionPoints')}</div>
+          <div class="mt-1 text-xs uppercase tracking-[0.12em] text-sand-700">
+            {t(lang, 'reservations.today').toLowerCase()}
+          </div>
         </div>
         <div class="rounded-2xl border border-coral-100 bg-coral-50 p-4">
           <div class="text-3xl font-bold text-coral-700">{activeBlackouts.length}</div>
@@ -449,7 +451,7 @@ function formatDateTime(dateString: string): string {
               </p>
               <button
                 type="submit"
-                class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-5 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
+                class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-5 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
               >
                 {t(lang, 'admin.coverageSubmit')}
               </button>

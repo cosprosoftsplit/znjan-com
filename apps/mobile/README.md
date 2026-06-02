@@ -5,11 +5,11 @@ Native app shell for `znjan.com`, built with Expo and wired to the versioned mob
 ## Current Scope
 
 - localized public discover feed
-- public sports reservations availability
+- public sports access status
 - public community read feed
 - auth/session readiness surface
 
-The app is intentionally read-first right now. Native sign-in and write flows are the next backend milestone.
+The app is intentionally read-first right now. For sports, it mirrors the live public note: all sports activities are free, there is no current reservation system, and the beach sports areas are first-come, first-served. Native sign-in and write flows are the next backend milestone.
 
 ## Setup
 

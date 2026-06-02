@@ -7,7 +7,7 @@ Last updated: 2026-04-17
 This document compresses the larger flagship roadmap into a founder-executable 15-day sprint.
 
 It is not the full vision document. It is the near-term operating plan for one volunteer founder who is trying to:
-- ship a credible public reservation pilot
+- ship a credible public sports-access pilot
 - seed the first real community usage
 - validate venue demand before building heavy commercial tooling
 - create enough trust and momentum that the bigger roadmap becomes believable
@@ -20,7 +20,7 @@ At the end of this sprint, Znjan.com should feel like a real civic utility in pu
 
 That means:
 - the dynamic site works in production
-- the public reservation pilot is visible and understandable
+- the public sports-access pilot is visible and understandable
 - people on-site can discover it through QR/flyer distribution
 - a first local seed community exists
 - the first venue demand signals are real
@@ -30,9 +30,9 @@ That means:
 
 These are the only outcomes that matter in this sprint:
 
-1. Production runtime is verified on `znjan.com` for community auth and reservations.
-2. The public reservation pilot is live, honest, and measurable:
-   - schedule page
+1. Production runtime is verified on `znjan.com` for community auth and public sports-access surfaces.
+2. The public sports-access pilot is live, honest, and measurable:
+   - sports page
    - rules page
    - transparency dashboard
    - collision logging
@@ -125,9 +125,9 @@ If this gate fails, commercial product work should stay manual.
 - Confirm Cloudflare production bindings and OAuth configuration
 - Run a full production smoke test on:
   - `/en/community/`
-  - `/en/community/reservations/`
-  - `/en/community/reservations/rules/`
-  - `/en/community/reservations/dashboard/`
+  - `/en/community/sports/`
+  - `/en/community/sports/rules/`
+  - `/en/community/sports/dashboard/`
   - Google sign-in
 - Create a short failure list and fix only blocking issues
 

@@ -40,3 +40,7 @@ redesign-*.png
 
 # windows artifacts
 nul
+
+# scratch debug output & large handoff/design-system asset archive (not site code)
+tmp-*-check.txt
+deliverables/

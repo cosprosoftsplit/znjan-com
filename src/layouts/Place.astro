@@ -9,6 +9,7 @@ import { placeCategoryLabels } from '@/lib/labels';
 
 interface Props {
   title: string;
+  seoTitle?: string;
   description: string;
   lang: Language;
   translations: Record<string, string>;
@@ -27,6 +28,7 @@ interface Props {
 
 const {
   title,
+  seoTitle,
   description,
   lang,
   translations,
@@ -46,7 +48,7 @@ const {
 ---
 
 <Base
-  title={title}
+  title={seoTitle || title}
   description={description}
   lang={lang}
   canonicalUrl={canonicalUrl}

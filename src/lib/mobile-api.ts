@@ -94,7 +94,8 @@ type MobileBootstrap = {
     communityRead: true;
     communityWriteRequiresSession: true;
     reservationsRead: true;
-    reservationsWriteRequiresSession: true;
+    reservationsWriteEnabled: boolean;
+    reservationsWriteRequiresSession: boolean;
     nativeAuthReady: false;
     authMode: 'google-oauth-cookie-session';
   };
@@ -389,7 +390,8 @@ export async function getMobileBootstrap(lang: Language): Promise<MobileBootstra
       communityRead: true,
       communityWriteRequiresSession: true,
       reservationsRead: true,
-      reservationsWriteRequiresSession: true,
+      reservationsWriteEnabled: false,
+      reservationsWriteRequiresSession: false,
       nativeAuthReady: false,
       authMode: 'google-oauth-cookie-session',
     },

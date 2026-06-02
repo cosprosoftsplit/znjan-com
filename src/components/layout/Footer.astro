@@ -72,6 +72,11 @@ function getStaticPageUrl(pageId: string): string {
             </a>
           </li>
           <li>
+            <a href={getLocalizedUrl(lang, 'articles')} class="text-cream/70 hover:text-white text-sm transition-colors duration-200">
+              {translations['nav.articles'] || 'Articles'}
+            </a>
+          </li>
+          <li>
             <a href={getLocalizedUrl(lang, 'places')} class="text-cream/70 hover:text-white text-sm transition-colors duration-200">
               {translations['nav.places'] || 'Places'}
             </a>

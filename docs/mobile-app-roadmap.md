@@ -39,8 +39,8 @@ Alternative:
 
 Ship the app when it can do these well:
 - browse beach areas, activities, places, and FAQs
-- see sports reservation availability publicly
-- sign in and manage free reservations
+- see sports-access information publicly
+- sign in for community/account features without implying a live sports booking flow
 - read the community board
 - view a basic map and location context
 

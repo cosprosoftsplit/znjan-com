@@ -13,6 +13,9 @@ export const RESERVATION_POLICY = {
   maxUpcomingReservations: 5,
 } as const;
 
+export const PUBLIC_SPORTS_ACCESS_MESSAGE =
+  'All public sports activities at Znjan are free, there is no current reservation system, and the beach sports areas are open on a first-come, first-served basis.';
+
 export type SportsResourceKind = 'court' | 'pitch' | 'activity';
 export type SportsReservationMode = 'exclusive' | 'shared-session';
 export type SlotStatus = 'available' | 'reserved' | 'mine' | 'closed' | 'past';

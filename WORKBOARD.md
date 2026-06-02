@@ -246,14 +246,16 @@ Release checklist: `docs/release-readiness.md`
 ---
 
 ## Phase 9: Public Sports Reservations
-**Goal:** Make Znjan's sports field availability and reservations public, free, and easy to trust
+**Goal:** Keep Znjan's sports-field information public, honest, and easy to trust while preserving the future path toward an official reservation system
 **Priority:** HIGH — strong community utility and a natural extension of the existing community platform
+
+**Current state note:** public sports pages now live under `/[lang]/community/sports/*`, the old `/[lang]/community/reservations/*` routes redirect there, and reservation writes are disabled until a real public reservation system exists.
 
 - [ ] **9.1 Resource Inventory and Booking Rules**
   - Scope: Confirm exact reservable resources in the sports zone and publish slot, fairness, cancellation, and no-show rules
   - User-confirmed inventory to plan around: 3 beach volleyball courts, basketball courts, cage football pitches, 1 tennis court, skate park
   - Initial booking assumption: fixed courts/pitches book directly; skate park uses scheduled sessions unless policy says otherwise
-  - Progress: public booking rules and pilot-scope page added on 2026-04-17 at `/[lang]/community/reservations/rules/`
+  - Progress: public booking rules and pilot-scope page added on 2026-04-17 and now published at `/[lang]/community/sports/rules/`
   - Verify: policy written, inventory confirmed, roadmap assumptions validated
 
 - [x] **9.2 Public Availability Model and API** (2026-04-16)
@@ -263,7 +265,7 @@ Release checklist: `docs/release-readiness.md`
 
 - [x] **9.3 Public Schedule UI** (2026-04-16)
   - Scope: Build multilingual daily/weekly reservation pages that anyone can browse without login
-  - Done: Added `src/pages/[lang]/community/reservations/index.astro` with date picker, public schedule, rules sidebar, and upcoming reservations panel
+  - Done: Added the public sports-access page and later moved the canonical route to `src/pages/[lang]/community/sports/index.astro`, with legacy `/community/reservations/` redirects preserved for compatibility
   - Verify: mobile and desktop views clearly show available, reserved, closed, and past slots; CTA added from the sports-zone page
 
 - [x] **9.4 Booking and Cancellation MVP** (2026-04-16)
@@ -274,8 +276,8 @@ Release checklist: `docs/release-readiness.md`
 - [x] **9.5 Transparency Dashboard and Activity Pilot** (2026-04-17)
   - Scope: Publish usage stats and pilot one activity-slot workflow beyond fixed fields
   - Progress: admin blackout controls and closure-management APIs added on 2026-04-16 so operators can publish temporary court closures without hiding them from the public schedule
-  - Progress: public transparency dashboard added on 2026-04-17 at `/[lang]/community/reservations/dashboard/` with 7-day occupancy, closures, cancellation rate, peak-hour, and per-resource breakdowns
-  - Progress: collision reporting added on 2026-04-18 via reservation follow-up, admin logging, and ambassador logging so collision rate is measurable from day one
+  - Progress: public transparency dashboard added on 2026-04-17 and now published at `/[lang]/community/sports/dashboard/`
+  - Progress: collision reporting added on 2026-04-18 through admin logging and ambassador logging, with the old user-side reservation follow-up path later disabled as the public product shifted back to first-come-first-served access
   - Done: live skate park session pilot added on 2026-04-17 with shared-capacity beginner, open, and sunset sessions
   - Next candidates: volleyball clinics, SUP, or kayak slots if operator flow is clear
   - Verify: dashboard is public; one non-court pilot is live
@@ -987,3 +989,46 @@ Reference: `docs/founder-15-day-execution-roadmap.md`
   - sports areas are open to the public on a first-come, first-served basis
 - Rewrote the public sports-access pages, activity pages, FAQ answers, sports-zone copy, and the older evergreen guides/articles so they all match the same real-world rule set
 - Updated internal project docs (`MEMORY.md`, `docs/project-dossier.md`, `docs/release-readiness.md`) so the current documented product position matches the live public messaging
+
+### 2026-05-02 — Disabled Reservation Writes And Tightened Sports Access Language
+- Continued the website review and found two remaining consistency problems:
+  - stale reservation-era wording was still present in shared EN / HR / DE / IT translation keys and a few admin surfaces
+  - the reservation create/cancel APIs were still active even though the public product position is “no current reservation system”
+- Disabled reservation write behavior on:
+  - `/api/reservations/`
+  - `/api/reservations/[id]/`
+  - `/api/mobile/v1/reservations/`
+  - `/api/mobile/v1/reservations/[id]/`
+- Added a shared public-access status message so disabled API responses now explicitly state:
+  - all sports activities are free
+  - there is no current reservation system
+  - sports areas are first-come, first-served
+- Updated the admin pilot and admin access-controls surfaces so they speak in terms of:
+  - sports access
+  - closures
+  - field conflicts
+  - distribution logs
+  rather than leftover reservation wording
+- Tightened the remaining public-access translations in EN / HR / DE / IT so future UI reuse does not accidentally leak booking language back into the live site
+- Follow-up cleanup:
+  - disabled the old user-side reservation collision-report endpoint because it still depended on reservation IDs
+  - removed write-action URLs from the mobile reservations read payload so the API contract no longer advertises disabled booking behavior
+  - updated the Expo reference client and `apps/mobile/README.md` so the app now presents the same public sports-access model instead of stale booking-oriented tab names, policy tiles, and copy
+  - corrected `MEMORY.md` so the mobile direction notes no longer claim reservation writes are currently available
+
+### 2026-05-04 — Canonical Public Sports Routes Replaced Legacy Reservation URLs
+- Continued the website review and fixed the last major public information-architecture mismatch:
+  - the live copy already said there is no current reservation system
+  - but the main public sports pages still lived under `/community/reservations/*`
+- Added new canonical public routes:
+  - `/[lang]/community/sports/`
+  - `/[lang]/community/sports/rules/`
+  - `/[lang]/community/sports/dashboard/`
+- Converted the old public routes under `/[lang]/community/reservations/*` into redirects so older links still resolve without keeping reservation-shaped URLs as the main public path
+- Repointed the public entry surfaces and founder/admin helper surfaces to the new canonical paths:
+  - `/play/`
+  - `/community/start/`
+  - `/community/pilot/`
+  - `/community/help/`
+  - founder pilot/comms/seed/sell-sheet links
+- Updated the high-signal project docs (`MEMORY.md`, `docs/release-readiness.md`, `docs/project-dossier.md`, and roadmap notes) so current route references and smoke-test expectations now match the live sports-access model

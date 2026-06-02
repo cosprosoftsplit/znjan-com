@@ -10,14 +10,28 @@ interface Props {
 
 const { lang, alternates } = Astro.props;
 
+/** Top-level listing hubs render at identical English segments across all
+ *  languages, so a prefix swap is safe for them. Detail pages and standalone
+ *  pages (about/contact/privacy) have per-language slugs, so swapping the
+ *  prefix while keeping the current slug would fabricate a 404. */
+const SHARED_SEGMENTS = new Set([
+  'guides', 'articles', 'places', 'activities', 'beach-areas', 'events', 'community',
+]);
+
 function getUrl(targetLang: Language): string {
   if (alternates?.[targetLang]) {
     return alternates[targetLang]!;
   }
-  // Replace the language prefix in the current URL path
-  const currentPath = Astro.url.pathname;
-  const pathWithoutLang = currentPath.replace(/^\/[a-z]{2}\//, '/');
-  return `/${targetLang}${pathWithoutLang}`;
+  // Fallback when a page doesn't pass alternates. Only prefix-swap when it is
+  // demonstrably safe (home page or a top-level listing hub); otherwise send
+  // the user to the target-language home rather than a guessed — and likely
+  // non-existent — localized URL.
+  const pathWithoutLang = Astro.url.pathname.replace(/^\/[a-z]{2}\//, '/');
+  const segments = pathWithoutLang.split('/').filter(Boolean);
+  if (segments.length === 0 || (segments.length === 1 && SHARED_SEGMENTS.has(segments[0]))) {
+    return `/${targetLang}${pathWithoutLang}`;
+  }
+  return `/${targetLang}/`;
 }
 ---
 

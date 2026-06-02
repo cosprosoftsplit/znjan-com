@@ -127,7 +127,7 @@ const quickActions = [
   { href: `/${lang}/community/help/`, label: t(lang, 'community.helpCta') },
   { href: `/${lang}/community/create/`, label: t(lang, 'community.createPost') },
   { href: `/${lang}/community/admin/pilot/`, label: t(lang, 'admin.managePilotOps') },
-  { href: `/${lang}/community/reservations/`, label: t(lang, 'reservations.viewSportsReservations') },
+  { href: `/${lang}/community/sports/`, label: t(lang, 'reservations.viewSportsReservations') },
   { href: `/${lang}/play/`, label: t(lang, 'reservations.quickStartTitle') },
   { href: `/${lang}/play/materials/`, label: t(lang, 'reservations.pilotKitCta') },
 ];
@@ -195,7 +195,7 @@ const supportSignalStatusCounts: Array<{ key: PilotSupportSignalStatus; count: n
         </a>
         <a
           href={`/${lang}/community/create/`}
-          class="inline-flex items-center justify-center rounded-lg bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+          class="inline-flex items-center justify-center rounded-full bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
         >
           {t(lang, 'community.createPost')}
         </a>
@@ -249,7 +249,7 @@ const supportSignalStatusCounts: Array<{ key: PilotSupportSignalStatus; count: n
 
                 <a
                   href={template.href}
-                  class="mt-5 inline-flex items-center justify-center rounded-lg bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
+                  class="mt-5 inline-flex items-center justify-center rounded-full bg-ocean-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-ocean-700 transition-colors"
                 >
                   {t(lang, 'admin.seedTemplateCreate')}
                 </a>

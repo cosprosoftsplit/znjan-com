@@ -55,6 +55,7 @@ export interface MobileBootstrapData {
     communityRead: boolean;
     communityWriteRequiresSession: boolean;
     reservationsRead: boolean;
+    reservationsWriteEnabled: boolean;
     reservationsWriteRequiresSession: boolean;
     nativeAuthReady: boolean;
     authMode: string;
@@ -121,6 +122,8 @@ export interface MobileUpcomingReservation {
 
 export interface MobileReservationsData {
   viewer: MobileViewer;
+  reservationsEnabled: boolean;
+  publicAccessMessage: string;
   reservationDate: string;
   dateOptions: string[];
   policy: {
@@ -134,8 +137,8 @@ export interface MobileReservationsData {
   resources: MobileReservationResource[];
   upcomingReservations: MobileUpcomingReservation[];
   actions: {
-    createReservation: string;
-    cancelReservation: string;
+    createReservation: string | null;
+    cancelReservation: string | null;
   };
 }
 

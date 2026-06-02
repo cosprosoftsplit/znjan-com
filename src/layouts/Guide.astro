@@ -22,6 +22,7 @@ interface Props {
   author?: string;
   readingTime?: number;
   cluster?: string;
+  relatedLinks?: Array<{ label: string; href: string }>;
 }
 
 const {
@@ -39,6 +40,7 @@ const {
   author = 'Znjan.com Team',
   readingTime,
   cluster,
+  relatedLinks,
 } = Astro.props;
 ---
 
@@ -128,6 +130,29 @@ const {
       <div class="max-w-3xl prose-beach">
         <slot />
       </div>
+
+      {relatedLinks && relatedLinks.length > 0 && (
+        <nav class="max-w-3xl mt-12 pt-8 border-t border-sand-200" aria-label={translations['guides.relatedGuides']}>
+          <h2 class="text-lg font-semibold text-ocean-700 mb-4">
+            {translations['guides.relatedGuides']}
+          </h2>
+          <ul class="space-y-2">
+            {relatedLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="inline-flex items-center gap-1.5 text-adriatic-400 hover:text-adriatic-500 hover:underline transition-colors duration-200"
+                >
+                  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
     </article>
   </main>
 

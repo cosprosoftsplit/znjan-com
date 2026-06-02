@@ -2,7 +2,14 @@
 
 ## Goal
 
-Provide a stable reservation contract for iOS and Android so the app can show availability and manage bookings without depending on website-specific UI assumptions.
+Provide a stable sports-access contract for iOS and Android so the app can show the current public sports-access information without depending on website-specific UI assumptions.
+
+## Current Public Reality
+
+- all sports activities are free
+- there is no current reservation system
+- the beach sports areas are first-come, first-served
+- the existing `/api/mobile/v1/reservations*` namespace remains in place for compatibility, but write behavior is intentionally disabled
 
 ## Implemented Mobile Endpoints
 
@@ -20,33 +27,24 @@ Query params:
 
 Behavior:
 - public access allowed
-- returns policy metadata, date options, resource schedule, and viewer summary
-- if authenticated, also returns the viewer’s upcoming reservations and marks owned slots
+- returns the public-access message, date options, resource schedule, and viewer summary
+- returns `reservationsEnabled: false`
+- returns `upcomingReservations: []`
+- returns `actions.createReservation = null` and `actions.cancelReservation = null`
 
 ### `POST /api/mobile/v1/reservations`
 
-Requires authentication.
-
-Expected JSON body:
-```json
-{
-  "resourceSlug": "tennis-court-1",
-  "reservationDate": "2026-04-18",
-  "slotStart": "10:00"
-}
-```
-
 Behavior:
-- creates one reservation if policy checks pass
-- returns reservation id and echo fields
-- uses the same D1-backed business rules as the website
+- currently disabled
+- returns `409`
+- returns the shared public sports-access message
 
 ### `DELETE /api/mobile/v1/reservations/:id`
 
-Requires authentication.
-
 Behavior:
-- cancels the user’s own reservation if still cancellable under platform rules
+- currently disabled
+- returns `409`
+- returns the shared public sports-access message
 
 ## Response Shape
 
@@ -100,16 +98,16 @@ This allows the app to support both:
 - exclusive field reservations
 - shared-capacity sessions like the skate pilot
 
-## Reservation Policy Guarantees
+## Access Metadata Guarantees
 
-The mobile contract always includes current platform policy:
+The mobile contract still includes the current internal policy metadata:
 - booking window
 - slot duration
 - opening hours
 - per-day reservation cap
 - total upcoming reservation cap
 
-This means the app should render policy from API data, not from hardcoded values.
+That metadata is currently informational only. The app should not present it as an active public booking policy while writes are off.
 
 ## Error Semantics
 
@@ -134,9 +132,9 @@ Reservation responses include:
 - `viewer.user`
 
 The app should use that viewer object to decide whether to:
-- show booking CTA
-- show cancel CTA
-- route the user into login
+- route the user into login for community/account features
+- show signed-in state
+- avoid presenting create/cancel booking CTAs while write actions are disabled
 
 ## Compatibility Note
 

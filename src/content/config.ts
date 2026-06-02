@@ -137,6 +137,7 @@ const guides = defineCollection({
     relatedPlaces: z.array(z.string()).default([]),
     relatedBeachAreas: z.array(z.string()).default([]),
     relatedGuides: z.array(z.string()).default([]),
+    faqs: z.array(z.object({ question: z.string(), answer: z.string() })).optional(),
     featured: z.boolean().default(false),
     isSponsored: z.boolean().default(false),
     readingTime: z.number().optional(),
@@ -260,16 +261,6 @@ const global = defineCollection({
   }),
 });
 
-/** 11. Redirects — URL mappings */
-const redirects = defineCollection({
-  type: 'data',
-  schema: z.object({
-    from: z.string(),
-    to: z.string(),
-    status: z.enum(['301', '302']).default('301'),
-  }),
-});
-
 // ============================================================
 // Export collections
 // ============================================================
@@ -285,5 +276,4 @@ export const collections = {
   faq,
   pages,
   global,
-  redirects,
 };

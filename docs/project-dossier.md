@@ -264,9 +264,9 @@ Current public sports resources:
 ### Public Sports-Access Surfaces
 
 Current public pages:
-- `/[lang]/community/reservations/`
-- `/[lang]/community/reservations/rules/`
-- `/[lang]/community/reservations/dashboard/`
+- `/[lang]/community/sports/`
+- `/[lang]/community/sports/rules/`
+- `/[lang]/community/sports/dashboard/`
 
 ### Public Transparency Features
 

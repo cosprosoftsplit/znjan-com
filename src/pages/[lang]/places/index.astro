@@ -27,6 +27,14 @@ const places = allPlaces.sort((a, b) => {
   return a.data.order - b.data.order;
 });
 
+// Contextual callout to the things-to-do money guide (same language)
+const thingsToDoGuide = (
+  await getCollection('guides', ({ data }) => data.lang === lang && data.guideId === 'things-to-do')
+)[0];
+const thingsToDoGuideUrl = thingsToDoGuide
+  ? getLocalizedUrl(lang, 'guides', thingsToDoGuide.data.slugs[lang])
+  : undefined;
+
 const featured = places.filter((p) => p.data.featured);
 const remaining = places.filter((p) => !p.data.featured);
 
@@ -74,6 +82,17 @@ const placeImages: Record<string, { src: string; credit: string }> = {
     title={translations['places.title']}
     subtitle={translations['places.subtitle']}
   />
+
+  {thingsToDoGuideUrl && (
+    <div class="container-page pt-8">
+      <a
+        href={thingsToDoGuideUrl}
+        class="inline-flex items-center gap-1.5 text-sm font-medium text-adriatic-400 hover:text-adriatic-500 hover:underline transition-colors duration-200"
+      >
+        {translations['places.exploreGuideCta']}
+      </a>
+    </div>
+  )}
 
   <section class="container-page section-breathe-lg">
     {places.length > 0 ? (

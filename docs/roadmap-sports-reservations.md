@@ -1,20 +1,22 @@
-# Short-Term Roadmap: Public Sports Reservations at Znjan
+# Short-Term Roadmap: Sports Access and Future Reservations at Znjan
 
 ## Purpose
 
-Build a public, community-first reservation system for the sports resources at Znjan Beach so residents and visitors can see availability in real time and make free reservations without hidden rules, paywalls, or opaque gatekeeping.
+Document the future path toward a public, community-first reservation system for the sports resources at Znjan Beach while keeping the current public product honest: all sports activities are free, there is no current reservation system, and the beach sports areas are first-come, first-served.
 
 This should strengthen the site's role as public infrastructure for Split: useful, fair, multilingual, and transparent.
 
 ## Current Status
 
 - Public schedule, booking/cancellation MVP, and admin closure controls are already implemented in the codebase.
-- The public reservations flow now includes a published rules and pilot-scope page at `/[lang]/community/reservations/rules/`.
-- A public transparency dashboard now exposes the current 7-day booking-window view for occupancy, closures, cancellations, collision rate, and busiest upcoming slot times.
+- Public reservation writes are currently disabled, and the user-facing website now treats this surface as sports-access information rather than a live booking product.
+- The public sports-access flow now includes a published rules and pilot-scope page at `/[lang]/community/sports/rules/`.
+- The public sports-access pages now live under `/[lang]/community/sports/*`, while the legacy `/[lang]/community/reservations/*` routes redirect there for compatibility.
+- The public dashboard is currently a trust/update page, not a live occupancy or booking board.
 - Collision reporting is now live in the codebase from day one through:
-  - reservation follow-up for recent finished bookings
   - admin logging
   - ambassador logging through the admin surface
+- The old user-side reservation follow-up path is disabled and should be treated as legacy behavior.
 - A shared-capacity skate park session pilot is now live with daily beginner, open, and sunset sessions.
 - The biggest short-term gaps are now exact basketball/cage-football operating counts and the next activity-slot candidate after the skate park pilot.
 
@@ -37,7 +39,7 @@ The next layer should include resources that are better handled as scheduled ses
 
 ## Product Principles
 
-- Publicly readable: anyone can browse the schedule without logging in.
+- Publicly readable: anyone can browse the current sports-access information without logging in.
 - Free to reserve: no payments in the MVP.
 - Fair by design: prevent one person or group from hoarding prime-time slots.
 - Privacy-respecting: show slot status publicly, but keep personal data minimal.

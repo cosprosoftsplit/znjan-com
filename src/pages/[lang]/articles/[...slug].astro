@@ -24,6 +24,19 @@ const description = getLocalized(article.data.description, lang);
 const hreflangLinks = getHreflangLinks('articles', article.data.slugs);
 const alternates = getAlternateUrls('articles', article.data.slugs);
 
+// Related guide link — resolve the parent guide (same language), guarded against missing
+const relatedLinks: Array<{ label: string; href: string }> = [];
+if (article.data.guide) {
+  const allGuides = await getCollection('guides', ({ data }) => data.lang === lang);
+  const parentGuide = allGuides.find((g) => g.data.guideId === article.data.guide);
+  if (parentGuide) {
+    relatedLinks.push({
+      label: getLocalized(parentGuide.data.title, lang),
+      href: getLocalizedUrl(lang, 'guides', parentGuide.data.slugs[lang]),
+    });
+  }
+}
+
 const structuredData = [
   buildArticleSchema({
     title,
@@ -57,6 +70,7 @@ const { Content } = await article.render();
   author={article.data.author || 'Znjan.com Team'}
   readingTime={article.data.readingTime}
   cluster={article.data.cluster}
+  relatedLinks={relatedLinks}
 >
   <Content />
 </Guide>

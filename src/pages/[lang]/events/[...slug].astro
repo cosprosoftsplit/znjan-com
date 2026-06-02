@@ -93,7 +93,7 @@ const { Content } = await event.render();
   {(event.data.website || event.data.ticketUrl) && (
     <div class="mt-8 flex flex-wrap gap-3">
       {event.data.ticketUrl && (
-        <a href={event.data.ticketUrl} target="_blank" rel="noopener" class="inline-flex items-center px-5 py-2.5 rounded-lg bg-ocean-600 text-white font-medium hover:bg-ocean-700 transition-colors">
+        <a href={event.data.ticketUrl} target="_blank" rel="noopener" class="inline-flex items-center px-5 py-2.5 rounded-full bg-ocean-600 text-white font-medium hover:bg-ocean-700 transition-colors">
           {lang === 'hr' ? 'Kupi ulaznice' : lang === 'de' ? 'Tickets kaufen' : lang === 'it' ? 'Acquista biglietti' : 'Get Tickets'}
         </a>
       )}

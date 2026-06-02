@@ -23,7 +23,7 @@ const { items, lang, title } = Astro.props;
 
   <div class="max-w-3xl mx-auto space-y-4">
     {items.map((item, index) => (
-      <details class="group bg-white rounded-xl border border-sand-200 overflow-hidden">
+      <details class="group bg-white rounded-xl border border-sand-200 shadow-soft-sm overflow-hidden">
         <summary class="flex items-center justify-between px-6 py-4 cursor-pointer hover:bg-sand-50 transition-colors duration-200 list-none">
           <h3 class="text-base font-semibold text-ocean-700 pr-4">
             {getLocalized(item.question, lang)}

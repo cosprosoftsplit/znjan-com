@@ -65,6 +65,12 @@ export default {
           800: '#7a1414',
           900: '#520d0d',
         },
+        sun: {
+          100: '#ffe9c2',
+          300: '#ffd27a',
+          400: '#f2b35a',
+          500: '#f4a93d',
+        },
         stone: '#5a6a6e',
         warm: {
           50: '#FAFAFA',
@@ -80,12 +86,23 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['DM Serif Display', 'Georgia', 'serif'],
+        sans: ['Manrope', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        display: ['DM Serif Display', 'Georgia', 'Times New Roman', 'serif'],
+        mono: ['DM Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+      },
+      letterSpacing: {
+        eyebrow: '0.18em',
+      },
+      boxShadow: {
+        'soft-sm': '0 1px 2px rgba(13, 51, 68, 0.06)',
+        soft: '0 4px 16px rgba(13, 51, 68, 0.08)',
+        'soft-lg': '0 12px 32px rgba(13, 51, 68, 0.12)',
+        coral: '0 10px 30px rgba(224, 125, 106, 0.28)',
       },
       backgroundImage: {
-        'gradient-ocean': 'linear-gradient(135deg, #1a4a5e 0%, #0077b6 50%, #2d8a9b 100%)',
-        'gradient-sunset': 'linear-gradient(135deg, #e07d6a 0%, #DEB887 50%, #f5ead6 100%)',
+        'gradient-ocean': 'linear-gradient(135deg, #023e8a 0%, #0077b6 30%, #0096c7 60%, #2d8a9b 100%)',
+        'gradient-adriatic': 'linear-gradient(135deg, #2d8a9b 0%, #0077b6 50%, #48cae4 100%)',
+        'gradient-sunset': 'linear-gradient(135deg, #e07d6a 0%, #f4a261 50%, #e76f51 100%)',
         'gradient-sand': 'linear-gradient(180deg, #faf7f2 0%, #f5ead6 100%)',
       },
     },

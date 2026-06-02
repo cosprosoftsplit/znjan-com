@@ -1,6 +1,6 @@
 ---
 interface Props {
-  variant?: 'ocean' | 'sand' | 'coral' | 'default';
+  variant?: 'ocean' | 'sand' | 'coral' | 'aqua' | 'sun' | 'default';
   class?: string;
 }
 
@@ -10,10 +10,12 @@ const variants = {
   ocean: 'bg-ocean-100 text-ocean-700',
   sand: 'bg-sand-100 text-sand-800',
   coral: 'bg-coral-100 text-coral-700',
+  aqua: 'bg-aqua-100 text-adriatic-700',
+  sun: 'bg-sun-100 text-sand-900',
   default: 'bg-sand-100 text-warm-700',
 };
 ---
 
-<span class:list={['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', variants[variant], className]}>
+<span class:list={['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold', variants[variant], className]}>
   <slot />
 </span>

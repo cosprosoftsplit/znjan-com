@@ -64,7 +64,31 @@
   }
 
   .eyebrow {
-    @apply text-xs uppercase tracking-widest font-semibold text-ocean-700;
+    @apply font-mono text-xs uppercase tracking-eyebrow font-medium text-ocean-700;
+  }
+
+  /* ---------- Buttons (Žnjan Design System) ---------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-full transition-all duration-200;
+  }
+  .btn-primary {
+    @apply btn bg-coral-400 text-white px-7 py-3.5 text-[15px] shadow-coral hover:bg-coral-500 hover:-translate-y-px;
+  }
+  .btn-secondary {
+    @apply btn bg-sand-100 text-ocean-800 px-7 py-3.5 text-[15px] hover:bg-sand-200 hover:-translate-y-px;
+  }
+  .btn-outline {
+    @apply btn border-2 border-ocean-600 text-ocean-600 px-6 py-3 text-[15px] hover:bg-ocean-50;
+  }
+  .btn-ghost {
+    @apply btn text-white px-6 py-3.5 text-[15px] backdrop-blur;
+    background: rgba(255, 255, 255, 0.14);
+  }
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.24);
+  }
+  .btn-link {
+    @apply inline-flex items-center gap-1.5 text-sm font-semibold text-adriatic-400 hover:text-adriatic-500 transition-colors;
   }
 
   /* Horizontal scroll showcase */

@@ -1,7 +1,7 @@
 ---
 interface Props {
   href?: string;
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   class?: string;
 }
@@ -10,22 +10,23 @@ const { href, variant = 'primary', size = 'md', class: className } = Astro.props
 const Tag = href ? 'a' : 'button';
 
 const variants = {
-  primary: 'bg-coral-400 text-white hover:bg-coral-500 uppercase tracking-wider',
-  secondary: 'bg-sand-100 text-ocean-800 hover:bg-sand-200',
+  primary: 'bg-coral-400 text-white shadow-coral hover:bg-coral-500 hover:-translate-y-px',
+  secondary: 'bg-sand-100 text-ocean-800 hover:bg-sand-200 hover:-translate-y-px',
   outline: 'border-2 border-ocean-600 text-ocean-600 hover:bg-ocean-50',
+  ghost: 'bg-white/15 text-white backdrop-blur hover:bg-white/25',
 };
 
 const sizes = {
-  sm: 'px-3 py-1.5 text-sm',
-  md: 'px-5 py-2.5 text-sm',
-  lg: 'px-6 py-3 text-base',
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-2.5 text-sm',
+  lg: 'px-7 py-3.5 text-[15px]',
 };
 ---
 
 <Tag
   href={href}
   class:list={[
-    'inline-flex items-center justify-center rounded-lg font-semibold transition-colors duration-200',
+    'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200',
     variants[variant],
     sizes[size],
     className,

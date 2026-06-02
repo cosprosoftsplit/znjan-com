@@ -1,0 +1,13 @@
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Žnjan mark">
+  <defs>
+    <clipPath id="zBadgeW"><circle cx="60" cy="60" r="56"></circle></clipPath>
+  </defs>
+  <g clip-path="url(#zBadgeW)">
+    <circle cx="60" cy="48" r="15" fill="none" stroke="#FFFFFF" stroke-width="3"></circle>
+    <path d="M18 62 Q 39 57 60 62 T 102 62" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" fill="none"></path>
+    <path d="M23 71 Q 41.5 75.5 60 71 T 97 71" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" fill="none" opacity="0.85"></path>
+    <path d="M29 80 Q 45 75.5 60 80 T 91 80" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" fill="none"></path>
+    <path d="M37 89 Q 50 92.5 60 89 T 83 89" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" fill="none" opacity="0.85"></path>
+  </g>
+  <circle cx="60" cy="60" r="56" fill="none" stroke="#FFFFFF" stroke-width="3.5"></circle>
+</svg>

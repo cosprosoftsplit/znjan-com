@@ -27,7 +27,7 @@ const structuredData = buildCollectionPageSchema({
   description: translations['seo.articlesDescription'],
   url: pageUrl,
   items: articles.map((a) => ({
-    name: a.data.title[lang],
+    name: a.data.title[lang] ?? a.data.title.en,
     url: canonicalUrl(getLocalizedUrl(lang, 'articles', a.data.slugs[lang])),
   })),
 });

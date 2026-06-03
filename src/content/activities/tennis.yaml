@@ -4,21 +4,37 @@ slug:
   hr: tenis
   de: tennis
   it: tennis
+  fr: tennis
+  es: tenis
+  pl: tenis
+  nl: tennis
 title:
   en: "Tennis"
   hr: "Tenis"
   de: "Tennis"
   it: "Tennis"
+  fr: "Tennis"
+  es: "Tenis"
+  pl: "Tenis"
+  nl: "Tennis"
 description:
   en: "Play on the tennis court in Žnjan's sports zone. The court is part of the new beachfront sports complex, free to use, and currently open on a first-come, first-served basis with no reservation system."
   hr: "Zaigrajte na teniskom terenu u sportskoj zoni Žnjana. Teren je dio novog sportskog kompleksa uz more, besplatan je za korištenje i trenutačno je otvoren po principu tko prvi dođe, prvi koristi, bez sustava rezervacija."
   de: "Spielen Sie auf dem Tennisplatz in der Sportzone von Žnjan. Der Platz ist Teil des neuen Sportkomplexes am Meer, kostenlos nutzbar und derzeit ohne Reservierungssystem nach dem Prinzip 'wer zuerst kommt, spielt zuerst' geöffnet."
   it: "Gioca sul campo da tennis nella zona sportiva di Žnjan. Il campo fa parte del nuovo complesso sportivo sul mare, è gratuito e al momento è aperto senza prenotazione in base al principio del primo arrivato, primo servito."
+  fr: "Jouez sur le court de tennis de la zone sportive de Žnjan. Le court fait partie du nouveau complexe sportif en bord de mer, son accès est gratuit et il est actuellement ouvert selon le principe du premier arrivé, premier servi, sans système de réservation."
+  es: "Juega en la pista de tenis de la zona deportiva de Žnjan. La pista forma parte del nuevo complejo deportivo frente al mar, es de uso gratuito y actualmente está abierta por orden de llegada, sin sistema de reservas."
+  pl: "Zagraj na korcie tenisowym w strefie sportowej Žnjan. Kort jest częścią nowego nadmorskiego kompleksu sportowego, korzystanie z niego jest bezpłatne i obecnie udostępniany jest według kolejności przybycia, bez systemu rezerwacji."
+  nl: "Speel op de tennisbaan in de sportzone van Žnjan. De baan maakt deel uit van het nieuwe sportcomplex aan zee, is gratis te gebruiken en is momenteel toegankelijk op volgorde van aankomst, zonder reserveringssysteem."
 shortDescription:
   en: "A public tennis court in the sports zone"
   hr: "Javni teniski teren u sportskoj zoni"
   de: "Ein öffentlicher Tennisplatz in der Sportzone"
   it: "Un campo da tennis pubblico nella zona sportiva"
+  fr: "Un court de tennis public dans la zone sportive"
+  es: "Una pista de tenis pública en la zona deportiva"
+  pl: "Publiczny kort tenisowy w strefie sportowej"
+  nl: "Een openbare tennisbaan in de sportzone"
 category: beach-sports
 beachAreas:
   - sports-zone
@@ -28,6 +44,10 @@ duration:
   hr: "1 sat"
   de: "1 Stunde"
   it: "1 ora"
+  fr: "1 heure"
+  es: "1 hora"
+  pl: "1 godzina"
+  nl: "1 uur"
 priceRange: "Free"
 season: year-round
 featured: true

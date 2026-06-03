@@ -4,21 +4,37 @@ slug:
   hr: sportska-zona
   de: sportzone
   it: zona-sportiva
+  fr: zone-sportive
+  es: zona-deportiva
+  pl: strefa-sportowa
+  nl: sportzone
 title:
   en: "Sports Zone"
   hr: "Sportska zona"
   de: "Sportzone"
   it: "Zona sportiva"
+  fr: "Zone sportive"
+  es: "Zona deportiva"
+  pl: "Strefa sportowa"
+  nl: "Sportzone"
 description:
   en: "The active heart of the new Žnjan Beach complex, built as part of the €45M transformation. It includes three beach volleyball courts, basketball courts, cage football pitches, a tennis court, and a brand-new 1,200m² skate park. All public sports activities here are free, there is no current reservation system, and the sports areas are open on a first-come, first-served basis. The sports zone connects to the 1.7km cycling and running path along the promenade."
   hr: "Aktivno srce novog kompleksa plaže Žnjan, izgrađeno u sklopu transformacije od 45 milijuna eura. Sadrži tri terena za odbojku na pijesku, košarkaške terene, kavez za nogomet, teniski teren i potpuno novi skate park od 1.200 m². Sve javne sportske aktivnosti ovdje su besplatne, trenutačno ne postoji sustav rezervacija, a sportske zone su otvorene po principu tko prvi dođe, prvi koristi. Sportska zona povezuje se sa stazom za biciklizam i trčanje od 1,7 km uz šetnicu."
   de: "Das aktive Herz des neuen Žnjan-Strandkomplexes, erbaut im Rahmen der 45-Millionen-Euro-Transformation. Hier gibt es drei Beachvolleyballplätze, Basketballplätze, Käfig-Fußball, einen Tennisplatz und einen brandneuen 1.200 m² großen Skatepark. Alle öffentlichen Sportaktivitäten hier sind kostenlos, es gibt derzeit kein Reservierungssystem, und die Sportflächen sind nach dem Prinzip 'wer zuerst kommt, spielt zuerst' offen zugänglich. Die Sportzone ist mit dem 1,7 km langen Rad- und Laufweg entlang der Promenade verbunden."
   it: "Il cuore attivo del nuovo complesso balneare di Žnjan, costruito nell'ambito della trasformazione da 45 milioni di euro. Comprende tre campi da beach volley, campi da basket, gabbie per il calcetto, un campo da tennis e un nuovissimo skate park di 1.200 m². Tutte le attività sportive pubbliche qui sono gratuite, al momento non esiste un sistema di prenotazione e le aree sportive sono aperte in base al principio del primo arrivato, primo servito. La zona sportiva è collegata al percorso ciclabile e di corsa di 1,7 km lungo il lungomare."
+  fr: "Le cœur actif du nouveau complexe balnéaire de Žnjan, aménagé dans le cadre de la transformation à 45 millions d'euros. On y trouve trois terrains de beach-volley, des terrains de basket, des cages de foot, un court de tennis et un tout nouveau skatepark de 1 200 m². Toutes les activités sportives publiques y sont gratuites : il n'existe pour l'instant aucun système de réservation et les aires sportives sont accessibles selon le principe du premier arrivé, premier servi. La zone sportive rejoint la piste cyclable et de course à pied de 1,7 km qui longe la promenade."
+  es: "El corazón activo del nuevo complejo de la playa de Žnjan, construido como parte de la transformación de 45 millones de euros. Cuenta con tres pistas de voley playa, pistas de baloncesto, jaulas de fútbol, una pista de tenis y un flamante skatepark de 1.200 m². Todas las actividades deportivas públicas son gratuitas, de momento no existe sistema de reservas y las zonas deportivas funcionan por orden de llegada. La zona deportiva conecta con el carril para bicicletas y running de 1,7 km que recorre el paseo marítimo."
+  pl: "Aktywne serce nowego kompleksu plaży Žnjan, powstałe w ramach transformacji o wartości 45 milionów euro. Znajdują się tu trzy boiska do siatkówki plażowej, boiska do koszykówki, klatki do gry w piłkę nożną, kort tenisowy oraz zupełnie nowy skatepark o powierzchni 1200 m². Wszystkie publiczne zajęcia sportowe są tu bezpłatne, obecnie nie obowiązuje system rezerwacji, a strefy sportowe są dostępne według zasady „kto pierwszy, ten lepszy”. Strefa sportowa łączy się z liczącą 1,7 km ścieżką rowerowo-biegową wzdłuż promenady."
+  nl: "Het actieve hart van het nieuwe strandcomplex van Žnjan, aangelegd als onderdeel van de transformatie van 45 miljoen euro. Je vindt er drie beachvolleybalvelden, basketbalvelden, voetbalkooien, een tennisbaan en een gloednieuw skatepark van 1.200 m². Alle openbare sportactiviteiten zijn hier gratis, er is voorlopig geen reserveringssysteem en de sportzones werken volgens het principe wie het eerst komt, het eerst maalt. De sportzone sluit aan op het 1,7 km lange fiets- en hardlooppad langs de promenade."
 shortDescription:
   en: "Free public courts, beach volleyball, tennis, and skate park"
   hr: "Besplatni javni tereni, odbojka na pijesku, tenis i skate park"
   de: "Kostenlose öffentliche Plätze, Beachvolleyball, Tennis und Skatepark"
   it: "Campi pubblici gratuiti, beach volley, tennis e skate park"
+  fr: "Terrains publics gratuits, beach-volley, tennis et skatepark"
+  es: "Pistas públicas gratuitas, voley playa, tenis y skatepark"
+  pl: "Bezpłatne boiska publiczne, siatkówka plażowa, tenis i skatepark"
+  nl: "Gratis openbare velden, beachvolleybal, tennis en skatepark"
 coordinates:
   lat: 43.5020
   lng: 16.4890

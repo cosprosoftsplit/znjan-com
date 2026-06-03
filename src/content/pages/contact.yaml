@@ -4,20 +4,36 @@ slug:
   hr: kontakt
   de: kontakt
   it: contatti
+  fr: contact
+  es: contacto
+  pl: kontakt
+  nl: contact
 title:
   en: "Contact Us"
   hr: "Kontaktirajte nas"
   de: "Kontaktieren Sie uns"
   it: "Contattaci"
+  fr: "Contactez-nous"
+  es: "Contáctanos"
+  pl: "Skontaktuj się z nami"
+  nl: "Neem contact met ons op"
 description:
   en: "Get in touch with the Znjan.com team. Questions, suggestions, business inquiries — we'd love to hear from you."
   hr: "Javite se timu Znjan.com. Pitanja, prijedlozi, poslovni upiti — javite nam se."
   de: "Nehmen Sie Kontakt mit dem Znjan.com-Team auf. Fragen, Vorschläge, Geschäftsanfragen — wir freuen uns auf Ihre Nachricht."
   it: "Contatta il team di Znjan.com. Domande, suggerimenti, richieste commerciali — ci piacerebbe sentirti."
+  fr: "Contactez l'équipe de Znjan.com. Questions, suggestions, demandes professionnelles — nous serions ravis de vous lire."
+  es: "Ponte en contacto con el equipo de Znjan.com. Preguntas, sugerencias, consultas comerciales — nos encantaría saber de ti."
+  pl: "Skontaktuj się z zespołem Znjan.com. Pytania, sugestie, zapytania biznesowe — chętnie Cię wysłuchamy."
+  nl: "Neem contact op met het team van Znjan.com. Vragen, suggesties, zakelijke aanvragen — we horen graag van je."
 content:
   en: "Have a question about Žnjan Beach? Want to suggest a place or activity? Need to report a change to the sports areas, outdated on-site information, or an incorrect business detail? We'd love to hear from you.\n\nYou can reach us at info@znjan.com. Use that address for general questions, sports access updates, and directory corrections. For privacy-specific requests, contact privacy@znjan.com."
   hr: "Imate pitanje o plaži Žnjan? Želite predložiti mjesto ili aktivnost? Trebate prijaviti promjenu u sportskim zonama, zastarjele informacije na terenu ili netočan podatak o poslovnom subjektu? Javite nam se.\n\nMožete nas kontaktirati na info@znjan.com. Tu adresu koristite za opća pitanja, ažuriranja o sportskom pristupu i ispravke u direktoriju. Za upite vezane uz privatnost kontaktirajte privacy@znjan.com."
   de: "Haben Sie eine Frage zum Strand Žnjan? Möchten Sie einen Ort oder eine Aktivität vorschlagen? Müssen Sie eine Änderung an den Sportflächen, veraltete Vor-Ort-Informationen oder einen falschen Unternehmenseintrag melden? Wir freuen uns auf Ihre Nachricht.\n\nSie erreichen uns unter info@znjan.com. Diese Adresse ist für allgemeine Fragen, Updates zum Sportzugang und Korrekturen im Verzeichnis gedacht. Für Datenschutzanfragen schreiben Sie an privacy@znjan.com."
   it: "Hai una domanda sulla spiaggia di Žnjan? Vuoi suggerire un luogo o un'attività? Devi segnalare un cambiamento nelle aree sportive, informazioni non aggiornate sul posto o un'informazione errata su un'attività? Scrivici.\n\nPuoi contattarci a info@znjan.com. Usa questo indirizzo per domande generali, aggiornamenti sull'accesso sportivo e correzioni del directory. Per richieste relative alla privacy scrivi a privacy@znjan.com."
+  fr: "Vous avez une question sur la plage de Žnjan ? Vous souhaitez suggérer un lieu ou une activité ? Vous devez signaler un changement dans les zones sportives, des informations obsolètes sur place ou un détail erroné concernant un établissement ? Nous serions ravis de vous lire.\n\nVous pouvez nous joindre à info@znjan.com. Utilisez cette adresse pour les questions générales, les mises à jour sur l'accès aux installations sportives et les corrections de l'annuaire. Pour les demandes relatives à la confidentialité, écrivez à privacy@znjan.com."
+  es: "¿Tienes una pregunta sobre la playa de Žnjan? ¿Quieres sugerir un lugar o una actividad? ¿Necesitas informar de un cambio en las zonas deportivas, de información desactualizada sobre el terreno o de un dato incorrecto de algún establecimiento? Nos encantaría saber de ti.\n\nPuedes escribirnos a info@znjan.com. Usa esa dirección para consultas generales, actualizaciones sobre el acceso a las zonas deportivas y correcciones del directorio. Para solicitudes relacionadas con la privacidad, escribe a privacy@znjan.com."
+  pl: "Masz pytanie o plażę Žnjan? Chcesz zaproponować miejsce lub aktywność? Musisz zgłosić zmianę w strefach sportowych, nieaktualne informacje na miejscu lub błędne dane o jakimś lokalu? Chętnie Cię wysłuchamy.\n\nMożesz napisać do nas na adres info@znjan.com. Korzystaj z niego w sprawach ogólnych, aktualizacji dotyczących dostępu do stref sportowych oraz poprawek w katalogu. W sprawach związanych z prywatnością pisz na privacy@znjan.com."
+  nl: "Heb je een vraag over het strand van Žnjan? Wil je een plek of activiteit voorstellen? Moet je een wijziging in de sportzones, verouderde informatie ter plaatse of een onjuist bedrijfsgegeven melden? We horen graag van je.\n\nJe kunt ons bereiken via info@znjan.com. Gebruik dat adres voor algemene vragen, updates over de toegang tot de sportzones en correcties in de bedrijvengids. Voor privacygerelateerde verzoeken schrijf je naar privacy@znjan.com."
 template: contact
 order: 2

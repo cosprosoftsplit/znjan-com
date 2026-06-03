@@ -4,21 +4,37 @@ slug:
   hr: taboo-beach-club
   de: taboo-beach-club
   it: taboo-beach-club
+  fr: taboo-beach-club
+  es: taboo-beach-club
+  pl: taboo-beach-club
+  nl: taboo-beach-club
 title:
   en: "Taboo Beach Club"
   hr: "Taboo Beach Club"
   de: "Taboo Beach Club"
   it: "Taboo Beach Club"
+  fr: "Taboo Beach Club"
+  es: "Taboo Beach Club"
+  pl: "Taboo Beach Club"
+  nl: "Taboo Beach Club"
 description:
   en: "Taboo Beach Club is a luxury beach destination at Žnjan, offering an elevated seaside experience with premium daybeds, cabanas, and VIP lounges. Known for its signature Utopia party featuring aerialists, live DJs, and saxophonists. The Mediterranean and Asian fusion menu is served in an open-air setting with panoramic Adriatic views. One of the flagship venues of the new Žnjan complex."
   hr: "Taboo Beach Club luksuzna je plažna destinacija na Žnjanu koja nudi ekskluzivno iskustvo uz more s premium ležaljkama, kabanama i VIP lounge zonama. Poznat po svojoj prepoznatljivoj zabavi Utopia sa zračnim akrobatima, DJ-evima uživo i saksofonistima. Mediteranski i azijski fusion jelovnik poslužuje se na otvorenom s panoramskim pogledom na Jadran. Jedan od vodećih objekata novog žnjanskog kompleksa."
   de: "Der Taboo Beach Club ist ein luxuriöses Strandziel am Žnjan, das ein gehobenes Erlebnis am Meer mit Premium-Tagesbetten, Cabanas und VIP-Lounges bietet. Bekannt für seine Signature-Party Utopia mit Akrobaten, Live-DJs und Saxophonisten. Das mediterran-asiatische Fusionsmenü wird im Freien mit Panoramablick auf die Adria serviert. Einer der Flaggschiff-Orte des neuen Žnjan-Komplexes."
   it: "Taboo Beach Club è una destinazione balneare di lusso a Žnjan, che offre un'esperienza elevata in riva al mare con lettini premium, cabane e lounge VIP. Conosciuto per la sua festa Utopia con acrobati aerei, DJ dal vivo e sassofonisti. Il menu fusion mediterraneo e asiatico è servito all'aperto con vista panoramica sull'Adriatico. Uno dei locali di punta del nuovo complesso di Žnjan."
+  fr: "Le Taboo Beach Club est une destination balnéaire de luxe à Žnjan, offrant une expérience haut de gamme en bord de mer avec lits de jour premium, cabanas et lounges VIP. Réputé pour sa soirée signature Utopia mêlant acrobates aériens, DJ en live et saxophonistes. La carte fusion méditerranéenne et asiatique est servie en plein air avec une vue panoramique sur l'Adriatique. L'une des adresses phares du nouveau complexe de Žnjan."
+  es: "Taboo Beach Club es un destino de playa de lujo en Žnjan que ofrece una experiencia exclusiva junto al mar con tumbonas premium, cabañas y zonas lounge VIP. Famoso por su fiesta estrella Utopia, con acróbatas aéreos, DJ en directo y saxofonistas. Su carta de fusión mediterránea y asiática se sirve al aire libre con vistas panorámicas al Adriático. Uno de los locales emblemáticos del nuevo complejo de Žnjan."
+  pl: "Taboo Beach Club to luksusowy klub plażowy w Žnjanie, oferujący wyjątkowe doświadczenie nad morzem z premium leżakami, cabanami i strefami VIP lounge. Słynie ze swojej autorskiej imprezy Utopia z akrobatami powietrznymi, DJ-ami na żywo i saksofonistami. Menu w stylu fusion, łączące kuchnię śródziemnomorską i azjatycką, serwowane jest na świeżym powietrzu z panoramicznym widokiem na Adriatyk. Jeden z flagowych lokali nowego kompleksu Žnjan."
+  nl: "Taboo Beach Club is een luxe strandbestemming aan Žnjan en biedt een verfijnde belevenis aan zee met premium ligbedden, cabana's en VIP-lounges. Bekend om het kenmerkende Utopia-feest met luchtacrobaten, live-dj's en saxofonisten. Het mediterraan-Aziatische fusionmenu wordt in de openlucht geserveerd met panoramisch uitzicht over de Adriatische Zee. Een van de paradepaardjes van het nieuwe Žnjan-complex."
 shortDescription:
   en: "Luxury beach club with daybeds, DJs, and fusion dining"
   hr: "Luksuzni beach club s ležaljkama, DJ-evima i fusion kuhinjom"
   de: "Luxuriöser Beach Club mit Tagesbetten, DJs und Fusionsküche"
   it: "Beach club di lusso con lettini, DJ e cucina fusion"
+  fr: "Beach club de luxe avec lits de jour, DJ et cuisine fusion"
+  es: "Beach club de lujo con tumbonas, DJ y cocina fusión"
+  pl: "Luksusowy beach club z leżakami, DJ-ami i kuchnią fusion"
+  nl: "Luxe beach club met ligbedden, dj's en fusionkeuken"
 category: beach-club
 beachArea: promenade
 coordinates:

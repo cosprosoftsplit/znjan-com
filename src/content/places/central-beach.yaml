@@ -4,21 +4,37 @@ slug:
   hr: central-beach
   de: central-beach
   it: central-beach
+  fr: central-beach
+  es: central-beach
+  pl: central-beach
+  nl: central-beach
 title:
   en: "Central Beach"
   hr: "Central Beach"
   de: "Central Beach"
   it: "Central Beach"
+  fr: "Central Beach"
+  es: "Central Beach"
+  pl: "Central Beach"
+  nl: "Central Beach"
 description:
   en: "Central Beach is a contemporary beach restaurant and bar at Žnjan, offering dining and drinks right on the waterfront. With table reservations available and a full menu of Mediterranean dishes, it's a versatile venue for anything from a casual morning coffee to a seafood dinner. One of the 11 new pavilion venues in the transformed Žnjan complex."
   hr: "Central Beach suvremeni je plažni restoran i bar na Žnjanu koji nudi objedovanje i piće direktno na obali. S mogućnošću rezervacije stolova i punim jelovnikom mediteranskih jela, to je svestrano mjesto za sve, od jutarnje kave do večere s plodovima mora. Jedan od 11 novih paviljonskih objekata u transformiranom žnjanskom kompleksu."
   de: "Central Beach ist ein zeitgenössisches Strandrestaurant und Bar am Žnjan, das Essen und Getränke direkt am Wasser bietet. Mit Tischreservierungen und einem vollständigen Menü mediterraner Gerichte ist es ein vielseitiger Ort — vom morgendlichen Kaffee bis zum Meeresfrüchte-Dinner. Einer der 11 neuen Pavillonobjekte im transformierten Žnjan-Komplex."
   it: "Central Beach è un ristorante e bar sulla spiaggia contemporaneo a Žnjan, che offre cena e drink direttamente sul lungomare. Con prenotazioni disponibili e un menu completo di piatti mediterranei, è un locale versatile per qualsiasi cosa, dal caffè mattutino alla cena di pesce. Uno degli 11 nuovi padiglioni nel complesso trasformato di Žnjan."
+  fr: "Central Beach est un restaurant-bar de plage contemporain situé à Žnjan, qui propose repas et boissons directement en bord de mer. Avec la réservation de tables et une carte complète de spécialités méditerranéennes, c'est une adresse polyvalente, du café du matin au dîner de fruits de mer. L'un des 11 nouveaux pavillons du complexe entièrement réaménagé de Žnjan."
+  es: "Central Beach es un restaurante y bar de playa contemporáneo en Žnjan que ofrece comidas y bebidas justo frente al mar. Con reserva de mesas disponible y una completa carta de platos mediterráneos, es un local versátil para todo, desde un café por la mañana hasta una cena de marisco. Uno de los 11 nuevos pabellones del renovado complejo de Žnjan."
+  pl: "Central Beach to nowoczesna plażowa restauracja i bar nad samym morzem w Žnjan, oferująca posiłki i drinki tuż przy nadmorskiej promenadzie. Dzięki możliwości rezerwacji stolików i pełnemu menu dań śródziemnomorskich to wszechstronne miejsce na wszystko — od porannej kawy po kolację z owocami morza. Jeden z 11 nowych pawilonów w przekształconym kompleksie Žnjan."
+  nl: "Central Beach is een eigentijds strandrestaurant met bar aan de waterkant van Žnjan, waar je vlak aan zee kunt eten en drinken. Met de mogelijkheid om tafels te reserveren en een volledige kaart met mediterrane gerechten is het een veelzijdige plek voor alles, van een ochtendkoffie tot een diner met zeevruchten. Een van de 11 nieuwe paviljoens in het volledig vernieuwde complex van Žnjan."
 shortDescription:
   en: "Contemporary beach restaurant and bar on the waterfront"
   hr: "Suvremeni plažni restoran i bar na obali"
   de: "Zeitgenössisches Strandrestaurant und Bar am Wasser"
   it: "Ristorante e bar sulla spiaggia contemporaneo"
+  fr: "Restaurant-bar de plage contemporain en bord de mer"
+  es: "Restaurante y bar de playa contemporáneo frente al mar"
+  pl: "Nowoczesna plażowa restauracja i bar nad morzem"
+  nl: "Eigentijds strandrestaurant en bar aan de waterkant"
 category: restaurant
 beachArea: main-beach
 coordinates:

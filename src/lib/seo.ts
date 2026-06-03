@@ -3,7 +3,7 @@
  * Meta tag generation, structured data helpers
  */
 
-import type { Language } from './i18n';
+import type { Language, Localized } from './i18n';
 import { getLocalized } from './i18n';
 
 export interface SeoMeta {
@@ -28,7 +28,7 @@ export interface HreflangLink {
  *  Route segments always use English (Astro generates pages at English paths). */
 export function generateHreflangLinks(
   segment: string,
-  slugs: Record<Language, string>,
+  slugs: Localized<string>,
 ): HreflangLink[] {
   const languages: Language[] = ['en', 'hr', 'de', 'it', 'fr', 'es', 'pl', 'nl'];
   const links: HreflangLink[] = [];

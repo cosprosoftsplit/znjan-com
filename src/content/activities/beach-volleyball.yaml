@@ -4,21 +4,37 @@ slug:
   hr: odbojka-na-pijesku
   de: beachvolleyball
   it: beach-volley
+  fr: beach-volley
+  es: voley-playa
+  pl: siatkowka-plazowa
+  nl: beachvolleybal
 title:
   en: "Beach Volleyball"
   hr: "Odbojka na pijesku"
   de: "Beachvolleyball"
   it: "Beach volley"
+  fr: "Beach-volley"
+  es: "Vóley playa"
+  pl: "Siatkówka plażowa"
+  nl: "Beachvolleybal"
 description:
   en: "Play beach volleyball on the dedicated courts in Žnjan's sports zone. The courts are part of the public beach area, free to use, and currently operate on a first-come, first-served basis with no reservation system."
   hr: "Igrajte odbojku na pijesku na terenima u sportskoj zoni Žnjana. Tereni su dio javnog prostora plaže, besplatni su za korištenje i trenutačno rade po principu tko prvi dođe, prvi koristi, bez sustava rezervacija."
   de: "Spielen Sie Beachvolleyball auf den Plätzen in der Sportzone von Žnjan. Die Plätze sind Teil des öffentlichen Strandbereichs, kostenlos nutzbar und funktionieren derzeit ohne Reservierungssystem nach dem Prinzip 'wer zuerst kommt, spielt zuerst'."
   it: "Gioca a beach volley sui campi dedicati nella zona sportiva di Žnjan. I campi fanno parte dell'area pubblica della spiaggia, sono gratuiti e al momento funzionano senza prenotazione in base al principio del primo arrivato, primo servito."
+  fr: "Jouez au beach-volley sur les terrains aménagés dans la zone sportive de Žnjan. Ces terrains font partie de la plage publique, leur accès est gratuit et ils fonctionnent actuellement sans système de réservation, selon le principe du premier arrivé, premier servi."
+  es: "Juega al vóley playa en las pistas habilitadas de la zona deportiva de Žnjan. Las pistas forman parte de la playa pública, su uso es gratuito y por el momento funcionan sin sistema de reservas, por orden de llegada."
+  pl: "Zagraj w siatkówkę plażową na wyznaczonych boiskach w strefie sportowej Žnjan. Boiska są częścią publicznej plaży, korzystanie z nich jest bezpłatne, a obecnie działają bez systemu rezerwacji, według zasady kto pierwszy, ten lepszy."
+  nl: "Speel beachvolleybal op de speciaal aangelegde velden in de sportzone van Žnjan. De velden maken deel uit van het openbare strand, zijn gratis te gebruiken en werken momenteel zonder reserveringssysteem, volgens het principe wie het eerst komt, het eerst maalt."
 shortDescription:
   en: "Courts available in the sports zone"
   hr: "Tereni dostupni u sportskoj zoni"
   de: "Plätze in der Sportzone verfügbar"
   it: "Campi disponibili nella zona sportiva"
+  fr: "Terrains disponibles dans la zone sportive"
+  es: "Pistas disponibles en la zona deportiva"
+  pl: "Boiska dostępne w strefie sportowej"
+  nl: "Velden beschikbaar in de sportzone"
 category: beach-sports
 beachAreas:
   - sports-zone
@@ -28,6 +44,10 @@ duration:
   hr: "1-2 sata"
   de: "1-2 Stunden"
   it: "1-2 ore"
+  fr: "1-2 heures"
+  es: "1-2 horas"
+  pl: "1-2 godziny"
+  nl: "1-2 uur"
 priceRange: "Free"
 season: summer
 featured: true

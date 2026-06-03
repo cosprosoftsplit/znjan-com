@@ -4,21 +4,37 @@ slug:
   hr: hotel-amphora
   de: hotel-amphora
   it: hotel-amphora
+  fr: hotel-amphora
+  es: hotel-amphora
+  pl: hotel-amphora
+  nl: hotel-amphora
 title:
   en: "Hotel Amphora"
   hr: "Hotel Amphora"
   de: "Hotel Amphora"
   it: "Hotel Amphora"
+  fr: "Hotel Amphora"
+  es: "Hotel Amphora"
+  pl: "Hotel Amphora"
+  nl: "Hotel Amphora"
 description:
   en: "Hotel Amphora is a 4-star beachfront hotel just 300 metres from Žnjan Beach, offering 206 modernly decorated rooms and suites with panoramic Adriatic and island views. Amenities include the OLEUM spa with thalassotherapy and Ayurvedic treatments, indoor and outdoor pools, two on-site restaurants, and a beach bar. Part of the Safir Hotels group, it's the largest hotel in the Žnjan area."
   hr: "Hotel Amphora je hotel s 4 zvjezdice smješten samo 300 metara od plaže Žnjan, koji nudi 206 moderno uređenih soba i apartmana s panoramskim pogledom na Jadran i otoke. Sadržaji uključuju OLEUM spa s talasoterapijom i ajurvedskim tretmanima, unutarnji i vanjski bazen, dva restorana i beach bar. Dio je Safir Hotels grupe i najveći je hotel u žnjanskom području."
   de: "Das Hotel Amphora ist ein 4-Sterne-Strandhotel nur 300 Meter vom Strand Žnjan entfernt und bietet 206 modern eingerichtete Zimmer und Suiten mit Panoramablick auf die Adria und die Inseln. Zu den Annehmlichkeiten gehören das OLEUM Spa mit Thalassotherapie und ayurvedischen Behandlungen, Innen- und Außenpool, zwei hauseigene Restaurants und eine Strandbar."
   it: "L'Hotel Amphora è un hotel a 4 stelle fronte mare a soli 300 metri dalla spiaggia di Žnjan, con 206 camere e suite arredate in stile moderno con vista panoramica sull'Adriatico e le isole. I servizi includono la spa OLEUM con talassoterapia e trattamenti ayurvedici, piscine interna ed esterna, due ristoranti e un beach bar."
+  fr: "L'Hotel Amphora est un hôtel 4 étoiles en bord de mer, à seulement 300 mètres de la plage de Žnjan, proposant 206 chambres et suites au décor moderne avec vue panoramique sur l'Adriatique et les îles. Parmi les prestations : le spa OLEUM avec thalassothérapie et soins ayurvédiques, des piscines intérieure et extérieure, deux restaurants sur place et un bar de plage. Membre du groupe Safir Hotels, c'est le plus grand hôtel du secteur de Žnjan."
+  es: "El Hotel Amphora es un hotel de 4 estrellas frente al mar, a solo 300 metros de la playa de Žnjan, con 206 habitaciones y suites de decoración moderna y vistas panorámicas al Adriático y a las islas. Entre sus servicios destacan el spa OLEUM con talasoterapia y tratamientos ayurvédicos, piscinas interior y exterior, dos restaurantes propios y un bar de playa. Forma parte del grupo Safir Hotels y es el hotel más grande de la zona de Žnjan."
+  pl: "Hotel Amphora to czterogwiazdkowy hotel przy plaży, oddalony zaledwie 300 metrów od plaży Žnjan, oferujący 206 nowocześnie urządzonych pokoi i apartamentów z panoramicznym widokiem na Adriatyk i wyspy. Do dyspozycji gości są spa OLEUM z talasoterapią i zabiegami ajurwedyjskimi, basen kryty i odkryty, dwie hotelowe restauracje oraz bar plażowy. Należy do grupy Safir Hotels i jest największym hotelem w rejonie Žnjan."
+  nl: "Hotel Amphora is een viersterrenhotel aan het strand, op slechts 300 meter van het strand van Žnjan, met 206 modern ingerichte kamers en suites met panoramisch uitzicht op de Adriatische Zee en de eilanden. Tot de voorzieningen behoren de OLEUM-spa met thalassotherapie en ayurvedische behandelingen, een binnen- en buitenzwembad, twee eigen restaurants en een strandbar. Het maakt deel uit van de Safir Hotels-groep en is het grootste hotel in de omgeving van Žnjan."
 shortDescription:
   en: "4-star beachfront hotel with spa, pools, and Adriatic views"
   hr: "Hotel s 4 zvjezdice na plaži sa spa, bazenima i pogledom na Jadran"
   de: "4-Sterne-Strandhotel mit Spa, Pools und Adriablick"
   it: "Hotel 4 stelle fronte mare con spa, piscine e vista Adriatico"
+  fr: "Hôtel 4 étoiles en bord de mer avec spa, piscines et vue sur l'Adriatique"
+  es: "Hotel de 4 estrellas frente al mar con spa, piscinas y vistas al Adriático"
+  pl: "Czterogwiazdkowy hotel przy plaży ze spa, basenami i widokiem na Adriatyk"
+  nl: "Viersterren strandhotel met spa, zwembaden en uitzicht op de Adriatische Zee"
 category: hotel
 beachArea: main-beach
 coordinates:

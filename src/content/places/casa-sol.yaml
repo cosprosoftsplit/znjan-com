@@ -4,21 +4,37 @@ slug:
   hr: casa-sol
   de: casa-sol
   it: casa-sol
+  fr: casa-sol
+  es: casa-sol
+  pl: casa-sol
+  nl: casa-sol
 title:
   en: "Casa Sol"
   hr: "Casa Sol"
   de: "Casa Sol"
   it: "Casa Sol"
+  fr: "Casa Sol"
+  es: "Casa Sol"
+  pl: "Casa Sol"
+  nl: "Casa Sol"
 description:
   en: "Casa Sol is a Mediterranean restaurant and lounge at the new Žnjan Beach complex, offering refined seaside dining along the promenade. With a focus on Mediterranean cuisine and a relaxed lounge atmosphere, it's an ideal spot for a leisurely lunch or sunset dinner with Adriatic views. One of the 11 new pavilion venues that opened as part of Žnjan's €45M transformation."
   hr: "Casa Sol je mediteranski restoran i lounge u novom kompleksu plaže Žnjan, koji nudi izvrstan gastro doživljaj uz more na šetnici. S naglaskom na mediteransku kuhinju i opuštenu lounge atmosferu, idealno je mjesto za opušten ručak ili večeru uz zalazak sunca s pogledom na Jadran. Jedan od 11 novih paviljonskih objekata otvorenih u sklopu transformacije Žnjana od 45 milijuna eura."
   de: "Casa Sol ist ein mediterranes Restaurant und Lounge im neuen Strandkomplex Žnjan, das gehobenes Essen am Meer entlang der Promenade bietet. Mit Fokus auf mediterrane Küche und entspannte Lounge-Atmosphäre ist es der ideale Ort für ein gemütliches Mittagessen oder Abendessen bei Sonnenuntergang mit Adriablick. Einer der 11 neuen Pavillonobjekte im Rahmen der 45-Millionen-Euro-Transformation."
   it: "Casa Sol è un ristorante mediterraneo e lounge nel nuovo complesso balneare di Žnjan, che offre una raffinata esperienza gastronomica in riva al mare lungo il lungomare. Con focus sulla cucina mediterranea e un'atmosfera lounge rilassata, è il luogo ideale per un pranzo tranquillo o una cena al tramonto con vista sull'Adriatico. Uno degli 11 nuovi padiglioni aperti nell'ambito della trasformazione da 45 milioni di euro."
+  fr: "Casa Sol est un restaurant méditerranéen et lounge au sein du nouveau complexe balnéaire de la plage de Žnjan, proposant une cuisine raffinée en bord de mer le long de la promenade. Axé sur la gastronomie méditerranéenne et une ambiance lounge décontractée, c'est l'endroit idéal pour un déjeuner tranquille ou un dîner au coucher du soleil avec vue sur l'Adriatique. L'un des 11 nouveaux pavillons inaugurés dans le cadre de la transformation de Žnjan à 45 M€."
+  es: "Casa Sol es un restaurante mediterráneo y lounge en el nuevo complejo de la playa de Žnjan, que ofrece una refinada experiencia gastronómica frente al mar a lo largo del paseo marítimo. Centrado en la cocina mediterránea y un ambiente lounge relajado, es el lugar ideal para un almuerzo tranquilo o una cena al atardecer con vistas al Adriático. Uno de los 11 nuevos pabellones inaugurados como parte de la transformación de 45 millones de euros de Žnjan."
+  pl: "Casa Sol to śródziemnomorska restauracja i lounge w nowym kompleksie plaży Žnjan, oferująca wykwintne dania nad morzem wzdłuż promenady. Z naciskiem na kuchnię śródziemnomorską i swobodną atmosferę lounge to idealne miejsce na spokojny lunch lub kolację o zachodzie słońca z widokiem na Adriatyk. Jeden z 11 nowych pawilonów otwartych w ramach transformacji Žnjana o wartości 45 mln euro."
+  nl: "Casa Sol is een mediterraan restaurant en lounge in het nieuwe strandcomplex van Žnjan, dat verfijnde gerechten aan zee langs de promenade serveert. Met de nadruk op mediterrane keuken en een ontspannen loungesfeer is het de ideale plek voor een rustige lunch of een diner bij zonsondergang met uitzicht op de Adriatische Zee. Een van de 11 nieuwe paviljoens die werden geopend als onderdeel van de transformatie van Žnjan ter waarde van 45 miljoen euro."
 shortDescription:
   en: "Mediterranean restaurant and lounge on the promenade"
   hr: "Mediteranski restoran i lounge na šetnici"
   de: "Mediterranes Restaurant und Lounge an der Promenade"
   it: "Ristorante mediterraneo e lounge sul lungomare"
+  fr: "Restaurant méditerranéen et lounge sur la promenade"
+  es: "Restaurante mediterráneo y lounge en el paseo marítimo"
+  pl: "Śródziemnomorska restauracja i lounge na promenadzie"
+  nl: "Mediterraan restaurant en lounge aan de promenade"
 category: restaurant
 beachArea: promenade
 coordinates:

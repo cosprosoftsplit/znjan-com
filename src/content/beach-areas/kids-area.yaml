@@ -4,21 +4,37 @@ slug:
   hr: djecja-zona
   de: kinderbereich
   it: area-bambini
+  fr: espace-enfants
+  es: zona-infantil
+  pl: strefa-dla-dzieci
+  nl: kinderzone
 title:
   en: "Kids Area"
   hr: "Dječja zona"
   de: "Kinderbereich"
   it: "Area bambini"
+  fr: "Espace enfants"
+  es: "Zona infantil"
+  pl: "Strefa dla dzieci"
+  nl: "Kinderzone"
 description:
   en: "A family-friendly zone with shallow waters, playground equipment, and a gentle entry perfect for young children and families."
   hr: "Zona prilagođena obiteljima s plitkim morem, dječjim igralištem i blagim ulazom u more savršenim za malu djecu i obitelji."
   de: "Ein familienfreundlicher Bereich mit flachem Wasser, Spielplatzgeräten und einem sanften Einstieg, perfekt für kleine Kinder und Familien."
   it: "Una zona adatta alle famiglie con acque poco profonde, attrezzature da gioco e un ingresso dolce perfetto per bambini piccoli e famiglie."
+  fr: "Un espace familial aux eaux peu profondes, doté d'aires de jeux et d'une entrée en pente douce, idéal pour les jeunes enfants et les familles."
+  es: "Una zona familiar de aguas poco profundas, con juegos infantiles y una entrada suave al mar, perfecta para los más pequeños y las familias."
+  pl: "Przyjazna rodzinom strefa z płytką wodą, placem zabaw i łagodnym zejściem do morza, idealna dla małych dzieci i rodzin."
+  nl: "Een gezinsvriendelijke zone met ondiep water, speeltoestellen en een geleidelijke instap, perfect voor jonge kinderen en gezinnen."
 shortDescription:
   en: "Shallow waters and playground for families"
   hr: "Plitko more i igralište za obitelji"
   de: "Flaches Wasser und Spielplatz für Familien"
   it: "Acque poco profonde e parco giochi per famiglie"
+  fr: "Eaux peu profondes et aire de jeux pour les familles"
+  es: "Aguas poco profundas y juegos infantiles para familias"
+  pl: "Płytka woda i plac zabaw dla rodzin"
+  nl: "Ondiep water en speeltuin voor gezinnen"
 coordinates:
   lat: 43.5030
   lng: 16.4860

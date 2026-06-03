@@ -17,7 +17,7 @@ type MobileImage = {
 type MobileBeachArea = {
   id: string;
   slug: string;
-  slugs: Record<Language, string>;
+  slugs: LocalizedText;
   title: string;
   description: string;
   shortDescription: string | null;
@@ -33,7 +33,7 @@ type MobileBeachArea = {
 type MobileActivity = {
   id: string;
   slug: string;
-  slugs: Record<Language, string>;
+  slugs: LocalizedText;
   title: string;
   description: string;
   shortDescription: string | null;
@@ -52,7 +52,7 @@ type MobileActivity = {
 type MobilePlace = {
   id: string;
   slug: string;
-  slugs: Record<Language, string>;
+  slugs: LocalizedText;
   title: string;
   description: string;
   shortDescription: string | null;
@@ -197,7 +197,7 @@ function serializeBeachArea(
 ): MobileBeachArea {
   return {
     id: area.data.id,
-    slug: area.data.slug[lang],
+    slug: area.data.slug[lang] ?? area.data.slug.en,
     slugs: area.data.slug,
     title: localizeText(area.data.title, lang) ?? area.data.title.en,
     description: localizeText(area.data.description, lang) ?? area.data.description.en,
@@ -219,7 +219,7 @@ function serializeActivity(
 ): MobileActivity {
   return {
     id: activity.data.id,
-    slug: activity.data.slug[lang],
+    slug: activity.data.slug[lang] ?? activity.data.slug.en,
     slugs: activity.data.slug,
     title: localizeText(activity.data.title, lang) ?? activity.data.title.en,
     description: localizeText(activity.data.description, lang) ?? activity.data.description.en,
@@ -244,7 +244,7 @@ function serializePlace(
 ): MobilePlace {
   return {
     id: place.data.id,
-    slug: place.data.slug[lang],
+    slug: place.data.slug[lang] ?? place.data.slug.en,
     slugs: place.data.slug,
     title: localizeText(place.data.title, lang) ?? place.data.title.en,
     description: localizeText(place.data.description, lang) ?? place.data.description.en,

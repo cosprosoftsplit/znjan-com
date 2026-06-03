@@ -1,5 +1,5 @@
 ---
-import type { Language } from '@/lib/i18n';
+import type { Language, Localized } from '@/lib/i18n';
 
 interface MapMarker {
   lat: number;
@@ -28,7 +28,7 @@ const {
 
 const mapHeight = fullWidth ? '550px' : height;
 
-const mapLabels: Record<Language, Record<string, string>> = {
+const mapLabels: Localized<Record<string, string>> = {
   en: { viewDetails: 'View details', zoomIn: 'Zoom in', zoomOut: 'Zoom out' },
   hr: { viewDetails: 'Pogledaj detalje', zoomIn: 'Povećaj', zoomOut: 'Smanji' },
   de: { viewDetails: 'Details ansehen', zoomIn: 'Vergrößern', zoomOut: 'Verkleinern' },
@@ -47,7 +47,7 @@ const categoryIcons: Record<string, string> = {
   other: '📍',
 };
 
-const labels = mapLabels[lang];
+const labels = mapLabels[lang] ?? mapLabels.en;
 ---
 
 <div

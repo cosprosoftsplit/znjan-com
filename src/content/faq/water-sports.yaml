@@ -4,10 +4,18 @@ question:
   hr: "Koji vodeni sportovi su dostupni na plaži Žnjan?"
   de: "Welche Wassersportarten gibt es am Strand Žnjan?"
   it: "Quali sport acquatici sono disponibili alla spiaggia di Žnjan?"
+  fr: "Quels sports nautiques sont disponibles sur la plage de Žnjan ?"
+  es: "¿Qué deportes acuáticos hay disponibles en la playa de Žnjan?"
+  pl: "Jakie sporty wodne są dostępne na plaży Žnjan?"
+  nl: "Welke watersporten zijn er beschikbaar op het strand van Žnjan?"
 answer:
   en: "Žnjan Beach offers public sports activities including stand-up paddleboarding with your own board, kayaking with your own kayak, snorkeling, beach volleyball, tennis, basketball, running, cycling, and the skate park. All sports activities are free, there is no current reservation system, and the beach sports areas are open on a first-come, first-served basis."
   hr: "Plaža Žnjan nudi javne sportske aktivnosti uključujući stand-up paddleboarding s vlastitom daskom, kajak s vlastitim kajakom, ronjenje s maskom, odbojku na pijesku, tenis, košarku, trčanje, biciklizam i skate park. Sve sportske aktivnosti su besplatne, trenutačno ne postoji sustav rezervacija, a sportske zone rade po principu tko prvi dođe, prvi koristi."
   de: "Am Strand Žnjan gibt es öffentliche Sportaktivitäten wie Stand-Up-Paddleboarding mit eigenem Board, Kajakfahren mit eigenem Kajak, Schnorcheln, Beachvolleyball, Tennis, Basketball, Laufen, Radfahren und den Skatepark. Alle Sportaktivitäten sind kostenlos, es gibt derzeit kein Reservierungssystem, und die Sportflächen funktionieren nach dem Prinzip 'wer zuerst kommt, nutzt zuerst'."
   it: "La spiaggia di Žnjan offre attività sportive pubbliche come stand-up paddleboarding con la propria tavola, kayak con il proprio kayak, snorkeling, beach volley, tennis, basket, corsa, ciclismo e skate park. Tutte le attività sportive sono gratuite, al momento non esiste un sistema di prenotazione e le aree sportive funzionano in base al principio del primo arrivato, primo servito."
+  fr: "La plage de Žnjan propose des activités sportives publiques : stand-up paddle avec votre propre planche, kayak avec votre propre embarcation, snorkeling, beach-volley, tennis, basket-ball, course à pied, vélo et le skatepark. Toutes les activités sportives sont gratuites, il n'existe actuellement aucun système de réservation et les espaces sportifs sont accessibles selon le principe du premier arrivé, premier servi."
+  es: "La playa de Žnjan ofrece actividades deportivas públicas como paddle surf con tu propia tabla, kayak con tu propia embarcación, snorkel, vóley playa, tenis, baloncesto, running, ciclismo y el skatepark. Todas las actividades deportivas son gratuitas, actualmente no existe un sistema de reservas y las zonas deportivas funcionan por orden de llegada."
+  pl: "Plaża Žnjan oferuje publiczne aktywności sportowe, w tym stand-up paddleboarding na własnej desce, kajakarstwo na własnym kajaku, snorkeling, siatkówkę plażową, tenis, koszykówkę, bieganie, jazdę na rowerze oraz skatepark. Wszystkie aktywności sportowe są bezpłatne, obecnie nie ma systemu rezerwacji, a strefy sportowe działają na zasadzie kto pierwszy, ten lepszy."
+  nl: "Het strand van Žnjan biedt openbare sportactiviteiten, waaronder suppen met je eigen board, kajakken met je eigen kajak, snorkelen, beachvolleybal, tennis, basketbal, hardlopen, fietsen en het skatepark. Alle sportactiviteiten zijn gratis, er is momenteel geen reserveringssysteem en de sportzones werken volgens het principe wie het eerst komt, het eerst maalt."
 category: activities
 order: 12

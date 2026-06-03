@@ -4,21 +4,37 @@ slug:
   hr: biciklizam-trcanje
   de: radfahren-laufen
   it: ciclismo-corsa
+  fr: velo-course-a-pied
+  es: ciclismo-running
+  pl: rowery-bieganie
+  nl: fietsen-hardlopen
 title:
   en: "Cycling & Running"
   hr: "Biciklizam i trčanje"
   de: "Radfahren & Laufen"
   it: "Ciclismo e corsa"
+  fr: "Vélo & course à pied"
+  es: "Ciclismo y running"
+  pl: "Jazda na rowerze i bieganie"
+  nl: "Fietsen & hardlopen"
 description:
   en: "The Žnjan promenade offers a dedicated cycling and running path stretching along the entire beach. Enjoy scenic coastal views while staying active on a free public route that is open to everyone."
   hr: "Šetnica Žnjan nudi namjensku stazu za biciklizam i trčanje koja se proteže duž cijele plaže. Uživajte u slikovitim obalnim pogledima dok ostajete aktivni na besplatnoj javnoj ruti otvorenoj svima."
   de: "Die Žnjan-Promenade bietet einen Rad- und Laufweg, der sich entlang des gesamten Strandes erstreckt. Genießen Sie malerische Küstenblicke und bleiben Sie aktiv auf einer kostenlosen öffentlichen Strecke, die allen offen steht."
   it: "Il lungomare di Žnjan offre un percorso dedicato per ciclismo e corsa che si estende lungo tutta la spiaggia. Goditi le viste panoramiche costiere rimanendo attivo su un percorso pubblico gratuito aperto a tutti."
+  fr: "La promenade de Žnjan propose une piste dédiée au vélo et à la course à pied qui longe toute la plage. Profitez de vues côtières spectaculaires tout en restant actif sur un parcours public et gratuit, ouvert à tous."
+  es: "El paseo marítimo de Žnjan cuenta con un carril dedicado para ciclismo y running que recorre toda la playa. Disfruta de impresionantes vistas a la costa mientras te mantienes activo en una ruta pública y gratuita, abierta a todo el mundo."
+  pl: "Promenada Žnjan oferuje wydzieloną trasę dla rowerzystów i biegaczy, ciągnącą się wzdłuż całej plaży. Podziwiaj malownicze widoki na wybrzeże, zachowując aktywność na bezpłatnej, ogólnodostępnej trasie otwartej dla każdego."
+  nl: "De promenade van Žnjan biedt een eigen fiets- en hardlooppad dat langs het hele strand loopt. Geniet van schitterende uitzichten op de kust terwijl je actief blijft op een gratis openbare route die voor iedereen toegankelijk is."
 shortDescription:
   en: "Scenic promenade path for cycling and running"
   hr: "Slikovita staza na šetnici za biciklizam i trčanje"
   de: "Malerischer Promenadenweg zum Radfahren und Laufen"
   it: "Sentiero panoramico per ciclismo e corsa"
+  fr: "Piste panoramique sur la promenade pour le vélo et la course"
+  es: "Sendero panorámico en el paseo para ciclismo y running"
+  pl: "Malownicza trasa na promenadzie do jazdy na rowerze i biegania"
+  nl: "Schilderachtig promenadepad voor fietsen en hardlopen"
 category: fitness
 beachAreas:
   - promenade

@@ -4,21 +4,37 @@ slug:
   hr: hotel-more
   de: hotel-more
   it: hotel-more
+  fr: hotel-more
+  es: hotel-more
+  pl: hotel-more
+  nl: hotel-more
 title:
   en: "Hotel More"
   hr: "Hotel More"
   de: "Hotel More"
   it: "Hotel More"
+  fr: "Hotel More"
+  es: "Hotel More"
+  pl: "Hotel More"
+  nl: "Hotel More"
 description:
   en: "Hotel More is a charming family-run 3-star hotel directly on the Žnjan promenade, just a minute's walk from the beach. With 11 air-conditioned rooms featuring sea views, flat-screen TVs, and minibars, it offers an affordable and personal beachside stay. Amenities include free WiFi, complimentary breakfast, a bar, and laundry services. Popular with surfers and beach enthusiasts."
   hr: "Hotel More šarmantan je obiteljski hotel s 3 zvjezdice smješten direktno na žnjanskoj šetnici, samo minutu hoda od plaže. S 11 klimatiziranih soba s pogledom na more, televizorima s ravnim ekranom i minibarovima, nudi pristupačan i osoban boravak uz more. Sadržaji uključuju besplatni WiFi, besplatan doručak, bar i usluge pranja rublja. Popularan među surferima i ljubiteljima plaže."
   de: "Das Hotel More ist ein charmantes, familiengeführtes 3-Sterne-Hotel direkt an der Žnjan-Promenade, nur eine Gehminute vom Strand entfernt. Mit 11 klimatisierten Zimmern mit Meerblick, Flachbild-TVs und Minibars bietet es einen erschwinglichen und persönlichen Aufenthalt am Strand. Annehmlichkeiten: kostenloses WLAN, Frühstück, Bar und Wäscheservice. Beliebt bei Surfern und Strandliebhabern."
   it: "L'Hotel More è un affascinante hotel familiare a 3 stelle direttamente sul lungomare di Žnjan, a solo un minuto a piedi dalla spiaggia. Con 11 camere climatizzate con vista mare, TV a schermo piatto e minibar, offre un soggiorno accessibile e personale in riva al mare. Servizi: WiFi gratuito, colazione inclusa, bar e lavanderia. Popolare tra surfisti e amanti della spiaggia."
+  fr: "Le Hotel More est un charmant hôtel familial 3 étoiles situé directement sur la promenade de Žnjan, à une minute à pied de la plage. Avec ses 11 chambres climatisées dotées d'une vue sur la mer, d'une télévision à écran plat et d'un minibar, il offre un séjour abordable et chaleureux en bord de mer. Les prestations comprennent le WiFi gratuit, le petit-déjeuner offert, un bar et un service de blanchisserie. Apprécié des surfeurs et des amoureux de la plage."
+  es: "El Hotel More es un encantador hotel familiar de 3 estrellas situado directamente en el paseo marítimo de Žnjan, a un minuto a pie de la playa. Con 11 habitaciones climatizadas con vistas al mar, televisión de pantalla plana y minibar, ofrece una estancia asequible y cercana junto al mar. Entre sus servicios se incluyen WiFi gratuito, desayuno de cortesía, bar y servicio de lavandería. Muy popular entre surfistas y amantes de la playa."
+  pl: "Hotel More to urokliwy, rodzinny hotel trzygwiazdkowy położony bezpośrednio przy promenadzie Žnjan, zaledwie minutę spacerem od plaży. Oferuje 11 klimatyzowanych pokoi z widokiem na morze, telewizorami z płaskim ekranem i minibarami, zapewniając niedrogi i kameralny pobyt nad morzem. W ofercie znajdują się bezpłatne WiFi, śniadanie w cenie, bar oraz usługi pralnicze. Chętnie wybierany przez surferów i miłośników plaży."
+  nl: "Hotel More is een charmant, familiaal driesterrenhotel direct aan de promenade van Žnjan, op slechts een minuut lopen van het strand. Met 11 airconditioned kamers met zeezicht, flatscreen-tv's en minibars biedt het een betaalbaar en persoonlijk verblijf aan zee. De voorzieningen omvatten gratis WiFi, een gratis ontbijt, een bar en wasservice. Geliefd bij surfers en strandliefhebbers."
 shortDescription:
   en: "Family-run 3-star hotel right on the Žnjan promenade"
   hr: "Obiteljski hotel s 3 zvjezdice na žnjanskoj šetnici"
   de: "Familiengeführtes 3-Sterne-Hotel an der Žnjan-Promenade"
   it: "Hotel familiare 3 stelle sul lungomare di Žnjan"
+  fr: "Hôtel familial 3 étoiles sur la promenade de Žnjan"
+  es: "Hotel familiar de 3 estrellas en el paseo marítimo de Žnjan"
+  pl: "Rodzinny hotel 3-gwiazdkowy przy promenadzie Žnjan"
+  nl: "Familiaal driesterrenhotel aan de promenade van Žnjan"
 category: hotel
 beachArea: promenade
 coordinates:

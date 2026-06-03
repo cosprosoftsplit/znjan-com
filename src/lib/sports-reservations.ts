@@ -1,4 +1,4 @@
-import type { Language } from './i18n';
+import type { Language, Localized } from './i18n';
 import type { D1Database } from './db';
 import { generateId, now } from './db';
 
@@ -51,7 +51,7 @@ export interface SportsResourceDefinition {
   reservationMode: SportsReservationMode;
   capacity: number;
   availableSlotStarts?: readonly string[];
-  titles: Record<Language, string>;
+  titles: Localized<string>;
 }
 
 export interface SportsResource {
@@ -62,7 +62,7 @@ export interface SportsResource {
   reservationMode: SportsReservationMode;
   capacity: number;
   availableSlotStarts: string[] | null;
-  titles: Record<Language, string>;
+  titles: Localized<string>;
   isActive: boolean;
 }
 

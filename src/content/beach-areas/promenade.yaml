@@ -4,21 +4,37 @@ slug:
   hr: setnica
   de: promenade
   it: lungomare
+  fr: promenade
+  es: paseo-maritimo
+  pl: promenada
+  nl: promenade
 title:
   en: "Promenade"
   hr: "Šetnica"
   de: "Promenade"
   it: "Lungomare"
+  fr: "Promenade"
+  es: "Paseo Marítimo"
+  pl: "Promenada"
+  nl: "Promenade"
 description:
   en: "The newly built Žnjan promenade stretching along the entire beach — perfect for walking, jogging, cycling, and enjoying sunset views with restaurants and cafes along the way."
   hr: "Novoizgrađena žnjanska šetnica koja se proteže duž cijele plaže — savršena za šetnju, trčanje, vožnju biciklom i uživanje u pogledu na zalazak sunca s restoranima i kafićima uz put."
   de: "Die neu erbaute Žnjan-Promenade, die sich entlang des gesamten Strandes erstreckt — perfekt zum Spazierengehen, Joggen, Radfahren und Genießen von Sonnenuntergangsblicken mit Restaurants und Cafés auf dem Weg."
   it: "Il lungomare di Žnjan di nuova costruzione che si estende lungo tutta la spiaggia — perfetto per passeggiare, fare jogging, andare in bicicletta e godersi i tramonti con ristoranti e caffè lungo il percorso."
+  fr: "La promenade de Žnjan, récemment aménagée, longe toute la plage — idéale pour marcher, courir, faire du vélo et admirer le coucher du soleil, avec restaurants et cafés tout au long du parcours."
+  es: "El paseo marítimo de Žnjan, recién construido, se extiende a lo largo de toda la playa: perfecto para caminar, correr, montar en bicicleta y disfrutar de las puestas de sol, con restaurantes y cafeterías por el camino."
+  pl: "Nowo wybudowana promenada w Žnjanie ciągnie się wzdłuż całej plaży — idealna na spacery, jogging, jazdę na rowerze i podziwianie zachodów słońca, z restauracjami i kawiarniami po drodze."
+  nl: "De nieuw aangelegde promenade van Žnjan loopt langs het hele strand — ideaal om te wandelen, joggen, fietsen en te genieten van het uitzicht op de zonsondergang, met restaurants en cafés onderweg."
 shortDescription:
   en: "Scenic walkway with restaurants and sunset views"
   hr: "Slikovita šetnica s restoranima i pogledom na zalazak sunca"
   de: "Malerischer Gehweg mit Restaurants und Sonnenuntergangsblick"
   it: "Passeggiata panoramica con ristoranti e tramonti"
+  fr: "Promenade panoramique avec restaurants et couchers de soleil"
+  es: "Paseo panorámico con restaurantes y puestas de sol"
+  pl: "Malownicza promenada z restauracjami i widokiem na zachód słońca"
+  nl: "Schilderachtige wandelpromenade met restaurants en zonsondergangen"
 coordinates:
   lat: 43.5022
   lng: 16.4880

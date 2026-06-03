@@ -4,21 +4,37 @@ slug:
   hr: amfiteatar
   de: amphitheater-bereich
   it: zona-anfiteatro
+  fr: zone-amphitheatre
+  es: zona-anfiteatro
+  pl: strefa-amfiteatru
+  nl: amfitheater-zone
 title:
   en: "Amphitheater Area"
   hr: "Područje amfiteatra"
   de: "Amphitheater-Bereich"
   it: "Zona anfiteatro"
+  fr: "Espace amphithéâtre"
+  es: "Zona del anfiteatro"
+  pl: "Strefa amfiteatru"
+  nl: "Amfitheaterzone"
 description:
   en: "The open-air amphitheater area at Žnjan Beach — a venue for concerts, cultural events, and community gatherings with stunning sea views."
   hr: "Područje amfiteatra na otvorenom na plaži Žnjan — prostor za koncerte, kulturna događanja i društvena okupljanja s prekrasnim pogledom na more."
   de: "Der Freiluft-Amphitheater-Bereich am Strand Žnjan — ein Veranstaltungsort für Konzerte, kulturelle Events und Gemeindetreffen mit atemberaubendem Meerblick."
   it: "L'area dell'anfiteatro all'aperto sulla spiaggia di Žnjan — un luogo per concerti, eventi culturali e incontri comunitari con una splendida vista sul mare."
+  fr: "L'amphithéâtre en plein air de la plage de Žnjan — un lieu dédié aux concerts, aux événements culturels et aux rassemblements, offrant une vue imprenable sur la mer."
+  es: "El anfiteatro al aire libre de la playa de Žnjan: un espacio para conciertos, eventos culturales y encuentros vecinales con impresionantes vistas al mar."
+  pl: "Amfiteatr pod gołym niebem na plaży Žnjan — miejsce koncertów, wydarzeń kulturalnych i spotkań lokalnej społeczności z zapierającym dech w piersiach widokiem na morze."
+  nl: "Het openluchtamfitheater op het strand van Žnjan — een locatie voor concerten, culturele evenementen en samenkomsten met een adembenemend uitzicht op zee."
 shortDescription:
   en: "Open-air venue for concerts and events"
   hr: "Prostor na otvorenom za koncerte i događanja"
   de: "Freiluftveranstaltungsort für Konzerte und Events"
   it: "Spazio all'aperto per concerti ed eventi"
+  fr: "Lieu en plein air pour concerts et événements"
+  es: "Espacio al aire libre para conciertos y eventos"
+  pl: "Plenerowe miejsce koncertów i wydarzeń"
+  nl: "Openluchtlocatie voor concerten en evenementen"
 coordinates:
   lat: 43.5018
   lng: 16.4900

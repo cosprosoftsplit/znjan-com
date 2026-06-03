@@ -4,21 +4,37 @@ slug:
   hr: sup-daska
   de: stand-up-paddling
   it: stand-up-paddle
+  fr: stand-up-paddle
+  es: paddle-surf
+  pl: stand-up-paddle
+  nl: suppen
 title:
   en: "Stand-Up Paddleboarding (SUP)"
   hr: "SUP daska"
   de: "Stand-Up Paddling (SUP)"
   it: "Stand-Up Paddle (SUP)"
+  fr: "Stand-Up Paddle (SUP)"
+  es: "Paddle Surf (SUP)"
+  pl: "Stand-Up Paddle (SUP)"
+  nl: "Suppen (SUP)"
 description:
   en: "Glide across the crystal-clear Adriatic waters on a stand-up paddleboard. If you bring your own board, Žnjan's public shoreline offers an easy place to paddle, with no reservation system and first-come, first-served access to the launch areas."
   hr: "Klizite po kristalno čistim vodama Jadrana na SUP dasci. Ako ponesete vlastitu dasku, javna obala Žnjana nudi jednostavan pristup za veslanje, bez sustava rezervacija i po principu tko prvi dođe, prvi koristi."
   de: "Gleiten Sie auf einem Stand-Up-Paddleboard über das kristallklare Adriawasser. Wenn Sie Ihr eigenes Board mitbringen, bietet die öffentliche Uferlinie von Žnjan einen einfachen Einstieg zum Paddeln, ohne Reservierungssystem und nach dem Prinzip 'wer zuerst kommt, nutzt den Platz zuerst'."
   it: "Scivola sulle acque cristalline dell'Adriatico su una tavola da stand-up paddle. Se porti la tua tavola, la riva pubblica di Žnjan offre un accesso semplice per pagaiare, senza sistema di prenotazione e in base al principio del primo arrivato, primo servito."
+  fr: "Glissez sur les eaux cristallines de l'Adriatique en stand-up paddle. Si vous apportez votre propre planche, le littoral public de Žnjan offre un accès facile pour pagayer, sans système de réservation et selon le principe du premier arrivé, premier servi."
+  es: "Deslízate por las aguas cristalinas del Adriático sobre una tabla de paddle surf. Si traes tu propia tabla, la costa pública de Žnjan ofrece un acceso fácil para remar, sin sistema de reservas y por orden de llegada."
+  pl: "Sunąć po krystalicznie czystych wodach Adriatyku na desce do stand-up paddle. Jeśli przywieziesz własną deskę, publiczne wybrzeże Žnjan zapewnia łatwy dostęp do wiosłowania, bez systemu rezerwacji i według zasady kto pierwszy, ten lepszy."
+  nl: "Glijd over het kristalheldere water van de Adriatische Zee op een suppboard. Als je je eigen board meeneemt, biedt de openbare kustlijn van Žnjan een eenvoudige plek om te peddelen, zonder reserveringssysteem en op basis van wie het eerst komt, het eerst maalt."
 shortDescription:
   en: "Explore the Adriatic on a paddleboard"
   hr: "Istražite Jadran na SUP dasci"
   de: "Erkunden Sie die Adria auf einem Paddleboard"
   it: "Esplora l'Adriatico su un paddleboard"
+  fr: "Explorez l'Adriatique en paddle"
+  es: "Explora el Adriático sobre una tabla de paddle"
+  pl: "Odkryj Adriatyk na desce SUP"
+  nl: "Ontdek de Adriatische Zee op een suppboard"
 category: water-sports
 beachAreas:
   - main-beach
@@ -29,6 +45,10 @@ duration:
   hr: "1-2 sata"
   de: "1-2 Stunden"
   it: "1-2 ore"
+  fr: "1-2 heures"
+  es: "1-2 horas"
+  pl: "1-2 godziny"
+  nl: "1-2 uur"
 priceRange: "Free"
 season: summer
 featured: true

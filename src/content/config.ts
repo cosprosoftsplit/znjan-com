@@ -4,7 +4,7 @@ import { defineCollection, z } from 'astro:content';
 // Shared Zod schemas for multilingual fields
 // ============================================================
 
-const languages = ['en', 'hr', 'de', 'it'] as const;
+const languages = ['en', 'hr', 'de', 'it', 'fr', 'es', 'pl', 'nl'] as const;
 
 /** A string that must be provided in all 4 languages */
 // en/hr/de/it required; fr/es/pl/nl optional while translation is in progress

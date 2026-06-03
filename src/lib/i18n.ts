@@ -7,6 +7,13 @@ export const LANGUAGES = ['en', 'hr', 'de', 'it', 'fr', 'es', 'pl', 'nl'] as con
 export type Language = (typeof LANGUAGES)[number];
 export const DEFAULT_LANGUAGE: Language = 'en';
 
+/**
+ * A multilingual field: English is required; the other languages are optional.
+ * `getLocalized()` falls back to English when a language is missing, so callers
+ * can pass objects that only cover a subset of languages.
+ */
+export type Localized<T = string> = Partial<Record<Language, T>> & Record<'en', T>;
+
 /** Localized route segment mappings */
 export const ROUTE_SEGMENTS: Record<string, Record<Language, string>> = {
   guides: { en: 'guides', hr: 'vodici', de: 'reisefuehrer', it: 'guide', fr: 'guides', es: 'guias', pl: 'przewodniki', nl: 'gidsen' },
@@ -56,7 +63,7 @@ export function getHomeUrl(lang: Language): string {
  *  Route segments always use English (Astro generates pages at English paths). */
 export function getHreflangLinks(
   segment: string,
-  slugs: Record<Language, string>,
+  slugs: Localized<string>,
 ): Array<{ lang: Language | 'x-default'; href: string }> {
   const links: Array<{ lang: Language | 'x-default'; href: string }> = [];
 
@@ -79,7 +86,7 @@ export function getHreflangLinks(
 /** Build per-language alternate URLs for a localized detail page */
 export function getAlternateUrls(
   segment: string,
-  slugs: Record<Language, string>,
+  slugs: Localized<string>,
 ): Record<Language, string> {
   const alternates = {} as Record<Language, string>;
 
@@ -92,7 +99,7 @@ export function getAlternateUrls(
 
 /** Build per-language alternate URLs for a localized standalone page */
 export function getPageAlternateUrls(
-  slugs: Record<Language, string>,
+  slugs: Localized<string>,
 ): Record<Language, string> {
   const alternates = {} as Record<Language, string>;
 
@@ -145,8 +152,8 @@ export function getLangFromUrl(url: URL): Language {
 
 /** Get a field value for a specific language from a multilingual object */
 export function getLocalized<T>(
-  field: Record<Language, T>,
+  field: Localized<T>,
   lang: Language,
 ): T {
-  return field[lang] ?? field[DEFAULT_LANGUAGE];
+  return field[lang] ?? field.en;
 }

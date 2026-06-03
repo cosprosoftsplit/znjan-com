@@ -4,21 +4,37 @@ slug:
   hr: plivanje
   de: schwimmen
   it: nuoto
+  fr: natation
+  es: natacion
+  pl: plywanie
+  nl: zwemmen
 title:
   en: "Swimming"
   hr: "Plivanje"
   de: "Schwimmen"
   it: "Nuoto"
+  fr: "Natation"
+  es: "Natación"
+  pl: "Pływanie"
+  nl: "Zwemmen"
 description:
   en: "Enjoy swimming in the crystal-clear Adriatic waters at Žnjan Beach. The beach offers both shallow areas perfect for families and deeper sections for experienced swimmers. Lifeguards are on duty during summer months. Water temperature ranges from 20°C in June to 26°C in August."
   hr: "Uživajte u plivanju u kristalno čistim vodama Jadrana na plaži Žnjan. Plaža nudi i plitka područja savršena za obitelji i dublje dijelove za iskusne plivače. Spasioci su na dužnosti tijekom ljetnih mjeseci. Temperatura mora kreće se od 20°C u lipnju do 26°C u kolovozu."
   de: "Genießen Sie das Schwimmen im kristallklaren Adriawasser am Strand Žnjan. Der Strand bietet sowohl flache Bereiche für Familien als auch tiefere Abschnitte für erfahrene Schwimmer. Rettungsschwimmer sind in den Sommermonaten im Dienst. Die Wassertemperatur reicht von 20°C im Juni bis 26°C im August."
   it: "Goditi il nuoto nelle acque cristalline dell'Adriatico alla spiaggia di Žnjan. La spiaggia offre sia aree poco profonde perfette per le famiglie che sezioni più profonde per nuotatori esperti. I bagnini sono in servizio durante i mesi estivi. La temperatura dell'acqua varia da 20°C a giugno a 26°C ad agosto."
+  fr: "Profitez de la baignade dans les eaux cristallines de l'Adriatique à la plage de Žnjan. La plage propose à la fois des zones peu profondes idéales pour les familles et des sections plus profondes pour les nageurs expérimentés. Des sauveteurs sont présents pendant les mois d'été. La température de l'eau varie de 20 °C en juin à 26 °C en août."
+  es: "Disfrute de un baño en las aguas cristalinas del Adriático en la playa de Žnjan. La playa cuenta tanto con zonas poco profundas, perfectas para familias, como con tramos más hondos para nadadores experimentados. Hay socorristas de servicio durante los meses de verano. La temperatura del agua oscila entre los 20 °C de junio y los 26 °C de agosto."
+  pl: "Korzystaj z kąpieli w krystalicznie czystych wodach Adriatyku na plaży Žnjan. Plaża oferuje zarówno płytkie strefy idealne dla rodzin, jak i głębsze partie dla doświadczonych pływaków. W miesiącach letnich na plaży dyżurują ratownicy. Temperatura wody waha się od 20°C w czerwcu do 26°C w sierpniu."
+  nl: "Geniet van het zwemmen in het kristalheldere water van de Adriatische Zee op het strand van Žnjan. Het strand heeft zowel ondiepe zones die ideaal zijn voor gezinnen als diepere gedeelten voor ervaren zwemmers. In de zomermaanden zijn er strandwachten aanwezig. De watertemperatuur loopt uiteen van 20 °C in juni tot 26 °C in augustus."
 shortDescription:
   en: "Crystal-clear Adriatic waters with lifeguard service"
   hr: "Kristalno čiste vode Jadrana sa spasilačkom službom"
   de: "Kristallklares Adriawasser mit Rettungsschwimmern"
   it: "Acque cristalline dell'Adriatico con servizio bagnino"
+  fr: "Eaux cristallines de l'Adriatique avec sauveteurs"
+  es: "Aguas cristalinas del Adriático con servicio de socorristas"
+  pl: "Krystalicznie czyste wody Adriatyku z obsługą ratowników"
+  nl: "Kristalhelder Adriatisch water met strandwachtdienst"
 category: water-sports
 beachAreas:
   - main-beach

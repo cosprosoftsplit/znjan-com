@@ -4,10 +4,18 @@ question:
   hr: "Je li plaža Žnjan pješčana ili šljunčana?"
   de: "Ist der Strand Žnjan sandig oder kieselig?"
   it: "La spiaggia di Žnjan è sabbiosa o ciottolosa?"
+  fr: "La plage de Žnjan est-elle de sable ou de galets ?"
+  es: "¿La playa de Žnjan es de arena o de guijarros?"
+  pl: "Czy plaża Žnjan jest piaszczysta czy żwirowa?"
+  nl: "Is het strand van Žnjan zandig of kiezelig?"
 answer:
   en: "Žnjan Beach is primarily a pebble beach with some sandy sections, especially in the kids' area. The pebbles are small and smooth. We recommend bringing water shoes for the most comfortable experience, especially for children."
   hr: "Plaža Žnjan je pretežno šljunčana s nekim pješčanim dijelovima, posebno u dječjoj zoni. Kamenci su mali i glatki. Preporučujemo da ponesete cipele za vodu za najugodnije iskustvo, posebno za djecu."
   de: "Der Strand Žnjan ist hauptsächlich ein Kieselstrand mit einigen sandigen Abschnitten, besonders im Kinderbereich. Die Kieselsteine sind klein und glatt. Wir empfehlen Wasserschuhe für den angenehmsten Aufenthalt, besonders für Kinder."
   it: "La spiaggia di Žnjan è principalmente una spiaggia di ciottoli con alcune sezioni sabbiose, soprattutto nell'area bambini. I ciottoli sono piccoli e lisci. Consigliamo di portare scarpe da acqua per un'esperienza più confortevole, specialmente per i bambini."
+  fr: "La plage de Žnjan est principalement une plage de galets avec quelques sections de sable, notamment dans l'espace enfants. Les galets sont petits et lisses. Nous vous conseillons d'apporter des chaussures d'eau pour un confort optimal, en particulier pour les enfants."
+  es: "La playa de Žnjan es principalmente una playa de guijarros con algunas zonas de arena, sobre todo en la zona infantil. Los guijarros son pequeños y lisos. Recomendamos llevar escarpines para disfrutar de la mayor comodidad, especialmente para los niños."
+  pl: "Plaża Žnjan jest głównie żwirowa, z kilkoma piaszczystymi odcinkami, zwłaszcza w strefie dla dzieci. Kamyki są małe i gładkie. Zalecamy zabranie butów do wody, aby zapewnić sobie maksymalny komfort, szczególnie dzieciom."
+  nl: "Het strand van Žnjan is voornamelijk een kiezelstrand met enkele zandige gedeelten, vooral in de kinderzone. De kiezels zijn klein en glad. We raden aan om waterschoenen mee te nemen voor het meeste comfort, zeker voor kinderen."
 category: general
 order: 3

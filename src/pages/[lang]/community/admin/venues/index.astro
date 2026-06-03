@@ -128,7 +128,7 @@ const venueTargets: VenueWalkTarget[] = targetConfigs.map((target) => {
     key: target.key,
     type: target.type,
     status: target.status,
-    title: place ? place.data.title[lang] : t(lang, target.fallbackTitleKey ?? 'admin.commercialUnknownHospitality1'),
+    title: place ? (place.data.title[lang] ?? place.data.title.en) : t(lang, target.fallbackTitleKey ?? 'admin.commercialUnknownHospitality1'),
     publicHref: place ? `/${lang}/places/${place.data.slug[lang]}/` : null,
     website: place?.data.website ?? null,
     phone: place?.data.phone ?? null,

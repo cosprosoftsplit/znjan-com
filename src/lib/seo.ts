@@ -30,7 +30,7 @@ export function generateHreflangLinks(
   segment: string,
   slugs: Record<Language, string>,
 ): HreflangLink[] {
-  const languages: Language[] = ['en', 'hr', 'de', 'it'];
+  const languages: Language[] = ['en', 'hr', 'de', 'it', 'fr', 'es', 'pl', 'nl'];
   const links: HreflangLink[] = [];
 
   for (const lang of languages) {
@@ -51,7 +51,7 @@ export function generateHreflangLinks(
 /** Generate hreflang links for hub pages (no slug).
  *  Route segments always use English (Astro generates pages at English paths). */
 export function generateHubHreflangLinks(segment: string): HreflangLink[] {
-  const languages: Language[] = ['en', 'hr', 'de', 'it'];
+  const languages: Language[] = ['en', 'hr', 'de', 'it', 'fr', 'es', 'pl', 'nl'];
   const links: HreflangLink[] = [];
 
   for (const lang of languages) {
@@ -71,7 +71,7 @@ export function generateHubHreflangLinks(segment: string): HreflangLink[] {
 
 /** Generate hreflang links for home page */
 export function generateHomeHreflangLinks(): HreflangLink[] {
-  const languages: Language[] = ['en', 'hr', 'de', 'it'];
+  const languages: Language[] = ['en', 'hr', 'de', 'it', 'fr', 'es', 'pl', 'nl'];
   return [
     ...languages.map((lang) => ({ lang, href: `https://znjan.com/${lang}/` })),
     { lang: 'x-default', href: 'https://znjan.com/en/' },

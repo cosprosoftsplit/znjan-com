@@ -5,7 +5,9 @@
 
 import type { Language } from './i18n';
 
-type LabelMap = Record<string, Record<Language, string>>;
+// Core languages carry full labels; fr/es/pl/nl are filled in incrementally
+// (callers access via optional chaining with an English/key fallback).
+type LabelMap = Record<string, Partial<Record<Language, string>>>;
 
 /** Labels for place categories (restaurant, bar, beach-club, etc.) */
 export const placeCategoryLabels: LabelMap = {

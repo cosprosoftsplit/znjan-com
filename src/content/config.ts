@@ -7,19 +7,30 @@ import { defineCollection, z } from 'astro:content';
 const languages = ['en', 'hr', 'de', 'it'] as const;
 
 /** A string that must be provided in all 4 languages */
+// en/hr/de/it required; fr/es/pl/nl optional while translation is in progress
+// (getLocalized() falls back to EN when a language is missing).
+const slugRe = /^[a-z0-9-]+$/;
 const multilingualString = z.object({
   en: z.string(),
   hr: z.string(),
   de: z.string(),
   it: z.string(),
+  fr: z.string().optional(),
+  es: z.string().optional(),
+  pl: z.string().optional(),
+  nl: z.string().optional(),
 });
 
-/** A slug that must be provided in all 4 languages */
+/** A slug that must be provided in the core languages (extras optional) */
 const multilingualSlug = z.object({
-  en: z.string().regex(/^[a-z0-9-]+$/, 'Slug must be lowercase alphanumeric with hyphens'),
-  hr: z.string().regex(/^[a-z0-9-]+$/, 'Slug must be lowercase alphanumeric with hyphens'),
-  de: z.string().regex(/^[a-z0-9-]+$/, 'Slug must be lowercase alphanumeric with hyphens'),
-  it: z.string().regex(/^[a-z0-9-]+$/, 'Slug must be lowercase alphanumeric with hyphens'),
+  en: z.string().regex(slugRe, 'Slug must be lowercase alphanumeric with hyphens'),
+  hr: z.string().regex(slugRe, 'Slug must be lowercase alphanumeric with hyphens'),
+  de: z.string().regex(slugRe, 'Slug must be lowercase alphanumeric with hyphens'),
+  it: z.string().regex(slugRe, 'Slug must be lowercase alphanumeric with hyphens'),
+  fr: z.string().regex(slugRe).optional(),
+  es: z.string().regex(slugRe).optional(),
+  pl: z.string().regex(slugRe).optional(),
+  nl: z.string().regex(slugRe).optional(),
 });
 
 /** Optional multilingual string (for fields that might not be translated yet) */
@@ -28,6 +39,10 @@ const optionalMultilingualString = z.object({
   hr: z.string().optional(),
   de: z.string().optional(),
   it: z.string().optional(),
+  fr: z.string().optional(),
+  es: z.string().optional(),
+  pl: z.string().optional(),
+  nl: z.string().optional(),
 });
 
 /** Coordinates for map placement */

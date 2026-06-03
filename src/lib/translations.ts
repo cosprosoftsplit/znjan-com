@@ -9,8 +9,12 @@ import en from '@/i18n/en.json';
 import hr from '@/i18n/hr.json';
 import de from '@/i18n/de.json';
 import it from '@/i18n/it.json';
+import fr from '@/i18n/fr.json';
+import es from '@/i18n/es.json';
+import pl from '@/i18n/pl.json';
+import nl from '@/i18n/nl.json';
 
-const translations: Record<Language, Record<string, unknown>> = { en, hr, de, it };
+const translations: Record<Language, Record<string, unknown>> = { en, hr, de, it, fr, es, pl, nl };
 
 /** Flatten a nested object into dot-notation keys */
 function flatten(obj: Record<string, unknown>, prefix = ''): Record<string, string> {

@@ -12,7 +12,7 @@
 import { readFileSync, readdirSync, existsSync } from 'fs';
 import { join, resolve } from 'path';
 
-const LANGUAGES = ['en', 'hr', 'de', 'it'] as const;
+const LANGUAGES = ['en', 'hr', 'de', 'it', 'fr', 'es', 'pl', 'nl'] as const;
 const ROOT = resolve(import.meta.dirname, '..');
 const I18N_DIR = join(ROOT, 'src', 'i18n');
 const CONTENT_DIR = join(ROOT, 'src', 'content');

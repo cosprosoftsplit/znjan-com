@@ -1,0 +1,68 @@
+# Cloudflare Pages Redirects
+# Docs: https://developers.cloudflare.com/pages/configuration/redirects/
+#
+# IMPORTANT: under @astrojs/cloudflare, paths route through dist/_worker.js
+# and the static `_redirects` is bypassed for in-app paths. That's why we
+# CANNOT define these as `redirects` in astro.config.mjs (only `/` works
+# there because it's excluded from the worker via _routes.json).
+#
+# We DO get _redirects honored for paths the worker doesn't catch — and
+# practically, Cloudflare Pages applies path-level rules at the edge for
+# anything that 404s in the SPA. These cross-language 404 recoveries
+# fall in that bucket: the source URLs don't exist as routes so the
+# worker yields, and Cloudflare's _redirects then fires.
+#
+# Sources are taken from GSC Page Indexing → Not found (404), 2026-06-02.
+# Only URLs Google actually has indexed are listed — no speculative coverage.
+
+# ============================================================
+# Cross-language slug mismatch — wrong-lang slug under a prefix.
+# These were emitted by an old LanguageSwitcher fallback (now fixed)
+# and the legacy localized-segments hreflang. Retire them with 301s.
+# ============================================================
+
+# beach-areas (English segment, localized slug)
+/hr/beach-areas/amphitheater-bereich/   /hr/beach-areas/amfiteatar/         301
+/de/beach-areas/amphitheater-area/      /de/beach-areas/amphitheater-bereich/  301
+/hr/beach-areas/amphitheater-area/      /hr/beach-areas/amfiteatar/         301
+/it/beach-areas/amphitheater-area/      /it/beach-areas/zona-anfiteatro/    301
+/de/beach-areas/setnica/                /de/beach-areas/promenade/          301
+/en/beach-areas/setnica/                /en/beach-areas/promenade/          301
+/it/beach-areas/setnica/                /it/beach-areas/lungomare/          301
+
+# activities
+/en/activities/beach-volley/            /en/activities/beach-volleyball/    301
+/hr/activities/beach-volley/            /hr/activities/odbojka-na-pijesku/  301
+/de/activities/beach-volley/            /de/activities/beachvolleyball/     301
+/it/activities/kayaking/                /it/activities/kayak/               301
+/it/activities/kajak/                   /it/activities/kayak/               301
+/de/activities/cycling-running/         /de/activities/radfahren-laufen/    301
+/it/activities/cycling-running/         /it/activities/ciclismo-corsa/      301
+/en/activities/biciklizam-trcanje/      /en/activities/cycling-running/     301
+/de/activities/biciklizam-trcanje/      /de/activities/radfahren-laufen/    301
+/it/activities/biciklizam-trcanje/      /it/activities/ciclismo-corsa/      301
+
+# standalone pages (localized slug, no segment)
+/it/about/                              /it/chi-siamo/                      301
+/it/contact/                            /it/contatti/                       301
+/hr/privacy/                            /hr/privatnost/                     301
+
+# guides (English slug used under de/it -> localized guide slug)
+/de/guides/where-to-stay-near-znjan-beach/   /de/guides/unterkunft-nahe-strand-znjan/             301
+/it/guides/where-to-stay-near-znjan-beach/   /it/guides/dove-alloggiare-vicino-spiaggia-znjan/    301
+
+# ============================================================
+# Deleted (fictional) event pages that still had clicks
+# Retire to the same-language /events/ listing.
+# ============================================================
+/en/events/znjan-beach-season-opening-2026/        /en/events/   301
+/hr/events/otvorenje-sezone-plaze-znjan-2026/      /hr/events/   301
+/it/events/apertura-stagione-spiaggia-znjan-2026/  /it/events/   301
+/de/events/znjan-strand-saisoneroeffnung-2026/     /de/events/   301
+/it/events/torneo-beach-volley-znjan-2026/         /it/events/   301
+
+# ============================================================
+# Legacy WordPress URLs from the prior site (still indexed)
+# ============================================================
+/2020/06/                               /en/                                301
+/2020/06/19/hello-world/                /en/                                301

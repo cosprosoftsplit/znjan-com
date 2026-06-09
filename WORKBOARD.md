@@ -401,6 +401,17 @@ Reference: `docs/founder-15-day-execution-roadmap.md`
 > Append a new entry after each work session. Format:
 > `### YYYY-MM-DD — Summary (items completed)`
 
+### 2026-06-10 — Looped Review Session: 8-Language Production Verification + og:locale Fix
+- Verified the FR/ES/PL/NL localization is fully deployed and SEO-correct in production:
+  - all 4 new homepages return 200 with localized titles/descriptions
+  - hreflang covers all 8 languages + x-default on live pages
+  - sitemap-0.xml includes all 8 locales (~230–247 URLs each)
+  - root `/` returns a real 301 to `/en/` (the meta-refresh in `src/pages/index.astro` is only the local fallback)
+- Swept for leftover 4-language assumptions after the 8-language expansion:
+  - 404 page, SearchDialog, date formatting, admin `locale` derivations — all already language-agnostic
+  - **Found and fixed:** `ogLocaleMap` in `Base.astro` only covered EN/HR/DE/IT, so all FR/ES/PL/NL pages emitted `og:locale="en_GB"`. Added fr_FR/es_ES/pl_PL/nl_NL (commit `df94854`, local — not pushed)
+- Verification: `npm run build` PASS, `npm run check-i18n` PASS, `npm run check-refs` PASS, `npx astro check` PASS (0 errors)
+
 ### 2026-03-03 — Comprehensive Review: 13 Issues Fixed
 - Ran 4-dimension review (SEO, code quality, content, performance/a11y)
 - **C1 FIXED:** Critical routing bug — getLocalizedUrl() was generating 404 URLs for non-EN pages (~123 broken links)

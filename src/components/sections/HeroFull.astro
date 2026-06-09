@@ -3,6 +3,8 @@
  * HeroFull — Full-viewport cinematic hero for the homepage.
  * 100vh with bottom-aligned content, wave SVG transition, parallax background.
  */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import ScrollIndicator from '@/components/ui/ScrollIndicator.astro';
 
 interface Props {
@@ -11,7 +13,7 @@ interface Props {
   ctaText: string;
   ctaHref: string;
   scrollText?: string;
-  heroImage?: string;
+  heroImage?: ImageMetadata;
 }
 
 const {
@@ -28,11 +30,15 @@ const {
   <!-- Background (parallax) -->
   <div class="absolute inset-0 hero-parallax">
     {heroImage ? (
-      <img
+      <Picture
         src={heroImage}
+        formats={['webp']}
+        widths={[768, 1280, 1920]}
+        sizes="100vw"
         alt=""
         class="absolute inset-0 w-full h-full object-cover"
         loading="eager"
+        fetchpriority="high"
       />
     ) : (
       <div

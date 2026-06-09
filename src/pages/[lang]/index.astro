@@ -17,6 +17,7 @@ import { generateHomeHreflangLinks, buildBeachSchema, buildOrganizationSchema, b
 import { canonicalUrl } from '@/lib/utils';
 import { placeCategoryLabels } from '@/lib/labels';
 import { getCollection, getEntry } from 'astro:content';
+import heroImage from '@/assets/hero/znjan-promenade-golden.jpg';
 
 export function getStaticPaths() {
   return LANGUAGES.map((lang) => ({ params: { lang } }));
@@ -183,7 +184,7 @@ const storyBlocks = [
     ctaText={translations['home.readGuides']}
     ctaHref={getLocalizedUrl(lang, 'guides')}
     scrollText={translations['home.scrollDown']}
-    heroImage="/images/hero/znjan-promenade-golden.jpg"
+    heroImage={heroImage}
   />
 
   <!-- Anchor for scroll indicator -->

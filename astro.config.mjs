@@ -10,6 +10,8 @@ export default defineConfig({
   output: 'static',
   adapter: cloudflare({
     platformProxy: { enabled: true },
+    // Optimize images with sharp at build time (Cloudflare can't run sharp at runtime)
+    imageService: 'compile',
   }),
   trailingSlash: 'always',
 

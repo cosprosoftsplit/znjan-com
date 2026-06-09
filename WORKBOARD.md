@@ -106,10 +106,11 @@ Release checklist: `docs/release-readiness.md`
 **Goal:** Replace placeholder/missing images with real photos
 **Priority:** MEDIUM — blocked on user taking photos (see `docs/photo-shot-list.md`)
 
-- [ ] **4.1 Image Pipeline Setup**
-  - Scope: Configure Astro `<Image>` component with sharp for optimization
-  - Requirements: WebP output, responsive sizes, lazy loading, alt text from translations
-  - Verify: Test with one sample image; build succeeds; image is optimized in `dist/`
+- [x] **4.1 Image Pipeline Setup** (2026-06-10)
+  - Done: `imageService: 'compile'` on the Cloudflare adapter (build-time sharp)
+  - Homepage hero migrated to `astro:assets` `<Picture>`: WebP srcset 768/1280/1672w + JPEG fallback, `fetchpriority="high"`, explicit dimensions
+  - Verified: WebP variants in `dist/_astro/` (14/26/37 KB vs ~200KB source), layout checked via Playwright screenshot
+  - Remaining imagery (zone tiles, activity cards, story plates) still in `public/` — migrate per-section in follow-ups (they're below-fold + lazy, lower priority)
 
 - [ ] **4.2 Priority 1 Photos (Hero & OG)**
   - Scope: Integrate 4 hero images when provided by user
@@ -411,6 +412,7 @@ Reference: `docs/founder-15-day-execution-roadmap.md`
   - 404 page, SearchDialog, date formatting, admin `locale` derivations — all already language-agnostic
   - **Found and fixed:** `ogLocaleMap` in `Base.astro` only covered EN/HR/DE/IT, so all FR/ES/PL/NL pages emitted `og:locale="en_GB"`. Added fr_FR/es_ES/pl_PL/nl_NL (commit `df94854`, local — not pushed)
 - Verification: `npm run build` PASS, `npm run check-i18n` PASS, `npm run check-refs` PASS, `npx astro check` PASS (0 errors)
+- **Iteration 2 — Image pipeline (4.1):** enabled `imageService: 'compile'`, migrated homepage hero to `<Picture>` with WebP srcset + `fetchpriority="high"` (commit `581cf85`). Mobile LCP payload ~200KB → 14KB. All 4 gates re-verified + Playwright visual check on dist.
 
 ### 2026-03-03 — Comprehensive Review: 13 Issues Fixed
 - Ran 4-dimension review (SEO, code quality, content, performance/a11y)

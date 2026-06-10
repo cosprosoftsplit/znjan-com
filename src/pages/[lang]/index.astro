@@ -27,6 +27,11 @@ import zoneAmphitheater from '@/assets/zones/amphitheater.jpg';
 import storyAerial from '@/assets/story/vision-aerial.jpg';
 import storyDining from '@/assets/story/dining-sunset.jpg';
 import storySports from '@/assets/story/activities-sports.jpg';
+import placeTaboo from '@/assets/places/taboo-daybeds.jpg';
+import placeMistral from '@/assets/places/mistral-lounge.jpg';
+import placeCentral from '@/assets/places/central-beach-indoor.webp';
+import placeMimi from '@/assets/places/mimi-main.webp';
+import placeGal from '@/assets/places/gal-terrace.jpg';
 
 export function getStaticPaths() {
   return LANGUAGES.map((lang) => ({ params: { lang } }));
@@ -112,12 +117,12 @@ const sortedPlaces = allPlaces
     return a.data.order - b.data.order;
   });
 // Place images + credits (from business websites)
-const placeImages: Record<string, { src: string; credit: string }> = {
-  'taboo-beach-club': { src: '/images/places/taboo-daybeds.jpg', credit: 'Photo: Taboo Beach Club' },
-  'mistral-beach-club': { src: '/images/places/mistral-lounge.jpg', credit: 'Photo: Mistral Beach Club' },
-  'central-beach': { src: '/images/places/central-beach-indoor.webp', credit: 'Photo: Central Beach Split' },
-  'mimi-italian-clubino': { src: '/images/places/mimi-main.webp', credit: 'Photo: MIMI / F Group' },
-  'gal-split': { src: '/images/places/gal-terrace.jpg', credit: 'Photo: GAL Split' },
+const placeImages: Record<string, { src: ImageMetadata; credit: string }> = {
+  'taboo-beach-club': { src: placeTaboo, credit: 'Photo: Taboo Beach Club' },
+  'mistral-beach-club': { src: placeMistral, credit: 'Photo: Mistral Beach Club' },
+  'central-beach': { src: placeCentral, credit: 'Photo: Central Beach Split' },
+  'mimi-italian-clubino': { src: placeMimi, credit: 'Photo: MIMI / F Group' },
+  'gal-split': { src: placeGal, credit: 'Photo: GAL Split' },
 };
 const placesData = sortedPlaces.map((place, i) => ({
   title: getLocalized(place.data.title, lang),

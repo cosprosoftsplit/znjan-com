@@ -11,6 +11,12 @@ import { canonicalUrl } from '@/lib/utils';
 import { buildPlaceSchema, buildBreadcrumbSchema } from '@/lib/seo';
 import { tagLabels, placeCategoryLabels } from '@/lib/labels';
 import { getCollection } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import placeTaboo from '@/assets/places/taboo-daybeds.jpg';
+import placeMistral from '@/assets/places/mistral-lounge.jpg';
+import placeCentral from '@/assets/places/central-beach-indoor.webp';
+import placeMimi from '@/assets/places/mimi-main.webp';
+import placeGal from '@/assets/places/gal-terrace.jpg';
 
 export async function getStaticPaths() {
   const allPlaces = await getCollection('places');
@@ -54,13 +60,14 @@ const categoryToSchemaType: Record<string, 'Restaurant' | 'BarOrPub' | 'CafeOrCo
   other: 'TouristAttraction',
 };
 
-// Place images (same mapping as the listing page) — surfaced into schema.org `image`
-const placeImages: Record<string, string> = {
-  'taboo-beach-club': '/images/places/taboo-daybeds.jpg',
-  'mistral-beach-club': '/images/places/mistral-lounge.jpg',
-  'central-beach': '/images/places/central-beach-indoor.webp',
-  'mimi-italian-clubino': '/images/places/mimi-main.webp',
-  'gal-split': '/images/places/gal-terrace.jpg',
+// Place images (same mapping as the listing page) — surfaced into schema.org `image`.
+// Imported via astro:assets so the URL tracks the emitted /_astro/ asset.
+const placeImages: Record<string, ImageMetadata> = {
+  'taboo-beach-club': placeTaboo,
+  'mistral-beach-club': placeMistral,
+  'central-beach': placeCentral,
+  'mimi-italian-clubino': placeMimi,
+  'gal-split': placeGal,
 };
 
 // radisson-blu-resort is specifically a Resort; all other hotels map to Hotel.
@@ -85,7 +92,7 @@ const structuredData = [
     cuisine: place.data.cuisine,
     website: place.data.website,
     instagram: place.data.instagram,
-    images: placeImage ? [`https://znjan.com${placeImage}`] : undefined,
+    images: placeImage ? [`https://znjan.com${placeImage.src}`] : undefined,
   }),
   buildBreadcrumbSchema([
     { name: translations['nav.home'], url: `https://znjan.com/${lang}/` },

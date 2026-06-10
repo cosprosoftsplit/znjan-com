@@ -111,7 +111,8 @@ Release checklist: `docs/release-readiness.md`
   - Homepage hero migrated to `astro:assets` `<Picture>`: WebP srcset 768/1280/1672w + JPEG fallback, `fetchpriority="high"`, explicit dimensions
   - Verified: WebP variants in `dist/_astro/` (14/26/37 KB vs ~200KB source), layout checked via Playwright screenshot
   - Follow-up done (2026-06-10, `e3569ed`): zone tiles, activity cards, and story plates migrated to `<Image>` (WebP, responsive widths, context-specific `sizes`); 3 unreferenced render PNGs deleted (4.7 MB)
-  - Still on `public/`: places imagery (credit overlays + mixed formats — next slice), `public/images/beach-areas/` (unreferenced from src, audit before deleting)
+  - Follow-up done (2026-06-10, `95d8dda`): places imagery migrated (5 photos → `<Image>` WebP with exact card sizes; schema.org image URLs now track emitted assets); 6 more unreferenced images deleted (~5.4 MB incl. 2.5 MB mistral-east-wing.png)
+  - `public/images/` now intentionally holds only `brand/` (logos/favicons) and `og-default.png` (stable URL required) — **image pipeline migration complete**
 
 - [ ] **4.2 Priority 1 Photos (Hero & OG)**
   - Scope: Integrate 4 hero images when provided by user
@@ -415,6 +416,7 @@ Reference: `docs/founder-15-day-execution-roadmap.md`
 - Verification: `npm run build` PASS, `npm run check-i18n` PASS, `npm run check-refs` PASS, `npx astro check` PASS (0 errors)
 - **Iteration 2 — Image pipeline (4.1):** enabled `imageService: 'compile'`, migrated homepage hero to `<Picture>` with WebP srcset + `fetchpriority="high"` (commit `581cf85`). Mobile LCP payload ~200KB → 14KB. All 4 gates re-verified + Playwright visual check on dist.
 - **Iteration 3 — Below-fold image migration:** zones (5) + story (3) + activities (6) moved to `astro:assets` `<Image>` with WebP + responsive sizes; deleted 3 dead render PNGs (4.7 MB) (commit `e3569ed`). Verified via dist inspection + Playwright (all images load, all WebP). All 4 gates green.
+- **Iteration 4 — Places imagery + dead-weight purge:** 5 place photos migrated to `<Image>` (WebP, exact card sizes, credits preserved; schema.org URLs updated); 6 unreferenced images deleted (~5.4 MB) (commit `95d8dda`). Image pipeline migration now COMPLETE — ~10 MB of dead images removed across iterations 3-4. Verified via dist + Playwright; all 4 gates green.
 
 ### 2026-03-03 — Comprehensive Review: 13 Issues Fixed
 - Ran 4-dimension review (SEO, code quality, content, performance/a11y)

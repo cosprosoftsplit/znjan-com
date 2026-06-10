@@ -110,7 +110,8 @@ Release checklist: `docs/release-readiness.md`
   - Done: `imageService: 'compile'` on the Cloudflare adapter (build-time sharp)
   - Homepage hero migrated to `astro:assets` `<Picture>`: WebP srcset 768/1280/1672w + JPEG fallback, `fetchpriority="high"`, explicit dimensions
   - Verified: WebP variants in `dist/_astro/` (14/26/37 KB vs ~200KB source), layout checked via Playwright screenshot
-  - Remaining imagery (zone tiles, activity cards, story plates) still in `public/` — migrate per-section in follow-ups (they're below-fold + lazy, lower priority)
+  - Follow-up done (2026-06-10, `e3569ed`): zone tiles, activity cards, and story plates migrated to `<Image>` (WebP, responsive widths, context-specific `sizes`); 3 unreferenced render PNGs deleted (4.7 MB)
+  - Still on `public/`: places imagery (credit overlays + mixed formats — next slice), `public/images/beach-areas/` (unreferenced from src, audit before deleting)
 
 - [ ] **4.2 Priority 1 Photos (Hero & OG)**
   - Scope: Integrate 4 hero images when provided by user
@@ -413,6 +414,7 @@ Reference: `docs/founder-15-day-execution-roadmap.md`
   - **Found and fixed:** `ogLocaleMap` in `Base.astro` only covered EN/HR/DE/IT, so all FR/ES/PL/NL pages emitted `og:locale="en_GB"`. Added fr_FR/es_ES/pl_PL/nl_NL (commit `df94854`, local — not pushed)
 - Verification: `npm run build` PASS, `npm run check-i18n` PASS, `npm run check-refs` PASS, `npx astro check` PASS (0 errors)
 - **Iteration 2 — Image pipeline (4.1):** enabled `imageService: 'compile'`, migrated homepage hero to `<Picture>` with WebP srcset + `fetchpriority="high"` (commit `581cf85`). Mobile LCP payload ~200KB → 14KB. All 4 gates re-verified + Playwright visual check on dist.
+- **Iteration 3 — Below-fold image migration:** zones (5) + story (3) + activities (6) moved to `astro:assets` `<Image>` with WebP + responsive sizes; deleted 3 dead render PNGs (4.7 MB) (commit `e3569ed`). Verified via dist inspection + Playwright (all images load, all WebP). All 4 gates green.
 
 ### 2026-03-03 — Comprehensive Review: 13 Issues Fixed
 - Ran 4-dimension review (SEO, code quality, content, performance/a11y)

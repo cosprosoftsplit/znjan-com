@@ -18,6 +18,15 @@ import { canonicalUrl } from '@/lib/utils';
 import { placeCategoryLabels } from '@/lib/labels';
 import { getCollection, getEntry } from 'astro:content';
 import heroImage from '@/assets/hero/znjan-promenade-golden.jpg';
+import type { ImageMetadata } from 'astro';
+import zoneMainBeach from '@/assets/zones/main-beach.jpg';
+import zoneKidsArea from '@/assets/zones/kids-area.jpg';
+import zoneSportsZone from '@/assets/zones/sports-zone.jpg';
+import zonePromenade from '@/assets/zones/promenade.jpg';
+import zoneAmphitheater from '@/assets/zones/amphitheater.jpg';
+import storyAerial from '@/assets/story/vision-aerial.jpg';
+import storyDining from '@/assets/story/dining-sunset.jpg';
+import storySports from '@/assets/story/activities-sports.jpg';
 
 export function getStaticPaths() {
   return LANGUAGES.map((lang) => ({ params: { lang } }));
@@ -78,12 +87,12 @@ const sortedAreas = allAreas.sort((a, b) => a.data.order - b.data.order);
 const areaVariants: ('ocean' | 'adriatic' | 'sunset' | 'coral' | 'sand')[] = ['ocean', 'adriatic', 'sunset', 'coral', 'sand'];
 // Beach area tiles — golden-hour zone photography (Žnjan Design System north star).
 // Tiles without an entry fall back to their assigned brand-gradient.
-const areaImages: Record<string, string> = {
-  'main-beach': '/images/zones/main-beach.jpg',
-  'kids-area': '/images/zones/kids-area.jpg',
-  'sports-zone': '/images/zones/sports-zone.jpg',
-  'promenade': '/images/zones/promenade.jpg',
-  'amphitheater': '/images/zones/amphitheater.jpg',
+const areaImages: Record<string, ImageMetadata> = {
+  'main-beach': zoneMainBeach,
+  'kids-area': zoneKidsArea,
+  'sports-zone': zoneSportsZone,
+  'promenade': zonePromenade,
+  'amphitheater': zoneAmphitheater,
 };
 const areasData = sortedAreas.map((area, i) => ({
   title: getLocalized(area.data.title, lang),
@@ -149,21 +158,21 @@ const storyBlocks = [
     title: translations['home.storyTitle1'],
     text: translations['home.storyText1'],
     variant: 'ocean' as const,
-    image: '/images/story/vision-aerial.jpg',
+    image: storyAerial,
   },
   {
     eyebrow: translations['home.storyEyebrow2'],
     title: translations['home.storyTitle2'],
     text: translations['home.storyText2'],
     variant: 'sunset' as const,
-    image: '/images/story/dining-sunset.jpg',
+    image: storyDining,
   },
   {
     eyebrow: translations['home.storyEyebrow3'],
     title: translations['home.storyTitle3'],
     text: translations['home.storyText3'],
     variant: 'adriatic' as const,
-    image: '/images/story/activities-sports.jpg',
+    image: storySports,
   },
 ];
 ---

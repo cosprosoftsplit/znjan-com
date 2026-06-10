@@ -3,6 +3,8 @@
  * BeachAreasGrid — Asymmetric feature grid for beach areas.
  * First area spans 2 cols + 2 rows, rest fill naturally.
  */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import ScrollReveal from '@/components/ui/ScrollReveal.astro';
 
 interface Area {
@@ -10,7 +12,7 @@ interface Area {
   href: string;
   facilitiesCount: number;
   variant: 'ocean' | 'sunset' | 'sand' | 'coral' | 'adriatic';
-  image?: string;
+  image?: ImageMetadata;
 }
 
 interface Props {
@@ -61,7 +63,15 @@ const variants: ('ocean' | 'sunset' | 'sand' | 'coral' | 'adriatic')[] = ['ocean
           >
             {/* Background */}
             {area.image ? (
-              <img src={area.image} alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+              <Image
+                src={area.image}
+                format="webp"
+                widths={[480, 800, 1200]}
+                sizes={isFeatured ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw'}
+                alt=""
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
             ) : (
               <div class="absolute inset-0 transition-transform duration-500 group-hover:scale-105" style={`background: ${gradient}`}>
                 <svg class="absolute inset-0 w-full h-full opacity-10" preserveAspectRatio="none" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">

@@ -4,6 +4,8 @@
  * 3 blocks alternating image-left/text-right, then image-right/text-left.
  * 58%/42% width split for asymmetry.
  */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import ScrollReveal from '@/components/ui/ScrollReveal.astro';
 
 interface StoryBlock {
@@ -11,7 +13,7 @@ interface StoryBlock {
   title: string;
   text: string;
   variant: 'ocean' | 'sunset' | 'sand' | 'coral' | 'adriatic';
-  image?: string;
+  image?: ImageMetadata;
   credit?: string;
 }
 
@@ -61,8 +63,11 @@ const gradientMap: Record<string, string> = {
               ]}>
                 {block.image ? (
                   <figure class="relative">
-                    <img
+                    <Image
                       src={block.image}
+                      format="webp"
+                      widths={[480, 800, 1200]}
+                      sizes="(min-width: 768px) 58vw, 100vw"
                       alt=""
                       class="w-full aspect-[4/3] object-cover"
                       loading="lazy"

@@ -72,7 +72,7 @@ One exterior shot per confirmed venue. Interior shots are a bonus.
 |---|------|-------------|-------|
 | 31 | **Radisson Blu Resort & Spa exterior** | Main hotel building from promenade | @radissonblusplit |
 | 32 | **Hotel Amphora exterior** | Building from beach/road | @amphora_hotel_split |
-| 33 | **Hotel Fanat** | Building exterior | — |
+| 33 | **Hotel Olivier** | Building exterior | — |
 | 34 | **Mövenpick Hotel construction/site** | Construction progress (opening 2026) | — |
 
 ## Priority 7: Seasonal & Atmospheric (6 shots)

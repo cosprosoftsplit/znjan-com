@@ -66,3 +66,16 @@
 # ============================================================
 /2020/06/                               /en/                                301
 /2020/06/19/hello-world/                /en/                                301
+
+# ============================================================
+# Hotel Fanat -> Hotel Olivier rebrand (2026-06-23): slug change
+# Place URLs are /[lang]/places/[slug]/ — same slug across all 8 langs.
+# ============================================================
+/en/places/hotel-fanat/   /en/places/hotel-olivier/   301
+/hr/places/hotel-fanat/   /hr/places/hotel-olivier/   301
+/de/places/hotel-fanat/   /de/places/hotel-olivier/   301
+/it/places/hotel-fanat/   /it/places/hotel-olivier/   301
+/fr/places/hotel-fanat/   /fr/places/hotel-olivier/   301
+/es/places/hotel-fanat/   /es/places/hotel-olivier/   301
+/pl/places/hotel-fanat/   /pl/places/hotel-olivier/   301
+/nl/places/hotel-fanat/   /nl/places/hotel-olivier/   301

@@ -1,0 +1,56 @@
+id: hotel-olivier
+slug:
+  en: hotel-olivier
+  hr: hotel-olivier
+  de: hotel-olivier
+  it: hotel-olivier
+  fr: hotel-olivier
+  es: hotel-olivier
+  pl: hotel-olivier
+  nl: hotel-olivier
+title:
+  en: "Hotel Olivier"
+  hr: "Hotel Olivier"
+  de: "Hotel Olivier"
+  it: "Hotel Olivier"
+  fr: "Hotel Olivier"
+  es: "Hotel Olivier"
+  pl: "Hotel Olivier"
+  nl: "Hotel Olivier"
+description:
+  en: "Hotel Olivier is a boutique 4-star hotel in the Žnjan district, just 600 metres from Žnjan Beach. With 22 contemporary rooms — some with balconies and sea views — it offers an intimate and comfortable stay. Amenities include a wellness area with sauna and steam room, fitness centre, indoor pool, restaurant, and complimentary cooked-to-order breakfast served daily."
+  hr: "Hotel Olivier je boutique hotel s 4 zvjezdice u žnjanskom kvartu, samo 600 metara od plaže Žnjan. S 22 suvremene sobe — neke s balkonima i pogledom na more — nudi intiman i udoban boravak. Sadržaji uključuju wellness sa saunom i parnom kupelji, fitness centar, unutarnji bazen, restoran i besplatan doručak pripremljen po narudžbi."
+  de: "Das Hotel Olivier ist ein Boutique-4-Sterne-Hotel im Stadtteil Žnjan, nur 600 Meter vom Strand Žnjan entfernt. Mit 22 modernen Zimmern — einige mit Balkon und Meerblick — bietet es einen intimen und komfortablen Aufenthalt. Annehmlichkeiten umfassen einen Wellnessbereich mit Sauna und Dampfbad, Fitnesscenter, Innenpool, Restaurant und kostenloses, frisch zubereitetes Frühstück."
+  it: "L'Hotel Olivier è un boutique hotel a 4 stelle nel quartiere Žnjan, a soli 600 metri dalla spiaggia di Žnjan. Con 22 camere contemporanee — alcune con balcone e vista mare — offre un soggiorno intimo e confortevole. I servizi includono area wellness con sauna e bagno turco, centro fitness, piscina interna, ristorante e colazione preparata al momento."
+  fr: "L'Hotel Olivier est un hôtel-boutique 4 étoiles dans le quartier de Žnjan, à seulement 600 mètres de la plage de Žnjan. Avec ses 22 chambres contemporaines — certaines dotées d'un balcon et d'une vue sur la mer — il offre un séjour intime et confortable. Les prestations comprennent un espace bien-être avec sauna et hammam, une salle de fitness, une piscine intérieure, un restaurant et un petit-déjeuner préparé à la minute, servi chaque jour gratuitement."
+  es: "El Hotel Olivier es un hotel boutique de 4 estrellas en el barrio de Žnjan, a solo 600 metros de la playa de Žnjan. Con 22 habitaciones contemporáneas — algunas con balcón y vistas al mar — ofrece una estancia íntima y confortable. Entre sus servicios destacan una zona de bienestar con sauna y baño de vapor, gimnasio, piscina cubierta, restaurante y un desayuno recién preparado servido a diario sin coste adicional."
+  pl: "Hotel Olivier to butikowy hotel czterogwiazdkowy w dzielnicy Žnjan, zaledwie 600 metrów od plaży Žnjan. Dysponuje 22 nowoczesnymi pokojami — niektóre z balkonem i widokiem na morze — zapewniając kameralny i komfortowy pobyt. W ofercie znajdują się strefa wellness z sauną i łaźnią parową, siłownia, kryty basen, restauracja oraz bezpłatne, przygotowywane na świeżo śniadanie serwowane codziennie."
+  nl: "Hotel Olivier is een boutique viersterrenhotel in de wijk Žnjan, op slechts 600 meter van het strand van Žnjan. Met 22 eigentijdse kamers — sommige met balkon en zeezicht — biedt het een intiem en comfortabel verblijf. De voorzieningen omvatten een wellnessruimte met sauna en stoombad, een fitnesscentrum, een binnenzwembad, een restaurant en een dagelijks vers bereid ontbijt, gratis inbegrepen."
+shortDescription:
+  en: "Boutique 4-star hotel with wellness and sea views"
+  hr: "Boutique hotel s 4 zvjezdice s wellnessom i pogledom na more"
+  de: "Boutique-4-Sterne-Hotel mit Wellness und Meerblick"
+  it: "Boutique hotel 4 stelle con wellness e vista mare"
+  fr: "Hôtel-boutique 4 étoiles avec espace bien-être et vue mer"
+  es: "Hotel boutique de 4 estrellas con spa y vistas al mar"
+  pl: "Butikowy hotel 4-gwiazdkowy ze strefą wellness i widokiem na morze"
+  nl: "Boutique viersterrenhotel met wellness en zeezicht"
+category: hotel
+beachArea: main-beach
+coordinates:
+  lat: 43.5035
+  lng: 16.4860
+address: "Pape Ivana Pavla II 36, 21000 Split"
+priceRange: "$$$"
+starRating: 4
+roomCount: 22
+listingTier: free
+featured: false
+tags:
+  - hotel
+  - boutique
+  - wellness
+  - sauna
+  - sea-view
+  - breakfast
+order: 11

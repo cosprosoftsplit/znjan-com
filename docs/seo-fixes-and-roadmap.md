@@ -61,7 +61,7 @@ Sequencing matters — shared files (`src/i18n/*.json`, `seo.ts`, `config.ts`, `
 - **Broaden "Things to Do in Split" into a real Split-attractions pillar** (new `things-to-do-split` guide: Diocletian's Palace, Riva, Marjan, Old Town, Bačvice + a "Best Beach" funnel to Žnjan). **Highest forward ROI — 48.8K impr.** The page FR will later translate.
 - **Per-town nearby/day-trip sections** in the day-trips article (Solin/Salona, Klis, Podstrana, Stobreč, Žrnovnica) — captures 41K tangential impr; cheap, rankings already exist.
 - **Per-venue menus + real review `aggregateRating` + reservation CTA** (needs owner menus + sanctioned review source). Real SERP stars are a top CTR multiplier.
-- **Hotel pages buildout** (Radisson/Amphora/Fanat/More/Mövenpick at pos 30–50) — mostly content; YAMLs + Hotel schema (step 6) already exist.
+- **Hotel pages buildout** (Radisson/Amphora/Olivier/More/Mövenpick at pos 30–50) — mostly content; YAMLs + Hotel schema (step 6) already exist.
 - **"Split guides" cluster hub + cluster breadcrumbs** — feature money guides at top of `/guides/`, group by cluster.
 
 ### Phase 4 — Authority & expansion (gated on Phase 3 proving the model)

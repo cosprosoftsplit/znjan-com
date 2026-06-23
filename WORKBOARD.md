@@ -460,7 +460,7 @@ Reference: `docs/founder-15-day-execution-roadmap.md`
   2. **Airport Transfer Guide** (G1): Split Airport (SPU) to Žnjan — bus, shuttle, Uber, Bolt, taxi, rental car
   3. **Cruise Ship Visitor Guide** (G3): Half-day itinerary from Split port, transport, timing, tips
   4. **Sunset & Evening Guide** (G6): Best sunset spots, golden hour timing, evening activities, dining
-  5. **Best Accommodation** (G5): Hotels (Radisson Blu, Amphora, Fanat, More, Mövenpick) + Airbnb tips
+  5. **Best Accommodation** (G5): Hotels (Radisson Blu, Amphora, Olivier, More, Mövenpick) + Airbnb tips
 - Fixed guide references (where-to-eat-drink, where-to-stay-near-znjan)
 - Build: 281 pages (up from 261), 142 i18n keys x 4 langs, all checks pass
 - Pagefind: 19,646 indexed words across 4 languages

@@ -83,6 +83,26 @@ All businesses below operate within or directly at the new Znjan Beach complex.
 
 ---
 
+## Hotels Near Žnjan
+
+### Hotel Olivier (rebranded from Hotel Fanat, 2026)
+
+**Hotel Fanat rebranded to Hotel Olivier.** Same building and ownership — verified via booking listings that still resolve under the old Fanat IDs (e.g. Expedia `Hotel-Fanat.h11474885`, `fanat.split-dalmatia-hotels.com`) now showing "Hotel Olivier (ex. Hotel Fanat)".
+
+- **Official site:** https://olivier.hr ("Where dining meets stay")
+- **Address:** Šetalište Pape Ivana Pavla II 36, 21000 Split (Žnjan promenade)
+- **Rating / size:** 4-star boutique, **22 rooms** (official site: "twenty-two beautifully appointed rooms"; some aggregators say 25 — trust the official 22)
+- **Brand identity:** dining-led. Restaurant Olivier (classical Mediterranean cuisine)
+- **Wellness:** spa with an indoor pool (cascading waterfall) and three saunas; fitness area
+- **Rooms:** Executive Suite, Deluxe Double/Twin, Superior Twin — many with balconies and Adriatic sea views
+- **Price:** ~€104+/night (4-star Žnjan-district average ≈ €123); guest rating ≈ 8.8/9.0
+- **Amenities:** free WiFi, free parking, sea views, daily breakfast
+- **Sources:** olivier.hr (official), splithotels.info, split-dalmatia-hotels.com, hotels.com, hotel.info — accessed 2026-06-23
+
+> Site change (2026-06-23): place entity renamed `hotel-fanat` → `hotel-olivier`, website set to olivier.hr, 301s added in `public/_redirects` for all 8 languages.
+
+---
+
 ## Possibly More Businesses (To Be Confirmed)
 
 The user noted there could be a few more. The official Znjan d.o.o. tender listed 11 pavilion spaces:

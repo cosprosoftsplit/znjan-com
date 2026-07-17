@@ -1,6 +1,6 @@
 import type { D1Database } from './db';
 
-let communitySchemaPromise: Promise<void> | null = null;
+const communitySchemaPromises = new WeakMap<D1Database, Promise<void>>();
 
 const COMMUNITY_SCHEMA_STATEMENTS = [
   `CREATE TABLE IF NOT EXISTS users (
@@ -85,33 +85,23 @@ const COMMUNITY_SCHEMA_STATEMENTS = [
   'CREATE INDEX IF NOT EXISTS idx_point_transactions_user ON point_transactions(user_id)',
   'CREATE INDEX IF NOT EXISTS idx_user_badges_user ON user_badges(user_id)',
   'CREATE INDEX IF NOT EXISTS idx_users_points ON users(points DESC)',
-  'CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id)',
 ];
 
-const COMMUNITY_CONSTRAINT_STATEMENTS = [
-  `DELETE FROM responses
-   WHERE type = 'join'
-     AND id NOT IN (
-       SELECT MIN(id)
-       FROM responses
-       WHERE type = 'join'
-       GROUP BY post_id, user_id, type
-     )`,
-  `DELETE FROM point_transactions
-   WHERE reference_id IS NOT NULL
-     AND id NOT IN (
-       SELECT MIN(id)
-       FROM point_transactions
-       WHERE reference_id IS NOT NULL
-       GROUP BY user_id, action, reference_id
-     )`,
+const COMMUNITY_BOOTSTRAP_CONSTRAINT_STATEMENTS = [
   `CREATE UNIQUE INDEX IF NOT EXISTS idx_responses_unique_join
    ON responses(post_id, user_id, type)
    WHERE type = 'join'`,
   `CREATE UNIQUE INDEX IF NOT EXISTS idx_point_transactions_unique_action_reference
    ON point_transactions(user_id, action, reference_id)
-   WHERE reference_id IS NOT NULL`,
+  WHERE reference_id IS NOT NULL`,
 ];
+
+async function usersTableExists(db: D1Database): Promise<boolean> {
+  const table = await db
+    .prepare("SELECT name FROM sqlite_schema WHERE type = 'table' AND name = 'users'")
+    .first<{ name: string }>();
+  return table?.name === 'users';
+}
 
 async function addGoogleIdColumnIfMissing(db: D1Database): Promise<void> {
   const columns = await db.prepare('PRAGMA table_info(users)').all<{ name: string }>();
@@ -123,21 +113,32 @@ async function addGoogleIdColumnIfMissing(db: D1Database): Promise<void> {
 }
 
 export async function ensureCommunitySchema(db: D1Database): Promise<void> {
+  let communitySchemaPromise = communitySchemaPromises.get(db);
+
   if (!communitySchemaPromise) {
     communitySchemaPromise = (async () => {
+      const isExistingDatabase = await usersTableExists(db);
+
       for (const statement of COMMUNITY_SCHEMA_STATEMENTS) {
         await db.prepare(statement).run();
       }
 
       await addGoogleIdColumnIfMissing(db);
+      await db
+        .prepare('CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id)')
+        .run();
 
-      for (const statement of COMMUNITY_CONSTRAINT_STATEMENTS) {
-        await db.prepare(statement).run();
+      if (!isExistingDatabase) {
+        for (const statement of COMMUNITY_BOOTSTRAP_CONSTRAINT_STATEMENTS) {
+          await db.prepare(statement).run();
+        }
       }
     })().catch((error) => {
-      communitySchemaPromise = null;
+      communitySchemaPromises.delete(db);
       throw error;
     });
+
+    communitySchemaPromises.set(db, communitySchemaPromise);
   }
 
   await communitySchemaPromise;

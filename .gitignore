@@ -30,6 +30,7 @@ tmp-mobile-preview*.log
 .claude/
 .playwright-mcp/
 .playwright-cli/
+test-results/
 .wrangler/
 output/
 

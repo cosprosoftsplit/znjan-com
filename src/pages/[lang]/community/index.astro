@@ -3,7 +3,7 @@ export const prerender = false;
 
 import Page from '@/layouts/Page.astro';
 import type { Language } from '@/lib/i18n';
-import { LANGUAGES } from '@/lib/i18n';
+import { LANGUAGES, ROUTE_SEGMENTS } from '@/lib/i18n';
 import { getTranslations, t } from '@/lib/translations';
 import AuthBanner from '@/components/community/AuthBanner.astro';
 import PostFilters from '@/components/community/PostFilters.astro';
@@ -16,6 +16,15 @@ const translations = getTranslations(lang);
 const user = Astro.locals.user;
 const activeType = Astro.url.searchParams.get('type') || '';
 const activeCategory = Astro.url.searchParams.get('category') || '';
+const contactUrl = `/${lang}/${ROUTE_SEGMENTS.contact[lang]}/`;
+const feedLabels = {
+  loading: t(lang, 'common.loading'),
+  empty: t(lang, 'community.noPostsYet'),
+  errorTitle: t(lang, 'community.feedErrorTitle'),
+  errorDescription: t(lang, 'community.feedErrorDescription'),
+  retry: t(lang, 'community.feedErrorRetry'),
+  contact: t(lang, 'community.feedErrorContact'),
+};
 ---
 
 <Page
@@ -98,7 +107,7 @@ const activeCategory = Astro.url.searchParams.get('category') || '';
         </div>
 
         <!-- Posts list (loaded client-side) -->
-        <div id="posts-container">
+        <div id="posts-container" aria-live="polite" aria-busy="true">
           <div class="text-center py-12 text-warm-400">{t(lang, 'common.loading')}</div>
         </div>
       </div>
@@ -111,7 +120,7 @@ const activeCategory = Astro.url.searchParams.get('category') || '';
   </section>
 </Page>
 
-<script define:vars={{ lang, activeType, activeCategory }}>
+<script define:vars={{ lang, activeType, activeCategory, contactUrl, feedLabels }}>
   let currentType = activeType;
   let currentCategory = activeCategory;
   const HTML_ESCAPE_MAP = {
@@ -184,7 +193,8 @@ const activeCategory = Astro.url.searchParams.get('category') || '';
   async function loadPosts() {
     const container = document.getElementById('posts-container');
     if (!container) return;
-    container.innerHTML = '<div class="text-center py-12 text-warm-400">Loading...</div>';
+    container.setAttribute('aria-busy', 'true');
+    container.innerHTML = `<div class="text-center py-12 text-warm-400">${escapeHtml(feedLabels.loading)}</div>`;
 
     const params = new URLSearchParams();
     if (currentType) params.set('type', currentType);
@@ -192,16 +202,42 @@ const activeCategory = Astro.url.searchParams.get('category') || '';
 
     try {
       const res = await fetch(`/api/posts/?${params}`);
+      if (!res.ok) throw new Error('Community feed request failed');
       const data = await res.json();
+      if (!Array.isArray(data.posts)) throw new Error('Community feed response is invalid');
 
-      if (!data.posts?.length) {
-        container.innerHTML = `<div class="text-center py-12 text-warm-400">${document.querySelector('[data-no-posts]')?.textContent || 'No posts yet.'}</div>`;
+      if (data.posts.length === 0) {
+        container.innerHTML = `<div class="text-center py-12 text-warm-400">${escapeHtml(feedLabels.empty)}</div>`;
         return;
       }
 
       container.innerHTML = `<div class="space-y-4">${data.posts.map(renderPostCard).join('')}</div>`;
     } catch {
-      container.innerHTML = '<div class="text-center py-12 text-coral-500">Failed to load posts</div>';
+      container.innerHTML = `
+        <div role="alert" class="rounded-xl border border-coral-200 bg-coral-50/60 px-5 py-6 sm:px-6">
+          <div class="flex items-start gap-4">
+            <div class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-coral-600 ring-1 ring-coral-200" aria-hidden="true">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 4h.01M10.29 3.86l-7.82 13.55A2 2 0 004.2 20h15.6a2 2 0 001.73-3L13.71 3.86a2 2 0 00-3.42 0z" />
+              </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+              <h2 class="font-semibold text-warm-900">${escapeHtml(feedLabels.errorTitle)}</h2>
+              <p class="mt-1 text-sm leading-6 text-warm-600">${escapeHtml(feedLabels.errorDescription)}</p>
+              <div class="mt-4 flex flex-wrap items-center gap-4">
+                <button type="button" data-feed-retry class="inline-flex min-h-11 items-center justify-center rounded-lg bg-ocean-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-ocean-700 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:ring-offset-2">
+                  ${escapeHtml(feedLabels.retry)}
+                </button>
+                <a href="${escapeHtml(contactUrl)}" class="inline-flex min-h-11 items-center text-sm font-semibold text-ocean-700 underline decoration-ocean-300 underline-offset-4 hover:text-ocean-900">
+                  ${escapeHtml(feedLabels.contact)}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      container.querySelector('[data-feed-retry]')?.addEventListener('click', loadPosts);
+    } finally {
+      container.setAttribute('aria-busy', 'false');
     }
   }
 
@@ -233,5 +269,3 @@ const activeCategory = Astro.url.searchParams.get('category') || '';
 
   loadPosts();
 </script>
-
-<span data-no-posts class="hidden">{t(lang, 'community.noPostsYet')}</span>

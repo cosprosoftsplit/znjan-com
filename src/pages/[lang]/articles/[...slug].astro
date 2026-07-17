@@ -1,6 +1,6 @@
 ---
 import Guide from '@/layouts/Guide.astro';
-import { LANGUAGES, getAlternateUrls, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
+import { collectEntitySlugs, getAlternateUrls, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { canonicalUrl } from '@/lib/utils';
@@ -21,8 +21,13 @@ const translations = getTranslations(lang);
 
 const title = getLocalized(article.data.title, lang);
 const description = getLocalized(article.data.description, lang);
-const hreflangLinks = getHreflangLinks('articles', article.data.slugs);
-const alternates = getAlternateUrls('articles', article.data.slugs);
+const translatedArticles = await getCollection(
+  'articles',
+  ({ data }) => data.articleId === article.data.articleId,
+);
+const entitySlugs = collectEntitySlugs(translatedArticles.map(({ data }) => data));
+const hreflangLinks = getHreflangLinks('articles', entitySlugs);
+const alternates = getAlternateUrls('articles', entitySlugs);
 
 // Related guide link — resolve the parent guide (same language), guarded against missing
 const relatedLinks: Array<{ label: string; href: string }> = [];

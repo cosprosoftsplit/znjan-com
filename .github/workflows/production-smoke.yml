@@ -1,0 +1,35 @@
+name: Production smoke
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Deployment origin to test
+        required: false
+        default: https://znjan.com
+  schedule:
+    - cron: '17 5 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    if: github.event_name != 'deployment_status' || github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci --progress=false
+      - run: npm run smoke:production
+        env:
+          SMOKE_BASE_URL: ${{ inputs.base_url || github.event.deployment_status.target_url || 'https://znjan.com' }}

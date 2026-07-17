@@ -68,9 +68,11 @@ export function getHreflangLinks(
   const links: Array<{ lang: Language | 'x-default'; href: string }> = [];
 
   for (const lang of LANGUAGES) {
+    const slug = slugs[lang];
+    if (!slug) continue;
     links.push({
       lang,
-      href: `https://znjan.com/${lang}/${segment}/${slugs[lang]}/`,
+      href: `https://znjan.com/${lang}/${segment}/${slug}/`,
     });
   }
 
@@ -87,14 +89,31 @@ export function getHreflangLinks(
 export function getAlternateUrls(
   segment: string,
   slugs: Localized<string>,
-): Record<Language, string> {
-  const alternates = {} as Record<Language, string>;
+): Partial<Record<Language, string>> {
+  const alternates: Partial<Record<Language, string>> = {};
 
   for (const lang of LANGUAGES) {
-    alternates[lang] = getLocalizedUrl(lang, segment, slugs[lang]);
+    const slug = slugs[lang];
+    if (slug) alternates[lang] = getLocalizedUrl(lang, segment, slug);
   }
 
   return alternates;
+}
+
+/** Resolve per-language slugs from the single-language records that belong to one entity. */
+export function collectEntitySlugs(
+  entries: readonly { lang: Language; slugs: Partial<Record<Language, string>> }[],
+): Localized<string> {
+  const slugs: Partial<Record<Language, string>> = {};
+  for (const entry of entries) {
+    const slug = entry.slugs[entry.lang];
+    if (slug) slugs[entry.lang] = slug;
+  }
+
+  const english = slugs.en ?? entries.find((entry) => entry.slugs.en)?.slugs.en;
+  if (!english) throw new Error('Localized entity is missing its English slug.');
+  slugs.en = english;
+  return slugs as Localized<string>;
 }
 
 /** Build per-language alternate URLs for a localized standalone page */

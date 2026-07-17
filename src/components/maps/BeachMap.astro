@@ -52,12 +52,13 @@ const labels = mapLabels[lang] ?? mapLabels.en;
 
 <div
   id="beach-map"
+  data-marker-count={markers.length}
   class:list={[
     'overflow-hidden',
     fullWidth ? '' : 'rounded-xl border border-sand-200',
   ]}
   style={`height: ${mapHeight}`}
-  role="application"
+  role="region"
   aria-label={lang === 'hr' ? 'Interaktivna karta plaže Žnjan' : lang === 'de' ? 'Interaktive Karte Strand Žnjan' : lang === 'it' ? 'Mappa interattiva spiaggia Žnjan' : 'Interactive Žnjan Beach Map'}
 >
   <div class="flex items-center justify-center h-full bg-sand-50 text-stone text-sm">

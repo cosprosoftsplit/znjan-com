@@ -1,6 +1,6 @@
 ---
 import Guide from '@/layouts/Guide.astro';
-import { LANGUAGES, getAlternateUrls, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
+import { collectEntitySlugs, getAlternateUrls, getLocalized, getHreflangLinks, getLocalizedUrl } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { getTranslations } from '@/lib/translations';
 import { canonicalUrl } from '@/lib/utils';
@@ -21,8 +21,13 @@ const translations = getTranslations(lang);
 
 const title = getLocalized(guide.data.title, lang);
 const description = getLocalized(guide.data.description, lang);
-const hreflangLinks = getHreflangLinks('guides', guide.data.slugs);
-const alternates = getAlternateUrls('guides', guide.data.slugs);
+const translatedGuides = await getCollection(
+  'guides',
+  ({ data }) => data.guideId === guide.data.guideId,
+);
+const entitySlugs = collectEntitySlugs(translatedGuides.map(({ data }) => data));
+const hreflangLinks = getHreflangLinks('guides', entitySlugs);
+const alternates = getAlternateUrls('guides', entitySlugs);
 
 // Related content links (same-language siblings, guarded against missing entities)
 const allGuides = await getCollection('guides', ({ data }) => data.lang === lang);

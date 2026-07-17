@@ -14,10 +14,18 @@
     "astro": "astro",
     "check": "astro check",
     "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:a11y": "playwright test tests/e2e/accessibility.spec.ts",
     "check-i18n": "tsx scripts/check-i18n.ts",
-    "check-refs": "tsx scripts/check-refs.ts"
+    "check-refs": "tsx scripts/check-refs.ts",
+    "check-links": "tsx scripts/check-links.ts",
+    "check-output-seo": "tsx scripts/check-output-seo.ts",
+    "audit:policy": "tsx scripts/check-audit.ts",
+    "smoke:production": "tsx scripts/smoke-production.ts",
+    "verify": "npm run check-i18n && npm run check-refs && npm run check && npm test && npm run build && npm run check-links && npm run check-output-seo && npm run test:e2e && npm run audit:policy"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
@@ -32,6 +40,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
+    "@axe-core/playwright": "^4.12.1",
     "@cloudflare/vitest-pool-workers": "^0.18.5",
     "@playwright/test": "^1.61.1",
     "@types/qrcode": "^1.5.6",

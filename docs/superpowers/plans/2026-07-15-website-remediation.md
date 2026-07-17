@@ -17,7 +17,7 @@
 - Preserve the measured homepage LCP/CLS baseline and the expected generated-page inventory unless a change is documented.
 - Deploy through an isolated branch, verify a Cloudflare-style preview, then merge and smoke-test production.
 
-> **Status:** In progress. Phase 0 engineering and the production D1 reconciliation are complete; Phase 0 application safeguards await deployment.
+> **Status:** In progress. Phase 0 is live in production; Phase 1 passed release verification and awaits deployment.
 > **Source audit:** `docs/audits/2026-07-15-comprehensive-website-audit.md`
 > **Execution rule:** Work in the order below. Each task begins with a failing automated check where feasible and ends with production/staging evidence.
 
@@ -25,8 +25,8 @@
 
 | Release batch | Scope | Status |
 |---|---|---|
-| 0 | Tasks 0.1–0.6: D1 recovery, schema ordering, readiness, safe errors, honest feed UI | Complete locally; production D1 repaired; application deployment pending |
-| 1 | Tasks 1.1–1.4: automated safety net, CI, preview and smoke gates | Next |
+| 0 | Tasks 0.1–0.6: D1 recovery, schema ordering, readiness, safe errors, honest feed UI | Live in production (`052b1bf`, toolchain hotfix `737d6b5`) |
+| 1 | Tasks 1.1–1.4: automated safety net, CI, preview and smoke gates | Release verification passed; deployment pending |
 | 2 | Phase 2: dependencies, identity, validation, request security, observability | Pending |
 | 3 | Phases 3–4: universal UX, accessibility, privacy and CSP | Pending |
 | 4 | Phases 5–6: search/SEO, docs, provenance and editorial freshness | Pending; source/legal gates apply |

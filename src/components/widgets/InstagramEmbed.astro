@@ -23,18 +23,25 @@ const { url, caption, maxWidth = 540 } = Astro.props;
 const cleanUrl = url.endsWith('/') ? url : `${url}/`;
 ---
 
-<div class="instagram-embed-wrapper my-6">
-  <blockquote
-    class="instagram-media"
-    data-instgrm-permalink={cleanUrl}
-    data-instgrm-version="14"
-    style={`background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin:0 auto; max-width:${maxWidth}px; min-width:326px; padding:0; width:calc(100% - 2px);`}
+<div class="my-6 mx-auto" style={`max-width:${maxWidth}px`}>
+  <a
+    href={cleanUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="group relative isolate flex min-h-64 flex-col justify-end overflow-hidden rounded-2xl border border-sand-200 bg-gradient-to-br from-ocean-800 via-adriatic-500 to-coral-400 p-6 text-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:ring-offset-2"
+    aria-label={`Open ${caption || 'Znjan Beach'} on Instagram`}
   >
-    <a href={cleanUrl} target="_blank" rel="noopener noreferrer" class="text-ocean-600 hover:text-ocean-800">
-      View this post on Instagram
-    </a>
-  </blockquote>
-  {caption && (
-    <p class="text-sm text-stone text-center mt-2 italic">{caption}</p>
-  )}
+    <div class="absolute -right-12 -top-12 h-48 w-48 rounded-full border-[32px] border-white/10" aria-hidden="true"></div>
+    <div class="absolute bottom-14 left-6 h-20 w-20 rounded-full bg-sand-100/15 blur-xl" aria-hidden="true"></div>
+    <svg class="mb-auto h-9 w-9" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.7" fill="currentColor" stroke="none" />
+    </svg>
+    <span class="text-xl font-display font-semibold">{caption || 'Znjan Beach'}</span>
+    <span class="mt-2 inline-flex items-center gap-2 text-sm text-white/85">
+      Instagram
+      <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+    </span>
+  </a>
 </div>

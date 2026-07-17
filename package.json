@@ -3,6 +3,9 @@
   "type": "module",
   "version": "0.1.0",
   "description": "Comprehensive beach portal for Znjan Beach, Split, Croatia",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && pagefind --site dist",
@@ -13,8 +16,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "check-i18n": "npx tsx scripts/check-i18n.ts",
-    "check-refs": "npx tsx scripts/check-refs.ts"
+    "check-i18n": "tsx scripts/check-i18n.ts",
+    "check-refs": "tsx scripts/check-refs.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",

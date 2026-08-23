@@ -27,14 +27,14 @@ description:
   pl: "Casa Sol to śródziemnomorska restauracja i lounge w nowym kompleksie plaży Žnjan, oferująca wykwintne dania nad morzem wzdłuż promenady. Z naciskiem na kuchnię śródziemnomorską i swobodną atmosferę lounge to idealne miejsce na spokojny lunch lub kolację o zachodzie słońca z widokiem na Adriatyk. Jeden z 11 nowych pawilonów otwartych w ramach transformacji Žnjana o wartości 45 mln euro."
   nl: "Casa Sol is een mediterraan restaurant en lounge in het nieuwe strandcomplex van Žnjan, dat verfijnde gerechten aan zee langs de promenade serveert. Met de nadruk op mediterrane keuken en een ontspannen loungesfeer is het de ideale plek voor een rustige lunch of een diner bij zonsondergang met uitzicht op de Adriatische Zee. Een van de 11 nieuwe paviljoens die werden geopend als onderdeel van de transformatie van Žnjan ter waarde van 45 miljoen euro."
 shortDescription:
-  en: "Mediterranean restaurant and lounge on the promenade"
-  hr: "Mediteranski restoran i lounge na šetnici"
-  de: "Mediterranes Restaurant und Lounge an der Promenade"
-  it: "Ristorante mediterraneo e lounge sul lungomare"
-  fr: "Restaurant méditerranéen et lounge sur la promenade"
-  es: "Restaurante mediterráneo y lounge en el paseo marítimo"
-  pl: "Śródziemnomorska restauracja i lounge na promenadzie"
-  nl: "Mediterraan restaurant en lounge aan de promenade"
+  en: "Casa Sol on Žnjan Beach in Split — a modern Mediterranean restaurant and lounge on the promenade, open from breakfast to late-night cocktails."
+  hr: "Casa Sol na plaži Žnjan u Splitu — moderni mediteranski restoran i lounge na šetnici, otvoren od doručka do kasnovečernjih koktela."
+  de: "Casa Sol am Strand Žnjan in Split — modernes mediterranes Restaurant und Lounge an der Promenade, geöffnet vom Frühstück bis zu späten Cocktails."
+  it: "Casa Sol sulla spiaggia di Žnjan a Spalato — moderno ristorante mediterraneo e lounge sul lungomare, aperto dalla colazione ai cocktail a tarda sera."
+  fr: "Casa Sol sur la plage de Žnjan à Split — restaurant méditerranéen moderne et lounge sur la promenade, ouvert du petit-déjeuner aux cocktails de fin de soirée."
+  es: "Casa Sol en la playa de Žnjan, Split — moderno restaurante mediterráneo y lounge en el paseo marítimo, abierto desde el desayuno hasta los cócteles nocturnos."
+  pl: "Casa Sol na plaży Žnjan w Splicie — nowoczesna śródziemnomorska restauracja i lounge przy promenadzie, otwarta od śniadania po wieczorne koktajle."
+  nl: "Casa Sol aan het strand Žnjan in Split — modern mediterraan restaurant en lounge aan de promenade, open van ontbijt tot late cocktails."
 category: restaurant
 beachArea: promenade
 coordinates:
@@ -45,6 +45,9 @@ phone: "+385 91 311 0000"
 email: "info@casasol.hr"
 website: "https://www.casasol.hr/"
 instagram: casasol.split
+hours:
+  Sun-Thu: "08:00-01:00"
+  Fri-Sat: "08:00-02:00"
 cuisine:
   - mediterranean
 priceRange: "$$$"
@@ -56,4 +59,77 @@ tags:
   - lounge
   - seaside-dining
   - sunset
+faqs:
+  - question:
+      en: "Where is Casa Sol in Split?"
+      hr: "Gdje se nalazi Casa Sol u Splitu?"
+      de: "Wo befindet sich Casa Sol in Split?"
+      it: "Dove si trova Casa Sol a Spalato?"
+      fr: "Où se trouve Casa Sol à Split ?"
+      es: "¿Dónde está Casa Sol en Split?"
+      pl: "Gdzie znajduje się Casa Sol w Splicie?"
+      nl: "Waar ligt Casa Sol in Split?"
+    answer:
+      en: "On the Žnjan Beach promenade, at Šetalište Pape Ivana Pavla II 6A, 21000 Split."
+      hr: "Na šetnici plaže Žnjan, na adresi Šetalište Pape Ivana Pavla II 6A, 21000 Split."
+      de: "An der Promenade des Strandes Žnjan, Šetalište Pape Ivana Pavla II 6A, 21000 Split."
+      it: "Sul lungomare della spiaggia di Žnjan, in Šetalište Pape Ivana Pavla II 6A, 21000 Split."
+      fr: "Sur la promenade de la plage de Žnjan, au Šetalište Pape Ivana Pavla II 6A, 21000 Split."
+      es: "En el paseo de la playa de Žnjan, en Šetalište Pape Ivana Pavla II 6A, 21000 Split."
+      pl: "Przy promenadzie plaży Žnjan, pod adresem Šetalište Pape Ivana Pavla II 6A, 21000 Split."
+      nl: "Aan de promenade van het strand Žnjan, Šetalište Pape Ivana Pavla II 6A, 21000 Split."
+  - question:
+      en: "What are Casa Sol's opening hours?"
+      hr: "Koje je radno vrijeme restorana Casa Sol?"
+      de: "Wie sind die Öffnungszeiten von Casa Sol?"
+      it: "Quali sono gli orari di apertura di Casa Sol?"
+      fr: "Quels sont les horaires d'ouverture de Casa Sol ?"
+      es: "¿Cuál es el horario de Casa Sol?"
+      pl: "W jakich godzinach otwarta jest Casa Sol?"
+      nl: "Wat zijn de openingstijden van Casa Sol?"
+    answer:
+      en: "Sunday to Thursday from 08:00 to 01:00, and Friday to Saturday from 08:00 to 02:00."
+      hr: "Od nedjelje do četvrtka od 08:00 do 01:00, a petkom i subotom od 08:00 do 02:00."
+      de: "Sonntag bis Donnerstag von 08:00 bis 01:00 Uhr, Freitag und Samstag von 08:00 bis 02:00 Uhr."
+      it: "Da domenica a giovedì dalle 08:00 alle 01:00, venerdì e sabato dalle 08:00 alle 02:00."
+      fr: "Du dimanche au jeudi de 8h00 à 1h00, et le vendredi et samedi de 8h00 à 2h00."
+      es: "De domingo a jueves de 08:00 a 01:00, y viernes y sábado de 08:00 a 02:00."
+      pl: "Od niedzieli do czwartku w godzinach 08:00-01:00, a w piątki i soboty 08:00-02:00."
+      nl: "Zondag tot en met donderdag van 08:00 tot 01:00 uur, vrijdag en zaterdag van 08:00 tot 02:00 uur."
+  - question:
+      en: "What kind of food does Casa Sol serve?"
+      hr: "Kakvu hranu poslužuje Casa Sol?"
+      de: "Welche Küche bietet Casa Sol?"
+      it: "Che tipo di cucina propone Casa Sol?"
+      fr: "Quel type de cuisine propose Casa Sol ?"
+      es: "¿Qué tipo de comida sirve Casa Sol?"
+      pl: "Jaką kuchnię serwuje Casa Sol?"
+      nl: "Wat voor eten serveert Casa Sol?"
+    answer:
+      en: "Modern Mediterranean cuisine built on locally sourced ingredients — breakfast and lunch menus, seasonal shared plates, a curated wine list and cocktails."
+      hr: "Modernu mediteransku kuhinju temeljenu na lokalnim namirnicama — meni za doručak i ručak, sezonska jela za dijeljenje, pažljivo birana vinska karta i kokteli."
+      de: "Moderne mediterrane Küche mit lokal bezogenen Zutaten — Frühstücks- und Mittagskarte, saisonale Gerichte zum Teilen, eine kuratierte Weinkarte und Cocktails."
+      it: "Cucina mediterranea moderna a base di ingredienti locali — menu per colazione e pranzo, piatti stagionali da condividere, una carta dei vini curata e cocktail."
+      fr: "Une cuisine méditerranéenne moderne à base de produits locaux — menus petit-déjeuner et déjeuner, plats de saison à partager, carte des vins soignée et cocktails."
+      es: "Cocina mediterránea moderna con ingredientes de proximidad: menús de desayuno y almuerzo, platos de temporada para compartir, una cuidada carta de vinos y cócteles."
+      pl: "Nowoczesną kuchnię śródziemnomorską opartą na lokalnych składnikach — menu śniadaniowe i lunchowe, sezonowe dania do dzielenia, starannie dobrana karta win i koktajle."
+      nl: "Moderne mediterrane keuken met lokale ingrediënten — ontbijt- en lunchmenu's, seizoensgebonden gerechten om te delen, een zorgvuldig samengestelde wijnkaart en cocktails."
+  - question:
+      en: "How do I reserve a table at Casa Sol?"
+      hr: "Kako rezervirati stol u Casa Sol?"
+      de: "Wie reserviere ich einen Tisch im Casa Sol?"
+      it: "Come si prenota un tavolo da Casa Sol?"
+      fr: "Comment réserver une table chez Casa Sol ?"
+      es: "¿Cómo reservo mesa en Casa Sol?"
+      pl: "Jak zarezerwować stolik w Casa Sol?"
+      nl: "Hoe reserveer ik een tafel bij Casa Sol?"
+    answer:
+      en: "Call +385 91 311 0000, email info@casasol.hr, or book online through the official website."
+      hr: "Nazovite +385 91 311 0000, pišite na info@casasol.hr ili rezervirajte online putem službene web stranice."
+      de: "Telefonisch unter +385 91 311 0000, per E-Mail an info@casasol.hr oder online über die offizielle Website."
+      it: "Chiama il +385 91 311 0000, scrivi a info@casasol.hr o prenota online tramite il sito ufficiale."
+      fr: "Appelez le +385 91 311 0000, écrivez à info@casasol.hr ou réservez en ligne via le site officiel."
+      es: "Llama al +385 91 311 0000, escribe a info@casasol.hr o reserva en línea a través de la web oficial."
+      pl: "Zadzwoń pod +385 91 311 0000, napisz na info@casasol.hr lub zarezerwuj online przez oficjalną stronę."
+      nl: "Bel +385 91 311 0000, mail naar info@casasol.hr of reserveer online via de officiële website."
 order: 4

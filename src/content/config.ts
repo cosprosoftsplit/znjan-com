@@ -131,6 +131,10 @@ const places = defineCollection({
     roomCount: z.number().optional(),
     status: z.enum(['active', 'coming-soon', 'seasonal']).default('active'),
     openingDate: z.string().optional(),
+    faqs: z.array(z.object({
+      question: multilingualString,
+      answer: multilingualString,
+    })).optional(),
     order: z.number().default(0),
   }),
 });
